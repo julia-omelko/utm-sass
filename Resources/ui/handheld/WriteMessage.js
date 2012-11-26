@@ -28,13 +28,12 @@ var WriteMessage_window =function() {
 	  borderColor: '#bbb',
 	  borderRadius: 5,
 	  color: '#888',
-	  font: {fontSize:20, fontWeight:'bold'},
+	  hintText:'Start your message here...',
 	  textAlign: 'left',
 	  top: 10,
-	  width: 30, height : 'auto'
+	  width: utm.SCREEN_WIDTH-10, height : 'auto'
 	}); //todo get the screen width so we can make this wider if possible
 	writeMessageView.add(textArea);
-	
 	
 	
 	var previewButton = Ti.UI.createButton({
@@ -47,11 +46,9 @@ var WriteMessage_window =function() {
 	
 	previewButton.addEventListener('click',function()
 	{		
-		/*
-		Ti.App.fireEvent("app:myHortChoosen", {
-		         myHortId:val
-		    });	
-		*/
+		Ti.App.fireEvent("app:showPreview", {
+	        messageText: textArea.value
+	    });	
 	});
 	
 	return writeMessageView;

@@ -5,6 +5,12 @@ utm.loggedIn=false;
 utm.serviceUrl='http://dev.youthisme.com/api/v1/';
 utm.color='#007EAD';
 
+var pWidth = Ti.Platform.displayCaps.platformWidth;
+var pHeight = Ti.Platform.displayCaps.platformHeight;
+utm.SCREEN_WIDTH = (pWidth > pHeight) ? pHeight : pWidth;
+utm.SCREEN_HEIGHT = (pWidth > pHeight) ? pWidth : pHeight;
+
+
 Ti.UI.setBackgroundColor('#fff');
 
 utm.containerWindow= Ti.UI.createWindow({		
@@ -39,8 +45,8 @@ Ti.Network.addEventListener('change', function(e) {
 Ti.App.addEventListener('app:loginSuccess',handleLoginSuccess);
 function handleLoginSuccess(event){
 	var msg ='Login Success';
-	//TIM ?? 
-	//Ti.App.removeEvent('app:loginSuccess', handleLoginSuccess);
+	//TODO rework as callback...
+	Ti.App.removeEventListener('app:loginSuccess', handleLoginSuccess);
 	
 	utm.loggedIn=true;
 	utm.User = event.userData;

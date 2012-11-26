@@ -122,12 +122,12 @@ var TheLoginScreen_view = function() {
 				
 			}else if(this.status == 400){
 				
-				messageArea.setText("invalid_login");
+				setMessageArea(L("invalid_login"));
 				
 			}else{
 				log('Login Error');
 				messageArea.test="error";
-				
+				setMessageArea("Error in Service");
 			}		
 			
 		},
@@ -173,11 +173,11 @@ var TheLoginScreen_view = function() {
 		var newLinkButton = Ti.UI.createLabel({
 		  color: utm.color,
 		  font: { fontSize:14 },
-		  html: '<p>'+lbl+'</p>',
+		  text: lbl,
 		  textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
 		  top: 20,
-		  width: 'auto', 
-		  height: 'auto'
+		  width:'auto', 
+		  height: 20
 		});
 		
 		newLinkButton.addEventListener('click', function(e) {

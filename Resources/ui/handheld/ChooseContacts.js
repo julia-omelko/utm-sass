@@ -104,6 +104,7 @@ var ChooseContacts_window =function() {
 	Ti.App.addEventListener('app:myHortChoosen',function(e){
 	//************* get Contacts*************
 		log('call server and get contact list for myHortId:'+e.myHortId);
+		utm.targetMyHortID=e.myHortId;
 		var getMessagesReq = Ti.Network.createHTTPClient({
 				 // function called when the response data is available
 		     onload : function(e) {
@@ -148,7 +149,7 @@ var ChooseContacts_window =function() {
 				
 			
 		});	
-		getMessagesReq.open("GET",utm.serviceUrl+"Members?myHortId=1003");
+		getMessagesReq.open("GET",utm.serviceUrl+"Members?myHortId="+e.myHortId);
 		getMessagesReq.setRequestHeader('Authorization-Token', utm.User.UserProfile.AuthToken);	
 		getMessagesReq.send();
 		

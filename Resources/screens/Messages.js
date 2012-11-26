@@ -51,17 +51,27 @@ function message_window() {
 	// add table view to the window
 	win.add(tableview);	
 	
-/*  ATD put back but in a function
+	
+	Ti.App.addEventListener('app:showMessages',showMessageWindow);
+	function showMessageWindow(){
+			getMessagesReq.open("GET",utm.serviceUrl+"Messages");	
+			getMessagesReq.setRequestHeader('Authorization-Token', utm.AuthToken);	
+			getMessagesReq.send();		
+	} 
+	
+
 	var getMessagesReq = Ti.Network.createHTTPClient();	
-	getMessagesReq.open("GET",utm.serviceUrl+"Messages");
-	getMessagesReq.setRequestHeader('Authorization-Token', utm.User.UserProfile.AuthToken);	
-
-
-	getMessagesReq.send();
+	
 	
 
 	getMessagesReq.onload = function()
 	{
+		if(!isJSON(this.responseData)){
+			messageArea.test="Data service returned error:"+this.responseData;
+			return;
+		}
+		
+		
 		var json = this.responseData;
 		var response = JSON.parse(json);
 		
@@ -78,9 +88,21 @@ function message_window() {
 		}		
 		
 	};
-	*/
+	
 	
 	return win;
 };
+
+function isJSON(data) {
+    var isJson = false
+    try {
+        // this works with JSON string and JSON object, not sure about others
+       var json = $.parseJSON(data);
+       isJson = typeof json === 'object' ;
+    } catch (ex) {
+        log('data is not JSON:'+data);
+    }
+    return isJson;
+}
 
 module.exports = message_window;

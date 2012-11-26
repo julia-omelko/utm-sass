@@ -7,7 +7,7 @@ var ChooseMyHort_window =function() {
 	});	
 	
 	var chooseMyhortLabel = Ti.UI.createLabel({
-		text:'Choose MyHort',
+		text:'Choose a MyHort',
 		width:'auto',
 		height:30,
 		textAlign:'center'
@@ -51,6 +51,8 @@ var ChooseMyHort_window =function() {
 	
 	chooseMyhortButton.addEventListener('click',function()
 	{		
+		myHortPicker.hide(); //todo  needed???
+		myHortPicker.height=0;
 		var curRow =  myHortPicker.getSelectedRow(0,0);
 		var val = curRow.custom_item;
 		
