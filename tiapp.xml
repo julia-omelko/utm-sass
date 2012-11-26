@@ -14,7 +14,7 @@
         <target device="blackberry">false</target>
     </deployment-targets>
     <sdk-version>2.1.4.GA</sdk-version>
-    <id>com.youthisme.mobile</id>
+    <id>com.troyweb.mobile.utm</id>
     <name>UTM_Ti</name>
     <version>1.0</version>
     <publisher>adebonis</publisher>
