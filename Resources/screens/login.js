@@ -1,5 +1,3 @@
-
-
 var TheLoginScreen_view = function() {
 	
 	var loginView = Ti.UI.createView({		
@@ -11,7 +9,7 @@ var TheLoginScreen_view = function() {
 	  color: '#900',
 	  text: '',
 	  textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
-	  width: 'auto', height: 30
+	  width: 'auto', height: 'auto'
 	});
 	loginView.add(messageArea);
 		
@@ -59,6 +57,25 @@ var TheLoginScreen_view = function() {
 	});
 	loginView.add(loginBtn);
 	
+
+	check_network();
+	
+	function check_network() {
+		log('Check network: '+Titanium.Network.networkType == Titanium.Network.NETWORK_NONE);
+		
+		if (Titanium.Network.networkType == Titanium.Network.NETWORK_NONE) {
+			log('Check Connection');
+		  	setMessageArea('No Internet Connection Available- the UTM Application requires that you have a Internet Connection.');
+		  	loginBtn.enabled=false;
+		} else {
+			loginBtn.enabled=true;
+		   	setMessageArea('');
+		}
+			
+	 	return Titanium.Network.online;
+	}
+	
+	
 	
 	//Forgot Your Password?
 	var forgotPWLabel = createLink('Forgot Your Password?', 'http://dev.youthisme.com/Account/PasswordReset')
@@ -80,7 +97,7 @@ var TheLoginScreen_view = function() {
 	var versionLabel = Ti.UI.createLabel({
 		  color: '#000',
 		  font: { fontSize:14 },
-		  html: '<p>Version 0.12 Alpha</p>',
+		  html: '<div>Version 0.12 Alpha</div>',
 		  textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
 		  top: 20,
 		  width: 200, 
@@ -121,6 +138,10 @@ var TheLoginScreen_view = function() {
 		}
 	);
 	
+	//check this - may hold memory listening for events at this level.
+	Ti.App.addEventListener('app:networkChange',check_network);
+
+	
 	loginBtn.addEventListener('click',function(e)
 	{
 		username.blur();
@@ -133,7 +154,7 @@ var TheLoginScreen_view = function() {
 				loginReq.open("POST",utm.serviceUrl+"Login");				
 			//}
 			
-			loginReq.setTimeout([25000]);
+			//loginReq.setTimeout([25000]);
 			var params = {
 				UserName: username.value,
 				Password: password.value,
@@ -152,7 +173,7 @@ var TheLoginScreen_view = function() {
 		var newLinkButton = Ti.UI.createLabel({
 		  color: utm.color,
 		  font: { fontSize:14 },
-		  html: lbl,
+		  html: '<p>'+lbl+'</p>',
 		  textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
 		  top: 20,
 		  width: 'auto', 
@@ -160,10 +181,22 @@ var TheLoginScreen_view = function() {
 		});
 		
 		newLinkButton.addEventListener('click', function(e) {
-	    Titanium.Platform.openURL(url);
+	    Ti.Platform.openURL(url);
 	});
 		
 		return newLinkButton;
+	}
+	
+	function setMessageArea(msg){
+		if(msg.length){
+			messageArea.text=msg;
+			messageArea.height='auto';
+			messageArea.show();	
+		}else{
+			messageArea.text='';
+			messageArea.height=0;
+			messageArea.hide();
+		}
 	}
 	
 
