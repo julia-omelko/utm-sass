@@ -75,8 +75,6 @@ var TheLoginScreen_view = function() {
 	 	return Titanium.Network.online;
 	}
 	
-	
-	
 	//Forgot Your Password?
 	var forgotPWLabel = createLink('Forgot Your Password?', 'http://dev.youthisme.com/Account/PasswordReset')
 	loginView.add(forgotPWLabel);
@@ -97,7 +95,7 @@ var TheLoginScreen_view = function() {
 	var versionLabel = Ti.UI.createLabel({
 		  color: '#000',
 		  font: { fontSize:14 },
-		  html: '<div>Version 0.12 Alpha</div>',
+		  text: utm.appVersion,
 		  textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
 		  top: 20,
 		  width: 200, 
