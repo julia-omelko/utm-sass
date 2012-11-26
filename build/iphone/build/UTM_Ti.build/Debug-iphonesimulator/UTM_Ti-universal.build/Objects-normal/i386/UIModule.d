@@ -1,0 +1,70 @@
+dependencies: \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/UIModule.m \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/TiBase.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/TiThreading.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/TiPublicAPI.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/TiDimension.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/UIModule.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/TiModule.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/TiUtils.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/TiColor.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/TiProxy.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/TiEvaluator.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/KrollContext.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/headers/TiCore/TiCore.h \
+  headers/TiCore/Ti.h headers/TiCore/TiBase.h \
+  headers/TiCore/TiContextRef.h headers/TiCore/TiObjectRef.h \
+  headers/TiCore/TiValueRef.h headers/TiCore/WebKitAvailability.h \
+  headers/TiCore/TiStringRef.h headers/TiCore/TiStringRefCF.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/headers/TiCore/TiContextRefPrivate.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/KrollCallback.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/KrollObject.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/WebFont.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/TiFile.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/TiBuffer.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/TiBlob.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/TiUIAlertDialogProxy.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/Ti2DMatrix.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/Ti3DMatrix.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/TiAnimation.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/TiPoint.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/ListenerEntry.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/LayoutConstraint.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/TiUIiPhoneProxy.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/TiUIiPadProxy.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/TiUIiPadPopoverProxy.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/TiViewProxy.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/TiUIView.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/TiGradient.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/TiRect.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/TiViewController.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/TiUIiPadSplitWindowProxy.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/TiWindowProxy.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/TiTab.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/TiTabGroup.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/TiUIWindow.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/TiUIiPadDocumentViewerProxy.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/TiUIiOSProxy.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/TiUIiOSAdViewProxy.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/TiUIViewProxy.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/TiUIClipboardProxy.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/TiUIiOSCoverFlowViewProxy.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/TiUIiOSToolbarProxy.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/TiToolbar.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/TiUIiOSTabbedBarProxy.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/TiApp.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/TiHost.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/Bridge.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/TiStylesheet.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/KrollBridge.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/XHRBridge.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/TiRootViewController.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/TiRootController.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/ImageLoader.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/ASI/ASIHTTPRequest.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/ASI/ASIHTTPRequestConfig.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/ASI/ASIHTTPRequestDelegate.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/ASI/ASIProgressDelegate.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/ASI/ASICacheDelegate.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/ASI/ASINetworkQueue.h \
+  /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build/iphone/Classes/Webcolor.h

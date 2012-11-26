@@ -1,0 +1,12 @@
+Logfile initialized
+[INFO] logfile = /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti/build.log
+[DEBUG] /Users/adebonis/Library/Application Support/Titanium/mobilesdk/osx/2.1.4.GA/android/builder.py emulator UTM_Ti /Users/adebonis/android-sdk-mac_x86 /Users/adebonis/Documents/Titanium_Studio_Workspace/UTM_Ti com.youthisme.mobile 12 WVGA854
+[INFO] Launching Android emulator...one moment
+[DEBUG] From: /Users/adebonis/android-sdk-mac_x86/tools/emulator
+[DEBUG] SDCard: /Users/adebonis/.titanium/android2.sdcard
+[DEBUG] AVD ID: 12
+[DEBUG] AVD Skin: WVGA854
+[DEBUG] SDK: /Users/adebonis/android-sdk-mac_x86
+[DEBUG] /Users/adebonis/android-sdk-mac_x86/tools/emulator -avd titanium_12_WVGA854 -port 5560 -sdcard /Users/adebonis/.titanium/titanium_12_WVGA854.sdcard -logcat *:d,*,TiAPI:V -no-boot-anim -partition-size 128
+[DEBUG] signal caught: 15
+[DEBUG] calling emulator kill on 9047

@@ -1,0 +1,1 @@
+define({"send_messages": "Enviar un mensaje", "invalid_login": "Login incorrecto", "welcome_message": "Bienvenidos a YouThisMe/", "user_name_password_req": "Nombre de usuario / contrase\u00f1a se requieren", "view_messages": "Ver mensajes de", "label_user_name": "Nombre de usuario", "label_password": "Contrase\u00f1a"});

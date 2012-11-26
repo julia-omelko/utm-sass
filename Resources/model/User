@@ -1,0 +1,8 @@
+function user(  ) {
+	
+	var User={};
+	
+	return User;
+};
+
+module.exports = user;

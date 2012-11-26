@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+	<string name="welcome_message">Bienvenidos a YouThisMe/</string>
+	<string name="label_user_name">Nombre de usuario</string>
+	<string name="label_password">Contraseña</string>
+	
+	<string name="view_messages">Ver mensajes de</string>
+	<string name="send_messages">Enviar un mensaje</string>
+	
+	<string name="user_name_password_req">Nombre de usuario / contraseña se requieren</string>
+	<string name="invalid_login">Login incorrecto</string>
+	
+	
+	
+	
+	
+</resources>
+
