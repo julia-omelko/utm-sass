@@ -1,5 +1,5 @@
 var WriteMessage_window =function() {
-	
+
 	var writeMessageView = Titanium.UI.createView({
 	   width:'auto',
 	   height:'auto',
@@ -8,7 +8,7 @@ var WriteMessage_window =function() {
 	});	
 	
 	var toLabel = Ti.UI.createLabel({
-		text:'To:',
+		text:'To:'+utm.sentToContactListString,
 		width:'auto',
 		height:30,
 		textAlign:'center'
@@ -50,6 +50,7 @@ var WriteMessage_window =function() {
 	        messageText: textArea.value
 	    });	
 	});
+	
 	
 	return writeMessageView;
 	

@@ -79,24 +79,19 @@ var ChooseContacts_window =function() {
 	writeMessageButton.addEventListener('click',function()
 	{		
 		selectedContacts=[];
-		//loop over 
+
 		var checkRows = tableview.data[0].rows;
 		for (var ii=0;ii<checkRows.length;ii++)
 		{
 			var curRow = checkRows[ii];
-			
-			log('Cur row is checked:'+curRow.getHasCheck());
-			
 			if(curRow.getHasCheck()){
 				selectedContacts.push(curRow.nickName);
 			}
-			
-			
 		}
 		
 		Ti.App.fireEvent("app:contactsChoosen", {
-		        sentToContactList: selectedContacts
-		    });	
+	        sentToContactList: selectedContacts
+	    });	
 		
 	});
 	
@@ -122,12 +117,7 @@ var ChooseContacts_window =function() {
 					{
 						var row = Ti.UI.createTableViewRow({UserId:response[i].UserId, id:i, nickName:response[i].NickName});
 						
-						var l = Ti.UI.createLabel({
-							left:5,
-							font:{fontSize:20, fontWeight:'bold'},
-							color:'#000',
-							text:response[i].NickName
-						});
+						var l = Ti.UI.createLabel({left:5, font:{fontSize:16}, color:'#000',text:response[i].NickName});
 						row.add(l);
 						
 						data[i] = row;
@@ -144,52 +134,14 @@ var ChooseContacts_window =function() {
 		     // function called when an error occurs, including a timeout
 		     onerror : function(e) {
 		         Ti.API.debug(e.error);
-		         alert('error');
+		         alert('Error:'+e.error);
 		     }
-				
-			
 		});	
-		getMessagesReq.open("GET",utm.serviceUrl+"Members?myHortId="+e.myHortId);
+		getMessagesReq.open("GET",utm.serviceUrl+"Members/"+e.myHortId);
 		getMessagesReq.setRequestHeader('Authorization-Token', utm.User.UserProfile.AuthToken);	
-		getMessagesReq.send();
-		
-		//*************** end  *************	
-		
+		getMessagesReq.send();	
 		
 	});
-
-		
-			
-	
-	
-	
-	
-	/*
-	
-	var chooseMyhortButton = Ti.UI.createButton({
-		title:'Choose',
-		top:34,
-		width:120,
-		height:30
-	});	
-	chooseContactsView.add(chooseMyhortButton);
-	
-	chooseMyhortButton.addEventListener('click',function()
-	{		
-		Ti.App.fireEvent("app:myHortChoosen", {
-		        myHortId: 'todo'
-		    });	
-		
-	});
-	*/
-	
-	
-	
-		
-	function log(message){		
-		Ti.API.info(message);		
-	}
-	
 	
 	return chooseContactsView;
 	

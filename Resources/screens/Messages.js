@@ -54,16 +54,20 @@ function message_window() {
 	
 	Ti.App.addEventListener('app:showMessages',showMessageWindow);
 	function showMessageWindow(){
-			getMessagesReq.open("GET",utm.serviceUrl+"Messages");	
+			getMessagesReq.open("GET",utm.serviceUrl+"ReceivedMessages");	
 			getMessagesReq.setRequestHeader('Authorization-Token', utm.AuthToken);	
 			getMessagesReq.send();		
 	} 
 	
-
-	var getMessagesReq = Ti.Network.createHTTPClient();	
+	var getMessagesReq = Ti.Network.createHTTPClient({
+		
+		onError:function(e){
+			log('Get Message Service Error:'+e.error);
+         	alert('Get Message Service Error:'+e.error);			
+		}
+		
+	});	
 	
-	
-
 	getMessagesReq.onload = function()
 	{
 		if(!isJSON(this.responseData)){

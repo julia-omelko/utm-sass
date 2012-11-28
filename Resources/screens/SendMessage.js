@@ -47,6 +47,14 @@ function sendMessage_window() {
 	function setContactsChoosen(e){			
 			log('setContactsChoosen() fired sentToContactList='+e.sentToContactList);
 			utm.sentToContactList=e.sentToContactList;
+			utm.sentToContactListString='';
+			
+			for (var x=0;x<utm.sentToContactList.length;x++)
+			{
+				utm.sentToContactListString+= utm.sentToContactList[x] +',';	
+			}
+			
+			utm.sentToContactListString=utm.sentToContactListString.slice(0, - 1);
 			
 			chooseContactsView.hide();
 			writeMessageView.show();

@@ -5,6 +5,7 @@ utm.loggedIn=false;
 utm.serviceUrl='http://dev.youthisme.com/api/v1/';
 utm.color='#007EAD';
 utm.appVersion='version 0.14T Alpha';
+utm.sentToContactListString='';
 
 var pWidth = Ti.Platform.displayCaps.platformWidth;
 var pHeight = Ti.Platform.displayCaps.platformHeight;
