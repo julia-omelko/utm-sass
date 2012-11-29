@@ -10,6 +10,10 @@ var PreviewMessage_window =function() {
 	   visible:false
 	});	
 	
+	var backButton = Ti.UI.createButton({title:'Back',top:2,left:2,width:'auto',height:30});	
+	previewMessageView.add(backButton);
+	backButton.addEventListener('click',function(){Ti.App.fireEvent("app:showContactsChoosen");});
+	
 	//-----------------TO  ----------------------
 	var toLabel = Ti.UI.createLabel({
 		text:'To:',

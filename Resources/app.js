@@ -70,6 +70,11 @@ utm.messageWindow.height=0;
 utm.containerWindow.barColor='#007EAD';
 utm.containerWindow.add(utm.messageWindow);
 
+utm.SendMessageScreen = require('screens/SendMessage');
+utm.sendMessageWindow = new utm.SendMessageScreen();
+utm.sendMessageWindow.hide();
+utm.sendMessageWindow.height=0;
+utm.containerWindow.add(utm.sendMessageWindow);
 /*
 var SendMessageScreen = require('screens/SendMessage');
 var sendMessageWindow = new SendMessageScreen();
@@ -84,8 +89,11 @@ function showLandingView(){
 	utm.logoutButton.hide();
 	utm.messageWindow.height=0;
 	utm.messageWindow.hide();
+	utm.sendMessageWindow.hide();
+	utm.sendMessageWindow.height=0;
 	utm.landingView.show();
 	utm.landingView.height='auto';
+	//utm.sendMessageWindow.close();
 } 
 
 
@@ -119,12 +127,14 @@ function showLoginView(){
 
 Ti.App.addEventListener('app:showSendMessage',showSendMessageWindow);
 function showSendMessageWindow(){	
-	var SendMessageScreen = require('screens/SendMessage');
-	var sendMessageWindow = new SendMessageScreen();
+	
 	utm.containerWindow.leftNavButton = utm.backButton;
 	utm.loginView.hide();
 	utm.loginView.height=0;
-	sendMessageWindow.open();
+	utm.landingView.hide();
+	utm.landingView.height=0;
+	utm.sendMessageWindow.height='auto';
+	utm.sendMessageWindow.show();
 } 
 
 //Left Nav Buttons

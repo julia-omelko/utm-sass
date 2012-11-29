@@ -8,6 +8,10 @@ var ChooseContacts_window =function() {
 	   layout:'vertical',
 	   visible:false
 	});	
+	
+	var backButton = Ti.UI.createButton({title:'Back',top:2,left:2,width:'auto',height:30});	
+	chooseContactsView.add(backButton);
+	backButton.addEventListener('click',function(){Ti.App.fireEvent("app:showChooseMyHortView");});
 
 	var chooseContactsLabel = Ti.UI.createLabel({
 			text:'Select Recipient(s)',

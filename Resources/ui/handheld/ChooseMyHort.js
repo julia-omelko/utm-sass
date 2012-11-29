@@ -6,6 +6,11 @@ var ChooseMyHort_window =function() {
 	   layout:'vertical'
 	});	
 	
+	/*var backButton = Ti.UI.createButton({title:'Back',top:2,left:2,width:'auto',height:30});	
+	chooseMyHortView.add(backButton);
+	backButton.addEventListener('click',function(){Ti.App.fireEvent("app:showLandingView");});
+	*/
+	
 	var chooseMyhortLabel = Ti.UI.createLabel({
 		text:'Choose a MyHort',
 		width:'auto',
@@ -14,18 +19,25 @@ var ChooseMyHort_window =function() {
 	});
 	chooseMyHortView.add(chooseMyhortLabel);
 	
-	var data = [];
-	var intOption = 0, intOptionLen = utm.myHorts.length;
-	for (intOption = 0; intOption < intOptionLen; intOption = intOption + 1) {
-		data[intOption]=Ti.UI.createPickerRow({title:utm.myHorts[intOption].FriendlyName,custom_item:utm.myHorts[intOption].MyHortId});
-	}
+	Ti.App.addEventListener('app:showSendMessage',showSendMessageWindow);
+	function showSendMessageWindow(){	
+		var data = [];
+		var intOption = 0, intOptionLen = utm.myHorts.length;
+		for (intOption = 0; intOption < intOptionLen; intOption = intOption + 1) {
+			data[intOption]=Ti.UI.createPickerRow({title:utm.myHorts[intOption].FriendlyName,custom_item:utm.myHorts[intOption].MyHortId});
+		}
 
+		myHortPicker.add(data);
+		myHortPicker.width='100%';
+	} 
+	
+	
 	var myHortPicker = Ti.UI.createPicker();
 
 	// turn on the selection indicator (off by default)
 	myHortPicker.selectionIndicator = true;	
 	myHortPicker.setSelectedRow(0,-1,false);
-	myHortPicker.add(data);	
+		
 	chooseMyHortView.add(myHortPicker);
 
 /*		
@@ -56,9 +68,7 @@ var ChooseMyHort_window =function() {
 		var curRow =  myHortPicker.getSelectedRow(0,0);
 		var val = curRow.custom_item;
 		
-		Ti.App.fireEvent("app:myHortChoosen", {
-		         myHortId:val
-		    });	
+		Ti.App.fireEvent("app:myHortChoosen", {myHortId:val});	
 		
 	});
 	

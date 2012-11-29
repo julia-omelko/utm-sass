@@ -7,6 +7,10 @@ var WriteMessage_window =function() {
 	   visible:false
 	});	
 	
+	var backButton = Ti.UI.createButton({title:'Back',top:2,left:2,width:'auto',height:30});	
+	writeMessageView.add(backButton);
+	backButton.addEventListener('click',function(){Ti.App.fireEvent("app:showContactsChoosen");});
+	
 	var toLabel = Ti.UI.createLabel({
 		text:'To:'+utm.sentToContactListString,
 		width:'auto',
