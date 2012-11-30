@@ -48,31 +48,25 @@ function message_window() {
 	
 	Ti.App.addEventListener('app:showMessages',showMessageWindow);
 	function showMessageWindow(){
-			getMessagesReq.open("GET",utm.serviceUrl+"ReceivedMessages");	
-			getMessagesReq.setRequestHeader('Authorization-Token', utm.AuthToken);	
-			getMessagesReq.send();	
-			
-			if(utm.messageDetailWindow != undefined){
-				utm.messageDetailWindow.close();
-			}
-				
+		getMessages();
 	} 
-	
-	
 	
 	Ti.App.addEventListener('app:backToMessageWindow',backToMessageWindow);
 	function backToMessageWindow(){
-			utm.containerWindow.leftNavButton = utm.backButton;
-			getMessagesReq.open("GET",utm.serviceUrl+"ReceivedMessages");	
-			getMessagesReq.setRequestHeader('Authorization-Token', utm.AuthToken);	
-			getMessagesReq.send();	
-			
-			if(utm.messageDetailWindow != undefined){
-				utm.messageDetailWindow.close();
-			}
-				
+		getMessages();			
 	} 
 	
+	function getMessages(){
+		utm.containerWindow.leftNavButton = utm.backButton;
+		getMessagesReq.open("GET",utm.serviceUrl+"ReceivedMessages?$orderby=DateSent desc");	
+		getMessagesReq.setRequestHeader('Authorization-Token', utm.AuthToken);	
+		getMessagesReq.send();	
+		
+		if(utm.messageDetailWindow != undefined){
+			utm.messageDetailWindow.close();
+		}	
+	}
+		
 	var getMessagesReq = Ti.Network.createHTTPClient({
 		
 		onError:function(e){
@@ -103,6 +97,7 @@ function message_window() {
 			  var row = Ti.UI.createTableViewRow({ className: 'row', row:clickName = 'row', objName: 'row', touchEnabled: true, height: 55,hasChild:true, messageData: response[i]});
 			  
 			  
+			  
 			  var enabledWrapperView = Ti.UI.createView({
 			  	layout:'vertical',
 			    backgroundColor:'#fff',
@@ -110,16 +105,31 @@ function message_window() {
 			    rowID: i, width: Ti.UI.FILL, height: '45'
 			  });
 			  
-			   var fromMessage = Ti.UI.createLabel({
-			    backgroundColor:'#fff',
-			    color: '#000',
-			    font: {fontSize:14, fontWeight:'bold'},
-			    objName: 'fromMessage',
-			    text: response[i].FromUserName,
-			    touchEnabled: true,
-			    left: 2,
-			    width: '100%'
-			  });
+			  if(response[i].WasRead){
+			  	var fromMessage = Ti.UI.createLabel({
+				    backgroundColor:'#fff',
+				    color: '#000',
+				    font: {fontSize:14},
+				    objName: 'fromMessage',
+				    text: response[i].FromUserName,
+				    touchEnabled: true,
+				    left: 2,
+				    width: '100%'
+				  });			  	
+			  }else{
+			  	var fromMessage = Ti.UI.createLabel({
+				    backgroundColor:'#fff',
+				    color: '#000',
+				    font: {fontSize:14, fontWeight:'bold'},
+				    objName: 'fromMessage',
+				    text: response[i].FromUserName,
+				    touchEnabled: true,
+				    left: 2,
+				    width: '100%'
+				  });			  	
+			  }
+			  
+			   
 			  enabledWrapperView.add(fromMessage);
 			  
 			  var utmMessage = Ti.UI.createLabel({
@@ -140,12 +150,8 @@ function message_window() {
 			  tableData.push(row);
 			}
 			
-			tableview.setData(tableData);
-			
-			
-			
-
-			
+			tableview.setData(tableData);			
+						
 		}else if(this.status == 400){
 			
 			messageArea.setText("Error:"+this.responseText);
@@ -153,13 +159,9 @@ function message_window() {
 		}else{
 			messageArea.test="error";
 			
-		}		
-		
+		}	
 	};
-	
-	
-	
-	
+		
 	return win;
 };
 

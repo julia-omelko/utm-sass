@@ -30,7 +30,7 @@ var ChooseContacts_window =function() {
 		// event data
 		var index = e.index;
 		var section = e.section;
-		var checkedCount=0;
+		
 		setTimeout(function()
 		{
 			log('row clicked:'+section.rows[index]);
@@ -42,40 +42,29 @@ var ChooseContacts_window =function() {
 				
 			}else{
 				section.rows[index].hasCheck = true;	
-				checkedCount++;
 			}
-			
-			if(checkedCount>0){
-				writeMessageButton.enabled =true;
-			}else{
-				writeMessageButton.enabled =false;
-			}
-			
+			checkEnableSendButton();
 						
-		},250);		
-		
-	
-		
-		
-		
+		},250);	
 	});
 	
-	/*
-	 if(e.rowData.selected) {
-            var pushed = arr.push(e.index);
-            table.fireEvent('onrowselect',e);
-        }else{
-            var index = arr.indexOf(e.index);
-            if(index>-1) {
-                arr.splice(index,1);
-                table.fireEvent('onrowunselect',e);
-            }
-        }
-	*/
-	
-	
-	
-	
+	function checkEnableSendButton(){
+		var checkedCount=0;
+		var checkRows = tableview.data[0].rows;
+		for (var ii=0;ii<checkRows.length;ii++)
+		{
+			var curRow = checkRows[ii];
+			if(curRow.getHasCheck()){
+				checkedCount++;
+			}
+		}
+		
+		if(checkedCount>0){
+			writeMessageButton.enabled =true;
+		}else{
+			writeMessageButton.enabled =false;
+		}
+	}
 	
 	var writeMessageButton = Ti.UI.createButton({
 		title:'Write Your Message',
@@ -128,9 +117,9 @@ var ChooseContacts_window =function() {
 					
 					for (var i=0;i<response.length;i++)
 					{
-						var row = Ti.UI.createTableViewRow({UserId:response[i].UserId, id:i, nickName:response[i].NickName});
+						var row = Ti.UI.createTableViewRow({UserId:response[i].UserId, id:i, nickName:response[i].NickName,height:35});
 						
-						var l = Ti.UI.createLabel({left:5, font:{fontSize:16}, color:'#000',text:response[i].NickName});
+						var l = Ti.UI.createLabel({left:5, font:{fontSize:16}, height:30,color:'#000',text:response[i].NickName});
 						row.add(l);
 						
 						data[i] = row;

@@ -145,11 +145,7 @@ function messageDetail_window(_messageData) {
 			
 		});	
 					
-	},2500);	
-	
-	
-	
-	
+	},2500);		
 	
 	return win;
 };
