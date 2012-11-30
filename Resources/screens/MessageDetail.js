@@ -10,6 +10,17 @@ function messageDetail_window(_messageData) {
 	win.add(messageArea);
 	
 	//-----------------From  ----------------------
+	var toDate = Ti.UI.createLabel({
+		text:'Sent On:'+_messageData.DateSent,
+		width:utm.SCREEN_WIDTH-10,
+		font: {fontSize:14, fontWeight:'bold'},
+		height:'auto',
+		top:2,
+		textAlign:'left'
+	});
+	win.add(toDate);
+	
+	//-----------------From  ----------------------
 	var toLabel = Ti.UI.createLabel({
 		text:'From:'+_messageData.ToUserId,
 		width:utm.SCREEN_WIDTH-10,
@@ -81,21 +92,18 @@ function messageDetail_window(_messageData) {
 	utm.containerWindow.leftNavButton = utm.backToMessagesButton;
 	
 	
-	
+	// ##################### Call out to get message detail #####################
 	var getMessageDetailReq = Ti.Network.createHTTPClient({
 		
 		onError:function(e){
 			log('Get Message Service Error:'+e.error);
          	alert('Get Message Service Error:'+e.error);			
 		}
-		
 	});	
 	
 	getMessageDetailReq.open("GET",utm.serviceUrl+"ReceivedMessages/"+_messageData.Id);	
 	getMessageDetailReq.setRequestHeader('Authorization-Token', utm.AuthToken);	
 	getMessageDetailReq.send();		
-	
-	
 	
 	getMessageDetailReq.onload = function()
 	{
@@ -110,24 +118,37 @@ function messageDetail_window(_messageData) {
 		var tableData = [];
 		
 		if(this.status ==200){
-				
 			log("message data returned:"+response);
-			
 			utmMessageValue.text = response.Message;
 			
-			
-
-			
 		}else if(this.status == 400){
-			
 			messageArea.setText("Error:"+this.responseText);
-			
 		}else{
 			messageArea.test="error";
-			
 		}		
-		
 	};
+	
+	// ##################### Mark Message as Read #####################
+	
+	setTimeout(function()
+	{
+		getMessageDetailReq.open("POST",utm.serviceUrl+"Messages/"+_messageData.Id);	
+		getMessageDetailReq.setRequestHeader('Authorization-Token', utm.AuthToken);	
+		getMessageDetailReq.send();		
+		
+		var getMarkMessageAsReadReq = Ti.Network.createHTTPClient({
+			
+			onError:function(e){
+				log('Mark Message as Read Service Error:'+e.error);
+	         	alert('Mark Message as Read Service Error:'+e.error);			
+			}
+			
+		});	
+					
+	},2500);	
+	
+	
+	
 	
 	
 	return win;
