@@ -31,7 +31,7 @@ function sendMessage_window() {
 	previewMessageView.height=0;
 	win.add(previewMessageView);	
 	
-/*
+
 	Ti.App.addEventListener('app:myHortChoosen',setMyHort);
 	function setMyHort(e){			
 			log('setMyHort() fired myHortId='+e.myHortId);
@@ -92,7 +92,26 @@ function sendMessage_window() {
 			chooseMyHortView.show();
 			chooseMyHortView.height='auto';
 	}
-	*/
+	
+
+	Ti.App.addEventListener('app:showMessagesAfterSend',showMessageWindow);
+	function showMessageWindow(){	
+		log('showMessagesAfterSend()  222 fired ');
+		chooseContactsView.hide();
+		chooseContactsView.height=0;
+		writeMessageView.hide();
+		writeMessageView.height=0;
+		previewMessageView.hide();
+		previewMessageView.height=0;
+		
+		chooseMyHortView.show();
+		chooseMyHortView.height='auto';
+		
+		
+		Ti.App.fireEvent("app:showLandingView", {});
+	
+		
+	} 
 	
 	
 	return win;

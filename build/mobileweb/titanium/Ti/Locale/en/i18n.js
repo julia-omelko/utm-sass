@@ -1,1 +1,0 @@
-define({"send_messages": "Send a Message", "invalid_login": "Login Invalid", "welcome_message": "Welcome to YouThisMe/", "user_name_password_req": "Username/Password are required", "view_messages": "View Messages", "label_user_name": "User Name", "label_password": "Password"});

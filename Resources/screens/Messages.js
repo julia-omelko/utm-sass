@@ -1,28 +1,32 @@
 function message_window() {
-	var win = Ti.UI.createView({backgroundColor:'#fff',layout:'vertical',visible:false });
+	var win = Ti.UI.createWindow({backgroundColor:'#fff',visible:false });
 	
 	var messageArea = Ti.UI.createLabel({
 	  color: '#900',
 	  text: '',
 	  textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
-	  width: 'auto', height: 30
+	  width: 'auto', height: 0
 	});
 	win.add(messageArea);
 	
-	// create table view data object
-	var data = [
-		{title:'Row 1', hasDetail:true, color:'blue', selectedColor:'#fff'},
-		{title:'Row 2', hasDetail:true, color:'blue', selectedColor:'#fff'},
-		{title:'Row 3', hasDetail:true, color:'blue', selectedColor:'#fff'},
-		{title:'Row 4', hasDetail:true, color:'blue', selectedColor:'#fff'}
-
-	];
 	
 	// create table view
-	for (var i = 0; i < data.length; i++ ) { data[i].color = '#000'; data[i].font = {fontWeight:'bold'} };
-	var tableview = Titanium.UI.createTableView({
-		data:data
+	var tableview = Titanium.UI.createTableView();
+	tableview.addEventListener('click', function(e)
+	{
+
+		var messageData = e.rowData.messageData;
+		
+		//e.source.clickName
+		utm.MessageDetailWindow = require('screens/MessageDetail');
+		utm.messageDetailWindow =  new utm.MessageDetailWindow(messageData);
+		utm.messageDetailWindow.title='Message';
+		utm.messageDetailWindow.open();
+		
+		//utm.messageDetailWindowsetMessageData(messageData);
 	});
+	
+	
 	
 	function showClickEventInfo(e, islongclick) {
 		// event data
@@ -37,17 +41,7 @@ function message_window() {
 		}
 		Titanium.UI.createAlertDialog({title:'Table View',message:msg}).show();
 	}
-	
-	// create table view event listener
-	tableview.addEventListener('click', function(e)
-	{
-		showClickEventInfo(e);
-	});
-	tableview.addEventListener('longclick', function(e)
-	{
-		showClickEventInfo(e, true);
-	});
-	
+		
 	// add table view to the window
 	win.add(tableview);	
 	
@@ -56,7 +50,27 @@ function message_window() {
 	function showMessageWindow(){
 			getMessagesReq.open("GET",utm.serviceUrl+"ReceivedMessages");	
 			getMessagesReq.setRequestHeader('Authorization-Token', utm.AuthToken);	
-			getMessagesReq.send();		
+			getMessagesReq.send();	
+			
+			if(utm.messageDetailWindow != undefined){
+				utm.messageDetailWindow.close();
+			}
+				
+	} 
+	
+	
+	
+	Ti.App.addEventListener('app:backToMessageWindow',backToMessageWindow);
+	function backToMessageWindow(){
+			utm.containerWindow.leftNavButton = utm.backButton;
+			getMessagesReq.open("GET",utm.serviceUrl+"ReceivedMessages");	
+			getMessagesReq.setRequestHeader('Authorization-Token', utm.AuthToken);	
+			getMessagesReq.send();	
+			
+			if(utm.messageDetailWindow != undefined){
+				utm.messageDetailWindow.close();
+			}
+				
 	} 
 	
 	var getMessagesReq = Ti.Network.createHTTPClient({
@@ -70,18 +84,68 @@ function message_window() {
 	
 	getMessagesReq.onload = function()
 	{
-		if(!isJSON(this.responseData)){
+		/*if(!isJSON(this.responseData)){
 			messageArea.test="Data service returned error:"+this.responseData;
 			return;
-		}
+		}*/
 		
 		
 		var json = this.responseData;
 		var response = JSON.parse(json);
+		var tableData = [];
 		
 		if(this.status ==200){
 				
-			messageArea.setText("data returned");
+			log("message data returned:"+response);
+			
+			for (var i=0;i<response.length;i++)
+			{
+			  var row = Ti.UI.createTableViewRow({ className: 'row', row:clickName = 'row', objName: 'row', touchEnabled: true, height: 55,hasChild:true, messageData: response[i]});
+			  
+			  
+			  var enabledWrapperView = Ti.UI.createView({
+			  	layout:'vertical',
+			    backgroundColor:'#fff',
+			    objName: 'enabledWrapperView',
+			    rowID: i, width: Ti.UI.FILL, height: '45'
+			  });
+			  
+			   var fromMessage = Ti.UI.createLabel({
+			    backgroundColor:'#fff',
+			    color: '#000',
+			    font: {fontSize:14, fontWeight:'bold'},
+			    objName: 'fromMessage',
+			    text: response[i].FromUserName,
+			    touchEnabled: true,
+			    left: 2,
+			    width: '100%'
+			  });
+			  enabledWrapperView.add(fromMessage);
+			  
+			  var utmMessage = Ti.UI.createLabel({
+			    backgroundColor:'#fff',
+			    color: '#000',
+			    font: {fontSize:14},
+			    objName: 'utmMessage',
+			    text: response[i].UtmText,
+			    touchEnabled: true,
+			    top:2,
+			    left: 2,
+			    height:16,
+			    width: '100%'
+			  });
+			  enabledWrapperView.add(utmMessage);
+			  
+			  row.add(enabledWrapperView);
+			  tableData.push(row);
+			}
+			
+			tableview.setData(tableData);
+			
+			
+			
+
+			
 		}else if(this.status == 400){
 			
 			messageArea.setText("Error:"+this.responseText);
@@ -94,8 +158,12 @@ function message_window() {
 	};
 	
 	
+	
+	
 	return win;
 };
+
+
 
 function isJSON(data) {
     var isJson = false

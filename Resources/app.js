@@ -65,8 +65,9 @@ utm.containerWindow.add(utm.landingView);
 
 utm.MessageScreen = require('screens/Messages');
 utm.messageWindow = new utm.MessageScreen();
-utm.messageWindow.hide();
-utm.messageWindow.height=0;
+utm.messageWindow.title='Messages';
+//utm.messageWindow.hide();
+//utm.messageWindow.height=0;
 utm.containerWindow.barColor='#007EAD';
 utm.containerWindow.add(utm.messageWindow);
 
@@ -91,6 +92,7 @@ function showLandingView(){
 	utm.messageWindow.hide();
 	utm.sendMessageWindow.hide();
 	utm.sendMessageWindow.height=0;
+	utm.landingView.open();
 	utm.landingView.show();
 	utm.landingView.height='auto';
 	//utm.sendMessageWindow.close();
@@ -98,16 +100,25 @@ function showLandingView(){
 
 
 Ti.App.addEventListener('app:showMessages',showMessageWindow);
+Ti.App.addEventListener('app:showMessagesAfterSend',showMessageWindow);
 function showMessageWindow(){	
 	utm.containerWindow.leftNavButton = utm.backButton;
 	utm.loginView.hide();
 	utm.loginView.height=0;
-	utm.logoutButton.hide();
-	utm.landingView.hide();
+	//utm.logoutButton.close();
+	//utm.landingView.hide();
 	utm.landingView.height=0;
+	utm.messageWindow.open();
 	utm.messageWindow.height='auto';
 	utm.messageWindow.show();
+	if(utm.messageDetailWindow != undefined){
+		utm.messageDetailWindow.close();
+	}	
+	log('showMessagesAfterSend()  111 fired ');
 } 
+
+
+
 
 Ti.App.addEventListener('app:logout',showLoginView);
 function showLoginView(){	
@@ -140,19 +151,19 @@ function showSendMessageWindow(){
 //Left Nav Buttons
 
 utm.logoutButton = Ti.UI.createButton({title:'Logout'});
-utm.logoutButton.hide();
+//utm.logoutButton.hide();
 utm.logoutButton.addEventListener('click', function()
 {
    Ti.App.fireEvent("app:logout", {});
 	utm.landingView.hide();
+	utm.containerWindow.leftNavButton = utm.emptyView;
 });
 
 utm.backButton = Ti.UI.createButton({title:'Back'});
-utm.backButton.hide();
 utm.backButton.addEventListener('click', function()
 {	log('Backbutton fired');
   	Ti.App.fireEvent("app:showLandingView", {});
-	//utm.landingView.hide();
+	utm.containerWindow.leftNavButton = utm.emptyView;
 });
 
 //Used to remove the leftNavButton

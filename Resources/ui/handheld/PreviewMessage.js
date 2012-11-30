@@ -10,10 +10,6 @@ var PreviewMessage_window =function() {
 	   visible:false
 	});	
 	
-	var backButton = Ti.UI.createButton({title:'Back',top:2,left:2,width:'auto',height:30});	
-	previewMessageView.add(backButton);
-	backButton.addEventListener('click',function(){Ti.App.fireEvent("app:showContactsChoosen");});
-	
 	//-----------------TO  ----------------------
 	var toLabel = Ti.UI.createLabel({
 		text:'To:',
@@ -48,6 +44,7 @@ var PreviewMessage_window =function() {
 	var yourOrgMessageValue = Ti.UI.createLabel({
 		text:'',
 		font: {fontSize:12},
+		color: '#888',
 		width:utm.SCREEN_WIDTH-10,
 		height:'auto',
 		textAlign:'left'
@@ -68,6 +65,7 @@ var PreviewMessage_window =function() {
 	var encryptedValue = Ti.UI.createLabel({
 		text:'',
 		font: {fontSize:12},
+		color: '#888',
 		width:utm.SCREEN_WIDTH-10,
 		height:'auto',
 		textAlign:'left'
@@ -92,7 +90,7 @@ var PreviewMessage_window =function() {
 	  borderWidth: 2,
 	  borderColor: '#bbb',
 	  borderRadius: 5,
-	  color: '#888',
+	  color: '#000',
 	  font: {fontSize:12},
 	  textAlign: 'left',
 	  top: 10,
@@ -111,7 +109,7 @@ var PreviewMessage_window =function() {
 	
 	sendButton.addEventListener('click',function()
 	{	
-		customUtmMessage.blur();			
+		// customUtmMessage.blur();			
 		var params = {
 			MyHortId: utm.targetMyHortID,
 			PlainText: yourOrgMessageValue.text,
@@ -168,10 +166,10 @@ var PreviewMessage_window =function() {
 				//pop a dialog and on close go back to landing screen
 				var opts = {options: ['Ok'], title: 'Your Message was sent'};
 				var dialog = Ti.UI.createOptionDialog(opts).show();
-				
+				Ti.App.fireEvent("app:showMessagesAfterSend", {});
 				dialog.addEventListener('click', function(e){
 					resetScreen();
-					Ti.App.fireEvent("app:showMessages", {});
+					
 				});
 				
 		
@@ -187,6 +185,11 @@ var PreviewMessage_window =function() {
          	alert('Send Message Service Error:'+e.error);			
 		}
 	});	
+	
+	Ti.App.addEventListener('app:showMessagesAfterSend',showMessageWindow);
+	function showMessageWindow(){	
+		log('showMessagesAfterSend()  333 fired ');
+	} 
 	
 	
 	Ti.App.addEventListener('app:showPreview',getMessagePreview);

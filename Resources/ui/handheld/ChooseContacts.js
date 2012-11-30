@@ -7,12 +7,8 @@ var ChooseContacts_window =function() {
 	   height:'auto',
 	   layout:'vertical',
 	   visible:false
-	});	
+	});		
 	
-	var backButton = Ti.UI.createButton({title:'Back',top:2,left:2,width:'auto',height:30});	
-	chooseContactsView.add(backButton);
-	backButton.addEventListener('click',function(){Ti.App.fireEvent("app:showChooseMyHortView");});
-
 	var chooseContactsLabel = Ti.UI.createLabel({
 			text:'Select Recipient(s)',
 			top:6,
@@ -25,7 +21,7 @@ var ChooseContacts_window =function() {
 	// create table view
 	var tableview = Titanium.UI.createTableView({
 		style: Titanium.UI.iPhone.TableViewStyle.GROUPED,
-		height:300
+		height:'50%'
 	});
 	chooseContactsView.add(tableview);	
 	
@@ -34,7 +30,7 @@ var ChooseContacts_window =function() {
 		// event data
 		var index = e.index;
 		var section = e.section;
-	
+		var checkedCount=0;
 		setTimeout(function()
 		{
 			log('row clicked:'+section.rows[index]);
@@ -46,11 +42,20 @@ var ChooseContacts_window =function() {
 				
 			}else{
 				section.rows[index].hasCheck = true;	
+				checkedCount++;
 			}
 			
+			if(checkedCount>0){
+				writeMessageButton.enabled =true;
+			}else{
+				writeMessageButton.enabled =false;
+			}
 			
-			
-		},250);
+						
+		},250);		
+		
+	
+		
 		
 		
 	});
@@ -74,6 +79,7 @@ var ChooseContacts_window =function() {
 	
 	var writeMessageButton = Ti.UI.createButton({
 		title:'Write Your Message',
+		enabled:false,
 		top:34,
 		width:'auto',
 		height:30
@@ -92,6 +98,9 @@ var ChooseContacts_window =function() {
 				selectedContacts.push(curRow.nickName);
 			}
 		}
+		
+		
+		
 		
 		Ti.App.fireEvent("app:contactsChoosen", {
 	        sentToContactList: selectedContacts

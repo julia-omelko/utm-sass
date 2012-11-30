@@ -2,9 +2,9 @@
 
 var TheLandingScreen_view = function() {
 	
-	var landingView = Ti.UI.createView({		
-		backgroundColor: 'transparent',
-		layout:'vertical'
+	var landingView = Ti.UI.createWindow({		
+	
+		layout:'vertical',title:'Landing Window'
 	});
 	
 
@@ -47,7 +47,6 @@ var TheLandingScreen_view = function() {
 		top:20,
 		width:200,
 		height:35,
-		borderRadius:1,
 		font:{fontFamily:'Arial',fontWeight:'bold',fontSize:14}
 	});
 	landingView.add(viewMessageBtn);
@@ -57,7 +56,6 @@ var TheLandingScreen_view = function() {
 		top:20,
 		width:200,
 		height:35,
-		borderRadius:1,
 		font:{fontFamily:'Arial',fontWeight:'bold',fontSize:14}
 	});
 	landingView.add(sendMessageBtn);
