@@ -1,5 +1,5 @@
 function message_window() {
-	var win = Ti.UI.createWindow({backgroundColor:'#fff',visible:false });
+	var win = Ti.UI.createWindow({backgroundColor:'#fff',visible:false, layout:'vertical' });
 	
 	var messageArea = Ti.UI.createLabel({
 	  color: '#900',
@@ -9,12 +9,29 @@ function message_window() {
 	});
 	win.add(messageArea);
 	
+	var tabBar = Titanium.UI.iOS.createTabbedBar({
+	    labels:['Recieved', 'Sent'],
+	    backgroundColor:utm.color,
+	    top:2,
+	    index:0,
+	    style:Titanium.UI.iPhone.SystemButtonStyle.BAR,
+	    height:35,
+	    width:250
+	});
+	win.add(tabBar);
+	
+	tabBar.addEventListener('click', function(e){
+		if(tabBar.index ==0){
+			getMessages('rec');
+		}else{
+			getMessages('sent');
+		}
+	});
 	
 	// create table view
 	var tableview = Titanium.UI.createTableView();
 	tableview.addEventListener('click', function(e)
 	{
-
 		var messageData = e.rowData.messageData;
 		
 		//e.source.clickName
@@ -22,11 +39,7 @@ function message_window() {
 		utm.messageDetailWindow =  new utm.MessageDetailWindow(messageData);
 		utm.messageDetailWindow.title='Message';
 		utm.messageDetailWindow.open();
-		
-		//utm.messageDetailWindowsetMessageData(messageData);
 	});
-	
-	
 	
 	function showClickEventInfo(e, islongclick) {
 		// event data
@@ -45,20 +58,26 @@ function message_window() {
 	// add table view to the window
 	win.add(tableview);	
 	
-	
 	Ti.App.addEventListener('app:showMessages',showMessageWindow);
 	function showMessageWindow(){
-		getMessages();
+		getMessages('rec');
 	} 
 	
 	Ti.App.addEventListener('app:backToMessageWindow',backToMessageWindow);
 	function backToMessageWindow(){
-		getMessages();			
+		getMessages('rec');			
 	} 
 	
-	function getMessages(){
+	function getMessages(mode){
+		setActivityIndicator('Getting your messages...');
 		utm.containerWindow.leftNavButton = utm.backButton;
-		getMessagesReq.open("GET",utm.serviceUrl+"ReceivedMessages?$orderby=DateSent desc");	
+		
+		if(mode =='rec'){
+			getMessagesReq.open("GET",utm.serviceUrl+"ReceivedMessages?$orderby=DateSent desc");	
+		}else{
+			getMessagesReq.open("GET",utm.serviceUrl+"SentMessages?$orderby=DateSent desc");
+		}
+			
 		getMessagesReq.setRequestHeader('Authorization-Token', utm.AuthToken);	
 		getMessagesReq.send();	
 		
@@ -68,12 +87,10 @@ function message_window() {
 	}
 		
 	var getMessagesReq = Ti.Network.createHTTPClient({
-		
 		onError:function(e){
 			log('Get Message Service Error:'+e.error);
          	alert('Get Message Service Error:'+e.error);			
 		}
-		
 	});	
 	
 	getMessagesReq.onload = function()
@@ -87,7 +104,7 @@ function message_window() {
 		var json = this.responseData;
 		var response = JSON.parse(json);
 		var tableData = [];
-		
+		setActivityIndicator('');
 		if(this.status ==200){
 				
 			log("message data returned:"+response);
@@ -95,8 +112,6 @@ function message_window() {
 			for (var i=0;i<response.length;i++)
 			{
 			  var row = Ti.UI.createTableViewRow({ className: 'row', row:clickName = 'row', objName: 'row', touchEnabled: true, height: 55,hasChild:true, messageData: response[i]});
-			  
-			  
 			  
 			  var enabledWrapperView = Ti.UI.createView({
 			  	layout:'vertical',
@@ -155,9 +170,11 @@ function message_window() {
 		}else if(this.status == 400){
 			
 			messageArea.setText("Error:"+this.responseText);
+			setActivityIndicator('');
 			
 		}else{
 			messageArea.test="error";
+			setActivityIndicator('');
 			
 		}	
 	};
