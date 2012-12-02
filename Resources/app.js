@@ -186,6 +186,24 @@ utm.logoutReq = Ti.Network.createHTTPClient({
 	}
 });
 
+utm.activityIndicator = Ti.UI.createActivityIndicator({
+	  color: utm.color,
+	  font: {fontFamily:'Helvetica Neue', fontSize:18, fontWeight:'bold'},
+	  style:Ti.UI.iPhone.ActivityIndicatorStyle.DARK,
+	  height:'auto',
+	  width:'auto'
+});
+utm.containerWindow.add(utm.activityIndicator);
+utm.activityIndicator.hide();
+
+function setActivityIndicator(_message){
+	if(_message !=''){
+		utm.activityIndicator.show();
+	}else{
+		utm.activityIndicator.hide();
+	}
+	utm.activityIndicator.setMessage(_message);
+}
 
 function log(message){		
 	Ti.API.info(message);		
