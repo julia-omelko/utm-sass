@@ -143,20 +143,14 @@ var getMarkMessageAsReadReq = Ti.Network.createHTTPClient({
 	}
 	
 });	
+
 function setMessageAsRead(){
-	
 	setTimeout(function()
 	{
 		getMarkMessageAsReadReq.open("POST",utm.serviceUrl+"Messages/"+_messageData.Id);	
 		getMarkMessageAsReadReq.setRequestHeader('Authorization-Token', utm.AuthToken);	
-		getMarkMessageAsReadReq.send();		
-		
-		
-					
+		getMarkMessageAsReadReq.send();			
 	},2500);		
-	
-	
-	
 }
 
 function isJSON(data) {
