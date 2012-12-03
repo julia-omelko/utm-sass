@@ -120,6 +120,8 @@ function messageDetail_window(_messageData) {
 		if(this.status ==200){
 			log("message data returned:"+response);
 			utmMessageValue.text = response.Message;
+			//Mark Message as Read
+			getMarkMessageAsReadReq();
 			
 		}else if(this.status == 400){
 			messageArea.setText("Error:"+this.responseText);
@@ -128,27 +130,34 @@ function messageDetail_window(_messageData) {
 		}		
 	};
 	
-	// ##################### Mark Message as Read #####################
 	
-	setTimeout(function()
-	{
-		getMessageDetailReq.open("POST",utm.serviceUrl+"Messages/"+_messageData.Id);	
-		getMessageDetailReq.setRequestHeader('Authorization-Token', utm.AuthToken);	
-		getMessageDetailReq.send();		
-		
-		var getMarkMessageAsReadReq = Ti.Network.createHTTPClient({
-			
-			onError:function(e){
-				log('Mark Message as Read Service Error:'+e.error);
-	         	alert('Mark Message as Read Service Error:'+e.error);			
-			}
-			
-		});	
-					
-	},2500);		
 	
 	return win;
 };
+
+var getMarkMessageAsReadReq = Ti.Network.createHTTPClient({
+			
+	onError:function(e){
+		log('Mark Message as Read Service Error:'+e.error);
+     	alert('Mark Message as Read Service Error:'+e.error);			
+	}
+	
+});	
+function setMessageAsRead(){
+	
+	setTimeout(function()
+	{
+		getMarkMessageAsReadReq.open("POST",utm.serviceUrl+"Messages/"+_messageData.Id);	
+		getMarkMessageAsReadReq.setRequestHeader('Authorization-Token', utm.AuthToken);	
+		getMarkMessageAsReadReq.send();		
+		
+		
+					
+	},2500);		
+	
+	
+	
+}
 
 function isJSON(data) {
     var isJson = false
