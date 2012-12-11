@@ -107,12 +107,6 @@ function messageDetail_window(_messageData) {
 	
 	getMessageDetailReq.onload = function()
 	{
-		/*if(!isJSON(this.responseData)){
-			messageArea.test="Data service returned error:"+this.responseData;
-			return;
-		}*/
-		
-		
 		var json = this.responseData;
 		var response = JSON.parse(json);
 		var tableData = [];
@@ -129,8 +123,6 @@ function messageDetail_window(_messageData) {
 			messageArea.test="error";
 		}		
 	};
-	
-	
 	
 	return win;
 };
