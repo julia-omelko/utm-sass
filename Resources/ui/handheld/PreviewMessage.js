@@ -120,7 +120,7 @@ var PreviewMessage_window =function() {
 			FromUserId:1004,
 			ToUserId:1004					
 		};
-		
+		setActivityIndicator('Sending ...');
 		sendMessageReq.open("POST",utm.serviceUrl+"SendMessage");	
 		sendMessageReq.setRequestHeader('Authorization-Token', utm.AuthToken);	
 		sendMessageReq.send(params);	
@@ -159,7 +159,7 @@ var PreviewMessage_window =function() {
 		{
 			var json = this.responseData;
 			var response = JSON.parse(json);
-
+			setActivityIndicator('');
 			if(this.status ==200){
 				log('Send Successful');
 				
@@ -171,16 +171,18 @@ var PreviewMessage_window =function() {
 					resetScreen();
 					
 				});
-				
+				Titanium.Analytics.featureEvent('user.sent_message');
 		
 			}else{
 				log('Send Error');
+				setActivityIndicator('');
 				messageArea.test="error";
 				setMessageArea("Error in Service");
 			}		
 			
 		},
 		onError:function(e){
+			setActivityIndicator('');
 			log('Send Message Service Error:'+e.error);
          	alert('Send Message Service Error:'+e.error);			
 		}
