@@ -8,10 +8,10 @@ var WriteMessage_window =function() {
 	});		
 	
 	var toLabel = Ti.UI.createLabel({
-		text:'To:'+utm.sentToContactListString,
+		text:utm.sentToContactListString,
 		width:'auto',
 		height:30,
-		textAlign:'center'
+		textAlign:'left'
 	});
 	writeMessageView.add(toLabel);
 	
@@ -19,7 +19,7 @@ var WriteMessage_window =function() {
 		text:'Your Message',
 		width:'auto',
 		height:30,
-		textAlign:'center'
+		textAlign:'left'
 	});
 	writeMessageView.add(yourMessageLabel);
 	
@@ -51,6 +51,22 @@ var WriteMessage_window =function() {
 	    });	
 	     textArea.value='';
 	});
+	
+	Ti.App.addEventListener('app:contactsChoosen',setContactsChoosen);
+	function setContactsChoosen(e){			
+		log('PreviewMessage setContactsChoosen() fired sentToContactList='+e.sentToContactList);
+		
+		sentToContactListString='To:';
+		
+		for (var x=0;x<e.sentToContactList.length;x++)
+		{
+			sentToContactListString+= e.sentToContactList[x] +',';	
+		}
+		//previewMessageView.sentToContactListString=utm.sentToContactListString;
+		sentToContactListString=utm.sentToContactListString.slice(0, - 1);
+		toLabel.text=sentToContactListString;
+		toLabel.width='100%';	
+	}
 	
 	
 	return writeMessageView;

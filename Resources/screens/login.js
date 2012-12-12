@@ -111,12 +111,16 @@ var TheLoginScreen_view = function() {
 		{
 			var json = this.responseData;
 			var response = JSON.parse(json);
+			setActivityIndicator('');
 			log('Login Service Returned');
 			if(this.status ==200){
 				//username.value('Login Successfull');
 				Ti.App.fireEvent("app:loginSuccess", {
 			        userData: response
 			    });		
+			    
+			    Titanium.Analytics.featureEvent('user.logged_in');
+			    
 				
 			}else if(this.status == 400){
 				
@@ -131,6 +135,7 @@ var TheLoginScreen_view = function() {
 		},
 		onError:function(e){
 			log('Login Service Error:'+e.error);
+			setActivityIndicator('');
          	alert('error');			
 		}
 		}
@@ -144,6 +149,7 @@ var TheLoginScreen_view = function() {
 	{
 		username.blur();
 		password.blur();
+		setActivityIndicator('Logging in');
 		
 		if (username.value != '' && password.value != '')
 		{	

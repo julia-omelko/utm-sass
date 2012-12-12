@@ -18,15 +18,7 @@ var PreviewMessage_window =function() {
 		height:'auto',
 		textAlign:'left'
 	});
-	previewMessageView.add(toLabel);
-	var toValue = Ti.UI.createLabel({
-		text:utm.sentToContactListString,
-		font: {fontSize:12},
-		width:utm.SCREEN_WIDTH-10,
-		height:'auto',
-		textAlign:'left'
-	});
-	previewMessageView.add(toValue);
+	
 	
 	
 	//---------------Original Message -------------------- 
@@ -120,7 +112,7 @@ var PreviewMessage_window =function() {
 			FromUserId:1004,
 			ToUserId:1004					
 		};
-		
+		setActivityIndicator('Sending ...');
 		sendMessageReq.open("POST",utm.serviceUrl+"SendMessage");	
 		sendMessageReq.setRequestHeader('Authorization-Token', utm.AuthToken);	
 		sendMessageReq.send(params);	
@@ -159,7 +151,7 @@ var PreviewMessage_window =function() {
 		{
 			var json = this.responseData;
 			var response = JSON.parse(json);
-
+			setActivityIndicator('');
 			if(this.status ==200){
 				log('Send Successful');
 				
@@ -171,16 +163,18 @@ var PreviewMessage_window =function() {
 					resetScreen();
 					
 				});
-				
+				Titanium.Analytics.featureEvent('user.sent_message');
 		
 			}else{
 				log('Send Error');
+				setActivityIndicator('');
 				messageArea.test="error";
 				setMessageArea("Error in Service");
 			}		
 			
 		},
 		onError:function(e){
+			setActivityIndicator('');
 			log('Send Message Service Error:'+e.error);
          	alert('Send Message Service Error:'+e.error);			
 		}
@@ -213,6 +207,21 @@ var PreviewMessage_window =function() {
 		customUtmMessage.value('');
 	}
 	
+	Ti.App.addEventListener('app:contactsChoosen',setContactsChoosen);
+	function setContactsChoosen(e){			
+			log('PreviewMessage setContactsChoosen() fired sentToContactList='+e.sentToContactList);
+			
+			sentToContactListString='To:';
+			
+			for (var x=0;x<e.sentToContactList.length;x++)
+			{
+				sentToContactListString+= e.sentToContactList[x] +',';	
+			}
+			//previewMessageView.sentToContactListString=utm.sentToContactListString;
+			usentToContactListString=utm.sentToContactListString.slice(0, - 1);
+			toLabel.text=sentToContactListString;
+			
+	}
 
 	
 	
