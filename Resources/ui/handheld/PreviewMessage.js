@@ -18,15 +18,7 @@ var PreviewMessage_window =function() {
 		height:'auto',
 		textAlign:'left'
 	});
-	previewMessageView.add(toLabel);
-	var toValue = Ti.UI.createLabel({
-		text:utm.sentToContactListString,
-		font: {fontSize:12},
-		width:utm.SCREEN_WIDTH-10,
-		height:'auto',
-		textAlign:'left'
-	});
-	previewMessageView.add(toValue);
+	
 	
 	
 	//---------------Original Message -------------------- 
@@ -215,6 +207,21 @@ var PreviewMessage_window =function() {
 		customUtmMessage.value('');
 	}
 	
+	Ti.App.addEventListener('app:contactsChoosen',setContactsChoosen);
+	function setContactsChoosen(e){			
+			log('PreviewMessage setContactsChoosen() fired sentToContactList='+e.sentToContactList);
+			
+			sentToContactListString='To:';
+			
+			for (var x=0;x<e.sentToContactList.length;x++)
+			{
+				sentToContactListString+= e.sentToContactList[x] +',';	
+			}
+			//previewMessageView.sentToContactListString=utm.sentToContactListString;
+			usentToContactListString=utm.sentToContactListString.slice(0, - 1);
+			toLabel.text=sentToContactListString;
+			
+	}
 
 	
 	

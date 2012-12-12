@@ -15,9 +15,7 @@ utm.SCREEN_HEIGHT = (pWidth > pHeight) ? pWidth : pHeight;
 
 Ti.UI.setBackgroundColor('#fff');
 
-utm.containerWindow= Ti.UI.createWindow({		
-	backgroundColor: 'transparent'
-});
+utm.containerWindow= Ti.UI.createWindow();
 
 utm.navGroup = Ti.UI.iPhone.createNavigationGroup(
 {
