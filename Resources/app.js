@@ -207,3 +207,8 @@ function log(message){
 	Ti.API.info(message);		
 }
 
+function recordError(message){
+	log('Error:'+message);
+	alert('Error:'+message);	
+}
+
