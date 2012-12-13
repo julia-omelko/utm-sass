@@ -106,14 +106,10 @@ function sendMessage_window() {
 		
 		chooseMyHortView.show();
 		chooseMyHortView.height='auto';
-		
-		
+
 		Ti.App.fireEvent("app:showLandingView", {});
-	
-		
 	} 
-	
-	
+		
 	return win;
 };
 
