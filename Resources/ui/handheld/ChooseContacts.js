@@ -84,12 +84,9 @@ var ChooseContacts_window =function() {
 		{
 			var curRow = checkRows[ii];
 			if(curRow.getHasCheck()){
-				selectedContacts.push(curRow.nickName);
+				selectedContacts.push({userId:curRow.UserId, nickName:curRow.nickName,userData:curRow.userData});
 			}
-		}
-		
-		
-		
+		}	
 		
 		Ti.App.fireEvent("app:contactsChoosen", {
 	        sentToContactList: selectedContacts
@@ -117,10 +114,11 @@ var ChooseContacts_window =function() {
 					
 					for (var i=0;i<response.length;i++)
 					{
-						var row = Ti.UI.createTableViewRow({UserId:response[i].UserId, id:i, nickName:response[i].NickName,height:35});
+						var row = Ti.UI.createTableViewRow({UserId:response[i].UserId, id:i, nickName:response[i].NickName,height:35,userData:response[i]});
 						
 						var l = Ti.UI.createLabel({left:5, font:{fontSize:16}, height:30,color:'#000',text:response[i].NickName});
 						row.add(l);
+						
 						
 						data[i] = row;
 					}
@@ -128,15 +126,14 @@ var ChooseContacts_window =function() {
 					tableview.data=data;
 					
 				}else if(this.status == 400){				
-					log("Error:"+this.responseText);				
+					recordError(response.Message+ ' ExceptionMessag:'+response.ExceptionMessage);			
 				}else{
 					log("error");				
 				}		
 		     },
 		     // function called when an error occurs, including a timeout
-		     onerror : function(e) {
-		         Ti.API.debug(e.error);
-		         alert('Error:'+e.error);
+		     onerror : function(e) {		        
+		         recordError(e.error);
 		     }
 		});	
 		getMessagesReq.open("GET",utm.serviceUrl+"Members/"+e.myHortId);

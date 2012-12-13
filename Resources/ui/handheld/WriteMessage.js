@@ -56,14 +56,14 @@ var WriteMessage_window =function() {
 	function setContactsChoosen(e){			
 		log('PreviewMessage setContactsChoosen() fired sentToContactList='+e.sentToContactList);
 		
-		sentToContactListString='To:';
+		sentToContactListString='To: ';
 		
 		for (var x=0;x<e.sentToContactList.length;x++)
 		{
-			sentToContactListString+= e.sentToContactList[x] +',';	
+			sentToContactListString+= e.sentToContactList[x].nickName +',';	
 		}
 		//previewMessageView.sentToContactListString=utm.sentToContactListString;
-		sentToContactListString=utm.sentToContactListString.slice(0, - 1);
+		sentToContactListString=sentToContactListString.slice(0, - 1);
 		toLabel.text=sentToContactListString;
 		toLabel.width='100%';	
 	}

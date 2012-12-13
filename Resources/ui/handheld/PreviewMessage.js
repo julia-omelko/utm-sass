@@ -3,6 +3,11 @@ var PreviewMessage_window =function() {
 	var curUtmText='';
 	var curRjCrypt='';
 	
+	var TEXT=0;
+	var EMAIL=1;
+	var FACE_BOOK=2;
+	var	TWITTER=3;
+	
 	var previewMessageView = Titanium.UI.createView({
 	   width:'auto',
 	   height:'auto',
@@ -18,8 +23,7 @@ var PreviewMessage_window =function() {
 		height:'auto',
 		textAlign:'left'
 	});
-	
-	
+		
 	
 	//---------------Original Message -------------------- 
 	
@@ -90,6 +94,25 @@ var PreviewMessage_window =function() {
 	}); //todo get the screen width so we can make this wider if possible
 	previewMessageView.add(customUtmMessage);
 	
+	//------------- Send Type Button Bar------------------ 	
+	var sendTypesButtonObjects = [
+		{title:'Text', width:110, enabled:true},
+		{title:'Email', width:110, enabled:true},
+		{title:'FaceBook', width:110, enabled:true},
+		{title:'Twitter', width:110, enabled:true}
+	];
+	var sendTypesButtonBar = Titanium.UI.iOS.createTabbedBar({
+		labels:sendTypesButtonObjects,
+		backgroundColor:utm.color,
+		style:Titanium.UI.iPhone.SystemButtonStyle.BAR,
+		width:60,
+		top:3,
+		left:0
+	});
+	
+	
+	//previewMessageView.add(sendTypesButtonBar);
+	
 	//------------- Send Button ------------------ 
 	var sendButton = Ti.UI.createButton({
 		title:'Send Message Now',
@@ -101,6 +124,13 @@ var PreviewMessage_window =function() {
 	
 	sendButton.addEventListener('click',function()
 	{	
+		var copiedToUsers=[];
+
+		for(v=0; v < utm.sentToContactList.length; v++){
+			copiedToUsers.push(utm.sentToContactList[v].userId);	
+			log('Preparing to send message to '+utm.sentToContactList[v].userId);		
+		}
+		
 		// customUtmMessage.blur();			
 		var params = {
 			MyHortId: utm.targetMyHortID,
@@ -108,9 +138,10 @@ var PreviewMessage_window =function() {
 			UtmText:customUtmMessage.value,
 			DeleteOnRead:'false',
 			RjCrypt:curRjCrypt,
-			MessageType:'sms',
-			FromUserId:1004,
-			ToUserId:1004					
+			MessageType:'sms,email',
+			FromUserId:utm.User.UserProfile.UserId,
+			ToUserId:utm.User.UserProfile.UserId,
+			CopiedUsers: ''+copiedToUsers.join(",")					
 		};
 		setActivityIndicator('Sending ...');
 		sendMessageReq.open("POST",utm.serviceUrl+"SendMessage");	
@@ -132,16 +163,13 @@ var PreviewMessage_window =function() {
 				encryptedValue.text=curRjCrypt;
 				//toValue.text=utm.utm.sentToContactList;
 		
-			}else{
-				log('Preview Error');
-				messageArea.test="error";
-				setMessageArea("Error in Service");
+			}else{		
+				recordError(response.Message+ ' ExceptionMessag:'+response.ExceptionMessage);
 			}		
 			
 		},
 		onError:function(e){
-			log('Preview Message Service Error:'+e.error);
-         	alert('Preview Message Service Error:'+e.error);			
+         	recordError('Preview Message Service Error:'+e.error);			
 		}
 	});	
 	
@@ -152,7 +180,7 @@ var PreviewMessage_window =function() {
 			var json = this.responseData;
 			var response = JSON.parse(json);
 			setActivityIndicator('');
-			if(this.status ==200){
+			if(this.status ==200 && response.Status =='Success'){
 				log('Send Successful');
 				
 				//pop a dialog and on close go back to landing screen
@@ -166,17 +194,14 @@ var PreviewMessage_window =function() {
 				Titanium.Analytics.featureEvent('user.sent_message');
 		
 			}else{
-				log('Send Error');
 				setActivityIndicator('');
-				messageArea.test="error";
-				setMessageArea("Error in Service");
+				recordError(response.Message+ ' ExceptionMessag:'+response.ExceptionMessage);
 			}		
 			
 		},
 		onError:function(e){
 			setActivityIndicator('');
-			log('Send Message Service Error:'+e.error);
-         	alert('Send Message Service Error:'+e.error);			
+         	recordError('Send Message Service Error:'+e.error);			
 		}
 	});	
 	
@@ -211,16 +236,34 @@ var PreviewMessage_window =function() {
 	function setContactsChoosen(e){			
 			log('PreviewMessage setContactsChoosen() fired sentToContactList='+e.sentToContactList);
 			
-			sentToContactListString='To:';
-			
+			sentToContactListString='To: ';
+			setButtonBarEnabled(true);
 			for (var x=0;x<e.sentToContactList.length;x++)
 			{
-				sentToContactListString+= e.sentToContactList[x] +',';	
+				sentToContactListString+= e.sentToContactList[x].nickName +',';	
+				
+				//Enable disable buttons
+				sendTypesButtonObjects[TEXT].enabled=e.sentToContactList[x].userData.HasMobile;
+				sendTypesButtonObjects[EMAIL].enabled=e.sentToContactList[x].userData.HasEmail;
+				sendTypesButtonObjects[FACE_BOOK].enabled=e.sentToContactList[x].userData.HasFaceBook;
+				sendTypesButtonObjects[TWITTER].enabled=e.sentToContactList[x].userData.HasTwitter;
+				
+				//sendTypesButtonObjects[0].enabled = (sendTypesButtonObjects[0].enabled === false)?true:false;
 			}
-			//previewMessageView.sentToContactListString=utm.sentToContactListString;
-			usentToContactListString=utm.sentToContactListString.slice(0, - 1);
-			toLabel.text=sentToContactListString;
+
 			
+			//previewMessageView.sentToContactListString=utm.sentToContactListString;
+			sentToContactListString=sentToContactListString.slice(0, - 1);
+			toLabel.text=sentToContactListString;
+			toLabel.width='100%';	
+			
+	}
+	
+	function setButtonBarEnabled(enable){
+		sendTypesButtonObjects[TEXT].enabled=enable;
+		sendTypesButtonObjects[EMAIL].enabled=enable;
+		sendTypesButtonObjects[FACE_BOOK].enabled=enable;
+		sendTypesButtonObjects[TWITTER].enabled=enable;
 	}
 
 	
