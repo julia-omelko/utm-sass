@@ -2,14 +2,35 @@
 <resources>
 	<string name="welcome_message">Bienvenidos a YouThisMe/</string>
 	<string name="label_user_name">Nombre de usuario</string>
-	<string name="label_password">Contraseña</string>
-	
+	<string name="label_password">Contraseña</string>	
+	<string name="login">Iniciar Sesión</string>	
+	<string name="logout">Cerrar Sesión</string>
+	<string name="login_forgot_password">¿Ha olvidado su contraseña</string>	
+	<string name="login_signup">¿Desea registrarse?</string>	
+	<string name="login_toc">Términos de servicio</string>	
+	<string name="login_privacy">Intimidad</string>	
+
 	<string name="view_messages">Ver mensajes de</string>
-	<string name="send_messages">Enviar un mensaje</string>
-	
+	<string name="send_messages">Enviar un mensaje</string>	
 	<string name="user_name_password_req">Nombre de usuario / contraseña se requieren</string>
-	<string name="invalid_login">Login incorrecto</string>
-	
+	<string name="invalid_login">Login incorrecto</string>	
+	<string name="button_back">Dorso</string>	
+	<string name="messages_recieved">Recibido</string>
+	<string name="messages_sent">Enviado</string>	
+	<string name="send_choose_myhort">Elegir un MyHort</string>
+	<string name="send_choose_contacts">Elija los destinatarios</string>
+	<string name="send_select_recipient">Seleccione a Recipientes</string>
+	<string name="send_write_your_message">Escriba su mensaje</string>
+	<string name="send_your_message">Su mensaje</string>
+	<string name="send_start_your_message_here">Comenzar su mensaje aquí...</string>
+	<string name="send_preview_your_message">Ver tu mensaje...</string>
+	<string name="send_your_original_message">Su mensaje Original</string>
+	<string name="send_preview_how_encrypted">Vista previa de cómo su mensaje está cifrado</string>
+	<string name="send_customize_message">Personalizar el mensaje UTM</string>
+	<string name="send_UTM_message_now">Enviar mensaje ahora</string>
+	<string name="send_our_message_was_sent">El mensaje se ha enviado</string>
+	<string name="send_ok_button">Confirmado</string>
+	 
 	
 	
 	

@@ -2,11 +2,46 @@
 <resources>
 	<string name="welcome_message">Welcome to YouThisMe/</string>
 	<string name="label_user_name">User Name</string>
-	<string name="label_password">Password</string>
+	<string name="label_password">Password</string>	
+	<string name="login">Login</string>	
+	<string name="logout">Logout</string>
+	<string name="login_forgot_password">Forgot Your Password?</string>	
+	<string name="login_signup">Want to sign up?</string>	
+	<string name="login_toc">Terms of Service</string>	
+	<string name="login_privacy">Privacy</string>	
 	
+	<string name="button_back">Back</string>
 	<string name="view_messages">View Messages</string>
 	<string name="send_messages">Send a Message</string>
 	<string name="user_name_password_req">Username/Password are required</string>
-	<string name="invalid_login">Login Invalid</string>
+	<string name="invalid_login">Login Invalid</string>	
+	<string name="messages_recieved">Received</string>
+	<string name="messages_sent">Sent</string>	
+	<string name="send_choose_myhort">Choose a MyHort</string>
+	<string name="send_choose_contacts">Choose Recipients</string>
+	<string name="send_select_recipient">Select Recipient</string>
+	<string name="send_write_your_message">Write Your Message</string>
+	<string name="send_your_message">Your Message</string>
+	<string name="send_start_your_message_here">Start your message here...</string>
+	<string name="send_preview_your_message">Preview Your Message...</string>
+	<string name="send_your_original_message">Your Original Message</string>
+	<string name="send_preview_how_encrypted">Preview of how your message is encrypted</string>
+	<string name="send_customize_message">Customize the UTM Message</string>
+	<string name="send_UTM_message_now">Send Message Now</string>
+	<string name="send_our_message_was_sent">Your Message was Sent</string>
+	<string name="send_ok_button">OK</string>
+		
+
+
+
+
 	
+	
+	
+	
+	
+	
+	
+
+
 </resources>
