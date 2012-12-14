@@ -1,4 +1,4 @@
-function messageDetail_window(_messageData) {
+function messageDetail_window(_messageData,_curMode) {
 	var win = Ti.UI.createWindow({backgroundColor:'#fff',visible:true,layout:'vertical' });
 		
 	var messageArea = Ti.UI.createLabel({
@@ -9,7 +9,7 @@ function messageDetail_window(_messageData) {
 	});
 	win.add(messageArea);
 	
-	//-----------------From  ----------------------
+	//-----------------Sent On  ----------------------
 	var toDate = Ti.UI.createLabel({
 		text:'Sent On:'+_messageData.DateSent,
 		width:utm.SCREEN_WIDTH-10,
@@ -20,9 +20,9 @@ function messageDetail_window(_messageData) {
 	});
 	win.add(toDate);
 	
-	//-----------------From  ----------------------
+	//-----------------To/From  ----------------------
 	var toLabel = Ti.UI.createLabel({
-		text:'From:'+_messageData.ToUserId,
+		//text:'From:'+_messageData.ToUserId,
 		width:utm.SCREEN_WIDTH-10,
 		font: {fontSize:14, fontWeight:'bold'},
 		height:'auto',
@@ -91,38 +91,45 @@ function messageDetail_window(_messageData) {
 	
 	utm.containerWindow.leftNavButton = utm.backToMessagesButton;
 	
+	if(_curMode=='recieved'){
+		toLabel.text='From:'+_messageData.FromUserName;
+	}else{
+		toLabel.text='From:'+_messageData.ToHeader;
+	}
+	
 	
 	// ##################### Call out to get message detail #####################
 	var getMessageDetailReq = Ti.Network.createHTTPClient({
-		
+		onload: function()
+		{
+			var json = this.responseData;
+			var response = JSON.parse(json);
+			
+			if(this.status ==200){
+				log("message data returned:"+response);
+				utmMessageValue.text = response.Message;
+				//Mark Message as Read
+				getMarkMessageAsReadReq();
+				
+			}else if(this.status == 400){
+				recordError(response.Message)
+			}else{
+				recordError(response.Message)
+			}		
+		},		
 		onError:function(e){
-			log('Get Message Service Error:'+e.error);
-         	alert('Get Message Service Error:'+e.error);			
+         	recordError('Send Message Service Error:'+e.error);			
 		}
 	});	
-	
-	getMessageDetailReq.open("GET",utm.serviceUrl+"ReceivedMessages/"+_messageData.Id);	
+	if(_curMode=='recieved'){
+		getMessageDetailReq.open("GET",utm.serviceUrl+"ReceivedMessages/"+_messageData.Id);	
+	}else{
+		getMessageDetailReq.open("GET",utm.serviceUrl+"SentMessages/"+_messageData.Id);
+	}
+		
 	getMessageDetailReq.setRequestHeader('Authorization-Token', utm.AuthToken);	
 	getMessageDetailReq.send();		
-	
-	getMessageDetailReq.onload = function()
-	{
-		var json = this.responseData;
-		var response = JSON.parse(json);
-		var tableData = [];
-		
-		if(this.status ==200){
-			log("message data returned:"+response);
-			utmMessageValue.text = response.Message;
-			//Mark Message as Read
-			getMarkMessageAsReadReq();
-			
-		}else if(this.status == 400){
-			messageArea.setText("Error:"+this.responseText);
-		}else{
-			messageArea.test="error";
-		}		
-	};
+
 	
 	return win;
 };

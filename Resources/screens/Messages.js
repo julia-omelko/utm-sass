@@ -1,5 +1,6 @@
 function message_window() {
 	var win = Ti.UI.createWindow({backgroundColor:'#fff',visible:false, layout:'vertical' });
+	var curMode='recieved';
 	
 	var messageArea = Ti.UI.createLabel({
 	  color: '#900',
@@ -22,21 +23,24 @@ function message_window() {
 	
 	tabBar.addEventListener('click', function(e){
 		if(tabBar.index ==0){
-			getMessages('rec');
+			curMode="recieved";
+			getMessages('recieved');
 		}else{
+			curMode="sent";
 			getMessages('sent');
 		}
 	});
 	
 	// create table view
-	var tableview = Titanium.UI.createTableView();
+	var tableview = Titanium.UI.createTableView({left:2});
+	//Add Click to Details for drilldown
 	tableview.addEventListener('click', function(e)
 	{
 		var messageData = e.rowData.messageData;
 		
 		//e.source.clickName
 		utm.MessageDetailWindow = require('screens/MessageDetail');
-		utm.messageDetailWindow =  new utm.MessageDetailWindow(messageData);
+		utm.messageDetailWindow =  new utm.MessageDetailWindow(messageData,curMode);
 		utm.messageDetailWindow.title='Message';
 		utm.messageDetailWindow.open();
 	});
@@ -60,19 +64,19 @@ function message_window() {
 	
 	Ti.App.addEventListener('app:showMessages',showMessageWindow);
 	function showMessageWindow(){
-		getMessages('rec');
+		getMessages('recieved');
 	} 
 	
 	Ti.App.addEventListener('app:backToMessageWindow',backToMessageWindow);
 	function backToMessageWindow(){
-		getMessages('rec');			
+		getMessages(curMode);			
 	} 
 	
 	function getMessages(mode){
 		setActivityIndicator('Getting your messages...');
 		utm.containerWindow.leftNavButton = utm.backButton;
 		
-		if(mode =='rec'){
+		if(mode =='recieved'){
 			getMessagesReq.open("GET",utm.serviceUrl+"ReceivedMessages?$orderby=DateSent desc");	
 		}else{
 			getMessagesReq.open("GET",utm.serviceUrl+"SentMessages?$orderby=DateSent desc");
@@ -95,12 +99,6 @@ function message_window() {
 	
 	getMessagesReq.onload = function()
 	{
-		/*if(!isJSON(this.responseData)){
-			messageArea.test="Data service returned error:"+this.responseData;
-			return;
-		}*/
-		
-		
 		var json = this.responseData;
 		var response = JSON.parse(json);
 		var tableData = [];
