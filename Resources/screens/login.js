@@ -25,7 +25,7 @@ var TheLoginScreen_view = function() {
 		color:'#336699',		
 		width:300,
 		height:40,
-		value : 'anthony@troyweb.com',
+		//value : 'anthony@troyweb.com',
 		hintText:L('label_user_name'),
 		keyboardType:Ti.UI.KEYBOARD_DEFAULT,
 		returnKeyType:Ti.UI.RETURNKEY_DEFAULT,
@@ -38,7 +38,7 @@ var TheLoginScreen_view = function() {
 		top:20,
 		width:300,
 		height:40,
-		value : '10mary03',
+		//value : '10mary03',
 		hintText:L('label_password'),
 		passwordMask:true,
 		keyboardType:Ti.UI.KEYBOARD_DEFAULT,
@@ -48,9 +48,9 @@ var TheLoginScreen_view = function() {
 	loginView.add(password);
 	
 	var loginBtn = Ti.UI.createButton({
-		title:'Login',
+		title:L('login'),
 		top:20,
-		width:90,
+		width:100,
 		height:35,
 		borderRadius:1,
 		font:{fontFamily:'Arial',fontWeight:'bold',fontSize:14}
@@ -76,19 +76,19 @@ var TheLoginScreen_view = function() {
 	}
 	
 	//Forgot Your Password?
-	var forgotPWLabel = createLink('Forgot Your Password?', 'http://dev.youthisme.com/Account/PasswordReset')
+	var forgotPWLabel = createLink(L('login_forgot_password'), 'http://dev.youthisme.com/Account/PasswordReset')
 	loginView.add(forgotPWLabel);
 		
 	//Want to sign up?
-	var signUpLabel = createLink('Want to sign up?', 'http://dev.youthisme.com/Account/Register')
+	var signUpLabel = createLink(L('login_signup'), 'http://dev.youthisme.com/Account/Register')
 	loginView.add(signUpLabel);
 	
 	//Terms of Service
-	var tosLabel = createLink('Terms of Service', 'http://dev.youthisme.com/Home/About')
+	var tosLabel = createLink(L('login_toc'), 'http://dev.youthisme.com/Home/About')
 	loginView.add(tosLabel);
 	
 	//Privacy
-	var privacyLabel = createLink('Privacy', 'http://dev.youthisme.com/Home/About')
+	var privacyLabel = createLink(L('login_privacy'), 'http://dev.youthisme.com/Home/About')
 	loginView.add(privacyLabel);
 	
 	//Version 0.12 Alpha	

@@ -12,7 +12,7 @@ var ChooseMyHort_window =function() {
 	*/
 	
 	var chooseMyhortLabel = Ti.UI.createLabel({
-		text:'Choose a MyHort',
+		text:L('send_choose_myhort'),
 		width:'auto',
 		height:30,
 		textAlign:'center'
@@ -56,7 +56,7 @@ var ChooseMyHort_window =function() {
 	});
 */
 	var chooseMyhortButton = Ti.UI.createButton({
-		title:'Choose Contacts',
+		title:L('send_choose_contacts'),
 		top:34,
 		width:'auto',
 		height:30

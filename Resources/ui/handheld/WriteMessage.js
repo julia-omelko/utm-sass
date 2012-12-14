@@ -16,7 +16,7 @@ var WriteMessage_window =function() {
 	writeMessageView.add(toLabel);
 	
 	var yourMessageLabel = Ti.UI.createLabel({
-		text:'Your Message',
+		text:L('send_your_message'),
 		width:'auto',
 		height:30,
 		textAlign:'left'
@@ -28,7 +28,7 @@ var WriteMessage_window =function() {
 	  borderColor: '#bbb',
 	  borderRadius: 5,
 	  color: '#888',
-	  hintText:'Start your message here...',
+	  hintText:L('send_start_your_message_here'),
 	  textAlign: 'left',
 	  top: 10,
 	  width: utm.SCREEN_WIDTH-10, height : 'auto'
@@ -37,12 +37,24 @@ var WriteMessage_window =function() {
 	
 	
 	var previewButton = Ti.UI.createButton({
-		title:'Preview Your Message...',
+		title:L('send_preview_your_message'),
 		top:34,
 		width:'auto',
-		height:30
+		height:30,
+		enabled :false
 	});	
 	writeMessageView.add(previewButton);
+	
+	textArea.addEventListener('change',function(){
+		log('xxxxxxxxxxx '+textArea.value.length);
+		if(textArea.value.length >0)
+		{	log('enable it');
+			previewButton.enabled =true;
+		}else{
+			log('disable it');
+			previewButton.enabled =false;
+		}
+	})
 	
 	previewButton.addEventListener('click',function()
 	{	textArea.blur();	

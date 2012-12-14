@@ -10,7 +10,7 @@ var ChooseContacts_window =function() {
 	});		
 	
 	var chooseContactsLabel = Ti.UI.createLabel({
-			text:'Select Recipient(s)',
+			text:L('send_select_recipient')+'(s)',
 			top:6,
 			width:'auto',
 			height:30,
@@ -67,7 +67,7 @@ var ChooseContacts_window =function() {
 	}
 	
 	var writeMessageButton = Ti.UI.createButton({
-		title:'Write Your Message',
+		title:L('send_write_your_message'),
 		enabled:false,
 		top:34,
 		width:'auto',

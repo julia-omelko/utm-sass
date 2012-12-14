@@ -10,7 +10,7 @@ function message_window() {
 	win.add(messageArea);
 	
 	var tabBar = Titanium.UI.iOS.createTabbedBar({
-	    labels:['Recieved', 'Sent'],
+	    labels:[L('messages_recieved'), L('messages_sent')],
 	    backgroundColor:utm.color,
 	    top:2,
 	    index:0,

@@ -148,7 +148,7 @@ function showSendMessageWindow(){
 
 //Left Nav Buttons
 
-utm.logoutButton = Ti.UI.createButton({title:'Logout'});
+utm.logoutButton = Ti.UI.createButton({title:L('logout')});
 //utm.logoutButton.hide();
 utm.logoutButton.addEventListener('click', function()
 {
@@ -157,7 +157,7 @@ utm.logoutButton.addEventListener('click', function()
 	utm.containerWindow.leftNavButton = utm.emptyView;
 });
 
-utm.backButton = Ti.UI.createButton({title:'Back'});
+utm.backButton = Ti.UI.createButton({title:L('button_back')});
 utm.backButton.addEventListener('click', function()
 {	log('Backbutton fired');
   	Ti.App.fireEvent("app:showLandingView", {});

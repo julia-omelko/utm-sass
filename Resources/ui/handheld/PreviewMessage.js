@@ -28,7 +28,7 @@ var PreviewMessage_window =function() {
 	//---------------Original Message -------------------- 
 	
 	var yourOrgMessageLabel = Ti.UI.createLabel({
-		text:'Your Original Message:',
+		text:L('send_your_original_message')+':',
 		font: {fontSize:14, fontWeight:'bold'},
 		width:utm.SCREEN_WIDTH-10,
 		top:10,
@@ -50,7 +50,7 @@ var PreviewMessage_window =function() {
 	//------------ Preview of Encrypted --------------------------- 
 	
 	var encryptedLabel = Ti.UI.createLabel({
-		text:'Preview of how your message is encrypted:',
+		text:L('send_preview_how_encrypted')+':',
 		width:utm.SCREEN_WIDTH-10,
 		top:10,
 		font: {fontSize:14, fontWeight:'bold'},
@@ -73,7 +73,7 @@ var PreviewMessage_window =function() {
 	//------------- Customize Your Message ------------------ 
 		
 	var customMessageLabel = Ti.UI.createLabel({
-		text:'Customize the UTM Message:',
+		text:L('send_customize_message')+':',
 		font: {fontSize:14, fontWeight:'bold'},
 		width:utm.SCREEN_WIDTH-10,
 		top:10,
@@ -115,7 +115,7 @@ var PreviewMessage_window =function() {
 	
 	//------------- Send Button ------------------ 
 	var sendButton = Ti.UI.createButton({
-		title:'Send Message Now',
+		title:L('send_UTM_message_now'),
 		top:34,
 		width:'auto',
 		height:30
@@ -184,7 +184,7 @@ var PreviewMessage_window =function() {
 				log('Send Successful');
 				
 				//pop a dialog and on close go back to landing screen
-				var opts = {options: ['Ok'], title: 'Your Message was sent'};
+				var opts = {options: [L('send_ok_button')], title:L('send_our_message_was_sent')};
 				var dialog = Ti.UI.createOptionDialog(opts).show();
 				Ti.App.fireEvent("app:showMessagesAfterSend", {});
 				dialog.addEventListener('click', function(e){
