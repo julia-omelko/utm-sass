@@ -138,7 +138,7 @@ var PreviewMessage_window =function() {
 			UtmText:customUtmMessage.value,
 			DeleteOnRead:'false',
 			RjCrypt:curRjCrypt,
-			MessageType:'sms,email',
+			MessageType:'sms',
 			FromUserId:utm.User.UserProfile.UserId,
 			ToUserId:utm.User.UserProfile.UserId,
 			CopiedUsers: ''+copiedToUsers.join(",")					
