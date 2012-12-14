@@ -27,6 +27,8 @@ var TheLoginScreen_view = function() {
 		height:40,
 		//value : 'anthony@troyweb.com',
 		hintText:L('label_user_name'),
+		autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
+		autocorrect: false,
 		keyboardType:Ti.UI.KEYBOARD_DEFAULT,
 		returnKeyType:Ti.UI.RETURNKEY_DEFAULT,
 		borderStyle:Ti.UI.INPUT_BORDERSTYLE_ROUNDED
@@ -41,6 +43,8 @@ var TheLoginScreen_view = function() {
 		//value : '10mary03',
 		hintText:L('label_password'),
 		passwordMask:true,
+		autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
+		autocorrect: false,
 		keyboardType:Ti.UI.KEYBOARD_DEFAULT,
 		returnKeyType:Ti.UI.RETURNKEY_DEFAULT,
 		borderStyle:Ti.UI.INPUT_BORDERSTYLE_ROUNDED
