@@ -1,6 +1,7 @@
 function messageDetail_window(_messageData,_curMode) {
+	var moment = require('lib/moment');
 	var win = Ti.UI.createWindow({backgroundColor:'#fff',visible:true,layout:'vertical' });
-		
+			
 	var messageArea = Ti.UI.createLabel({
 	  color: '#900',
 	  text: '',
@@ -11,7 +12,7 @@ function messageDetail_window(_messageData,_curMode) {
 	
 	//-----------------Sent On  ----------------------
 	var toDate = Ti.UI.createLabel({
-		text:'Sent On:'+_messageData.DateSent,
+		text:'Sent On: '+moment(_messageData.DateSent).fromNow(),
 		width:utm.SCREEN_WIDTH-10,
 		font: {fontSize:14, fontWeight:'bold'},
 		height:'auto',

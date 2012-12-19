@@ -1,14 +1,10 @@
 function message_window() {
+	//Ti.include('lib/date.format.js');
+	var moment = require('lib/moment');
+	//utm.easyDateFormat = require('lib/date.format');
+	
 	var win = Ti.UI.createWindow({backgroundColor:'#fff',visible:false, layout:'vertical' });
 	var curMode='recieved';
-	
-	var messageArea = Ti.UI.createLabel({
-	  color: '#900',
-	  text: '',
-	  textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
-	  width: 'auto', height: 0
-	});
-	win.add(messageArea);
 	
 	var tabBar = Titanium.UI.iOS.createTabbedBar({
 	    labels:[L('messages_recieved'), L('messages_sent')],
@@ -37,8 +33,6 @@ function message_window() {
 	tableview.addEventListener('click', function(e)
 	{
 		var messageData = e.rowData.messageData;
-		
-		//e.source.clickName
 		utm.MessageDetailWindow = require('screens/MessageDetail');
 		utm.messageDetailWindow =  new utm.MessageDetailWindow(messageData,curMode);
 		utm.messageDetailWindow.title='Message';
@@ -73,6 +67,7 @@ function message_window() {
 	} 
 	
 	function getMessages(mode){
+		
 		setActivityIndicator('Getting your messages...');
 		utm.containerWindow.leftNavButton = utm.backButton;
 		
@@ -103,6 +98,7 @@ function message_window() {
 		var response = JSON.parse(json);
 		var tableData = [];
 		setActivityIndicator('');
+		Titanium.Analytics.featureEvent('user.viewed_messages');
 		if(this.status ==200){
 				
 			log("message data returned:"+response);
@@ -111,12 +107,11 @@ function message_window() {
 			{
 			  var row = Ti.UI.createTableViewRow({ className: 'row', row:clickName = 'row', objName: 'row', touchEnabled: true, height: 55,hasChild:true, messageData: response[i]});
 			  
-			  var enabledWrapperView = Ti.UI.createView({
-			  	layout:'vertical',
+			   var hView = Ti.UI.createView({
+			  	layout:'composite',
 			    backgroundColor:'#fff',
-			    objName: 'enabledWrapperView',
-			    rowID: i, width: Ti.UI.FILL, height: '45'
-			  });
+			    objName: 'hView'
+			  });	
 			  
 			  if(response[i].WasRead){
 			  	var fromMessage = Ti.UI.createLabel({
@@ -126,10 +121,21 @@ function message_window() {
 				    objName: 'fromMessage',
 				    text: response[i].FromUserName,
 				    touchEnabled: true,
-				    left: 2,
+				    top:2,
+				    left: 17,
 				    width: '100%'
 				  });			  	
 			  }else{
+			  	
+		  		var unreadImage = Ti.UI.createImageView({
+					image:'/images/circle_blue.png',
+					width:12,
+					height:12,
+					top:20,
+					left:2
+				});
+				hView.add(unreadImage);
+			  	
 			  	var fromMessage = Ti.UI.createLabel({
 				    backgroundColor:'#fff',
 				    color: '#000',
@@ -137,13 +143,14 @@ function message_window() {
 				    objName: 'fromMessage',
 				    text: response[i].FromUserName,
 				    touchEnabled: true,
-				    left: 2,
+				    top:2,
+				    left: 17,
 				    width: '100%'
 				  });			  	
 			  }
 			  
 			   
-			  enabledWrapperView.add(fromMessage);
+			  hView.add(fromMessage);
 			  
 			  var utmMessage = Ti.UI.createLabel({
 			    backgroundColor:'#fff',
@@ -152,14 +159,30 @@ function message_window() {
 			    objName: 'utmMessage',
 			    text: response[i].UtmText,
 			    touchEnabled: true,
-			    top:2,
-			    left: 2,
+			    top:30,
+			    left: 15,
 			    height:16,
 			    width: '100%'
 			  });
-			  enabledWrapperView.add(utmMessage);
+			  hView.add(utmMessage);
 			  
-			  row.add(enabledWrapperView);
+			  var timeLabel = Ti.UI.createLabel({
+				    backgroundColor:'#fff',
+				    color: '#000',
+				    font: {fontSize:10},
+				    objName: 'timeLabel',
+				    //text: String.formatDate(new Date(response[i].DateSent,'short')),
+				    
+					text: moment(response[i].DateSent).fromNow(),
+				    //text: easyFormat(new Date(response[i].DateSent)),//response[i].DateSent,
+				    touchEnabled: true,
+				    top:2,
+				    right: 2,
+				    width: '50'
+				  });			
+			  hView.add(timeLabel);
+			 
+			  row.add(hView);
 			  tableData.push(row);
 			}
 			
@@ -167,11 +190,11 @@ function message_window() {
 						
 		}else if(this.status == 400){
 			
-			messageArea.setText("Error:"+this.responseText);
+			recordError("Error:"+this.responseText);
 			setActivityIndicator('');
 			
 		}else{
-			messageArea.test="error";
+			recordError("error");
 			setActivityIndicator('');
 			
 		}
