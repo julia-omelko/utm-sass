@@ -169,6 +169,8 @@ var TheLoginScreen_view = function() {
 				RememberMe: true								
 			};
 			loginReq.send(params);
+			//clear out the password
+			password.value='';
 		}
 		else
 		{
