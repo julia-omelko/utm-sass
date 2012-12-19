@@ -110,7 +110,9 @@ function messageDetail_window(_messageData,_curMode) {
 				log("message data returned:"+response);
 				utmMessageValue.text = response.Message;
 				//Mark Message as Read
-				getMarkMessageAsReadReq();
+				if(_curMode=='recieved'){
+					setMessageAsRead(_messageData.Id);
+				}	
 				
 			}else if(this.status == 400){
 				recordError(response.Message)
@@ -136,7 +138,11 @@ function messageDetail_window(_messageData,_curMode) {
 };
 
 var getMarkMessageAsReadReq = Ti.Network.createHTTPClient({
-			
+	onload: function()
+	{
+		var json = this.responseData;
+		var response = JSON.parse(json);
+	},		
 	onError:function(e){
 		log('Mark Message as Read Service Error:'+e.error);
      	alert('Mark Message as Read Service Error:'+e.error);			
@@ -144,25 +150,13 @@ var getMarkMessageAsReadReq = Ti.Network.createHTTPClient({
 	
 });	
 
-function setMessageAsRead(){
-	setTimeout(function()
-	{
-		getMarkMessageAsReadReq.open("POST",utm.serviceUrl+"Messages/"+_messageData.Id);	
-		getMarkMessageAsReadReq.setRequestHeader('Authorization-Token', utm.AuthToken);	
-		getMarkMessageAsReadReq.send();			
-	},2500);		
+function setMessageAsRead(messageId){
+	
+	//setTimeout(function(){callMessageAsRead(_messageData)}, 2500);	
+	getMarkMessageAsReadReq.open("POST",utm.serviceUrl+"Messages/"+messageId);	
+	getMarkMessageAsReadReq.setRequestHeader('Authorization-Token', utm.AuthToken);	
+	getMarkMessageAsReadReq.send();		
 }
 
-function isJSON(data) {
-    var isJson = false
-    try {
-        // this works with JSON string and JSON object, not sure about others
-       var json = $.parseJSON(data);
-       isJson = typeof json === 'object' ;
-    } catch (ex) {
-        log('data is not JSON:'+data);
-    }
-    return isJson;
-}
 
 module.exports = messageDetail_window;
