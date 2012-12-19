@@ -4,7 +4,7 @@ var utm = {};
 utm.loggedIn=false;
 utm.serviceUrl='http://dev.youthisme.com/api/v1/';
 utm.color='#007EAD';
-utm.appVersion='version 0.16T Alpha';
+utm.appVersion='version 0.17T Alpha';
 utm.sentToContactListString='';
 
 var pWidth = Ti.Platform.displayCaps.platformWidth;
@@ -131,7 +131,8 @@ function showLoginView(){
 	//call logout service
 	utm.logoutReq.open("POST",utm.serviceUrl+"Logout");
 	utm.logoutReq.setRequestHeader('Authorization-Token',utm.AuthToken);	
-	utm.logoutReq.send();		
+	utm.logoutReq.send();	
+	Titanium.Analytics.featureEvent('user.logged_out');	
 } 
 
 Ti.App.addEventListener('app:showSendMessage',showSendMessageWindow);
