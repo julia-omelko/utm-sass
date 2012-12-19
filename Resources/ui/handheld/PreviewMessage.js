@@ -139,14 +139,14 @@ var PreviewMessage_window =function() {
 			RjCrypt:curRjCrypt,
 			MessageType:'sms',
 			FromUserId:utm.User.UserProfile.UserId,
+			ToUserId:utm.User.UserProfile.UserId,
 			CopiedUsers:copiedToUsers	
 		};
 
 		log(JSON.stringify(params));
 		setActivityIndicator('Sending ...');
-		sendMessageReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");
 		sendMessageReq.open("POST",utm.serviceUrl+"SendMessage");
-
+		sendMessageReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");
 		sendMessageReq.setRequestHeader('Authorization-Token', utm.AuthToken);
 			
 		sendMessageReq.send(JSON.stringify(params));//NOTE: Had to add stringify here else Ti will escape the Array [] and no messages go out.	
