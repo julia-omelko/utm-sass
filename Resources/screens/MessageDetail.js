@@ -109,6 +109,7 @@ function messageDetail_window(_messageData,_curMode) {
 				//Mark Message as Read
 				log('xxxx'+ ! _messageData.WasRead);
 				if(_curMode=='recieved' && ! _messageData.WasRead){
+					//#124 Fix issue with message list not refreshing IF message is marked as Read
 					setMessageAsRead(_messageData.Id);
 				}	
 				
