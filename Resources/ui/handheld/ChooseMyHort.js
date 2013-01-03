@@ -1,26 +1,14 @@
 var ChooseMyHort_window =function() {
 	
-	var chooseMyHortView = Titanium.UI.createView({
-	   width:'auto',
-	   height:'auto',
-	   layout:'vertical'
+	var chooseMyHortView = Ti.UI.createWindow({
+		backgroundColor:'#fff'
+		,layout:'vertical'
+		, title:L('send_choose_myhort')
+		,backButtonTitle:'Back'
 	});	
 	
-	/*var backButton = Ti.UI.createButton({title:'Back',top:2,left:2,width:'auto',height:30});	
-	chooseMyHortView.add(backButton);
-	backButton.addEventListener('click',function(){Ti.App.fireEvent("app:showLandingView");});
-	*/
-	
-	var chooseMyhortLabel = Ti.UI.createLabel({
-		text:L('send_choose_myhort'),
-		width:'auto',
-		height:30,
-		textAlign:'center'
-	});
-	chooseMyHortView.add(chooseMyhortLabel);
-	
 	var myHortPicker = Ti.UI.createPicker();
-
+	
 	// turn on the selection indicator (off by default)
 	myHortPicker.selectionIndicator = true;	
 	myHortPicker.setSelectedRow(0,-1,false);
@@ -31,8 +19,8 @@ var ChooseMyHort_window =function() {
 		
 	chooseMyHortView.add(myHortPicker);
 
-	Ti.App.addEventListener('app:showSendMessage',showSendMessageWindow);
-	function showSendMessageWindow(){	
+	Ti.App.addEventListener('app:populateMyHortPicker',populateMyHortPicker);
+	function populateMyHortPicker(){	
 		var data = [];
 		myHortPicker.columns = [];
 		
@@ -44,17 +32,6 @@ var ChooseMyHort_window =function() {
 		myHortPicker.add(data);
 	} 
 
-/*		
-	myHortPicker.addEventListener('change',function(e)
-	{
-		Ti.App.fireEvent("app:myHortChoosen", {
-	        myHortId:e.row.custom_item
-	    });			
-		
-		Ti.API.info("You selected row: "+e.row+", column: "+e.column+", custom_item: "+e.row.custom_item);
-		
-	});
-*/
 	var chooseMyhortButton = Ti.UI.createButton({
 		title:L('send_choose_contacts'),
 		top:34,
@@ -73,6 +50,12 @@ var ChooseMyHort_window =function() {
 		Ti.App.fireEvent("app:myHortChoosen", {myHortId:val});	
 		
 	});
+	
+	chooseMyHortView.restForm=function(){		
+		//myHortPicker.setSelectedRow(0,-1,false);		
+		//populateMyHortPicker();
+	}
+	
 	
 	return chooseMyHortView;
 	

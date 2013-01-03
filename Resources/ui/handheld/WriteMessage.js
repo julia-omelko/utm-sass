@@ -1,10 +1,10 @@
 var WriteMessage_window =function() {
 
-	var writeMessageView = Titanium.UI.createView({
+	var writeMessageView = Titanium.UI.createWindow({
 	   width:'auto',
+	   title:'Write Message',
 	   height:'auto',
-	   layout:'vertical',
-	   visible:false
+	   layout:'vertical'
 	});		
 	
 	var toLabel = Ti.UI.createLabel({
@@ -46,9 +46,8 @@ var WriteMessage_window =function() {
 	writeMessageView.add(previewButton);
 	
 	textArea.addEventListener('change',function(){
-		log('xxxxxxxxxxx '+textArea.value.length);
 		if(textArea.value.length >0)
-		{	log('enable it');
+		{	
 			previewButton.enabled =true;
 		}else{
 			log('disable it');
@@ -61,7 +60,6 @@ var WriteMessage_window =function() {
 		Ti.App.fireEvent("app:showPreview", {
 	        messageText: textArea.value
 	    });	
-	     textArea.value='';
 	});
 	
 	Ti.App.addEventListener('app:contactsChoosen',setContactsChoosen);
@@ -80,6 +78,9 @@ var WriteMessage_window =function() {
 		toLabel.width='100%';	
 	}
 	
+	writeMessageView.restForm=function(){		
+		textArea.value='';
+	}
 	
 	return writeMessageView;
 	

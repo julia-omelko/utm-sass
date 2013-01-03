@@ -1,13 +1,13 @@
 var ChooseContacts_window =function() {
 	
-	var selectedContacts =[];
-	
-	var chooseContactsView = Titanium.UI.createView({
+	var chooseContactsView = Titanium.UI.createWindow({
 	   width:'auto',
 	   height:'auto',
 	   layout:'vertical',
-	   visible:false
+	   title:L('send_choose_contacts')
 	});		
+	
+	var selectedContacts =[];
 	
 	var chooseContactsLabel = Ti.UI.createLabel({
 			text:L('send_select_recipient')+'(s)',
@@ -95,10 +95,10 @@ var ChooseContacts_window =function() {
 	});
 	
 	
-	Ti.App.addEventListener('app:myHortChoosen',function(e){
+	Ti.App.addEventListener('app:getContacts',function(){
 	//************* get Contacts*************
-		log('call server and get contact list for myHortId:'+e.myHortId);
-		utm.targetMyHortID=e.myHortId;
+		log('call server and get contact list for myHortId:'+utm.targetMyHortID);
+	
 		var getMessagesReq = Ti.Network.createHTTPClient({
 				 // function called when the response data is available
 		     onload : function(e) {
@@ -136,11 +136,24 @@ var ChooseContacts_window =function() {
 		         recordError(e.error);
 		     }
 		});	
-		getMessagesReq.open("GET",utm.serviceUrl+"Members/"+e.myHortId);
+		getMessagesReq.open("GET",utm.serviceUrl+"Members/"+utm.targetMyHortID);
 		getMessagesReq.setRequestHeader('Authorization-Token', utm.User.UserProfile.AuthToken);	
 		getMessagesReq.send();	
 		
 	});
+	
+	chooseContactsView.restForm=function(){		
+		if(tableview.data==undefined && tableview.data[0] ==undefined) return;
+		var checkRows = tableview.data[0].rows;
+		for (var ii=0;ii<checkRows.length;ii++)
+		{
+			var curRow = checkRows[ii];
+			if(curRow.getHasCheck()){
+				curRow.setHasCheck(false);
+			}
+		}			
+	}
+	
 	
 	return chooseContactsView;
 	

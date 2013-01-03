@@ -8,11 +8,10 @@ var PreviewMessage_window =function() {
 	var FACE_BOOK=2;
 	var	TWITTER=3;
 	
-	var previewMessageView = Titanium.UI.createView({
+	var previewMessageView = Titanium.UI.createWindow({
 	   width:'auto',
 	   height:'auto',
-	   layout:'vertical',
-	   visible:false
+	   layout:'vertical'
 	});	
 	
 	//-----------------TO  ----------------------
@@ -95,23 +94,31 @@ var PreviewMessage_window =function() {
 	previewMessageView.add(customUtmMessage);
 	
 	//------------- Send Type Button Bar------------------ 	
-	var sendTypesButtonObjects = [
-		{title:'Text', width:110, enabled:true},
-		{title:'Email', width:110, enabled:true},
-		{title:'FaceBook', width:110, enabled:true},
-		{title:'Twitter', width:110, enabled:true}
-	];
-	var sendTypesButtonBar = Titanium.UI.iOS.createTabbedBar({
-		labels:sendTypesButtonObjects,
-		backgroundColor:utm.color,
-		style:Titanium.UI.iPhone.SystemButtonStyle.BAR,
-		width:60,
-		top:3,
-		left:0
-	});
 	
 	
-	//previewMessageView.add(sendTypesButtonBar);
+	
+	var vView = Ti.UI.createView({layout:'horizontal', height:32, width:150});
+	previewMessageView.add(vView);
+	
+	var smsButton = Ti.UI.createButton({		
+		height:30, width:30,
+		backgroundImage:'/images/sms.png',
+		backgroundDisabledImage:'/images/sms_disabled.png',
+		backgroundSelectedImage:'/images/sms_selected.png'			
+	});		
+	vView.add(smsButton);
+	
+	var emailButton = Ti.UI.createButton({		
+		height:30, width:30,
+		backgroundImage:'/images/email.png',
+		backgroundDisabledImage:'/images/email_disabled.png',
+		backgroundSelectedImage:'/images/email_selected.png'		
+	});		
+	vView.add(emailButton);
+	
+	
+	var sendSms=false;
+
 	
 	//------------- Send Button ------------------ 
 	var sendButton = Ti.UI.createButton({
@@ -137,7 +144,7 @@ var PreviewMessage_window =function() {
 			UtmText:customUtmMessage.value,
 			DeleteOnRead:'false',
 			RjCrypt:curRjCrypt,
-			MessageType:'sms',
+			MessageType:'sms,email',
 			FromUserId:utm.User.UserProfile.UserId,
 			ToUserId:utm.User.UserProfile.UserId,
 			CopiedUsers:copiedToUsers	
@@ -209,15 +216,10 @@ var PreviewMessage_window =function() {
 		}
 	});	
 	
-	Ti.App.addEventListener('app:showMessagesAfterSend',showMessageWindow);
-	function showMessageWindow(){	
-		log('showMessagesAfterSend()  333 fired ');
-	} 
 	
-	
-	Ti.App.addEventListener('app:showPreview',getMessagePreview);
+	Ti.App.addEventListener('app:getMessagePreview',getMessagePreview);
 	function getMessagePreview(msg){
-		log('THE MyHort is utm.targetMyHortID='+utm.targetMyHortID);
+		log('The MyHort is utm.targetMyHortID='+utm.targetMyHortID);
 		
 		var params = {
 			MyHortId: utm.targetMyHortID,
@@ -238,40 +240,42 @@ var PreviewMessage_window =function() {
 	
 	Ti.App.addEventListener('app:contactsChoosen',setContactsChoosen);
 	function setContactsChoosen(e){			
-			log('PreviewMessage setContactsChoosen() fired sentToContactList='+e.sentToContactList);
+		log('PreviewMessage setContactsChoosen() fired sentToContactList='+e.sentToContactList);
+		
+		sentToContactListString='To: ';
+		setButtonBarEnabled(true);
+		for (var x=0;x<e.sentToContactList.length;x++)
+		{
+			sentToContactListString+= e.sentToContactList[x].nickName +',';	
 			
-			sentToContactListString='To: ';
-			setButtonBarEnabled(true);
-			for (var x=0;x<e.sentToContactList.length;x++)
-			{
-				sentToContactListString+= e.sentToContactList[x].nickName +',';	
-				
-				//Enable disable buttons
-				sendTypesButtonObjects[TEXT].enabled=e.sentToContactList[x].userData.HasMobile;
-				sendTypesButtonObjects[EMAIL].enabled=e.sentToContactList[x].userData.HasEmail;
-				sendTypesButtonObjects[FACE_BOOK].enabled=e.sentToContactList[x].userData.HasFaceBook;
-				sendTypesButtonObjects[TWITTER].enabled=e.sentToContactList[x].userData.HasTwitter;
-				
-				//sendTypesButtonObjects[0].enabled = (sendTypesButtonObjects[0].enabled === false)?true:false;
-			}
+			//Disable buttons if any one of the users do not have this feature.
+			if(!e.sentToContactList[x].userData.HasMobile)
+				smsButton.enabled=false;
+			
+			if(!e.sentToContactList[x].userData.HasEmail)
+				emailButton.enabled=false;
+			/*
+			if(!e.sentToContactList[x].userData.HasFaceBook)
+				sendTypesButtonObjects[FACE_BOOK].enabled=false;
+			
+			if(e.sentToContactList[x].userData.HasTwitter)
+				sendTypesButtonObjects[TWITTER].enabled=false;
+			*/
+		}
 
-			
-			//previewMessageView.sentToContactListString=utm.sentToContactListString;
-			sentToContactListString=sentToContactListString.slice(0, - 1);
-			toLabel.text=sentToContactListString;
-			toLabel.width='100%';	
-			
+		
+		//previewMessageView.sentToContactListString=utm.sentToContactListString;
+		sentToContactListString=sentToContactListString.slice(0, - 1);
+		toLabel.text=sentToContactListString;
+		toLabel.width='100%';				
 	}
 	
 	function setButtonBarEnabled(enable){
-		sendTypesButtonObjects[TEXT].enabled=enable;
+	/*	sendTypesButtonObjects[TEXT].enabled=enable;
 		sendTypesButtonObjects[EMAIL].enabled=enable;
 		sendTypesButtonObjects[FACE_BOOK].enabled=enable;
-		sendTypesButtonObjects[TWITTER].enabled=enable;
+		sendTypesButtonObjects[TWITTER].enabled=enable;*/
 	}
-
-	
-	
 	
 	return previewMessageView;
 	

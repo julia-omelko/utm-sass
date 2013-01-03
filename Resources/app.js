@@ -1,215 +1,250 @@
-	
 //utm is the js namespace for this app
 var utm = {};
-utm.loggedIn=false;
-utm.serviceUrl='http://dev.youthisme.com/api/v1/';
-utm.color='#007EAD';
-utm.appVersion='version 0.17T Alpha';
-utm.sentToContactListString='';
-
+utm.loggedIn = false;
+utm.serviceUrl = 'http://dev.youthisme.com/api/v1/';
+utm.color = '#007EAD';
+utm.appVersion = 'version 0.18T Alpha';
+utm.sentToContactListString = '';
+utm.networkIsOnline = false;
 var pWidth = Ti.Platform.displayCaps.platformWidth;
 var pHeight = Ti.Platform.displayCaps.platformHeight;
 utm.SCREEN_WIDTH = (pWidth > pHeight) ? pHeight : pWidth;
 utm.SCREEN_HEIGHT = (pWidth > pHeight) ? pWidth : pHeight;
 
-
 Ti.UI.setBackgroundColor('#fff');
 
-utm.containerWindow= Ti.UI.createWindow();
-
-utm.navGroup = Ti.UI.iPhone.createNavigationGroup(
-{
-	window:utm.containerWindow
-});
-
 utm.Login = require('screens/login');
-utm.loginView =  new utm.Login();
-
-utm.containerWindow.add(utm.loginView);
-utm.navGroup.open(utm.containerWindow);
+utm.loginView = new utm.Login();
 
 utm.mainWindow = Ti.UI.createWindow();
-utm.mainWindow.add(utm.navGroup);
-utm.mainWindow.open();
 
-
-utm.networkIsOnline=false; 
-Ti.Network.addEventListener('change', function(e) {
-	log('Network Status Changed:'+e.online);
-	log('Network Status Changed:'+Titanium.Network.networkType);
-  	utm.networkIsOnline = e.online;
-  	Ti.App.fireEvent("app:networkChange", {online:e.online});
+utm.navGroup = Ti.UI.iPhone.createNavigationGroup({
+	window : utm.loginView
 });
 
+utm.mainWindow.add(utm.navGroup);
+utm.mainWindow.barColor = '#007EAD';
+utm.mainWindow.open();
 
-Ti.App.addEventListener('app:loginSuccess',handleLoginSuccess);
-function handleLoginSuccess(event){
-	var msg ='Login Success';
-	//TODO rework as callback...
-	//Ti.App.removeEventListener('app:loginSuccess', handleLoginSuccess);
-	
-	utm.loggedIn=true;
-	utm.User = event.userData;
-	utm.AuthToken=event.userData.UserProfile.AuthToken;
-	utm.myHorts = event.userData.MyHorts;	
-	showLandingView();		
-} 
-
+//############### Require in Modules for app ###############
 utm.LandingScreen = require('screens/landing');
 utm.landingView = new utm.LandingScreen();
-utm.landingView.hide();
-utm.landingView.height=0;
-utm.containerWindow.add(utm.landingView);
 
 utm.MessageScreen = require('screens/Messages');
 utm.messageWindow = new utm.MessageScreen();
-utm.messageWindow.title='Messages';
-//utm.messageWindow.hide();
-//utm.messageWindow.height=0;
-utm.containerWindow.barColor='#007EAD';
-utm.containerWindow.add(utm.messageWindow);
 
-utm.SendMessageScreen = require('screens/SendMessage');
-utm.sendMessageWindow = new utm.SendMessageScreen();
-utm.sendMessageWindow.hide();
-utm.sendMessageWindow.height=0;
-utm.containerWindow.add(utm.sendMessageWindow);
-/*
-var SendMessageScreen = require('screens/SendMessage');
-var sendMessageWindow = new SendMessageScreen();
-utm.containerWindow(sendMessageWindow);
-*/
+utm.ChooseMyHortView = require('/ui/handheld/ChooseMyHort');
+utm.chooseMyHortView = new utm.ChooseMyHortView();
 
-Ti.App.addEventListener('app:showLandingView',showLandingView);
-function showLandingView(){	
-	utm.containerWindow.leftNavButton = utm.logoutButton;
-	utm.loginView.hide();
-	utm.loginView.height=0;
-	utm.logoutButton.hide();
-	utm.messageWindow.height=0;
-	utm.messageWindow.hide();
-	utm.sendMessageWindow.hide();
-	utm.sendMessageWindow.height=0;
-	utm.landingView.open();
-	utm.landingView.show();
-	utm.landingView.height='auto';
-	//utm.sendMessageWindow.close();
-} 
+utm.ChooseContactsView = require('/ui/handheld/ChooseContacts');
+utm.chooseContactsView = new utm.ChooseContactsView();
 
+utm.WriteMessageView = require('/ui/handheld/WriteMessage');
+utm.writeMessageView = new utm.WriteMessageView();
 
-Ti.App.addEventListener('app:showMessages',showMessageWindow);
-Ti.App.addEventListener('app:showMessagesAfterSend',showMessageWindow);
-function showMessageWindow(){	
-	utm.containerWindow.leftNavButton = utm.backButton;
-	utm.loginView.hide();
-	utm.loginView.height=0;
-	//utm.logoutButton.close();
-	//utm.landingView.hide();
-	utm.landingView.height=0;
-	utm.messageWindow.open();
-	utm.messageWindow.height='auto';
-	utm.messageWindow.show();
-	if(utm.messageDetailWindow != undefined){
-		utm.messageDetailWindow.close();
-	}	
-	log('showMessagesAfterSend()  111 fired ');
-} 
+utm.PreviewMessageView = require('/ui/handheld/PreviewMessage');
+utm.previewMessageView = new utm.PreviewMessageView();
 
+//############### Application Event Handlers ###############
 
+Ti.App.addEventListener('app:loginSuccess', handleLoginSuccess);
+function handleLoginSuccess(event) {
+	var msg = 'Login Success';
+	//TODO rework as callback...
+	//Ti.App.removeEventListener('app:loginSuccess', handleLoginSuccess);
 
+	utm.loggedIn = true;
+	utm.User = event.userData;
+	utm.AuthToken = event.userData.UserProfile.AuthToken;
+	utm.myHorts = event.userData.MyHorts;
+	showLandingView();
+}
 
-Ti.App.addEventListener('app:logout',showLoginView);
-function showLoginView(){	
-	utm.containerWindow.leftNavButton = utm.emptyView;
-	utm.logoutButton.hide();
-	utm.loginView.show();
-	utm.loginView.height='auto';
-	utm.landingView.hide();
-	utm.landingView.height=0;
-	utm.logoutButton.hide();
+Ti.App.addEventListener('app:showLandingView', showLandingView);
+function showLandingView() {		
+	utm.navGroup.open(utm.landingView);
+}
+
+Ti.App.addEventListener('app:showMessages', showMessageWindow);
+function showMessageWindow() {
+	utm.navGroup.open(utm.messageWindow);
+}
+
+Ti.App.addEventListener('app:showChooseMyHortWindow', showChooseMyHortWindow);
+function showChooseMyHortWindow() {
+	utm.navGroup.open(utm.chooseMyHortView);
+	Ti.App.fireEvent('app:populateMyHortPicker');
+}
+
+Ti.App.addEventListener('app:myHortChoosen', setMyHort);
+function setMyHort(e) {
+	log('setMyHort() fired myHortId=' + e.myHortId);
+	utm.targetMyHortID = e.myHortId
+	utm.navGroup.open(utm.chooseContactsView);
+
+	//Fire event to trigger call to get contacts
+	Ti.App.fireEvent('app:getContacts');
+}
+
+Ti.App.addEventListener('app:contactsChoosen', setContactsChoosen);
+function setContactsChoosen(e) {
+	log('setContactsChoosen() fired sentToContactList=' + e.sentToContactList);
+	utm.sentToContactList = e.sentToContactList;
+	/*utm.sentToContactListString='To:';
+
+	 for (var x=0;x<utm.sentToContactList.length;x++)
+	 {
+	 utm.sentToContactListString+= utm.sentToContactList[x] +',';
+	 }
+	 previewMessageView.sentToContactListString=utm.sentToContactListString;
+	 utm.sentToContactListString=utm.sentToContactListString.slice(0, - 1);
+	 */
+
+	utm.navGroup.open(utm.writeMessageView);
+
+}
+
+Ti.App.addEventListener('app:showPreview', showPreview);
+function showPreview(e) {
+	log('showPreview() fired message=' + e.messageText);
+	utm.originalTextMessage = e.messageText;
+
+	utm.navGroup.open(utm.previewMessageView)
+	Ti.App.fireEvent('app:getMessagePreview', {
+		messageText : e.messageText
+	});
+}
+
+Ti.App.addEventListener('app:showMessagesAfterSend', showMessagesAfterSend);
+function showMessagesAfterSend() {
+	log('showMessagesAfterSend() fired');
+
 	
-	//call logout service
-	utm.logoutReq.open("POST",utm.serviceUrl+"Logout");
-	utm.logoutReq.setRequestHeader('Authorization-Token',utm.AuthToken);	
-	utm.logoutReq.send();	
-	Titanium.Analytics.featureEvent('user.logged_out');	
-} 
+	if(utm.previewMessageView != undefined)
+		utm.navGroup.close(utm.previewMessageView);		
+	if(utm.writeMessageView !=undefined){
+		utm.writeMessageView.restForm();
+		utm.navGroup.close(utm.writeMessageView);
+	}		
+	if(utm.chooseContactsView != undefined){
+		//utm.chooseContactsView.restForm();
+		utm.navGroup.close(utm.chooseContactsView);	
+	}
+	if(utm.chooseMyHortView !=undefined){
+		//utm.chooseMyHortView.restForm();
+		utm.navGroup.close(utm.chooseMyHortView);
+	}
+	showLandingView();
+}
 
-Ti.App.addEventListener('app:showSendMessage',showSendMessageWindow);
-function showSendMessageWindow(){	
-	
-	utm.containerWindow.leftNavButton = utm.backButton;
-	utm.loginView.hide();
-	utm.loginView.height=0;
-	utm.landingView.hide();
-	utm.landingView.height=0;
-	utm.sendMessageWindow.height='auto';
-	utm.sendMessageWindow.show();
-} 
+Ti.App.addEventListener('app:logout', showLoginView);
+function showLoginView() {
+	//utm.navGroup.leftNavButton = utm.emptyView;
+	utm.navGroup.open(utm.loginView);
+	callLogoutService();
+}
 
 //Left Nav Buttons
 
-utm.logoutButton = Ti.UI.createButton({title:L('logout')});
+utm.logoutButton = Ti.UI.createButton({
+	title : L('logout')
+});
 //utm.logoutButton.hide();
-utm.logoutButton.addEventListener('click', function()
-{
-   Ti.App.fireEvent("app:logout", {});
+utm.logoutButton.addEventListener('click', function() {
+	Ti.App.fireEvent("app:logout", {});
 	utm.landingView.hide();
-	utm.containerWindow.leftNavButton = utm.emptyView;
+	//utm.mainWindow.leftNavButton = utm.emptyView;
 });
 
-utm.backButton = Ti.UI.createButton({title:L('button_back')});
-utm.backButton.addEventListener('click', function()
-{	log('Backbutton fired');
-  	Ti.App.fireEvent("app:showLandingView", {});
-	utm.containerWindow.leftNavButton = utm.emptyView;
+utm.backToLandingScreenButton = Ti.UI.createButton({
+	title : L('button_back')
+});
+utm.backToLandingScreenButton.addEventListener('click', function() {
+	log('backToLandingScreenButton fired');
+	Ti.App.fireEvent("app:showLandingView", {});
+});
+
+utm.backToChooseMyHortScreenButton = Ti.UI.createButton({
+	title : 'Choose Myhort'
+});
+utm.backToChooseMyHortScreenButton.addEventListener('click', function() {
+	log('backToChooseMyHortScreenButton fired');
+	Ti.App.fireEvent("app:showChooseMyHortWindow", {});
+});
+utm.backToChooseContactsScreenButton = Ti.UI.createButton({
+	title : 'Choose Contacts'
+});
+utm.backToChooseContactsScreenButton.addEventListener('click', function() {
+	log('backToChooseContactsScreenButton fired');
+	Ti.App.fireEvent("app:myHortChoosen", {});
 });
 
 //Used to remove the leftNavButton
 utm.emptyView = Ti.UI.createView({});
 
-
 utm.logoutReq = Ti.Network.createHTTPClient({
-	onload : function(){
+	onload : function() {
 		var json = this.responseData;
 		var response = JSON.parse(json);
 		log('Logout Service Returned');
-		if(this.status != 200){
+		if (this.status != 200) {
 			log('Logout Error');
-			messageArea.test="Logout error";
-		}		
+			messageArea.test = "Logout error";
+		}
 	},
-	onError:function(e){
-		log('Logout Service Error:'+e.error);
-     	alert('Logout Error');			
+	onError : function(e) {
+		log('Logout Service Error:' + e.error);
+		alert('Logout Error');
 	}
 });
 
 utm.activityIndicator = Ti.UI.createActivityIndicator({
-	  color: utm.color,
-	  font: {fontFamily:'Helvetica Neue', fontSize:18, fontWeight:'bold'},
-	  style:Ti.UI.iPhone.ActivityIndicatorStyle.DARK,
-	  height:'auto',
-	  width:'auto'
+	color : utm.color,
+	font : {
+		fontFamily : 'Helvetica Neue',
+		fontSize : 18,
+		fontWeight : 'bold'
+	},
+	style : Ti.UI.iPhone.ActivityIndicatorStyle.DARK,
+	height : 'auto',
+	width : 'auto'
 });
-utm.containerWindow.add(utm.activityIndicator);
+utm.mainWindow.add(utm.activityIndicator);
 utm.activityIndicator.hide();
 
-function setActivityIndicator(_message){
-	if(_message !=''){
+function callLogoutService(){
+	//call logout service
+	utm.logoutReq.open("POST", utm.serviceUrl + "Logout");
+	utm.logoutReq.setRequestHeader('Authorization-Token', utm.AuthToken);
+	utm.logoutReq.send();
+	Titanium.Analytics.featureEvent('user.logged_out');	
+}
+
+function setActivityIndicator(_message) {
+	if (_message != '') {
 		utm.activityIndicator.show();
-	}else{
+	} else {
 		utm.activityIndicator.hide();
 	}
 	utm.activityIndicator.setMessage(_message);
 }
 
-function log(message){		
-	Ti.API.info(message);		
+
+Ti.Network.addEventListener('change', function(e) {
+	log('Network Status Changed:' + e.online);
+	log('Network Status Changed:' + Titanium.Network.networkType);
+	utm.networkIsOnline = e.online;
+	Ti.App.fireEvent("app:networkChange", {
+		online : e.online
+	});
+});
+
+function log(message) {
+	Ti.API.info(message);
 }
 
-function recordError(message){
-	log('Error:'+message);
-	alert('Error:'+message);	
+function recordError(message) {
+	log('Error:' + message);
+	alert('Error:' + message);
 }
 
