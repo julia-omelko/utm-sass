@@ -1,9 +1,10 @@
 function message_window() {
 	//Ti.include('lib/date.format.js');
 	var moment = require('lib/moment');
+	var navGroup=false;
 	//utm.easyDateFormat = require('lib/date.format');
 	
-	var win = Ti.UI.createWindow({backgroundColor:'#fff',visible:false, layout:'vertical' });
+	var win = Ti.UI.createWindow({backgroundColor:'#fff',layout:'vertical', title:'Messages', backButtonTitle:'Back' });
 	var curMode='recieved';
 	
 	var tabBar = Titanium.UI.iOS.createTabbedBar({
@@ -28,7 +29,12 @@ function message_window() {
 	});
 	
 	// create table view
-	var tableview = Titanium.UI.createTableView({left:2});
+	var tableview = Titanium.UI.createTableView({
+		left:2
+		,editable:true
+		,allowsSelectionDuringEditing:true
+	 });
+	
 	//Add Click to Details for drilldown
 	tableview.addEventListener('click', function(e)
 	{
@@ -36,8 +42,53 @@ function message_window() {
 		utm.MessageDetailWindow = require('screens/MessageDetail');
 		utm.messageDetailWindow =  new utm.MessageDetailWindow(messageData,curMode);
 		utm.messageDetailWindow.title='Message';
-		utm.messageDetailWindow.open();
+		utm.navGroup.open(utm.messageDetailWindow);
 	});
+	
+	//Add Swipe event to delete messages
+	/*tableview.addEventListener('swipe', function(eventObject){
+	 	
+		deleteMessage(eventObject.row.messageData.Id,false);
+	});*/
+	
+	// add delete event listener
+	tableview.addEventListener('delete',function(e){
+		var s = e.section;
+		deleteMessage(e.rowData.Id,false)
+	});
+	
+	function deleteMessage(messageId,isSuperDelete){
+		log("About to delete message:"+messageId +'  isSuperDelete:'+isSuperDelete);
+		deleteMessagesReq.open('delete',utm.serviceUrl+'Messages/DeleteMessage/'+messageId+'?isSuperDelete='+isSuperDelete);
+		deleteMessagesReq.setRequestHeader('Authorization-Token', utm.AuthToken);	
+		deleteMessagesReq.send()
+	}
+	
+	//
+	//  create edit/cancel buttons for nav bar
+	//
+	var edit = Titanium.UI.createButton({
+		title:'Edit'
+	});
+	
+	edit.addEventListener('click', function()
+	{
+		win.setRightNavButton(cancel);
+		tableview.editing = true;
+	});
+	
+	var cancel = Titanium.UI.createButton({
+		title:'Cancel',
+		style:Titanium.UI.iPhone.SystemButtonStyle.DONE
+	});
+	cancel.addEventListener('click', function()
+	{
+		win.setRightNavButton(edit);
+		tableview.editing = false;
+	});
+	
+	win.setRightNavButton(edit);
+	
 	
 	function showClickEventInfo(e, islongclick) {
 		// event data
@@ -63,13 +114,19 @@ function message_window() {
 	
 	Ti.App.addEventListener('app:backToMessageWindow',backToMessageWindow);
 	function backToMessageWindow(){
+		//Ti.App.fireEvent('app:showMessages');
+		utm.navGroup.open(utm.messageWindow);
+		getMessages(curMode);			
+	} 
+	
+	Ti.App.addEventListener('app:refreshMessages',refreshMessages);
+	function refreshMessages(){
 		getMessages(curMode);			
 	} 
 	
 	function getMessages(mode){
 		
 		setActivityIndicator('Getting your messages...');
-		utm.containerWindow.leftNavButton = utm.backButton;
 		
 		if(mode =='recieved'){
 			getMessagesReq.open("GET",utm.serviceUrl+"ReceivedMessages?$orderby=DateSent desc");	
@@ -80,9 +137,9 @@ function message_window() {
 		getMessagesReq.setRequestHeader('Authorization-Token', utm.AuthToken);	
 		getMessagesReq.send();	
 		
-		if(utm.messageDetailWindow != undefined){
-			utm.messageDetailWindow.close();
-		}	
+	//	if(utm.messageDetailWindow != undefined){
+	//		utm.messageDetailWindow.close();
+	//	}	
 	}
 		
 	var getMessagesReq = Ti.Network.createHTTPClient({
@@ -148,7 +205,6 @@ function message_window() {
 				    width: '100%'
 				  });			  	
 			  }
-			  
 			   
 			  hView.add(fromMessage);
 			  
@@ -178,7 +234,7 @@ function message_window() {
 				    touchEnabled: true,
 				    top:2,
 				    right: 2,
-				    width: '50'
+				    width: '150'
 				  });			
 			  hView.add(timeLabel);
 			 
@@ -198,6 +254,10 @@ function message_window() {
 			setActivityIndicator('');
 			
 		}
+		
+		
+		
+		
 		/*
 			
 			
@@ -343,23 +403,25 @@ function message_window() {
 			
 			*/	
 	};
-		
+	
+	var deleteMessagesReq = Ti.Network.createHTTPClient({
+			
+		onload:function(e){
+				log('Message was deleted');
+					
+				/*var opts = {options: [L('send_ok_button')], title:L('messages_message_deleted')};
+				var dialog = Ti.UI.createOptionDialog(opts).show();
+				dialog.addEventListener('click', function(e){
+					getMessages(curMode);
+				});*/
+			}	,
+		onError:function(e){
+				log('Get Message Service Error:'+e.error);
+	         	alert('Get Message Service Error:'+e.error);			
+			}
+		});		
 	
 	return win;
 };
-
-
-
-function isJSON(data) {
-    var isJson = false
-    try {
-        // this works with JSON string and JSON object, not sure about others
-       var json = $.parseJSON(data);
-       isJson = typeof json === 'object' ;
-    } catch (ex) {
-        log('data is not JSON:'+data);
-    }
-    return isJson;
-}
 
 module.exports = message_window;

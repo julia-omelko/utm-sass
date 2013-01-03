@@ -1,14 +1,8 @@
 function messageDetail_window(_messageData,_curMode) {
 	var moment = require('lib/moment');
-	var win = Ti.UI.createWindow({backgroundColor:'#fff',visible:true,layout:'vertical' });
+	var win = Ti.UI.createWindow({backgroundColor:'#fff',layout:'vertical' });
+	var navGroup=false;
 			
-	var messageArea = Ti.UI.createLabel({
-	  color: '#900',
-	  text: '',
-	  textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
-	  width: 'auto', height: 0
-	});
-	win.add(messageArea);
 	
 	//-----------------Sent On  ----------------------
 	var toDate = Ti.UI.createLabel({
@@ -83,14 +77,17 @@ function messageDetail_window(_messageData,_curMode) {
 	});
 	win.add(utmMessageValue);
 	
+	/*
 	utm.backToMessagesButton = Ti.UI.createButton({title:'Messages'});
 	utm.backToMessagesButton.addEventListener('click', function()
 	{	log('backToMessagesButton fired');
 	  	Ti.App.fireEvent("app:backToMessageWindow", {});
 		//utm.containerWindow.leftNavButton = utm.emptyView;
+		win.close();
 	});
 	
-	utm.containerWindow.leftNavButton = utm.backToMessagesButton;
+	win.leftNavButton = utm.backToMessagesButton;
+	*/
 	
 	if(_curMode=='recieved'){
 		toLabel.text='From:'+_messageData.FromUserName;
@@ -110,7 +107,8 @@ function messageDetail_window(_messageData,_curMode) {
 				log("message data returned:"+response);
 				utmMessageValue.text = response.Message;
 				//Mark Message as Read
-				if(_curMode=='recieved'){
+				log('xxxx'+ ! _messageData.WasRead);
+				if(_curMode=='recieved' && ! _messageData.WasRead){
 					setMessageAsRead(_messageData.Id);
 				}	
 				
@@ -140,8 +138,8 @@ function messageDetail_window(_messageData,_curMode) {
 var getMarkMessageAsReadReq = Ti.Network.createHTTPClient({
 	onload: function()
 	{
-		var json = this.responseData;
-		var response = JSON.parse(json);
+		Ti.App.fireEvent('app:refreshMessages');
+		
 	},		
 	onError:function(e){
 		log('Mark Message as Read Service Error:'+e.error);
