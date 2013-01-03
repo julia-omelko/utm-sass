@@ -1,7 +1,7 @@
 var TheLandingScreen_view = function() {
-	
+
 	var landingView = Ti.UI.createWindow({			
-		layout:'vertical',title:'Landing Window'
+		layout:'vertical',title:'', backButtonTitle:L('logout')
 	});
 	
 	var utmLogo = Ti.UI.createImageView({
@@ -37,11 +37,9 @@ var TheLandingScreen_view = function() {
 	
 	sendMessageBtn.addEventListener('click',function(e)
 	{	
-		Ti.App.fireEvent("app:showSendMessage", {});
+		Ti.App.fireEvent("app:showChooseMyHortWindow", {});
 	});
 
-	
-	
 	return landingView;
 };
 module.exports = TheLandingScreen_view;
