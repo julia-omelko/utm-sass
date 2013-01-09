@@ -17,6 +17,7 @@
 	<string name="button_back">Dorso</string>	
 	<string name="messages_recieved">Recibido</string>
 	<string name="messages_sent">Enviado</string>	
+	<string name="messages_message_deleted">Message has been deleted</string>
 	<string name="send_choose_myhort">Elegir un MyHort</string>
 	<string name="send_choose_contacts">Elija los destinatarios</string>
 	<string name="send_select_recipient">Seleccione a Recipientes</string>
@@ -30,7 +31,8 @@
 	<string name="send_UTM_message_now">Enviar mensaje ahora</string>
 	<string name="send_our_message_was_sent">El mensaje se ha enviado</string>
 	<string name="send_ok_button">Confirmado</string>
-	 
+	<string name="edit">Editar</string>
+	<string name="cancel">Cancelar</string> 
 	
 	
 	

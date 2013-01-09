@@ -6,7 +6,11 @@ var PreviewMessage_window =function() {
 	var TEXT=0;
 	var EMAIL=1;
 	var FACE_BOOK=2;
-	var	TWITTER=3;
+	var TWITTER=3;
+	
+	var replyMode=false;
+	var messageData=false;
+	
 	
 	var previewMessageView = Titanium.UI.createWindow({
 	   width:'auto',
@@ -14,34 +18,23 @@ var PreviewMessage_window =function() {
 	   layout:'vertical'
 	});	
 	
-	//-----------------TO  ----------------------
-	var toLabel = Ti.UI.createLabel({
-		text:'To:',
-		width:utm.SCREEN_WIDTH-10,
-		font: {fontSize:14, fontWeight:'bold'},
-		height:'auto',
-		textAlign:'left'
-	});
-		
-	
-	//---------------Original Message -------------------- 
-	
+	//---------------Original Message -------------------- 	
 	var yourOrgMessageLabel = Ti.UI.createLabel({
 		text:L('send_your_original_message')+':',
 		font: {fontSize:14, fontWeight:'bold'},
 		width:utm.SCREEN_WIDTH-10,
-		top:10,
-		height:'auto',
+		top:2,
 		textAlign:'left'
 	});
 	previewMessageView.add(yourOrgMessageLabel);
 
-	var yourOrgMessageValue = Ti.UI.createLabel({
-		text:'',
+	var yourOrgMessageValue = Ti.UI.createTextArea({
+		value:'',
 		font: {fontSize:12},
 		color: '#888',
+		editable:false,
 		width:utm.SCREEN_WIDTH-10,
-		height:'auto',
+		height : '20%',  //utm.SCREEN_HEIGHT-(utm.SCREEN_HEIGHT/1.2)
 		textAlign:'left'
 	});
 	previewMessageView.add(yourOrgMessageValue);
@@ -51,18 +44,19 @@ var PreviewMessage_window =function() {
 	var encryptedLabel = Ti.UI.createLabel({
 		text:L('send_preview_how_encrypted')+':',
 		width:utm.SCREEN_WIDTH-10,
-		top:10,
+		top:5,
 		font: {fontSize:14, fontWeight:'bold'},
 		height:'auto',
 		textAlign:'left'
 	});
 	previewMessageView.add(encryptedLabel);
-	var encryptedValue = Ti.UI.createLabel({
+	var encryptedValue = Ti.UI.createTextArea({
 		text:'',
 		font: {fontSize:12},
 		color: '#888',
+		editable:false,
 		width:utm.SCREEN_WIDTH-10,
-		height:'auto',
+		height : '20%',  //utm.SCREEN_HEIGHT-(utm.SCREEN_HEIGHT/1.2)
 		textAlign:'left'
 	});
 	previewMessageView.add(encryptedValue);
@@ -75,7 +69,7 @@ var PreviewMessage_window =function() {
 		text:L('send_customize_message')+':',
 		font: {fontSize:14, fontWeight:'bold'},
 		width:utm.SCREEN_WIDTH-10,
-		top:10,
+		top:5,
 		height:'auto',
 		textAlign:'left'
 	});
@@ -88,8 +82,9 @@ var PreviewMessage_window =function() {
 	  color: '#000',
 	  font: {fontSize:12},
 	  textAlign: 'left',
-	  top: 10,
-	  width: utm.SCREEN_WIDTH-10, height : 'auto'
+	  top: 5,
+	  width: utm.SCREEN_WIDTH-10,
+	  height : '20%',  //utm.SCREEN_HEIGHT-(utm.SCREEN_HEIGHT/1.2)
 	}); //todo get the screen width so we can make this wider if possible
 	previewMessageView.add(customUtmMessage);
 	
@@ -123,7 +118,7 @@ var PreviewMessage_window =function() {
 	//------------- Send Button ------------------ 
 	var sendButton = Ti.UI.createButton({
 		title:L('send_UTM_message_now'),
-		top:34,
+		top:10,
 		width:'auto',
 		height:30
 	});	
@@ -132,24 +127,45 @@ var PreviewMessage_window =function() {
 	sendButton.addEventListener('click',function()
 	{	
 		var copiedToUsers=[];
-
-		for(v=0; v < utm.sentToContactList.length; v++){
-			copiedToUsers.push(utm.sentToContactList[v].userId);	
-			log('Preparing to send message to '+utm.sentToContactList[v].userId);		
-		}
+		
+		if(replyMode){
+			//Reply to a message
+			var params = {
+				MyHortId: messageData.MyHortId,
+				PlainText: yourOrgMessageValue.value,
+				UtmText:customUtmMessage.value,
+				DeleteOnRead:'false',
+				RjCrypt:curRjCrypt,
+				MessageType:'twitter',
+				//MessageType:'sms,email,twitter',
+				FromUserId:utm.User.UserProfile.UserId,
+				ToUserId:messageData.FromUserId,
+				CopiedUsers:messageData.FromUserId,
+				ParrentMessageId:messageData.Id	
+			};
 			
-		var params = {
-			MyHortId: utm.targetMyHortID,
-			PlainText: yourOrgMessageValue.text,
-			UtmText:customUtmMessage.value,
-			DeleteOnRead:'false',
-			RjCrypt:curRjCrypt,
-			MessageType:'sms,email',
-			FromUserId:utm.User.UserProfile.UserId,
-			ToUserId:utm.User.UserProfile.UserId,
-			CopiedUsers:copiedToUsers	
-		};
-
+			
+		}else{
+		
+			//Sending a new message
+			for(v=0; v < utm.sentToContactList.length; v++){
+				copiedToUsers.push(utm.sentToContactList[v].userId);	
+				log('Preparing to send message to '+utm.sentToContactList[v].userId);		
+			}
+				
+			var params = {
+				MyHortId: utm.targetMyHortID,
+				PlainText: yourOrgMessageValue.value,
+				UtmText:customUtmMessage.value,
+				DeleteOnRead:'false',
+				RjCrypt:curRjCrypt,
+				MessageType:'sms,email',
+				FromUserId:utm.User.UserProfile.UserId,
+				ToUserId:utm.User.UserProfile.UserId,
+				CopiedUsers:copiedToUsers	
+			};
+		}
+		
 		log(JSON.stringify(params));
 		setActivityIndicator('Sending ...');
 		sendMessageReq.open("POST",utm.serviceUrl+"SendMessage");
@@ -169,9 +185,9 @@ var PreviewMessage_window =function() {
 			log('PreviewMessages Service Returned');
 			if(this.status ==200){
 				customUtmMessage.value=response.UtmText;				
-				yourOrgMessageValue.text = response.PlainText;
+				yourOrgMessageValue.value = response.PlainText;
 				curRjCrypt=response.RjCrypt;
-				encryptedValue.text=curRjCrypt;
+				encryptedValue.value=curRjCrypt;
 				//toValue.text=utm.utm.sentToContactList;
 		
 			}else{		
@@ -179,9 +195,10 @@ var PreviewMessage_window =function() {
 			}		
 			
 		},
-		onError:function(e){
+		onerror:function(e){
          	recordError('Preview Message Service Error:'+e.error);			
 		}
+		,timeout:utm.netTimeout
 	});	
 	
 	var sendMessageReq = Ti.Network.createHTTPClient({
@@ -196,7 +213,7 @@ var PreviewMessage_window =function() {
 				
 				//pop a dialog and on close go back to landing screen
 				var opts = {options: [L('send_ok_button')], title:L('send_our_message_was_sent')};
-				var dialog = Ti.UI.createOptionDialog(opts).show();
+				//var dialog = Ti.UI.createOptionDialog(opts).show();
 				Ti.App.fireEvent("app:showMessagesAfterSend", {});
 				dialog.addEventListener('click', function(e){
 					resetScreen();
@@ -210,22 +227,28 @@ var PreviewMessage_window =function() {
 			}		
 			
 		},
-		onError:function(e){
+		onerror:function(e){
 			setActivityIndicator('');
          	recordError('Send Message Service Error:'+e.error);			
 		}
+		,timeout:utm.netTimeout
 	});	
 	
 	
 	Ti.App.addEventListener('app:getMessagePreview',getMessagePreview);
 	function getMessagePreview(msg){
-		log('The MyHort is utm.targetMyHortID='+utm.targetMyHortID);
 		
-		var params = {
-			MyHortId: utm.targetMyHortID,
-			PlainText: msg.messageText						
-		};
-		
+		if(replyMode){
+			var params = {
+				MyHortId: messageData.MyHortId,
+				PlainText: msg.messageText
+			}	
+		}else{	
+			var params = {
+				MyHortId: utm.targetMyHortID,
+				PlainText: msg.messageText						
+			};
+		}
 		getMessagesPreviewReq.open("POST",utm.serviceUrl+"EncryptMessage");	
 		getMessagesPreviewReq.setRequestHeader('Authorization-Token', utm.AuthToken);	
 		getMessagesPreviewReq.send(params);		
@@ -233,8 +256,8 @@ var PreviewMessage_window =function() {
 	
 	function resetScreen(){
 		toValue.text='';
-		yourOrgMessageValue.text='';
-		encryptedValue.text='';
+		yourOrgMessageValue.value='';
+		encryptedValue.value='';
 		customUtmMessage.value('');
 	}
 	
@@ -262,12 +285,6 @@ var PreviewMessage_window =function() {
 				sendTypesButtonObjects[TWITTER].enabled=false;
 			*/
 		}
-
-		
-		//previewMessageView.sentToContactListString=utm.sentToContactListString;
-		sentToContactListString=sentToContactListString.slice(0, - 1);
-		toLabel.text=sentToContactListString;
-		toLabel.width='100%';				
 	}
 	
 	function setButtonBarEnabled(enable){
@@ -275,6 +292,18 @@ var PreviewMessage_window =function() {
 		sendTypesButtonObjects[EMAIL].enabled=enable;
 		sendTypesButtonObjects[FACE_BOOK].enabled=enable;
 		sendTypesButtonObjects[TWITTER].enabled=enable;*/
+	}
+	
+	
+	previewMessageView.setMode=function(_theMode){
+		if(_theMode ==='reply')
+			replyMode=true;
+		else
+			replyMode=false;	
+	}
+	
+	previewMessageView.setMessageData=function(_messageData){
+		messageData=_messageData;
 	}
 	
 	return previewMessageView;

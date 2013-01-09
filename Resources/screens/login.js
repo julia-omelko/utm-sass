@@ -1,6 +1,6 @@
 var TheLoginScreen_view = function() {
 	
-	var loginView = Ti.UI.createView({		
+	var loginView = Ti.UI.createWindow({		
 		backgroundColor: 'transparent',
 		layout:'vertical'
 	});
@@ -25,7 +25,7 @@ var TheLoginScreen_view = function() {
 		color:'#336699',		
 		width:300,
 		height:40,
-		//value : 'ad',
+		value : 'ad',
 		hintText:L('label_user_name'),
 		autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
 		autocorrect: false,
@@ -40,7 +40,7 @@ var TheLoginScreen_view = function() {
 		top:20,
 		width:300,
 		height:40,
-		//value : 't',
+		value : 't',
 		hintText:L('label_password'),
 		passwordMask:true,
 		autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
@@ -110,7 +110,6 @@ var TheLoginScreen_view = function() {
 	
 	
 	var loginReq = Ti.Network.createHTTPClient({
-		//{timeout:25000,
 		onload : function()
 		{
 			var json = this.responseData;
@@ -137,11 +136,14 @@ var TheLoginScreen_view = function() {
 			}		
 			
 		},
-		onError:function(e){
+		onerror:function(e){
 			log('Login Service Error:'+e.error);
 			setActivityIndicator('');
          	alert('error');			
+         	//"Error Domain=ASIHTTPRequestErrorDomain Code=2 "The request timed out" UserInfo=0xb2b10e0 {NSLocalizedDescription=The request timed out}"
+         	
 		}
+		,timeout:utm.netTimeout
 		}
 	);
 	
@@ -174,7 +176,8 @@ var TheLoginScreen_view = function() {
 		}
 		else
 		{
-			alert(L('user_name_password_req'));
+			setActivityIndicator('');
+			alert(L('user_name_password_req'));			
 		}
 	});
 	

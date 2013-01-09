@@ -4,7 +4,7 @@ function message_window() {
 	var navGroup=false;
 	//utm.easyDateFormat = require('lib/date.format');
 	
-	var win = Ti.UI.createWindow({backgroundColor:'#fff',layout:'vertical', title:'Messages', backButtonTitle:'Back' });
+	var win = Ti.UI.createWindow({backgroundColor:'#fff',layout:'vertical', title:'Messages', backButtonTitle:L('button_back') });
 	var curMode='recieved';
 	
 	var tabBar = Titanium.UI.iOS.createTabbedBar({
@@ -78,7 +78,7 @@ function message_window() {
 	});
 	
 	var cancel = Titanium.UI.createButton({
-		title:'Cancel',
+		title:L('cancel'),
 		style:Titanium.UI.iPhone.SystemButtonStyle.DONE
 	});
 	cancel.addEventListener('click', function()
@@ -143,10 +143,11 @@ function message_window() {
 	}
 		
 	var getMessagesReq = Ti.Network.createHTTPClient({
-		onError:function(e){
+		onerror:function(e){
 			log('Get Message Service Error:'+e.error);
          	alert('Get Message Service Error:'+e.error);			
 		}
+		,timeout:utm.netTimeout
 	});	
 	
 	getMessagesReq.onload = function()
@@ -415,10 +416,11 @@ function message_window() {
 					getMessages(curMode);
 				});*/
 			}	,
-		onError:function(e){
+			onerror:function(e){
 				log('Get Message Service Error:'+e.error);
 	         	alert('Get Message Service Error:'+e.error);			
 			}
+			,timeout:utm.netTimeout
 		});		
 	
 	return win;

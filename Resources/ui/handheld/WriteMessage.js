@@ -1,5 +1,8 @@
 var WriteMessage_window =function() {
 
+	var replyMode=false;
+	var messageData=false;
+	
 	var writeMessageView = Titanium.UI.createWindow({
 	   width:'auto',
 	   title:'Write Message',
@@ -18,7 +21,7 @@ var WriteMessage_window =function() {
 	var yourMessageLabel = Ti.UI.createLabel({
 		text:L('send_your_message'),
 		width:'auto',
-		height:30,
+		height:'auto',
 		textAlign:'left'
 	});
 	writeMessageView.add(yourMessageLabel);
@@ -29,9 +32,10 @@ var WriteMessage_window =function() {
 	  borderRadius: 5,
 	  color: '#888',
 	  hintText:L('send_start_your_message_here'),
+	  suppressReturn:false,
 	  textAlign: 'left',
-	  top: 10,
-	  width: utm.SCREEN_WIDTH-10, height : 'auto'
+	  top: 5,
+	  width: utm.SCREEN_WIDTH-10, height : utm.SCREEN_HEIGHT-(utm.SCREEN_HEIGHT/1.2)
 	}); //todo get the screen width so we can make this wider if possible
 	writeMessageView.add(textArea);
 	
@@ -58,7 +62,9 @@ var WriteMessage_window =function() {
 	previewButton.addEventListener('click',function()
 	{	textArea.blur();	
 		Ti.App.fireEvent("app:showPreview", {
-	        messageText: textArea.value
+	        messageText: textArea.value,
+	        mode:replyMode ? 'reply':'newMessage',
+	        messageData:messageData
 	    });	
 	});
 	
@@ -80,6 +86,19 @@ var WriteMessage_window =function() {
 	
 	writeMessageView.restForm=function(){		
 		textArea.value='';
+		replyMode=false;
+	}
+	
+	writeMessageView.setMode=function(_theMode){
+		if(_theMode ==='reply')
+			replyMode=true;
+		else
+			replyMode=false;	
+	}
+	
+	writeMessageView.setMessageData=function(_messageData){
+		messageData=_messageData;
+		toLabel.text ='Reply to: '+  messageData.FromUserName;
 	}
 	
 	return writeMessageView;

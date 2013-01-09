@@ -77,22 +77,23 @@ function messageDetail_window(_messageData,_curMode) {
 	});
 	win.add(utmMessageValue);
 	
-	/*
-	utm.backToMessagesButton = Ti.UI.createButton({title:'Messages'});
-	utm.backToMessagesButton.addEventListener('click', function()
-	{	log('backToMessagesButton fired');
-	  	Ti.App.fireEvent("app:backToMessageWindow", {});
+	//-----------------Reply To Button ----------------------
+	var replyButton = Ti.UI.createButton({title:'Reply', visible:false});
+	replyButton.addEventListener('click', function()
+	{	log('replyButton fired');
+	  	Ti.App.fireEvent("app:showWriteMessageView", {mode:'reply', messageData: _messageData});
 		//utm.containerWindow.leftNavButton = utm.emptyView;
-		win.close();
+		
 	});
-	
-	win.leftNavButton = utm.backToMessagesButton;
-	*/
+	win.add(replyButton);
+
 	
 	if(_curMode=='recieved'){
 		toLabel.text='From:'+_messageData.FromUserName;
+		replyButton.visible=true;
 	}else{
 		toLabel.text='From:'+_messageData.ToHeader;
+		replyButton.visible=false;
 	}
 	
 	
@@ -108,7 +109,7 @@ function messageDetail_window(_messageData,_curMode) {
 				utmMessageValue.text = response.Message;
 				//Mark Message as Read
 				log('xxxx'+ ! _messageData.WasRead);
-				if(_curMode=='recieved' && ! _messageData.WasRead){
+				if( ! _messageData.WasRead){
 					//#124 Fix issue with message list not refreshing IF message is marked as Read
 					setMessageAsRead(_messageData.Id);
 				}	
@@ -119,9 +120,10 @@ function messageDetail_window(_messageData,_curMode) {
 				recordError(response.Message)
 			}		
 		},		
-		onError:function(e){
+		onerror:function(e){
          	recordError('Send Message Service Error:'+e.error);			
 		}
+		,timeout:utm.netTimeout
 	});	
 	if(_curMode=='recieved'){
 		getMessageDetailReq.open("GET",utm.serviceUrl+"ReceivedMessages/"+_messageData.Id);	
@@ -142,11 +144,11 @@ var getMarkMessageAsReadReq = Ti.Network.createHTTPClient({
 		Ti.App.fireEvent('app:refreshMessages');
 		
 	},		
-	onError:function(e){
+	onerror:function(e){
 		log('Mark Message as Read Service Error:'+e.error);
      	alert('Mark Message as Read Service Error:'+e.error);			
 	}
-	
+	,timeout:utm.netTimeout
 });	
 
 function setMessageAsRead(messageId){

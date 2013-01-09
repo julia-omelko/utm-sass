@@ -17,6 +17,7 @@
 	<string name="invalid_login">Login Invalid</string>	
 	<string name="messages_recieved">Received</string>
 	<string name="messages_sent">Sent</string>	
+	<string name="messages_message_deleted">Message has been deleted</string>
 	<string name="send_choose_myhort">Choose a MyHort</string>
 	<string name="send_choose_contacts">Choose Recipients</string>
 	<string name="send_select_recipient">Select Recipient</string>
@@ -30,7 +31,9 @@
 	<string name="send_UTM_message_now">Send Message Now</string>
 	<string name="send_our_message_was_sent">Your Message was Sent</string>
 	<string name="send_ok_button">OK</string>
-		
+	<string name="edit">Edit</string>
+	<string name="cancel">Cancel</string>
+			
 
 
 

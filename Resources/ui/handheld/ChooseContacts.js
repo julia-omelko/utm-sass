@@ -135,6 +135,7 @@ var ChooseContacts_window =function() {
 		     onerror : function(e) {		        
 		         recordError(e.error);
 		     }
+		     ,timeout:utm.netTimeout
 		});	
 		getMessagesReq.open("GET",utm.serviceUrl+"Members/"+utm.targetMyHortID);
 		getMessagesReq.setRequestHeader('Authorization-Token', utm.User.UserProfile.AuthToken);	
@@ -152,6 +153,7 @@ var ChooseContacts_window =function() {
 				curRow.setHasCheck(false);
 			}
 		}			
+		writeMessageButton.enabled =false;
 	}
 	
 	

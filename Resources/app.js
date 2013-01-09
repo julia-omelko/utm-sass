@@ -4,6 +4,7 @@ utm.loggedIn = false;
 utm.serviceUrl = 'http://dev.youthisme.com/api/v1/';
 utm.color = '#007EAD';
 utm.appVersion = 'version 0.18T Alpha';
+utm.netTimeout=3000;
 utm.sentToContactListString = '';
 utm.networkIsOnline = false;
 var pWidth = Ti.Platform.displayCaps.platformWidth;
@@ -104,11 +105,24 @@ function setContactsChoosen(e) {
 
 }
 
+Ti.App.addEventListener('app:showWriteMessageView', showWriteMessageView);
+function showWriteMessageView(e) {
+	log('showWriteMessageView() fired' );
+	utm.writeMessageView.setMode(e.mode)
+	utm.writeMessageView.setMessageData(e.messageData);
+	
+	//originalMessageId:_messageData.Id, replyTo:_messageData.FromUserId
+	utm.navGroup.open(utm.writeMessageView);	
+}
+
 Ti.App.addEventListener('app:showPreview', showPreview);
 function showPreview(e) {
 	log('showPreview() fired message=' + e.messageText);
 	utm.originalTextMessage = e.messageText;
-
+	
+	utm.previewMessageView.setMode(e.mode)
+	utm.previewMessageView.setMessageData(e.messageData);
+	
 	utm.navGroup.open(utm.previewMessageView)
 	Ti.App.fireEvent('app:getMessagePreview', {
 		messageText : e.messageText
@@ -118,23 +132,38 @@ function showPreview(e) {
 Ti.App.addEventListener('app:showMessagesAfterSend', showMessagesAfterSend);
 function showMessagesAfterSend() {
 	log('showMessagesAfterSend() fired');
-
 	
-	if(utm.previewMessageView != undefined)
-		utm.navGroup.close(utm.previewMessageView);		
 	if(utm.writeMessageView !=undefined){
 		utm.writeMessageView.restForm();
-		utm.navGroup.close(utm.writeMessageView);
-	}		
+		utm.navGroup.close(utm.writeMessageView,{animated:false});
+	}	
+		
 	if(utm.chooseContactsView != undefined){
-		//utm.chooseContactsView.restForm();
-		utm.navGroup.close(utm.chooseContactsView);	
+		utm.chooseContactsView.restForm();
+		utm.navGroup.close(utm.chooseContactsView,{animated:false});	
 	}
+	
 	if(utm.chooseMyHortView !=undefined){
 		//utm.chooseMyHortView.restForm();
-		utm.navGroup.close(utm.chooseMyHortView);
+		utm.navGroup.close(utm.chooseMyHortView,{animated:false});
 	}
-	showLandingView();
+	
+	if(utm.MessageDetailWindow !=undefined ){
+		utm.navGroup.close(utm.messageDetailWindow,{animated:false}); 
+	}
+	if(utm.messageWindow  !=undefined ){
+		utm.navGroup.close(utm.messageWindow ,{animated:false}); 
+	}
+	
+	if(utm.writeMessageView !=undefined){
+		utm.writeMessageView.restForm();
+		utm.navGroup.close(utm.writeMessageView,{animated:false});
+	}	
+	
+	if(utm.previewMessageView != undefined){
+		utm.navGroup.close(utm.previewMessageView);		
+	}
+	//showLandingView();
 }
 
 Ti.App.addEventListener('app:logout', showLoginView);
@@ -183,6 +212,7 @@ utm.backToChooseContactsScreenButton.addEventListener('click', function() {
 utm.emptyView = Ti.UI.createView({});
 
 utm.logoutReq = Ti.Network.createHTTPClient({
+	timeout:utm.netTimeout,
 	onload : function() {
 		var json = this.responseData;
 		var response = JSON.parse(json);
@@ -192,10 +222,11 @@ utm.logoutReq = Ti.Network.createHTTPClient({
 			messageArea.test = "Logout error";
 		}
 	},
-	onError : function(e) {
+	onerror : function(e) {
 		log('Logout Service Error:' + e.error);
 		alert('Logout Error');
 	}
+	,timeout:utm.netTimeout
 });
 
 utm.activityIndicator = Ti.UI.createActivityIndicator({
