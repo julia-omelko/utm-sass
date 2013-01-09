@@ -144,8 +144,7 @@ function message_window() {
 		
 	var getMessagesReq = Ti.Network.createHTTPClient({
 		onerror:function(e){
-			log('Get Message Service Error:'+e.error);
-         	alert('Get Message Service Error:'+e.error);			
+			handleError(e);         				
 		}
 		,timeout:utm.netTimeout
 	});	
@@ -170,14 +169,14 @@ function message_window() {
 			    backgroundColor:'#fff',
 			    objName: 'hView'
 			  });	
-			  
+			  			  
 			  if(response[i].WasRead){
 			  	var fromMessage = Ti.UI.createLabel({
 				    backgroundColor:'#fff',
 				    color: '#000',
 				    font: {fontSize:14},
 				    objName: 'fromMessage',
-				    text: response[i].FromUserName,
+				    text: (curMode=='sent' ? response[i].ToHeader : response[i].FromUserName),
 				    touchEnabled: true,
 				    top:2,
 				    left: 17,
@@ -235,7 +234,7 @@ function message_window() {
 				    touchEnabled: true,
 				    top:2,
 				    right: 2,
-				    width: '150'
+				    width: 'auto'
 				  });			
 			  hView.add(timeLabel);
 			 
@@ -252,8 +251,7 @@ function message_window() {
 			
 		}else{
 			recordError("error");
-			setActivityIndicator('');
-			
+			setActivityIndicator('');			
 		}
 		
 		
@@ -417,8 +415,7 @@ function message_window() {
 				});*/
 			}	,
 			onerror:function(e){
-				log('Get Message Service Error:'+e.error);
-	         	alert('Get Message Service Error:'+e.error);			
+					handleError(e);   
 			}
 			,timeout:utm.netTimeout
 		});		
