@@ -223,8 +223,7 @@ utm.logoutReq = Ti.Network.createHTTPClient({
 		}
 	},
 	onerror : function(e) {
-		log('Logout Service Error:' + e.error);
-		alert('Logout Error');
+		handleError(e);   
 	}
 	,timeout:utm.netTimeout
 });
@@ -270,12 +269,62 @@ Ti.Network.addEventListener('change', function(e) {
 	});
 });
 
+
+function closeAllScreens(){
+	if(utm.writeMessageView !=undefined){
+		utm.navGroup.close(utm.writeMessageView,{animated:false});
+	}	
+		
+	if(utm.chooseContactsView != undefined){
+		utm.navGroup.close(utm.chooseContactsView,{animated:false});	
+	}
+	
+	if(utm.chooseMyHortView !=undefined){
+		utm.navGroup.close(utm.chooseMyHortView,{animated:false});
+	}
+	
+	if(utm.MessageDetailWindow !=undefined ){
+		utm.navGroup.close(utm.messageDetailWindow,{animated:false}); 
+	}
+	
+	if(utm.messageWindow  !=undefined ){
+		utm.navGroup.close(utm.messageWindow ,{animated:false}); 
+	}
+	
+	if(utm.writeMessageView !=undefined){
+		utm.writeMessageView.restForm();
+		utm.navGroup.close(utm.writeMessageView,{animated:false});
+	}	
+	
+	if(utm.previewMessageView != undefined){
+		utm.navGroup.close(utm.previewMessageView);		
+	}
+	
+	if(utm.landingView != undefined){
+		utm.navGroup.close(utm.landingView);		
+	}
+	
+}
+
 function log(message) {
 	Ti.API.info(message);
 }
 
+function handleError(e) {			
+ 	if(e.error.indexOf('timed out') > 0){
+ 		//"Error Domain=ASIHTTPRequestErrorDomain Code=2 "The request timed out" UserInfo=0xb2b10e0 {NSLocalizedDescription=The request timed out}"
+ 		//TODO improve to handle time vs an invalid session due to session timeout....
+		alert('Your session has timed out you must log backin');
+		setActivityIndicator('');
+		closeAllScreens();
+		showLoginView();	
+ 	}else{
+		alert('Error:' + e.error);
+ 	}         
+}
+
 function recordError(message) {
 	log('Error:' + message);
-	alert('Error:' + message);
+
 }
 
