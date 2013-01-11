@@ -3,7 +3,7 @@ var utm = {};
 utm.loggedIn = false;
 utm.serviceUrl = 'http://dev.youthisme.com/api/v1/';
 utm.color = '#007EAD';
-utm.appVersion = 'version 0.18T Alpha';
+utm.appVersion = 'version 0.19T Beta';
 utm.netTimeout=3000;
 utm.sentToContactListString = '';
 utm.networkIsOnline = false;
@@ -53,7 +53,7 @@ function handleLoginSuccess(event) {
 	var msg = 'Login Success';
 	//TODO rework as callback...
 	//Ti.App.removeEventListener('app:loginSuccess', handleLoginSuccess);
-
+//utm.User.userProfile.
 	utm.loggedIn = true;
 	utm.User = event.userData;
 	utm.AuthToken = event.userData.UserProfile.AuthToken;
@@ -310,14 +310,27 @@ function log(message) {
 	Ti.API.info(message);
 }
 
+/*
+ * //todo handle authentication > login window
+ * onreadystatechange:function(v){
+			if(getMessagesReq.readyState ===4 & getMessagesReq.status ===403 ){
+				handleError(v,getMessagesReq);	
+				//closeAllScreens();
+			//showLoginView();	
+			}			 	
+		},
+ * 
+ */
+
 function handleError(e) {			
- 	if(e.error.indexOf('timed out') > 0){
+ 	if(e.error != 'undefined' & e.error.indexOf('timed out') > 0){
  		//"Error Domain=ASIHTTPRequestErrorDomain Code=2 "The request timed out" UserInfo=0xb2b10e0 {NSLocalizedDescription=The request timed out}"
  		//TODO improve to handle time vs an invalid session due to session timeout....
-		alert('Your session has timed out you must log backin');
 		setActivityIndicator('');
-		closeAllScreens();
-		showLoginView();	
+		
+		alert('Your request has timed out - please retry.');
+		//closeAllScreens();
+		//showLoginView();	
  	}else{
 		alert('Error:' + e.error);
  	}         
