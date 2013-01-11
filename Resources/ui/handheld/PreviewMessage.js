@@ -88,29 +88,36 @@ var PreviewMessage_window =function() {
 	}); //todo get the screen width so we can make this wider if possible
 	previewMessageView.add(customUtmMessage);
 	
+	
+	customUtmMessage.addEventListener('click',function()
+	{//fold up to give more room to edit
+		yourOrgMessageValue.height=12;
+		encryptedLabel.height=0;
+		encryptedValue.height=0;	
+	});
+	
 	//------------- Send Type Button Bar------------------ 	
 	
 	
 	
-	var vView = Ti.UI.createView({layout:'horizontal', height:32, width:150});
-	previewMessageView.add(vView);
+	var hView = Ti.UI.createView({layout:'horizontal', height:50, width:150});
+	previewMessageView.add(hView);
 	
-	var smsButton = Ti.UI.createButton({		
-		height:30, width:30,
-		backgroundImage:'/images/sms.png',
-		backgroundDisabledImage:'/images/sms_disabled.png',
-		backgroundSelectedImage:'/images/sms_selected.png'			
-	});		
-	vView.add(smsButton);
+	var CheckButton = require('ui/common/checkButton');
+	var smsButton = new CheckButton('sms');
+	hView.add(smsButton);	
 	
-	var emailButton = Ti.UI.createButton({		
-		height:30, width:30,
-		backgroundImage:'/images/email.png',
-		backgroundDisabledImage:'/images/email_disabled.png',
-		backgroundSelectedImage:'/images/email_selected.png'		
-	});		
-	vView.add(emailButton);
+	var CheckButton = require('ui/common/checkButton');
+	var emailButton = new CheckButton('email');
+	hView.add(emailButton);	
+
+	var CheckButton = require('ui/common/checkButton');
+	var twitterButton = new CheckButton('twitter');
+	hView.add(twitterButton);	
 	
+	var CheckButton = require('ui/common/checkButton');
+	var facebookButton = new CheckButton('facebook');
+	hView.add(facebookButton);	
 	
 	var sendSms=false;
 
@@ -127,7 +134,18 @@ var PreviewMessage_window =function() {
 	sendButton.addEventListener('click',function()
 	{	
 		var copiedToUsers=[];
+		var messageType=getMessageSendTypes();
 		
+		yourOrgMessageValue.height='20%';
+		encryptedLabel.height='auto';
+		encryptedValue.height='20%';	
+		
+		if(messageType==''){
+			alert('You must choose at least one of the message types by clicking on the icon.');
+			return;
+		}
+		
+		sendButton.enabled=false;
 		if(replyMode){
 			//Reply to a message
 			var params = {
@@ -136,8 +154,7 @@ var PreviewMessage_window =function() {
 				UtmText:customUtmMessage.value,
 				DeleteOnRead:'false',
 				RjCrypt:curRjCrypt,
-				MessageType:'twitter',
-				//MessageType:'sms,email,twitter',
+				MessageType:messageType,
 				FromUserId:utm.User.UserProfile.UserId,
 				ToUserId:messageData.FromUserId,
 				CopiedUsers:messageData.FromUserId,
@@ -159,7 +176,7 @@ var PreviewMessage_window =function() {
 				UtmText:customUtmMessage.value,
 				DeleteOnRead:'false',
 				RjCrypt:curRjCrypt,
-				MessageType:'sms,email',
+				MessageType:messageType,
 				FromUserId:utm.User.UserProfile.UserId,
 				ToUserId:utm.User.UserProfile.UserId,
 				CopiedUsers:copiedToUsers	
@@ -182,21 +199,21 @@ var PreviewMessage_window =function() {
 		{
 			var json = this.responseData;
 			var response = JSON.parse(json);
+			sendButton.enabled=true;
 			log('PreviewMessages Service Returned');
 			if(this.status ==200){
 				customUtmMessage.value=response.UtmText;				
 				yourOrgMessageValue.value = response.PlainText;
 				curRjCrypt=response.RjCrypt;
-				encryptedValue.value=curRjCrypt;
-				//toValue.text=utm.utm.sentToContactList;
-		
+				encryptedValue.value=curRjCrypt;		
 			}else{		
 				recordError(response.Message+ ' ExceptionMessag:'+response.ExceptionMessage);
 			}		
 			
 		},
 		onerror:function(e){
-         	recordError('Preview Message Service Error:'+e.error);			
+			sendButton.enabled=true;
+         	handleError(e);   			
 		}
 		,timeout:utm.netTimeout
 	});	
@@ -215,13 +232,15 @@ var PreviewMessage_window =function() {
 				var opts = {options: [L('send_ok_button')], title:L('send_our_message_was_sent')};
 				//var dialog = Ti.UI.createOptionDialog(opts).show();
 				Ti.App.fireEvent("app:showMessagesAfterSend", {});
-				dialog.addEventListener('click', function(e){
 					resetScreen();
+				//dialog.addEventListener('click', function(e){
+					//resetScreen();
 					
-				});
+				//});
 				Titanium.Analytics.featureEvent('user.sent_message');
 		
 			}else{
+				//Error:UserId: 1007 cannot accept Email messages
 				setActivityIndicator('');
 				recordError(response.Message+ ' ExceptionMessag:'+response.ExceptionMessage);
 			}		
@@ -229,7 +248,7 @@ var PreviewMessage_window =function() {
 		},
 		onerror:function(e){
 			setActivityIndicator('');
-         	recordError('Send Message Service Error:'+e.error);			
+         		handleError(e);   		
 		}
 		,timeout:utm.netTimeout
 	});	
@@ -255,7 +274,6 @@ var PreviewMessage_window =function() {
 	} 
 	
 	function resetScreen(){
-		toValue.text='';
 		yourOrgMessageValue.value='';
 		encryptedValue.value='';
 		customUtmMessage.value('');
@@ -266,34 +284,56 @@ var PreviewMessage_window =function() {
 		log('PreviewMessage setContactsChoosen() fired sentToContactList='+e.sentToContactList);
 		
 		sentToContactListString='To: ';
-		setButtonBarEnabled(true);
+		setButtonBarEnabled(false);
+
 		for (var x=0;x<e.sentToContactList.length;x++)
 		{
 			sentToContactListString+= e.sentToContactList[x].nickName +',';	
 			
-			//Disable buttons if any one of the users do not have this feature.
-			if(!e.sentToContactList[x].userData.HasMobile)
-				smsButton.enabled=false;
+			//Enable buttons if any one of the users do not have this feature.
+			if(e.sentToContactList[x].userData.HasMobile){
+				smsButton.setEnabled(true);
+				smsButton.setChecked(true);//default at least sms ...Could save pref of the user for next time...
+			}
 			
-			if(!e.sentToContactList[x].userData.HasEmail)
-				emailButton.enabled=false;
-			/*
-			if(!e.sentToContactList[x].userData.HasFaceBook)
-				sendTypesButtonObjects[FACE_BOOK].enabled=false;
-			
+			if(e.sentToContactList[x].userData.HasEmail)
+				emailButton.setEnabled(true);
+				
 			if(e.sentToContactList[x].userData.HasTwitter)
-				sendTypesButtonObjects[TWITTER].enabled=false;
-			*/
+				twitterButton.setEnabled(true);
+			//if(utm.User.UserProfile.HasFaceBook
+				
+				
+			//if(e.sentToContactList[x].userData.HasFaceBook)
+			//if(utm.User.UserProfile.HasFaceBook
+				facebookButton.setEnabled(false);	//todo once we have facebook working	
+			
 		}
 	}
 	
-	function setButtonBarEnabled(enable){
-	/*	sendTypesButtonObjects[TEXT].enabled=enable;
-		sendTypesButtonObjects[EMAIL].enabled=enable;
-		sendTypesButtonObjects[FACE_BOOK].enabled=enable;
-		sendTypesButtonObjects[TWITTER].enabled=enable;*/
+	function setButtonBarEnabled(_enable){		
+		smsButton.setEnabled(_enable);
+		emailButton.setEnabled(_enable);
+		twitterButton.setEnabled(_enable);
+		facebookButton.setEnabled(_enable);
 	}
 	
+	function getMessageSendTypes(){
+		//Set up what type of messages to be send out
+		// based on selected mesage types by the user
+		
+		var messageType='';
+		
+		if(smsButton.isChecked())messageType +='sms,';
+		if(emailButton.isChecked())messageType +='email,';
+		if(twitterButton.isChecked())messageType +='twitter,';
+		if(facebookButton.isChecked())messageType +='facebook,';
+		
+		//remove last comma
+		messageType=messageType.slice(0, -1);
+		
+		return messageType;
+	}
 	
 	previewMessageView.setMode=function(_theMode){
 		if(_theMode ==='reply')
