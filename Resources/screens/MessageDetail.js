@@ -67,18 +67,19 @@ function messageDetail_window(_messageData,_curMode) {
 	win.add(utmMessageLabel);
 	
 	//-----------------Real Message Value ----------------------
-	var utmMessageValue = Ti.UI.createLabel({
-		text:'',
-		width:utm.SCREEN_WIDTH-10,
+	var utmMessageValue = Ti.UI.createTextArea({
+		value:'',
+		width:'100%',
 		font: {fontSize:14},
 		top:2,
 		height:'auto',
-		textAlign:'left'
+		textAlign:'left',
+		editable:false
 	});
 	win.add(utmMessageValue);
 	
 	//-----------------Reply To Button ----------------------
-	var replyButton = Ti.UI.createButton({title:'Reply', visible:false});
+	var replyButton = Ti.UI.createButton({title:'Reply', visible:false, top:3});
 	replyButton.addEventListener('click', function()
 	{	log('replyButton fired');
 	  	Ti.App.fireEvent("app:showWriteMessageView", {mode:'reply', messageData: _messageData});
@@ -87,14 +88,6 @@ function messageDetail_window(_messageData,_curMode) {
 	});
 	win.add(replyButton);
 
-	
-	if(_curMode=='recieved'){
-		toLabel.text='From:'+_messageData.FromUserName;
-		replyButton.visible=true;
-	}else{
-		toLabel.text='From:'+_messageData.ToHeader;
-		replyButton.visible=false;
-	}
 	
 	
 	// ##################### Call out to get message detail #####################
@@ -106,13 +99,27 @@ function messageDetail_window(_messageData,_curMode) {
 			
 			if(this.status ==200){
 				log("message data returned:"+response);
-				utmMessageValue.text = response.Message;
+				if(response.Message.length > 200){
+					utmMessageValue.height='55%'
+				}else{
+					utmMessageValue.height='auto';
+				}
+				utmMessageValue.value = response.Message;
 				//Mark Message as Read
 				log('xxxx'+ ! _messageData.WasRead);
-				if( ! _messageData.WasRead){
+				if(  _messageData.WasRead !=1){
 					//#124 Fix issue with message list not refreshing IF message is marked as Read
 					setMessageAsRead(_messageData.Id);
-				}	
+				}
+				
+				if(_curMode=='recieved'){
+					toLabel.text='From:'+_messageData.FromUserName;
+					replyButton.visible=true;
+				}else{
+					toLabel.text='To:'+_messageData.ToHeader;
+					replyButton.visible=false;
+				}
+					
 				
 			}else if(this.status == 400){
 				recordError(response.Message)
@@ -120,8 +127,8 @@ function messageDetail_window(_messageData,_curMode) {
 				recordError(response.Message)
 			}		
 		},		
-		onerror:function(e){
-         	recordError('Send Message Service Error:'+e.error);			
+		onerror:function(e){	
+         	handleError(e);         			
 		}
 		,timeout:utm.netTimeout
 	});	
@@ -145,8 +152,7 @@ var getMarkMessageAsReadReq = Ti.Network.createHTTPClient({
 		
 	},		
 	onerror:function(e){
-		log('Mark Message as Read Service Error:'+e.error);
-     	alert('Mark Message as Read Service Error:'+e.error);			
+		handleError(e);   			
 	}
 	,timeout:utm.netTimeout
 });	
