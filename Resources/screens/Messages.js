@@ -143,6 +143,11 @@ function message_window() {
 	}
 		
 	var getMessagesReq = Ti.Network.createHTTPClient({
+		// onreadystatechange:function(v){
+			// if(getMessagesReq.readyState ===4 & getMessagesReq.status ===403 ){
+				// handleError(v,getMessagesReq);	
+			// }			 	
+		// },
 		onerror:function(e){
 			handleError(e);         				
 		}
