@@ -133,7 +133,7 @@ var ChooseContacts_window =function() {
 		     },
 		     // function called when an error occurs, including a timeout
 		     onerror : function(e) {		        
-		         recordError(e.error);
+		        	handleError(e);   
 		     }
 		     ,timeout:utm.netTimeout
 		});	
@@ -144,7 +144,8 @@ var ChooseContacts_window =function() {
 	});
 	
 	chooseContactsView.restForm=function(){		
-		if(tableview.data==undefined && tableview.data[0] ==undefined) return;
+		if(tableview.data==undefined || tableview.data[0] ==undefined) return;
+		if(tableview.data[0].rows ==undefined) return;
 		var checkRows = tableview.data[0].rows;
 		for (var ii=0;ii<checkRows.length;ii++)
 		{
