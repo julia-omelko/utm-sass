@@ -36,11 +36,11 @@ var MyAccount_window =function() {
 		
 		var dialog = Ti.UI.createAlertDialog({
 		    cancel: 1,
-		    buttonNames: ['Forget Me', 'Cancel'],
+		    buttonNames: [ L('forget_me'), L('cancel')],
 		    message: 'CONFIRM - Your account will be deleted, all MyHorts and Messages will be deleted? - NOTE: This can not be undone and messages are gone forever!',
-		    title: 'Forget Me?'
+		    title: L('forget_me')
 		 });
-		  dialog.addEventListener('click', function(e){s
+		  dialog.addEventListener('click', function(e){
 		    if (e.index === e.source.cancel){
 		      Ti.API.info('The cancel button was clicked');
 		    }

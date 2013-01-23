@@ -2,7 +2,7 @@
 var utm = {};
 utm.loggedIn = false;
 utm.serviceUrl = 'https://dev.youthisme.com/api/v1/';
-utm.validatesSecureCertificate=true;
+utm.validatesSecureCertificate=false;
 utm.color = '#F66F00';
 utm.barColor = '#F66F00';
 utm.backgroundColor='#fff';
@@ -38,6 +38,9 @@ utm.landingView = new utm.LandingScreen();
 
 utm.MessageScreen = require('screens/Messages');
 utm.messageWindow = new utm.MessageScreen();
+
+utm.MyAccountWindow = require('/ui/handheld/MyAccount');
+utm.myAccountWindow = new utm.MyAccountWindow();
 
 utm.ChooseMyHortView = require('/ui/handheld/ChooseMyHort');
 utm.chooseMyHortView = new utm.ChooseMyHortView();
@@ -81,6 +84,13 @@ function showChooseMyHortWindow() {
 	utm.navGroup.open(utm.chooseMyHortView);
 	Ti.App.fireEvent('app:populateMyHortPicker');
 }
+
+Ti.App.addEventListener('app:showMyAccountWindow', showMyAccountWindow);
+function showMyAccountWindow() {
+	utm.navGroup.open(utm.myAccountWindow);
+}
+
+
 
 Ti.App.addEventListener('app:myHortChoosen', setMyHort);
 function setMyHort(e) {

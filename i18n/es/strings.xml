@@ -10,9 +10,11 @@
 	<string name="login_tos">Términos de servicio</string>	
 	<string name="login_about">Acerca de usted esto me</string>
 	<string name="login_privacy">Intimidad</string>	
+	<string name="forget_me">Me Olvides</string>
 
-	<string name="view_messages">Ver mensajes de</string>
-	<string name="send_messages">Enviar un mensaje</string>	
+	<string name="landing_view_messages">Ver mensajes de</string>
+	<string name="landing_send_messages">Enviar un mensaje</string>	
+	<string name="landing_my_account">puede explicar</string>
 	<string name="user_name_password_req">Nombre de usuario / contraseña se requieren</string>
 	<string name="invalid_login">Login incorrecto</string>	
 	<string name="button_back">Dorso</string>	

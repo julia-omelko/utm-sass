@@ -10,10 +10,12 @@
 	<string name="login_toc">Terms of Service</string>	
 	<string name="login_about">About UTM</string>	
 	<string name="login_privacy">Privacy</string>	
+	<string name="forget_me">Forget Me</string>
 	
 	<string name="button_back">Back</string>
-	<string name="view_messages">View Messages</string>
-	<string name="send_messages">Send a Message</string>
+	<string name="landing_view_messages">View Messages</string>
+	<string name="landing_send_messages">Send a Message</string>
+	<string name="landing_my_account">My Account</string>
 	<string name="user_name_password_req">Username/Password are required</string>
 	<string name="invalid_login">Login Invalid</string>	
 	<string name="messages_recieved">Received</string>

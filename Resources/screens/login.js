@@ -108,7 +108,8 @@ var TheLoginScreen_view = function() {
 	
 	
 	var loginReq = Ti.Network.createHTTPClient({
-		validatesSecureCertificate:true 
+		validatesSecureCertificate:utm.validatesSecureCertificate 
+		,tlsVersion:Ti.Network.TLS_VERSION_1_2
 		,onload : function()
 		{
 			var json = this.responseData;
