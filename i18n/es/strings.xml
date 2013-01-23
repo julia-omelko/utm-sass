@@ -7,7 +7,8 @@
 	<string name="logout">Cerrar Sesión</string>
 	<string name="login_forgot_password">¿Ha olvidado su contraseña</string>	
 	<string name="login_signup">¿Desea registrarse?</string>	
-	<string name="login_toc">Términos de servicio</string>	
+	<string name="login_tos">Términos de servicio</string>	
+	<string name="login_about">Acerca de usted esto me</string>
 	<string name="login_privacy">Intimidad</string>	
 
 	<string name="view_messages">Ver mensajes de</string>

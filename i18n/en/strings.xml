@@ -8,6 +8,7 @@
 	<string name="login_forgot_password">Forgot Your Password?</string>	
 	<string name="login_signup">Want to sign up?</string>	
 	<string name="login_toc">Terms of Service</string>	
+	<string name="login_about">About UTM</string>	
 	<string name="login_privacy">Privacy</string>	
 	
 	<string name="button_back">Back</string>
