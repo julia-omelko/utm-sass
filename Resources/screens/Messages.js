@@ -60,14 +60,41 @@ function message_window() {
 	// add delete event listener
 	tableview.addEventListener('delete',function(e){
 		var s = e.section;
-		deleteMessage(e.rowData.Id,false)
+		deleteMessage(e.rowData.messageData.Id,false)
 	});
 	
-	function deleteMessage(messageId,isSuperDelete){
+	function deleteMessage(messageId){
+		
+		if(curMode=='sent' ){
+		
+			var dialog = Ti.UI.createAlertDialog({
+			    cancel: 1,
+			    buttonNames: [ 'Delete Message?','Super Delete Message?', L('cancel')],
+			    message: 'Delete Message simpled deletes the message for you, choose "Super Delete Message?" if you want to delete the message from you and all the people you sent it to. ',
+			    title: 'Delete Options',
+			    messageId:messageId
+			 });
+			  dialog.addEventListener('click', function(e){
+			    if (e.index === 0){
+			      	callDeleteMessage(messageId,false);
+			    }else if (e.index === 1){
+			    		callDeleteMessage(messageId,true);
+			    }else if (e.index === 2){			    		
+			    		Ti.API.info('The cancel button was clicked');
+			    }			   
+			  });
+			  dialog.show();
+			
+		}else{
+			callDeleteMessage(messageId,false);			
+		}
+		
+	}
+	function callDeleteMessage(messageId,isSuperDelete){
 		log("About to delete message:"+messageId +'  isSuperDelete:'+isSuperDelete);
 		deleteMessagesReq.open('delete',utm.serviceUrl+'Messages/DeleteMessage/'+messageId+'?isSuperDelete='+isSuperDelete);
 		deleteMessagesReq.setRequestHeader('Authorization-Token', utm.AuthToken);	
-		deleteMessagesReq.send()
+		deleteMessagesReq.send();		
 	}
 	
 	//
