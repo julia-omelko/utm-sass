@@ -310,15 +310,22 @@ function closeAllScreens(){
 
 function handleError(e,status,responseText) {			
 	setActivityIndicator('');
+	var err = JSON.parse(responseText);
 	if(status ==403){
-		alert('Error:' + responseText);	
+		alert('Error:' + err.Message);	
 		closeAllScreens();	
 		showLoginView();	
 	}else if(e.error != 'undefined' & e.error.indexOf('timed out') > 0){
  		//"Error Domain=ASIHTTPRequestErrorDomain Code=2 "The request timed out" UserInfo=0xb2b10e0 {NSLocalizedDescription=The request timed out}"
 		alert('Your connection may be slow - please retry.');	
  	}else{
-		alert('Error:' + e.error);
+ 		if(e.error != undefined){
+ 			alert('Error:' + e.error);
+ 		}else if (err.Message != undefined){
+ 			alert('Error:' + err.Message);
+ 		}else{
+ 			alert('Error Unknown');	
+ 		}
  	}         
 }
 
