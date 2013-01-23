@@ -89,21 +89,17 @@ var TheLoginScreen_view = function() {
 	var signUpLabel = createLink(L('login_signup'), 'http://dev.youthisme.com/Account/Register')
 	loginView.add(signUpLabel);
 	
-	//Terms of Service
-	var tosLabel = createLink(L('login_toc'), 'http://dev.youthisme.com/Home/About')
+	//About UTM
+	var tosLabel = createLink(L('login_about'), 'http://dev.youthisme.com/Home/About')
 	loginView.add(tosLabel);
-	
-	//Privacy
-	var privacyLabel = createLink(L('login_privacy'), 'http://dev.youthisme.com/Home/About')
-	loginView.add(privacyLabel);
-	
+
 	//Version 0.12 Alpha	
 	var versionLabel = Ti.UI.createLabel({
 		  color: '#000',
 		  font: { fontSize:14 },
 		  text: utm.appVersion,
 		  textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
-		  top: 20,
+		  top: 10,
 		  width: 200, 
 		  height: 50
 		});
