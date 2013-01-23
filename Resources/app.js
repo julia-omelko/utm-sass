@@ -2,6 +2,7 @@
 var utm = {};
 utm.loggedIn = false;
 utm.serviceUrl = 'https://dev.youthisme.com/api/v1/';
+utm.validatesSecureCertificate=true;
 utm.color = '#F66F00';
 utm.barColor = '#F66F00';
 utm.backgroundColor='#fff';
@@ -228,7 +229,8 @@ utm.mainWindow.add(utm.activityIndicator);
 utm.activityIndicator.hide();
 
 utm.logoutReq = Ti.Network.createHTTPClient({
-	timeout:utm.netTimeout,
+	validatesSecureCertificate:utm.validatesSecureCertificate 
+	,timeout:utm.netTimeout,
 	onload : function() {
 		var json = this.responseData;
 		var response = JSON.parse(json);

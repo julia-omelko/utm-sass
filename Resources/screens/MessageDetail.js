@@ -97,7 +97,8 @@ function messageDetail_window(_messageData,_curMode) {
 	
 	// ##################### Call out to get message detail #####################
 	var getMessageDetailReq = Ti.Network.createHTTPClient({
-		onload: function()
+		validatesSecureCertificate:utm.validatesSecureCertificate 
+		,onload: function()
 		{
 			var json = this.responseData;
 			var response = JSON.parse(json);
@@ -151,7 +152,8 @@ function messageDetail_window(_messageData,_curMode) {
 };
 
 var getMarkMessageAsReadReq = Ti.Network.createHTTPClient({
-	onload: function()
+	validatesSecureCertificate:utm.validatesSecureCertificate 
+	,onload: function()
 	{
 		Ti.App.fireEvent('app:refreshMessages');
 		

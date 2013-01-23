@@ -108,10 +108,12 @@ var TheLoginScreen_view = function() {
 	
 	
 	var loginReq = Ti.Network.createHTTPClient({
-		onload : function()
+		validatesSecureCertificate:true 
+		,onload : function()
 		{
 			var json = this.responseData;
 			var response = JSON.parse(json);
+
 			setActivityIndicator('');
 			//clear out the password
 			password.value='';

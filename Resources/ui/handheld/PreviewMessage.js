@@ -197,7 +197,8 @@ var PreviewMessage_window =function() {
 	
 	
 	var getMessagesPreviewReq = Ti.Network.createHTTPClient({
-		onload : function()
+		validatesSecureCertificate:utm.validatesSecureCertificate 
+		,onload : function()
 		{
 			var json = this.responseData;
 			var response = JSON.parse(json);
@@ -221,8 +222,8 @@ var PreviewMessage_window =function() {
 	});	
 	
 	var sendMessageReq = Ti.Network.createHTTPClient({
-		//{timeout:25000,
-		onload : function()
+		validatesSecureCertificate:utm.validatesSecureCertificate 
+		,onload : function()
 		{
 			var json = this.responseData;
 			var response = JSON.parse(json);

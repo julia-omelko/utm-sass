@@ -149,12 +149,8 @@ function message_window() {
 	}
 		
 	var getMessagesReq = Ti.Network.createHTTPClient({
-		// onreadystatechange:function(v){
-			// if(getMessagesReq.readyState ===4 & getMessagesReq.status ===403 ){
-				// handleError(v,getMessagesReq);	
-			// }			 	
-		// },
-		onerror:function(e){
+		validatesSecureCertificate:utm.validatesSecureCertificate 
+		,onerror:function(e){
 			handleError(e,this.status,this.responseText);         				
 		}
 		,timeout:utm.netTimeout
@@ -415,8 +411,8 @@ function message_window() {
 	};
 	
 	var deleteMessagesReq = Ti.Network.createHTTPClient({
-			
-		onload:function(e){
+		validatesSecureCertificate:utm.validatesSecureCertificate 
+		,onload:function(e){
 				log('Message was deleted');
 					
 				/*var opts = {options: [L('send_ok_button')], title:L('messages_message_deleted')};

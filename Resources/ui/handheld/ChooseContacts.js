@@ -102,8 +102,8 @@ var ChooseContacts_window =function() {
 		log('call server and get contact list for myHortId:'+utm.targetMyHortID);
 	
 		var getMessagesReq = Ti.Network.createHTTPClient({
-				 // function called when the response data is available
-		     onload : function(e) {
+		     validatesSecureCertificate:utm.validatesSecureCertificate 
+			,onload : function(e) {
 		         Ti.API.info("Received text: " + this.responseText);
 		        var json = this.responseData;
 				var response = JSON.parse(json);
