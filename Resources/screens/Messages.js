@@ -4,7 +4,13 @@ function message_window() {
 	var navGroup=false;
 	//utm.easyDateFormat = require('lib/date.format');
 	
-	var win = Ti.UI.createWindow({backgroundColor:'#fff',layout:'vertical', title:'Messages', backButtonTitle:L('button_back') });
+	var win = Ti.UI.createWindow({
+		layout:'vertical'
+		, title:'Messages'
+		, backButtonTitle:L('button_back')
+		, backgroundColor:utm.backgroundColor
+		, barColor:utm.barColor
+	});
 	var curMode='recieved';
 	
 	var tabBar = Titanium.UI.iOS.createTabbedBar({
@@ -149,7 +155,7 @@ function message_window() {
 			// }			 	
 		// },
 		onerror:function(e){
-			handleError(e);         				
+			handleError(e,this.status,this.responseText);         				
 		}
 		,timeout:utm.netTimeout
 	});	
@@ -420,7 +426,7 @@ function message_window() {
 				});*/
 			}	,
 			onerror:function(e){
-					handleError(e);   
+					handleError(e,this.status,this.responseText); 
 			}
 			,timeout:utm.netTimeout
 		});		

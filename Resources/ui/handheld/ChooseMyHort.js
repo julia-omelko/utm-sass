@@ -1,10 +1,11 @@
 var ChooseMyHort_window =function() {
 	
 	var chooseMyHortView = Ti.UI.createWindow({
-		backgroundColor:'#fff'
-		,layout:'vertical'
+		layout:'vertical'
 		, title:L('send_choose_myhort')
 		,backButtonTitle:'Back'
+		,backgroundColor:utm.backgroundColor
+		,barColor:utm.barColor
 	});	
 	
 	var myHortPicker = Ti.UI.createPicker();

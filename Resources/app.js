@@ -1,8 +1,12 @@
 //utm is the js namespace for this app
 var utm = {};
 utm.loggedIn = false;
-utm.serviceUrl = 'http://dev.youthisme.com/api/v1/';
-utm.color = '#007EAD';
+utm.serviceUrl = 'https://dev.youthisme.com/api/v1/';
+utm.color = '#F66F00';
+utm.barColor = '#F66F00';
+utm.backgroundColor='#fff';
+utm.textColor='#000';
+utm.textFieldColor='#336699';
 utm.appVersion = 'version 0.19T Beta';
 utm.netTimeout=3000;
 utm.sentToContactListString = '';
@@ -11,6 +15,7 @@ var pWidth = Ti.Platform.displayCaps.platformWidth;
 var pHeight = Ti.Platform.displayCaps.platformHeight;
 utm.SCREEN_WIDTH = (pWidth > pHeight) ? pHeight : pWidth;
 utm.SCREEN_HEIGHT = (pWidth > pHeight) ? pWidth : pHeight;
+
 
 Ti.UI.setBackgroundColor('#fff');
 
@@ -24,7 +29,6 @@ utm.navGroup = Ti.UI.iPhone.createNavigationGroup({
 });
 
 utm.mainWindow.add(utm.navGroup);
-utm.mainWindow.barColor = '#007EAD';
 utm.mainWindow.open();
 
 //############### Require in Modules for app ###############
@@ -168,7 +172,6 @@ function showMessagesAfterSend() {
 
 Ti.App.addEventListener('app:logout', showLoginView);
 function showLoginView() {
-	//utm.navGroup.leftNavButton = utm.emptyView;
 	utm.navGroup.open(utm.loginView);
 	callLogoutService();
 }
@@ -178,11 +181,10 @@ function showLoginView() {
 utm.logoutButton = Ti.UI.createButton({
 	title : L('logout')
 });
-//utm.logoutButton.hide();
+
 utm.logoutButton.addEventListener('click', function() {
 	Ti.App.fireEvent("app:logout", {});
 	utm.landingView.hide();
-	//utm.mainWindow.leftNavButton = utm.emptyView;
 });
 
 utm.backToLandingScreenButton = Ti.UI.createButton({
@@ -211,23 +213,6 @@ utm.backToChooseContactsScreenButton.addEventListener('click', function() {
 //Used to remove the leftNavButton
 utm.emptyView = Ti.UI.createView({});
 
-utm.logoutReq = Ti.Network.createHTTPClient({
-	timeout:utm.netTimeout,
-	onload : function() {
-		var json = this.responseData;
-		var response = JSON.parse(json);
-		log('Logout Service Returned');
-		if (this.status != 200) {
-			log('Logout Error');
-			messageArea.test = "Logout error";
-		}
-	},
-	onerror : function(e) {
-		handleError(e);   
-	}
-	,timeout:utm.netTimeout
-});
-
 utm.activityIndicator = Ti.UI.createActivityIndicator({
 	color : utm.color,
 	font : {
@@ -242,6 +227,24 @@ utm.activityIndicator = Ti.UI.createActivityIndicator({
 utm.mainWindow.add(utm.activityIndicator);
 utm.activityIndicator.hide();
 
+utm.logoutReq = Ti.Network.createHTTPClient({
+	timeout:utm.netTimeout,
+	onload : function() {
+		var json = this.responseData;
+		var response = JSON.parse(json);
+		log('Logout Service Returned');
+		if (this.status != 200) {
+			log('Logout Error');
+			messageArea.test = "Logout error";
+		}
+	},
+	onerror : function(e) {
+		//handleError(e,this.status,this.responseText); 
+		//Note it logout fails its probable auth token does not exist and nothing we can do but record error
+		recordError("Status="+this.status + "   Message:"+this.responseText);
+	}
+	,timeout:utm.netTimeout
+});
 function callLogoutService(){
 	//call logout service
 	utm.logoutReq.open("POST", utm.serviceUrl + "Logout");
@@ -302,35 +305,18 @@ function closeAllScreens(){
 	
 	if(utm.landingView != undefined){
 		utm.navGroup.close(utm.landingView);		
-	}
-	
+	}	
 }
 
-function log(message) {
-	Ti.API.info(message);
-}
-
-/*
- * //todo handle authentication > login window
- * onreadystatechange:function(v){
-			if(getMessagesReq.readyState ===4 & getMessagesReq.status ===403 ){
-				handleError(v,getMessagesReq);	
-				//closeAllScreens();
-			//showLoginView();	
-			}			 	
-		},
- * 
- */
-
-function handleError(e) {			
- 	if(e.error != 'undefined' & e.error.indexOf('timed out') > 0){
+function handleError(e,status,responseText) {			
+	setActivityIndicator('');
+	if(status ==403){
+		alert('Error:' + responseText);	
+		closeAllScreens();	
+		showLoginView();	
+	}else if(e.error != 'undefined' & e.error.indexOf('timed out') > 0){
  		//"Error Domain=ASIHTTPRequestErrorDomain Code=2 "The request timed out" UserInfo=0xb2b10e0 {NSLocalizedDescription=The request timed out}"
- 		//TODO improve to handle time vs an invalid session due to session timeout....
-		setActivityIndicator('');
-		
-		alert('Your request has timed out - please retry.');
-		//closeAllScreens();
-		//showLoginView();	
+		alert('Your connection may be slow - please retry.');	
  	}else{
 		alert('Error:' + e.error);
  	}         
@@ -338,6 +324,8 @@ function handleError(e) {
 
 function recordError(message) {
 	log('Error:' + message);
-
 }
 
+function log(message) {
+	Ti.API.info(message);
+}

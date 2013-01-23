@@ -13,9 +13,11 @@ var PreviewMessage_window =function() {
 	
 	
 	var previewMessageView = Titanium.UI.createWindow({
-	   width:'auto',
-	   height:'auto',
-	   layout:'vertical'
+	   width:'auto'
+	   ,height:'auto'
+	   ,layout:'vertical'
+	   ,backgroundColor:utm.backgroundColor
+	   ,barColor:utm.barColor
 	});	
 	
 	//---------------Original Message -------------------- 	
@@ -31,7 +33,7 @@ var PreviewMessage_window =function() {
 	var yourOrgMessageValue = Ti.UI.createTextArea({
 		value:'',
 		font: {fontSize:12},
-		color: '#888',
+		color:utm.textFieldColor,
 		editable:false,
 		width:utm.SCREEN_WIDTH-10,
 		height : '20%',  //utm.SCREEN_HEIGHT-(utm.SCREEN_HEIGHT/1.2)
@@ -53,7 +55,7 @@ var PreviewMessage_window =function() {
 	var encryptedValue = Ti.UI.createTextArea({
 		text:'',
 		font: {fontSize:12},
-		color: '#888',
+		color:utm.textFieldColor,
 		editable:false,
 		width:utm.SCREEN_WIDTH-10,
 		height : '20%',  //utm.SCREEN_HEIGHT-(utm.SCREEN_HEIGHT/1.2)
@@ -79,7 +81,7 @@ var PreviewMessage_window =function() {
 	  borderWidth: 2,
 	  borderColor: '#bbb',
 	  borderRadius: 5,
-	  color: '#000',
+	  color:utm.textFieldColor,
 	  font: {fontSize:12},
 	  textAlign: 'left',
 	  top: 5,
@@ -100,7 +102,7 @@ var PreviewMessage_window =function() {
 	
 	
 	
-	var hView = Ti.UI.createView({layout:'horizontal', height:50, width:150});
+	var hView = Ti.UI.createView({layout:'horizontal', height:50, width:200});
 	previewMessageView.add(hView);
 	
 	var CheckButton = require('ui/common/checkButton');
@@ -213,7 +215,7 @@ var PreviewMessage_window =function() {
 		},
 		onerror:function(e){
 			sendButton.enabled=true;
-         	handleError(e);   			
+         	handleError(e,this.status,this.responseText); 			
 		}
 		,timeout:utm.netTimeout
 	});	
@@ -248,7 +250,7 @@ var PreviewMessage_window =function() {
 		},
 		onerror:function(e){
 			setActivityIndicator('');
-         		handleError(e);   		
+         		handleError(e,this.status,this.responseText); 		
 		}
 		,timeout:utm.netTimeout
 	});	
@@ -256,7 +258,7 @@ var PreviewMessage_window =function() {
 	
 	Ti.App.addEventListener('app:getMessagePreview',getMessagePreview);
 	function getMessagePreview(msg){
-		
+		sendButton.enabled=false;
 		if(replyMode){
 			var params = {
 				MyHortId: messageData.MyHortId,

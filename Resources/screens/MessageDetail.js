@@ -1,6 +1,10 @@
 function messageDetail_window(_messageData,_curMode) {
 	var moment = require('lib/moment');
-	var win = Ti.UI.createWindow({backgroundColor:'#fff',layout:'vertical' });
+	var win = Ti.UI.createWindow({
+		layout:'vertical'
+		,backgroundColor:utm.backgroundColor
+		,barColor:utm.barColor
+	 });
 	var navGroup=false;
 			
 	
@@ -71,6 +75,7 @@ function messageDetail_window(_messageData,_curMode) {
 		value:'',
 		width:'100%',
 		font: {fontSize:14},
+		color:utm.textFieldColor,
 		top:2,
 		height:'auto',
 		textAlign:'left',
@@ -128,7 +133,7 @@ function messageDetail_window(_messageData,_curMode) {
 			}		
 		},		
 		onerror:function(e){	
-         	handleError(e);         			
+         	handleError(e,this.status,this.responseText);         			
 		}
 		,timeout:utm.netTimeout
 	});	
@@ -152,7 +157,7 @@ var getMarkMessageAsReadReq = Ti.Network.createHTTPClient({
 		
 	},		
 	onerror:function(e){
-		handleError(e);   			
+		handleError(e,this.status,this.responseText); 			
 	}
 	,timeout:utm.netTimeout
 });	

@@ -4,10 +4,12 @@ var WriteMessage_window =function() {
 	var messageData=false;
 	
 	var writeMessageView = Titanium.UI.createWindow({
-	   width:'auto',
-	   title:'Write Message',
-	   height:'auto',
-	   layout:'vertical'
+	   width:'auto'
+	   ,title:'Write Message'
+	   ,height:'auto'
+	   ,layout:'vertical'
+	   ,backgroundColor:utm.backgroundColor
+	   ,barColor:utm.barColor
 	});		
 	
 	var toLabel = Ti.UI.createLabel({
@@ -30,7 +32,7 @@ var WriteMessage_window =function() {
 	  borderWidth: 2,
 	  borderColor: '#bbb',
 	  borderRadius: 5,
-	  color: '#888',
+	  color:utm.textFieldColor,
 	  hintText:L('send_start_your_message_here'),
 	  suppressReturn:false,
 	  textAlign: 'left',
@@ -42,7 +44,7 @@ var WriteMessage_window =function() {
 	
 	var previewButton = Ti.UI.createButton({
 		title:L('send_preview_your_message'),
-		top:34,
+		top:20,
 		width:'auto',
 		height:30,
 		enabled :false

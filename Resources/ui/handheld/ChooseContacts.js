@@ -1,10 +1,12 @@
 var ChooseContacts_window =function() {
 	
 	var chooseContactsView = Titanium.UI.createWindow({
-	   width:'auto',
-	   height:'auto',
-	   layout:'vertical',
-	   title:L('send_choose_contacts')
+	   width:'auto'
+	   ,height:'auto'
+	   ,layout:'vertical'
+	   ,title:L('send_choose_contacts')
+	   ,backgroundColor:utm.backgroundColor
+	   ,barColor:utm.barColor
 	});		
 	
 	var selectedContacts =[];
@@ -133,7 +135,7 @@ var ChooseContacts_window =function() {
 		     },
 		     // function called when an error occurs, including a timeout
 		     onerror : function(e) {		        
-		        	handleError(e);   
+		        	handleError(e,this.status,this.responseText); 
 		     }
 		     ,timeout:utm.netTimeout
 		});	

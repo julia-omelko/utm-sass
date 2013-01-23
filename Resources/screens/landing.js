@@ -1,7 +1,10 @@
 var TheLandingScreen_view = function() {
 
 	var landingView = Ti.UI.createWindow({			
-		layout:'vertical',title:'', backButtonTitle:L('logout')
+		layout:'vertical',title:''
+		, backButtonTitle:L('logout')
+		, backgroundColor:utm.backgroundColor
+		, barColor:utm.barColor
 	});
 	
 	var utmLogo = Ti.UI.createImageView({

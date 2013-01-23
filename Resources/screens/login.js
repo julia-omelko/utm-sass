@@ -1,12 +1,13 @@
 var TheLoginScreen_view = function() {
 	
 	var loginView = Ti.UI.createWindow({		
-		backgroundColor: 'transparent',
 		layout:'vertical'
+		,backgroundColor:utm.backgroundColor
+		,barColor:utm.barColor
 	});
 	
 	var messageArea = Ti.UI.createLabel({
-	  color: '#900',
+	  color: utm.textColor,
 	  text: '',
 	  textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
 	  width: 'auto', height: 'auto'
@@ -22,10 +23,9 @@ var TheLoginScreen_view = function() {
 	loginView.add(utmLogo);
 	
 	var username = Ti.UI.createTextField({
-		color:'#336699',		
+		color:utm.textFieldColor,		
 		width:300,
 		height:40,
-		//value : 'ad',
 		hintText:L('label_user_name'),
 		autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
 		autocorrect: false,
@@ -36,11 +36,10 @@ var TheLoginScreen_view = function() {
 	loginView.add(username);
 	
 	var password = Ti.UI.createTextField({
-		color:'#336699',
+		color:utm.textFieldColor,
 		top:20,
 		width:300,
 		height:40,
-	//	value : 't',
 		hintText:L('label_password'),
 		passwordMask:true,
 		autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
@@ -61,8 +60,11 @@ var TheLoginScreen_view = function() {
 	});
 	loginView.add(loginBtn);
 	
-
+	
+	fillInTestLogin();
+	
 	check_network();
+	
 	
 	function check_network() {
 		log('Check network: '+Titanium.Network.networkType == Titanium.Network.NETWORK_NONE);
@@ -115,6 +117,8 @@ var TheLoginScreen_view = function() {
 			var json = this.responseData;
 			var response = JSON.parse(json);
 			setActivityIndicator('');
+			//clear out the password
+			password.value='';
 			log('Login Service Returned');
 			if(this.status ==200){
 				//username.value('Login Successfull');
@@ -125,10 +129,6 @@ var TheLoginScreen_view = function() {
 			    Titanium.Analytics.featureEvent('user.logged_in');
 			    
 				
-			}else if(this.status == 400){
-				
-				setMessageArea(L("invalid_login"));
-				
 			}else{
 				log('Login Error');
 				messageArea.test="error";
@@ -137,8 +137,23 @@ var TheLoginScreen_view = function() {
 			
 		},
 		onerror:function(e){
-         	handleError(e);         	
-		}
+			//clear out the password
+			password.value='';
+			if(this.status==401){
+			  	setActivityIndicator('');
+				
+				var err = JSON.parse(this.responseText);
+				setMessageArea(err.Message);
+				//TODO come up with error number system so we can internationalize errors
+				//setMessageArea(L("invalid_login"));
+				//Too many tries - Account is locked for 1 hour.
+				//Invalid UserName/Password
+				Titanium.Analytics.featureEvent('user.logged_in_invalid');
+			}else{
+			  	handleError(e,this.status,this.responseText);
+			}
+ 	         	
+		}		
 		,timeout:utm.netTimeout
 		}
 	);
@@ -152,23 +167,20 @@ var TheLoginScreen_view = function() {
 		username.blur();
 		password.blur();
 		setActivityIndicator('Logging in');
+		setMessageArea("");
 		
 		if (username.value != '' && password.value != '')
 		{	
 			log(username.value +' is logging in to UTM');
-			//if(!utm.loggedIn){
-				loginReq.open("POST",utm.serviceUrl+"Login");				
-			//}
-			
-			//loginReq.setTimeout([25000]);
+			loginReq.open("POST",utm.serviceUrl+"Login");				
+
 			var params = {
 				UserName: username.value,
 				Password: password.value,
 				RememberMe: true								
 			};
 			loginReq.send(params);
-			//clear out the password
-			password.value='';
+			
 		}
 		else
 		{
@@ -180,7 +192,7 @@ var TheLoginScreen_view = function() {
 	function createLink(lbl,url){
 		
 		var newLinkButton = Ti.UI.createLabel({
-		  color: utm.color,
+		  color: utm.textColor,
 		  font: { fontSize:14 },
 		  text: lbl,
 		  textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
@@ -207,7 +219,12 @@ var TheLoginScreen_view = function() {
 			messageArea.hide();
 		}
 	}
-	
+	function fillInTestLogin(){
+		if (Ti.Platform.model == 'Simulator') { 
+ 			username.value='ad';
+ 			password.value='t';
+		}
+	}
 
 	return loginView;
 };
