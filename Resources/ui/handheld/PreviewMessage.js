@@ -9,6 +9,7 @@ var PreviewMessage_window =function() {
 	var TWITTER=3;
 	
 	var replyMode=false;
+	var deleteOnRead=false;
 	var messageData=false;
 	
 	
@@ -49,9 +50,10 @@ var PreviewMessage_window =function() {
 		top:5,
 		font: {fontSize:14, fontWeight:'bold'},
 		height:'auto',
-		textAlign:'left'
+		textAlign:'left',
+		visible:false //HIDEN
 	});
-	previewMessageView.add(encryptedLabel);
+	//previewMessageView.add(encryptedLabel);
 	var encryptedValue = Ti.UI.createTextArea({
 		text:'',
 		font: {fontSize:12},
@@ -59,9 +61,10 @@ var PreviewMessage_window =function() {
 		editable:false,
 		width:utm.SCREEN_WIDTH-10,
 		height : '20%',  //utm.SCREEN_HEIGHT-(utm.SCREEN_HEIGHT/1.2)
-		textAlign:'left'
+		textAlign:'left',
+		visible:false //HIDEN
 	});
-	previewMessageView.add(encryptedValue);
+	//previewMessageView.add(encryptedValue);
 	
 	
 	
@@ -99,9 +102,7 @@ var PreviewMessage_window =function() {
 	});
 	
 	//------------- Send Type Button Bar------------------ 	
-	
-	
-	
+
 	var hView = Ti.UI.createView({layout:'horizontal', height:50, width:200});
 	previewMessageView.add(hView);
 	
@@ -122,7 +123,25 @@ var PreviewMessage_window =function() {
 	hView.add(facebookButton);	
 	
 	var sendSms=false;
-
+	
+	//----------Delete On Read Switch-------------------- 	
+	var deleteOnReadLabel = Ti.UI.createLabel({
+		text:L('send_delete_on_read'),
+		font: {fontSize:14, fontWeight:'bold'},
+		width:utm.SCREEN_WIDTH-10,
+		top:2,
+		textAlign:'left'
+	});
+	previewMessageView.add(deleteOnReadLabel);
+	
+	var deleteOnReadSwitch = Ti.UI.createSwitch({
+	  value:false 
+	});
+	previewMessageView.add(deleteOnReadSwitch);
+	
+	deleteOnReadSwitch.addEventListener('change',function(e){
+	  deleteOnRead=e.value;
+	});
 	
 	//------------- Send Button ------------------ 
 	var sendButton = Ti.UI.createButton({
@@ -131,8 +150,8 @@ var PreviewMessage_window =function() {
 		width:'auto',
 		height:30
 	});	
-	previewMessageView.add(sendButton);
 	
+	previewMessageView.add(sendButton);
 	sendButton.addEventListener('click',function()
 	{	
 		var copiedToUsers=[];
@@ -154,7 +173,7 @@ var PreviewMessage_window =function() {
 				MyHortId: messageData.MyHortId,
 				PlainText: yourOrgMessageValue.value,
 				UtmText:customUtmMessage.value,
-				DeleteOnRead:'false',
+				DeleteOnRead:deleteOnRead,
 				RjCrypt:curRjCrypt,
 				MessageType:messageType,
 				FromUserId:utm.User.UserProfile.UserId,
@@ -176,7 +195,7 @@ var PreviewMessage_window =function() {
 				MyHortId: utm.targetMyHortID,
 				PlainText: yourOrgMessageValue.value,
 				UtmText:customUtmMessage.value,
-				DeleteOnRead:'false',
+				DeleteOnRead:deleteOnRead,
 				RjCrypt:curRjCrypt,
 				MessageType:messageType,
 				FromUserId:utm.User.UserProfile.UserId,
