@@ -231,18 +231,23 @@ var PreviewMessage_window =function() {
 			if(this.status ==200 && response.Status =='Success'){
 				log('Send Successful');
 				
-				//pop a dialog and on close go back to landing screen
-				var opts = {options: [L('send_ok_button')], title:L('send_our_message_was_sent')};
-				//var dialog = Ti.UI.createOptionDialog(opts).show();
-				Ti.App.fireEvent("app:showMessagesAfterSend", {});
-					resetScreen();
-				//dialog.addEventListener('click', function(e){
-					//resetScreen();
-					
-				//});
+				
+				Ti.App.fireEvent("app:showMessagesAfterSend", {}); 
+				resetScreen();
+				
 				Titanium.Analytics.featureEvent('user.sent_message');
 		
-			}else{
+			}else if(this.status ==200 && response.Status =='Warning'){
+				log('Send Successful with warning');
+				
+				Ti.App.fireEvent("app:showMessagesAfterSend", {});
+				resetScreen();
+				
+				Titanium.Analytics.featureEvent('user.sent_message');
+			}
+			
+			
+			else{
 				//Error:UserId: 1007 cannot accept Email messages
 				setActivityIndicator('');
 				recordError(response.Message+ ' ExceptionMessag:'+response.ExceptionMessage);
