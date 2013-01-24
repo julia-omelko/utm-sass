@@ -9,7 +9,7 @@ utm.backgroundColor='#fff';
 utm.textColor='#000';
 utm.textFieldColor='#336699';
 utm.appVersion = 'Version:'+Ti.App.version;
-utm.netTimeout=3000;
+utm.netTimeout=6000;
 utm.sentToContactListString = '';
 utm.networkIsOnline = false;
 var pWidth = Ti.Platform.displayCaps.platformWidth;
@@ -324,7 +324,7 @@ function handleError(e,status,responseText) {
 	setActivityIndicator('');
 	var err = JSON.parse(responseText);
 	if(status ==403){
-		alert('Error:' + err.Message);	
+		alert('Your session is no longer valid, you need to log back in.');	
 		closeAllScreens();	
 		showLoginView();	
 	}else if(e.error != 'undefined' & e.error.indexOf('timed out') > 0){
