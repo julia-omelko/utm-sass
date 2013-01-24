@@ -34,6 +34,7 @@
 	<string name="send_UTM_message_now">Send Message Now</string>
 	<string name="send_our_message_was_sent">Your Message was Sent</string>
 	<string name="send_ok_button">OK</string>
+	<string name="send_delete_on_read">Delete Message when Read</string>
 	<string name="edit">Edit</string>
 	<string name="cancel">Cancel</string>
 			
