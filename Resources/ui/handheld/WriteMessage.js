@@ -103,6 +103,13 @@ var WriteMessage_window =function() {
 		toLabel.text ='Reply to: '+  messageData.FromUserName;
 	}
 	
+	Ti.App.addEventListener('app:showChooseMyHortWindow', showChooseMyHortWindow);
+	function showChooseMyHortWindow() {
+		//Clear out the types message when user presses the Send Message button
+		textArea.value='';		
+	}
+	
+	
 	return writeMessageView;
 	
 	
