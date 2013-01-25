@@ -69,7 +69,7 @@ function message_window() {
 			var dialog = Ti.UI.createAlertDialog({
 				cancel : 1,
 				buttonNames : ['Delete Message?', 'Super Delete Message?', L('cancel')],
-				message : 'Delete Message simpled deletes the message for you, choose "Super Delete Message?" if you want to delete the message from you and all the people you sent it to. ',
+				message : '“Delete Message” simply deletes this message from your  message box; “Super Delete Message” also deletes it from the message boxes of all recipients. ',
 				title : 'Delete Options',
 				messageId : messageId
 			});
