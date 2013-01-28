@@ -160,14 +160,24 @@ function message_window() {
 
 
 	Ti.App.addEventListener('app:refreshMessages', refreshMessages);
-	function refreshMessages() {
-		getMessages(curMode);
+	function refreshMessages(data) {
+		
+		if(data.showProgress) {
+			showProgress=true;
+		}else{
+			showProgress=false;
+		} 
+		
+		getMessages(curMode,showProgress);
 	}
 
-	function getMessages(mode) {
-
-		setActivityIndicator('Getting your messages...');
-
+	function getMessages(mode,showProgress) {
+		if(typeof showProgress === 'undefined') showProgress=true;
+		
+		if(showProgress){
+			setActivityIndicator('Getting your messages...');
+		}
+		
 		if (mode == 'recieved') {
 			getMessagesReq.open("GET", utm.serviceUrl + "ReceivedMessages?$orderby=DateSent desc");
 		} else {

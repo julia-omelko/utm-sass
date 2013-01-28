@@ -155,7 +155,7 @@ var getMarkMessageAsReadReq = Ti.Network.createHTTPClient({
 	validatesSecureCertificate:utm.validatesSecureCertificate 
 	,onload: function()
 	{
-		Ti.App.fireEvent('app:refreshMessages');
+		Ti.App.fireEvent('app:refreshMessages', {showProgress:false});
 		
 	},		
 	onerror:function(e){
