@@ -259,14 +259,16 @@ var PreviewMessage_window =function() {
 			}else if(this.status ==200 && response.Status =='Warning'){
 				log('Send Successful with warning');
 				
-				Ti.App.fireEvent("app:showMessagesAfterSend", {});
-				resetScreen();
-				
-				Titanium.Analytics.featureEvent('user.sent_message');
-			}
-			
-			
-			else{
+				var dialog = Ti.UI.createAlertDialog({
+				    	message: 'Warning: Not all recipents will recieve the messages based on the types you choose to send to.',
+				    ok: 'Okay',
+				    title: 'Message Delivery Warning'
+				  }).show();
+				  
+				  	Ti.App.fireEvent("app:showMessagesAfterSend", {});
+					resetScreen();				
+					Titanium.Analytics.featureEvent('user.sent_message');			
+			}else{
 				//Error:UserId: 1007 cannot accept Email messages
 				setActivityIndicator('');
 				recordError(response.Message+ ' ExceptionMessag:'+response.ExceptionMessage);
@@ -303,7 +305,14 @@ var PreviewMessage_window =function() {
 	function resetScreen(){
 		yourOrgMessageValue.value='';
 		encryptedValue.value='';
-		customUtmMessage.value('');
+		customUtmMessage.value='';
+		
+		//reset the buttons
+		smsButton.setChecked(false);
+		emailButton.setChecked(false);
+		twitterButton.setChecked(false);
+		facebookButton.setChecked(false);
+		
 	}
 	
 	Ti.App.addEventListener('app:contactsChoosen',setContactsChoosen);
@@ -312,6 +321,7 @@ var PreviewMessage_window =function() {
 		
 		sentToContactListString='To: ';
 		setButtonBarEnabled(false);
+		setButtonBarUnChecked();
 
 		for (var x=0;x<e.sentToContactList.length;x++)
 		{
@@ -323,11 +333,16 @@ var PreviewMessage_window =function() {
 				smsButton.setChecked(true);//default at least sms ...Could save pref of the user for next time...
 			}
 			
-			if(e.sentToContactList[x].userData.HasEmail)
+			if(e.sentToContactList[x].userData.HasEmail){
 				emailButton.setEnabled(true);
+				emailButton.setChecked(true);
+			}
 				
-			if(e.sentToContactList[x].userData.HasTwitter)
+			if(e.sentToContactList[x].userData.HasTwitter){
 				twitterButton.setEnabled(true);
+				twitterButton.setChecked(true);
+			}
+				
 			//if(utm.User.UserProfile.HasFaceBook
 				
 				
@@ -344,10 +359,16 @@ var PreviewMessage_window =function() {
 		twitterButton.setEnabled(_enable);
 		facebookButton.setEnabled(_enable);
 	}
+	function setButtonBarUnChecked(){		
+		smsButton.setChecked(false);
+		emailButton.setChecked(false);
+		twitterButton.setChecked(false);
+		facebookButton.setChecked(false);
+	}
 	
 	function getMessageSendTypes(){
 		//Set up what type of messages to be send out
-		// based on selected mesage types by the user
+		// based on selected message types by the user
 		
 		var messageType='';
 		
