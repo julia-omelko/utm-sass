@@ -25,6 +25,11 @@ function message_window() {
 	win.add(tabBar);
 
 	tabBar.addEventListener('click', function(e) {
+		//get out  of edit mode.
+		win.setRightNavButton(edit);
+		tableview.editing = false;
+		tableview.setData([]);
+		
 		if (tabBar.index == 0) {
 			curMode = "recieved";
 			getMessages('recieved');
@@ -189,7 +194,7 @@ function message_window() {
 		var json = this.responseData;
 		var response = JSON.parse(json);
 		var tableData = [];
-		setActivityIndicator('');
+		
 		Titanium.Analytics.featureEvent('user.viewed_messages');
 		if (this.status == 200) {
 
@@ -232,7 +237,9 @@ function message_window() {
 					touchEnabled: true,
 					top:2,
 					left: 17,
-					width: '100%'
+					width: utm.SCREEN_WIDTH-100,
+					height:15,
+					ellipsize:true
 				});
 				hView.add(fromMessage);
 
@@ -279,12 +286,12 @@ function message_window() {
 		} else if (this.status == 400) {
 
 			recordError("Error:" + this.responseText);
-			setActivityIndicator('');
 
 		} else {
 			recordError("error");
-			setActivityIndicator('');
 		}
+
+		setActivityIndicator('');
 
 		/*
 
