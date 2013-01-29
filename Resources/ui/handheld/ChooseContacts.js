@@ -112,7 +112,7 @@ var ChooseContacts_window =function() {
 				if(this.status ==200){					
 					log("data returned:"+response);
 					var data = [];
-				
+					utm.curUserCurMyHortHasTwitter = false;
 					
 					for (var i=0;i<response.length;i++)
 					{
@@ -121,6 +121,11 @@ var ChooseContacts_window =function() {
 						var l = Ti.UI.createLabel({left:5, font:{fontSize:16}, height:30,color:'#000',text:response[i].NickName});
 						row.add(l);
 						
+						if(utm.User.UserProfile.UserId ===response[i].UserId ){
+							if(response[i].HasTwitter){
+								utm.curUserCurMyHortHasTwitter=true;
+							}
+						}
 						
 						data[i] = row;
 					}
