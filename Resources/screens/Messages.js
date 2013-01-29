@@ -462,6 +462,11 @@ function message_window() {
 		},
 		timeout : utm.netTimeout
 	});
+	
+	win.addEventListener('blur', function() {
+   		win.setRightNavButton(edit);
+		tableview.editing = false;
+	});
 
 	return win;
 };
