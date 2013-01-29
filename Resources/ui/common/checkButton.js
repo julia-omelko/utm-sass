@@ -31,7 +31,7 @@ var CheckButton = function(_name){
 	}
 	
 	checkButton.setChecked= function(_checked){
-		if(! isEnabled) return; //do nothing
+		//if(! isEnabled) return; //do nothing
 		isChecked=_checked;
 		if(!_checked){
 			checkButton.backgroundImage = '/images/'+name+'.png';
