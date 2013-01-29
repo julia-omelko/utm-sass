@@ -154,6 +154,37 @@ var PreviewMessage_window =function() {
 	previewMessageView.add(sendButton);
 	sendButton.addEventListener('click',function()
 	{	
+		
+	//	if(replyMode){
+			var invalidRecips = checkMessageSendTypesForReceipents(messageData.FromUserId);
+		//}else{
+		//	var invalidRecips = checkMessageSendTypesForReceipents(utm.sentToContactList);
+	//	}
+		if(invalidRecips != ''){
+			//Found issue that one or more users will not get the message because of the user chosen types	
+			var dialog = Ti.UI.createAlertDialog({
+			    cancel: 1,
+			    buttonNames: ['Ok', 'Cancel', 'Help'],
+			    message: 'Some of the people you choose to receive this message will not get the message based on the message types you choose, do you want to continue and send the message anyway?',
+			    title: 'Message Delivery Problem'
+			  });
+			  
+			  dialog.addEventListener('click', function(e){
+			    if (e.index !== e.source.cancel){
+					sendMessages();    		
+			    }
+			    
+			  });
+			  dialog.show();
+	
+		}else{
+			sendMessages();
+		}
+
+	});
+	
+	function sendMessages(){
+		
 		var copiedToUsers=[];
 		var messageType=getMessageSendTypes();
 		
@@ -169,6 +200,7 @@ var PreviewMessage_window =function() {
 		sendButton.enabled=false;
 		if(replyMode){
 			//Reply to a message
+			//todo need to handle message types here
 			var params = {
 				MyHortId: messageData.MyHortId,
 				PlainText: yourOrgMessageValue.value,
@@ -212,7 +244,8 @@ var PreviewMessage_window =function() {
 			
 		sendMessageReq.send(JSON.stringify(params));//NOTE: Had to add stringify here else Ti will escape the Array [] and no messages go out.	
 		Titanium.Analytics.featureEvent('user.sent_message');
-	});
+	}
+	
 	
 	
 	var getMessagesPreviewReq = Ti.Network.createHTTPClient({
@@ -257,14 +290,14 @@ var PreviewMessage_window =function() {
 				Titanium.Analytics.featureEvent('user.sent_message');
 		
 			}else if(this.status ==200 && response.Status =='Warning'){
-				log('Send Successful with warning');
-				
-				var dialog = Ti.UI.createAlertDialog({
+				log('Send Successful with warning:'+response.Message);
+				//todo decide if we show warning here or not
+				/*var dialog = Ti.UI.createAlertDialog({
 				    	message: 'Warning: Not all recipents will recieve the messages based on the types you choose to send to.',
 				    ok: 'Okay',
 				    title: 'Message Delivery Warning'
 				  }).show();
-				  
+				  */
 				  	Ti.App.fireEvent("app:showMessagesAfterSend", {});
 					resetScreen();				
 					Titanium.Analytics.featureEvent('user.sent_message');			
@@ -312,7 +345,7 @@ var PreviewMessage_window =function() {
 		emailButton.setChecked(false);
 		twitterButton.setChecked(false);
 		facebookButton.setChecked(false);
-		
+		sendButton.enabled=true;
 	}
 	
 	Ti.App.addEventListener('app:contactsChoosen',setContactsChoosen);
@@ -337,11 +370,17 @@ var PreviewMessage_window =function() {
 				emailButton.setEnabled(true);
 				emailButton.setChecked(true);
 			}
-				
+			
+			//USE this if we care if the sender has twitter in current myHort			
+			if(utm.curUserCurMyHortHasTwitter){
+				twitterButton.setEnabled(true);
+				twitterButton.setChecked(true);
+			}	
+			/* USE this if we care if the reciever has twitter
 			if(e.sentToContactList[x].userData.HasTwitter){
 				twitterButton.setEnabled(true);
 				twitterButton.setChecked(true);
-			}
+			}*/
 				
 			//if(utm.User.UserProfile.HasFaceBook
 				
@@ -382,6 +421,38 @@ var PreviewMessage_window =function() {
 		
 		return messageType;
 	}
+	
+	function checkMessageSendTypesForReceipents(sentToList){
+		var invalidRecips='';
+		for (var x=0;x<sentToList.length;x++)
+		{
+			var typesOk=false;
+	
+			if(smsButton.isChecked() & sentToList[x].userData.HasMobile){
+				typesOk = true;
+			}
+			if(emailButton.isChecked() & sentToList[x].userData.HasEmail){
+				typesOk = true;
+			}
+			if(twitterButton.isChecked() & sentToList[x].userData.HasTwitter){
+				typesOk = true;	
+			}
+			if(facebookButton.isChecked() & sentToList[x].userData.HasFacebook){
+				typesOk = true;	
+			}	
+			
+			if(!typesOk){
+				invalidRecips+=sentToList[x].nickName+',';
+			}			
+			
+		}			
+		
+		//remove last comma
+		invalidRecips=invalidRecips.slice(0, -1);
+		
+		return invalidRecips;
+	}
+	
 	
 	previewMessageView.setMode=function(_theMode){
 		if(_theMode ==='reply')

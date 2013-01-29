@@ -87,11 +87,78 @@ function messageDetail_window(_messageData,_curMode) {
 	var replyButton = Ti.UI.createButton({title:'Reply', visible:false, top:3});
 	replyButton.addEventListener('click', function()
 	{	log('replyButton fired');
-	  	Ti.App.fireEvent("app:showWriteMessageView", {mode:'reply', messageData: _messageData});
+	
+		getReplyToUserData(_messageData.FromUserId);
+	
+	  //	Ti.App.fireEvent("app:showWriteMessageView", {mode:'reply', messageData: _messageData});
 		//utm.containerWindow.leftNavButton = utm.emptyView;
 		
 	});
 	win.add(replyButton);
+
+// ##################### Call out to get Reply To User Data #####################
+
+	function getReplyToUserData(replyingToUserId) {
+
+		var getMembersReq = Ti.Network.createHTTPClient({
+		     validatesSecureCertificate:utm.validatesSecureCertificate 
+			,onload : function(e) {
+		         Ti.API.info("Received text: " + this.responseText);
+		        var json = this.responseData;
+				var response = JSON.parse(json);
+				//Received text: [{"UserId":1004,"MyHortId":1003,"MemberType":"Primary","NickName":"Ant","HasMobile":true,"HasEmail":true,"HasFaceBook":false,"HasTwitter":false}]
+				
+				if(this.status ==200){					
+					log("data returned:"+response);
+					var data = [];
+					utm.curUserCurMyHortHasTwitter = false;
+					
+					var selectedContacts=[];
+					
+					selectedContacts.push({userId:response.UserId, nickName:response.nickName,userData:response[0]});
+					
+					Ti.App.fireEvent("app:contactsChoosen", {
+				        sentToContactList: selectedContacts
+				    });	
+				    
+				    	Ti.App.fireEvent("app:showWriteMessageView", {mode:'reply', messageData: _messageData});
+					
+				/*	for (var i=0;i<response.length;i++)
+					{
+						var row = Ti.UI.createTableViewRow({UserId:response[i].UserId, id:i, nickName:response[i].NickName,height:35,userData:response[i]});
+						
+						var l = Ti.UI.createLabel({left:5, font:{fontSize:16}, height:30,color:'#000',text:response[i].NickName});
+						row.add(l);
+						
+						if(utm.User.UserProfile.UserId ===response[i].UserId ){
+							if(response[i].HasTwitter){
+								utm.curUserCurMyHortHasTwitter=true;
+							}
+						}
+						
+						data[i] = row;
+					}
+				
+		*/
+					
+				}else if(this.status == 400){				
+					recordError(response.Message+ ' ExceptionMessag:'+response.ExceptionMessage);			
+				}else{
+					log("error");				
+				}		
+		     },
+		     // function called when an error occurs, including a timeout
+		     onerror : function(e) {		        
+		        	handleError(e,this.status,this.responseText); 
+		     }
+		     ,timeout:utm.netTimeout
+		});	
+		getMembersReq.open("GET",utm.serviceUrl+"Members/"+_messageData.MyHortId +'?$filter=UserId eq '+replyingToUserId );
+		getMembersReq.setRequestHeader('Authorization-Token', utm.User.UserProfile.AuthToken);	
+		getMembersReq.send();	
+		
+	}
+
 
 	
 	

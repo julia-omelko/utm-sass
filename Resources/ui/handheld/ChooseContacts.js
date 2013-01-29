@@ -101,7 +101,7 @@ var ChooseContacts_window =function() {
 	//************* get Contacts*************
 		log('call server and get contact list for myHortId:'+utm.targetMyHortID);
 	
-		var getMessagesReq = Ti.Network.createHTTPClient({
+		var getMembersReq = Ti.Network.createHTTPClient({
 		     validatesSecureCertificate:utm.validatesSecureCertificate 
 			,onload : function(e) {
 		         Ti.API.info("Received text: " + this.responseText);
@@ -144,9 +144,9 @@ var ChooseContacts_window =function() {
 		     }
 		     ,timeout:utm.netTimeout
 		});	
-		getMessagesReq.open("GET",utm.serviceUrl+"Members/"+utm.targetMyHortID);
-		getMessagesReq.setRequestHeader('Authorization-Token', utm.User.UserProfile.AuthToken);	
-		getMessagesReq.send();	
+		getMembersReq.open("GET",utm.serviceUrl+"Members/"+utm.targetMyHortID);
+		getMembersReq.setRequestHeader('Authorization-Token', utm.User.UserProfile.AuthToken);	
+		getMembersReq.send();	
 		
 	});
 	

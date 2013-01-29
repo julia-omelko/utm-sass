@@ -3,14 +3,19 @@ var WriteMessage_window =function() {
 	var replyMode=false;
 	var messageData=false;
 	
-	var writeMessageView = Titanium.UI.createWindow({
-	   width:'auto'
-	   ,title:'Write Message'
-	   ,height:'auto'
-	   ,layout:'vertical'
-	   ,backgroundColor:utm.backgroundColor
+	var writeMessageWindow = Titanium.UI.createWindow({
+		layout:'vertical'
+		,title:'Write Message'
+		,backgroundColor:utm.backgroundColor
 	   ,barColor:utm.barColor
-	});		
+	});
+
+	var scrollableView = Ti.UI.createScrollView({
+		contentHeight:'auto',
+		contentWidth:'auto',
+		layout:'vertical'
+	});
+	writeMessageWindow.add(scrollableView);
 	
 	var toLabel = Ti.UI.createLabel({
 		text:utm.sentToContactListString,
@@ -18,7 +23,7 @@ var WriteMessage_window =function() {
 		height:30,
 		textAlign:'left'
 	});
-	writeMessageView.add(toLabel);
+	scrollableView.add(toLabel);
 	
 	var yourMessageLabel = Ti.UI.createLabel({
 		text:L('send_your_message'),
@@ -26,7 +31,7 @@ var WriteMessage_window =function() {
 		height:'auto',
 		textAlign:'left'
 	});
-	writeMessageView.add(yourMessageLabel);
+	scrollableView.add(yourMessageLabel);
 	
 	var textArea = Ti.UI.createTextArea({
 	  borderWidth: 2,
@@ -37,9 +42,11 @@ var WriteMessage_window =function() {
 	  suppressReturn:false,
 	  textAlign: 'left',
 	  top: 5,
-	  width: utm.SCREEN_WIDTH-10, height : utm.SCREEN_HEIGHT-(utm.SCREEN_HEIGHT/1.2)
+	  height:'auto',
+	  width: utm.SCREEN_WIDTH-10
+	  , height : utm.SCREEN_HEIGHT-(utm.SCREEN_HEIGHT/1.2)
 	}); //todo get the screen width so we can make this wider if possible
-	writeMessageView.add(textArea);
+	scrollableView.add(textArea);
 	
 	
 	var previewButton = Ti.UI.createButton({
@@ -49,7 +56,7 @@ var WriteMessage_window =function() {
 		height:30,
 		enabled :false
 	});	
-	writeMessageView.add(previewButton);
+	scrollableView.add(previewButton);
 	
 	textArea.addEventListener('change',function(){
 		if(textArea.value.length >0)
@@ -86,19 +93,20 @@ var WriteMessage_window =function() {
 		toLabel.width='100%';	
 	}
 	
-	writeMessageView.restForm=function(){		
+	writeMessageWindow.restForm=function(){		
 		textArea.value='';
 		replyMode=false;
+		previewButton.enabled=false;
 	}
 	
-	writeMessageView.setMode=function(_theMode){
+	writeMessageWindow.setMode=function(_theMode){
 		if(_theMode ==='reply')
 			replyMode=true;
 		else
 			replyMode=false;	
 	}
 	
-	writeMessageView.setMessageData=function(_messageData){
+	writeMessageWindow.setMessageData=function(_messageData){
 		messageData=_messageData;
 		toLabel.text ='Reply to: '+  messageData.FromUserName;
 	}
@@ -106,11 +114,12 @@ var WriteMessage_window =function() {
 	Ti.App.addEventListener('app:showChooseMyHortWindow', showChooseMyHortWindow);
 	function showChooseMyHortWindow() {
 		//Clear out the types message when user presses the Send Message button
-		textArea.value='';		
+		textArea.value='';	
+		previewButton.enabled=false;	
 	}
 	
 	
-	return writeMessageView;
+	return writeMessageWindow;
 	
 	
 }
