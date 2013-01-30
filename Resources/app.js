@@ -16,6 +16,7 @@ var pWidth = Ti.Platform.displayCaps.platformWidth;
 var pHeight = Ti.Platform.displayCaps.platformHeight;
 utm.SCREEN_WIDTH = (pWidth > pHeight) ? pHeight : pWidth;
 utm.SCREEN_HEIGHT = (pWidth > pHeight) ? pWidth : pHeight;
+utm.enableSendMessageButton=false;
 
 
 Ti.UI.setBackgroundColor('#fff');
@@ -65,12 +66,27 @@ function handleLoginSuccess(event) {
 	utm.loggedIn = true;
 	utm.User = event.userData;
 	utm.AuthToken = event.userData.UserProfile.AuthToken;
+	
 	utm.myHorts = event.userData.MyHorts;
+	if(utm.myHorts.length ===0 ){
+		utm.enableSendMessageButton=false;
+		var dialog = Ti.UI.createAlertDialog({
+		    cancel: 1,
+			    buttonNames: ['Ok'],
+			    message: 'You have not setup any MyHorts to group the people you with to communicate to, please create at least one MyHort',
+			    title: 'No MyHorts Available'
+			  });	//TODO add option to link to website to create MyHort
+			  dialog.show();
+	}else{
+		utm.enableSendMessageButton=true;
+	}
+	
 	showLandingView();
 }
 
 Ti.App.addEventListener('app:showLandingView', showLandingView);
 function showLandingView() {		
+	utm.landingView.setEnableSendMessageButton(utm.enableSendMessageButton);
 	utm.navGroup.open(utm.landingView);
 }
 

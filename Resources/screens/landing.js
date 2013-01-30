@@ -6,6 +6,7 @@ var TheLandingScreen_view = function() {
 		, backgroundColor:utm.backgroundColor
 		, barColor:utm.barColor
 	});
+
 	
 	var utmLogo = Ti.UI.createImageView({
 		image:'/images/ytm_Narrow.png',
@@ -56,8 +57,14 @@ var TheLandingScreen_view = function() {
 	{	
 		Ti.App.fireEvent("app:showMyAccountWindow", {});
 	});
+	
+	
+	landingView.setEnableSendMessageButton=function(enableIt){
+		sendMessageBtn.enabled=enableIt;
+	}	
 
 	return landingView;
 };
 module.exports = TheLandingScreen_view;
+
 
