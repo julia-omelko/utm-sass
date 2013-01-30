@@ -118,6 +118,7 @@ var TheLoginScreen_view = function() {
 			setActivityIndicator('');
 			//clear out the password
 			password.value='';
+			username.value='';
 			log('Login Service Returned');
 			if(this.status ==200){
 				//username.value('Login Successfull');
@@ -138,6 +139,7 @@ var TheLoginScreen_view = function() {
 		onerror:function(e){
 			//clear out the password
 			password.value='';
+			username.value="";
 			if(this.status==401){
 			  	setActivityIndicator('');
 				
