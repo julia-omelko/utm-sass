@@ -156,9 +156,9 @@ var PreviewMessage_window =function() {
 	{	
 		
 	//	if(replyMode){
-			var invalidRecips = checkMessageSendTypesForReceipents(messageData.FromUserId);
+			///var invalidRecips = checkMessageSendTypesForReceipents(messageData.FromUserId);
 		//}else{
-		//	var invalidRecips = checkMessageSendTypesForReceipents(utm.sentToContactList);
+			var invalidRecips = checkMessageSendTypesForReceipents(utm.sentToContactList);
 	//	}
 		if(invalidRecips != ''){
 			//Found issue that one or more users will not get the message because of the user chosen types	
