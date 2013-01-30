@@ -199,7 +199,9 @@ function showMessagesAfterSend() {
 
 Ti.App.addEventListener('app:logout', showLoginView);
 function showLoginView() {
+	closeAllScreens();
 	utm.navGroup.open(utm.loginView);
+	
 	callLogoutService();
 }
 
@@ -334,6 +336,10 @@ function closeAllScreens(){
 	if(utm.landingView != undefined){
 		utm.navGroup.close(utm.landingView);		
 	}	
+	if(utm.myAccountWindow != undefined){
+		utm.navGroup.close(utm.myAccountWindow);
+	}
+	
 }
 
 function handleError(e,status,responseText) {			
