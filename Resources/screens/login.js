@@ -223,7 +223,7 @@ var TheLoginScreen_view = function() {
 	function fillInTestLogin(){
 		if (Ti.Platform.model == 'Simulator') { 
  			username.value='ad';
- 			password.value='testtest';
+ 			password.value='testtest1';
 		}
 	}
 
