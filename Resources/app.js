@@ -72,7 +72,7 @@ function handleLoginSuccess(event) {
 		utm.enableSendMessageButton=false;
 		var dialog = Ti.UI.createAlertDialog({
 		    cancel: 1,
-			    buttonNames: ['Ok'],
+			    buttonNames: [L('ok_button')],
 			    message: 'You have not setup any MyHorts to group the people you wish to communicate with, please create at least one MyHort',
 			    title: 'No MyHorts Available'
 			  });	//TODO add option to link to website to create MyHort

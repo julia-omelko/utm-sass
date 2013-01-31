@@ -451,7 +451,7 @@ function message_window() {
 		onload : function(e) {
 			log('Message was deleted');
 
-			/*var opts = {options: [L('send_ok_button')], title:L('messages_message_deleted')};
+			/*var opts = {options: [L('ok_button')], title:L('messages_message_deleted')};
 			 var dialog = Ti.UI.createOptionDialog(opts).show();
 			 dialog.addEventListener('click', function(e){
 			 getMessages(curMode);
