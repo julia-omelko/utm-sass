@@ -165,12 +165,15 @@ var PreviewMessage_window =function() {
 	previewMessageView.add(sendButton);
 	sendButton.addEventListener('click',function()
 	{	
+		var messageType=getMessageSendTypes();	
+		//1st check to see if any message types have been chosen 
+		if(messageType==''){
+			alert('You must choose at least one of the message types by clicking on the icon.');
+			return;
+		}
+	
+		var invalidRecips = checkMessageSendTypesForReceipents(utm.sentToContactList);
 		
-	//	if(replyMode){
-			///var invalidRecips = checkMessageSendTypesForReceipents(messageData.FromUserId);
-		//}else{
-			var invalidRecips = checkMessageSendTypesForReceipents(utm.sentToContactList);
-	//	}
 		if(invalidRecips != ''){
 			//Found issue that one or more users will not get the message because of the user chosen types	
 			var dialog = Ti.UI.createAlertDialog({
@@ -182,34 +185,25 @@ var PreviewMessage_window =function() {
 			  
 			  dialog.addEventListener('click', function(e){
 			    if (e.index !== e.source.cancel){
-					sendMessages();    		
+					sendMessages(messageType);    		
 			    }
 			    
 			  });
 			  dialog.show();
 	
 		}else{
-			sendMessages();
+			sendMessages(messageType);
 		}
 
 	});
 	
-	function sendMessages(){
-		
-		var copiedToUsers=[];
-		var messageType=getMessageSendTypes();
-		
-		expandCustomUtmMessageEdit(false);
-		
-		if(messageType==''){
-			alert('You must choose at least one of the message types by clicking on the icon.');
-			return;
-		}
-		
+	function sendMessages(messageType){		
+		var copiedToUsers=[];		
+		expandCustomUtmMessageEdit(false);		
+				
 		sendButton.enabled=false;
 		if(replyMode){
 			//Reply to a message
-			//todo need to handle message types here
 			var params = {
 				MyHortId: messageData.MyHortId,
 				PlainText: yourOrgMessageValue.value,
@@ -221,8 +215,7 @@ var PreviewMessage_window =function() {
 				ToUserId:messageData.FromUserId,
 				CopiedUsers:messageData.FromUserId,
 				ParrentMessageId:messageData.Id	
-			};
-			
+			};			
 			
 		}else{
 		
@@ -319,9 +312,10 @@ var PreviewMessage_window =function() {
 		},
 		onerror:function(e){
 			setActivityIndicator('');
-         		handleError(e,this.status,this.responseText); 		
+			sendButton.enabled=true;
+         	handleError(e,this.status,this.responseText); 		
 		}
-		,timeout:utm.netTimeout
+		,timeout:10000  //seams like send can take longer so override this timeout.
 	});	
 	
 	
