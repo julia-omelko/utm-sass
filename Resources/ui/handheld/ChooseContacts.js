@@ -144,7 +144,7 @@ var ChooseContacts_window =function() {
 		     }
 		     ,timeout:utm.netTimeout
 		});	
-		getMembersReq.open("GET",utm.serviceUrl+"Members/"+utm.targetMyHortID);
+		getMembersReq.open("GET",utm.serviceUrl+"Members/"+utm.targetMyHortID +'?$orderby=NickName');
 		getMembersReq.setRequestHeader('Authorization-Token', utm.User.UserProfile.AuthToken);	
 		getMembersReq.send();	
 		
