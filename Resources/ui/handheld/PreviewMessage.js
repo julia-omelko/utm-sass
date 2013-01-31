@@ -11,8 +11,7 @@ var PreviewMessage_window =function() {
 	var replyMode=false;
 	var deleteOnRead=false;
 	var messageData=false;
-	
-	
+		
 	var previewMessageView = Titanium.UI.createWindow({
 	   width:'auto'
 	   ,height:'auto'
@@ -42,7 +41,7 @@ var PreviewMessage_window =function() {
 	});
 	previewMessageView.add(yourOrgMessageValue);
 	
-	//------------ Preview of Encrypted --------------------------- 
+	//------------ Preview of Encrypted (NOW HIDDEN)--------------------------- 
 	
 	var encryptedLabel = Ti.UI.createLabel({
 		text:L('send_preview_how_encrypted')+':',
@@ -96,10 +95,22 @@ var PreviewMessage_window =function() {
 	
 	customUtmMessage.addEventListener('click',function()
 	{//fold up to give more room to edit
-		yourOrgMessageValue.height=12;
-		encryptedLabel.height=0;
-		encryptedValue.height=0;	
+		expandCustomUtmMessageEdit(true);
 	});
+	
+	function expandCustomUtmMessageEdit(expandIt){
+		if(expandIt){
+			yourOrgMessageLabel.height=0;
+			yourOrgMessageValue.height=0;
+			customUtmMessage.height='auto';
+			
+		}else{
+			yourOrgMessageLabel.height='auto';
+			yourOrgMessageValue.height='20%';
+			customUtmMessage.height='20%';
+		}
+		
+	}
 	
 	//------------- Send Type Button Bar------------------ 	
 
@@ -188,9 +199,7 @@ var PreviewMessage_window =function() {
 		var copiedToUsers=[];
 		var messageType=getMessageSendTypes();
 		
-		yourOrgMessageValue.height='20%';
-		encryptedLabel.height='auto';
-		encryptedValue.height='20%';	
+		expandCustomUtmMessageEdit(false);
 		
 		if(messageType==''){
 			alert('You must choose at least one of the message types by clicking on the icon.');
