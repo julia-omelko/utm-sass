@@ -175,7 +175,7 @@ var PreviewMessage_window =function() {
 			//Found issue that one or more users will not get the message because of the user chosen types	
 			var dialog = Ti.UI.createAlertDialog({
 			    cancel: 1,
-			    buttonNames: ['Ok', 'Cancel', 'Help'],
+			    buttonNames: [L('ok_button'),L('cancel'),L('help')],
 			    message: 'Some of the people you choose to receive this message will not get the message based on the message types you choose, do you want to continue and send the message anyway?',
 			    title: 'Message Delivery Problem'
 			  });
@@ -303,7 +303,7 @@ var PreviewMessage_window =function() {
 				//todo decide if we show warning here or not
 				/*var dialog = Ti.UI.createAlertDialog({
 				    	message: 'Warning: Not all recipents will recieve the messages based on the types you choose to send to.',
-				    ok: 'Okay',
+				    ok: L('ok_button),
 				    title: 'Message Delivery Warning'
 				  }).show();
 				  */
