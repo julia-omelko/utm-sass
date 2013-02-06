@@ -98,6 +98,11 @@ var PreviewMessage_window =function() {
 		expandCustomUtmMessageEdit(true);
 	});
 	
+	customUtmMessage.addEventListener('blur',function()
+	{//unfold text area to give more room to edit
+		expandCustomUtmMessageEdit(false);
+	});
+	
 	function expandCustomUtmMessageEdit(expandIt){
 		if(expandIt){
 			yourOrgMessageLabel.height=0;
