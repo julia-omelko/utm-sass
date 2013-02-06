@@ -218,7 +218,7 @@ var PreviewMessage_window =function() {
 				MessageType:messageType,
 				FromUserId:utm.User.UserProfile.UserId,
 				ToUserId:messageData.FromUserId,
-				CopiedUsers:messageData.FromUserId,
+				CopiedUsers:[messageData.FromUserId],
 				ParrentMessageId:messageData.Id	
 			};			
 			
