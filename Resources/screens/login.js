@@ -82,15 +82,15 @@ var TheLoginScreen_view = function() {
 	}
 	
 	//Forgot Your Password?
-	var forgotPWLabel = createLink(L('login_forgot_password'), 'http://dev.youthisme.com/Account/PasswordReset')
+	var forgotPWLabel = createLink(L('login_forgot_password'), 'https://test.youthisme.com/Account/PasswordReset')
 	loginView.add(forgotPWLabel);
 		
 	//Want to sign up?
-	var signUpLabel = createLink(L('login_signup'), 'http://dev.youthisme.com/Account/Register')
+	var signUpLabel = createLink(L('login_signup'), 'https://test.youthisme.com/Account/Register')
 	loginView.add(signUpLabel);
 	
 	//About UTM
-	var tosLabel = createLink(L('login_about'), 'http://dev.youthisme.com/Home/About')
+	var tosLabel = createLink(L('login_about'), 'http://test.youthisme.com/Home/About')
 	loginView.add(tosLabel);
 
 	//Version 0.12 Alpha	
