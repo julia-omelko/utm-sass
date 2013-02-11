@@ -99,11 +99,14 @@ var ChooseContacts_window =function() {
 	
 	Ti.App.addEventListener('app:getContacts',function(){
 	//************* get Contacts*************
+		tableview.data=[];//Clear out the list
+		setActivityIndicator('Getting your MyHort Contacts...');
 		log('call server and get contact list for myHortId:'+utm.targetMyHortID);
 	
 		var getMembersReq = Ti.Network.createHTTPClient({
 		     validatesSecureCertificate:utm.validatesSecureCertificate 
 			,onload : function(e) {
+				setActivityIndicator('');
 		         Ti.API.info("Received text: " + this.responseText);
 		        var json = this.responseData;
 				var response = JSON.parse(json);
@@ -139,7 +142,8 @@ var ChooseContacts_window =function() {
 				}		
 		     },
 		     // function called when an error occurs, including a timeout
-		     onerror : function(e) {		        
+		     onerror : function(e) {		      
+		     	setActivityIndicator('');  
 		        	handleError(e,this.status,this.responseText); 
 		     }
 		     ,timeout:utm.netTimeout
