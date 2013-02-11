@@ -3,14 +3,15 @@ function messageDetail_window(_messageData,_curMode) {
 	var win = Ti.UI.createWindow({
 		layout:'vertical'
 		,backgroundColor:utm.backgroundColor
-		,barColor:utm.barColor
+		,barColor:utm.barColor,
+		visible:false
 	 });
 	var navGroup=false;
 			
 	
 	//-----------------Sent On  ----------------------
 	var toDate = Ti.UI.createLabel({
-		text:'Sent On: '+moment(_messageData.DateSent).fromNow(),
+		text:'',
 		width:utm.SCREEN_WIDTH-10,
 		font: {fontSize:14, fontWeight:'bold'},
 		height:'auto',
@@ -21,7 +22,7 @@ function messageDetail_window(_messageData,_curMode) {
 	
 	//-----------------To/From  ----------------------
 	var toLabel = Ti.UI.createLabel({
-		//text:'From:'+_messageData.ToUserId,
+		text:'',
 		width:utm.SCREEN_WIDTH-10,
 		font: {fontSize:14, fontWeight:'bold'},
 		height:'auto',
@@ -47,7 +48,7 @@ function messageDetail_window(_messageData,_curMode) {
 	
 	//-----------------UTM Message Value  ----------------------
 	var utmMessageValue = Ti.UI.createLabel({
-		text:_messageData.UtmText,
+		text:'',
 		width:utm.SCREEN_WIDTH-10,
 		font: {fontSize:14},
 		top:2,
@@ -60,7 +61,7 @@ function messageDetail_window(_messageData,_curMode) {
 	win.add(grayLine2);
 	
 	//-----------------Real Message Label  ----------------------
-	var utmMessageLabel = Ti.UI.createLabel({
+	var realMessageLabel = Ti.UI.createLabel({
 		text:'Real Message:',
 		width:utm.SCREEN_WIDTH-10,
 		font: {fontSize:14, fontWeight:'bold'},
@@ -71,7 +72,7 @@ function messageDetail_window(_messageData,_curMode) {
 	win.add(utmMessageLabel);
 	
 	//-----------------Real Message Value ----------------------
-	var utmMessageValue = Ti.UI.createTextArea({
+	var realMessageValue = Ti.UI.createTextArea({
 		value:'',
 		width:'100%',
 		font: {fontSize:14},
@@ -81,7 +82,7 @@ function messageDetail_window(_messageData,_curMode) {
 		textAlign:'left',
 		editable:false
 	});
-	win.add(utmMessageValue);
+	win.add(realMessageValue);
 	
 	//-----------------Reply To Button ----------------------
 	var replyButton = Ti.UI.createButton({title:'Reply', visible:false, top:3});
@@ -155,31 +156,34 @@ function messageDetail_window(_messageData,_curMode) {
 		});	
 		getMembersReq.open("GET",utm.serviceUrl+"Members/"+_messageData.MyHortId +'?$filter=UserId eq '+replyingToUserId );
 		getMembersReq.setRequestHeader('Authorization-Token', utm.User.UserProfile.AuthToken);	
-		getMembersReq.send();	
-		
+		getMembersReq.send();			
 	}
 
-
-	
 	
 	// ##################### Call out to get message detail #####################
 	var getMessageDetailReq = Ti.Network.createHTTPClient({
 		validatesSecureCertificate:utm.validatesSecureCertificate 
 		,onload: function()
-		{
+		{	setActivityIndicator('');
+			win.visible=true;
 			var json = this.responseData;
 			var response = JSON.parse(json);
 			
 			if(this.status ==200){
 				log("message data returned:"+response);
 				if(response.Message.length > 200){
-					utmMessageValue.height='55%'
+					realMessageValue.height='55%'
 				}else{
-					utmMessageValue.height='auto';
+					realMessageValue.height='auto';
 				}
-				utmMessageValue.value = response.Message;
+				
+				//Now that we have date set all the values
+				toDate.text = 'Sent On: '+moment(_messageData.DateSent).fromNow();
+				utmMessageValue.text=_messageData.UtmText;	
+				realMessageValue.value = response.Message;
+				
 				//Mark Message as Read
-				log('xxxx'+ ! _messageData.WasRead);
+				log('Mark Message as Read'+ ! _messageData.WasRead);
 				if(  _messageData.WasRead !=1){
 					//#124 Fix issue with message list not refreshing IF message is marked as Read
 					setMessageAsRead(_messageData.Id);
@@ -201,7 +205,14 @@ function messageDetail_window(_messageData,_curMode) {
 			}		
 		},		
 		onerror:function(e){	
-         	handleError(e,this.status,this.responseText);         			
+			setActivityIndicator('');	
+			if(this.status != undefined && this.status ===404)
+			{
+				alert('The message you are looking for does not exist.');	
+				Ti.App.fireEvent('app:refreshMessages', {showProgress:false});
+			}else{
+         		handleError(e,this.status,this.responseText);
+         	}         			
 		}
 		,timeout:utm.netTimeout
 	});	
@@ -210,7 +221,8 @@ function messageDetail_window(_messageData,_curMode) {
 	}else{
 		getMessageDetailReq.open("GET",utm.serviceUrl+"SentMessages/"+_messageData.Id);
 	}
-		
+	
+	setActivityIndicator('Getting your message...');	
 	getMessageDetailReq.setRequestHeader('Authorization-Token', utm.AuthToken);	
 	getMessageDetailReq.send();		
 
