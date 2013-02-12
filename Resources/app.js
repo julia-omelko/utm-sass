@@ -1,7 +1,10 @@
 //utm is the js namespace for this app
 var utm = {};
 utm.loggedIn = false;
-utm.serviceUrl = 'https://dev.youthisme.com/api/v1/';
+//utm.envModePrefix = "dev.";
+utm.envModePrefix = "test.";
+//utm.envModePrefix = ""; //PROD
+utm.serviceUrl = 'https://'+utm.envModePrefix +'youthisme.com/api/v1/';
 utm.validatesSecureCertificate=false;
 utm.color = '#F66F00';
 utm.barColor = '#F66F00';
