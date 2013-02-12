@@ -82,25 +82,25 @@ var TheLoginScreen_view = function() {
 	}
 	
 	//Forgot Your Password?
-	var forgotPWLabel = createLink(L('login_forgot_password'), 'https://test.youthisme.com/Account/PasswordReset')
+	var forgotPWLabel = createLink(L('login_forgot_password'), 'https://'+utm.envModePrefix +'youthisme.com/Account/PasswordReset')
 	loginView.add(forgotPWLabel);
 		
 	//Want to sign up?
-	var signUpLabel = createLink(L('login_signup'), 'https://test.youthisme.com/Account/Register')
+	var signUpLabel = createLink(L('login_signup'), 'https://'+utm.envModePrefix +'youthisme.com/Account/Register')
 	loginView.add(signUpLabel);
 	
 	//About UTM
-	var tosLabel = createLink(L('login_about'), 'http://test.youthisme.com/Home/About')
+	var tosLabel = createLink(L('login_about'), 'http://'+utm.envModePrefix +'youthisme.com/Home/About')
 	loginView.add(tosLabel);
 
 	//Version 0.12 Alpha	
 	var versionLabel = Ti.UI.createLabel({
 		  color: '#000',
 		  font: { fontSize:14 },
-		  text: utm.appVersion,
+		  text: utm.appVersion + '  ('+utm.envModePrefix +' DB)',
 		  textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
 		  top: 10,
-		  width: 200, 
+		  width: 220, 
 		  height: 50
 		});
 	
