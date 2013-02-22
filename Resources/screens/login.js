@@ -3,7 +3,7 @@ var TheLoginScreen_view = function() {
 	var loginView = Ti.UI.createWindow({		
 		layout:'vertical'
 		,backgroundColor:utm.backgroundColor
-		,barColor:utm.barColor
+		,barColor : utm.barColor
 	});
 	
 	var messageArea = Ti.UI.createLabel({
@@ -226,6 +226,30 @@ var TheLoginScreen_view = function() {
  			password.value='testtest1';
 		}
 	}
+	
+	versionLabel.addEventListener('longpress',function(e)
+	{	
+		var dialog = Ti.UI.createAlertDialog({
+				cancel : 1,
+				buttonNames : ['Dev', 'Test', L('cancel')],
+				title : 'Choose The Environment'
+			});
+			dialog.addEventListener('click', function(e) {
+				if (e.index === 0) {
+					setEnvModePrefix("dev.");					
+					//setAppMainColor('dev');
+					
+				} else if (e.index === 1) {
+					setEnvModePrefix("test.");
+					//setAppMainColor('test');
+				}
+				//loginView.barColor=utm.barColor;
+				versionLabel.text=utm.appVersion + '  ('+utm.envModePrefix +' DB)';
+				
+			});
+			dialog.show();
+	});
+	
 
 	return loginView;
 };

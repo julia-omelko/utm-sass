@@ -1,13 +1,9 @@
 //utm is the js namespace for this app
 var utm = {};
 utm.loggedIn = false;
-//utm.envModePrefix = "dev.";
-utm.envModePrefix = "test.";
-//utm.envModePrefix = ""; //PROD
-utm.serviceUrl = 'https://'+utm.envModePrefix +'youthisme.com/api/v1/';
+utm.envModePrefix = "";
 utm.validatesSecureCertificate=false;
-utm.color = '#F66F00';
-utm.barColor = '#F66F00';
+utm.color_org = '#F66F00';
 utm.backgroundColor='#fff';
 utm.textColor='#000';
 utm.textFieldColor='#336699';
@@ -21,6 +17,7 @@ utm.SCREEN_WIDTH = (pWidth > pHeight) ? pHeight : pWidth;
 utm.SCREEN_HEIGHT = (pWidth > pHeight) ? pWidth : pHeight;
 utm.enableSendMessageButton=false;
 
+appInit();
 
 Ti.UI.setBackgroundColor('#fff');
 
@@ -28,6 +25,7 @@ utm.Login = require('screens/login');
 utm.loginView = new utm.Login();
 
 utm.mainWindow = Ti.UI.createWindow();
+utm.mainWindow.barColor=utm.barColor;
 
 utm.navGroup = Ti.UI.iPhone.createNavigationGroup({
 	window : utm.loginView
@@ -57,6 +55,23 @@ utm.writeMessageView = new utm.WriteMessageView();
 
 utm.PreviewMessageView = require('/ui/handheld/PreviewMessage');
 utm.previewMessageView = new utm.PreviewMessageView();
+
+
+function appInit(){	
+	if (Ti.Platform.model === 'Simulator') { 
+		setEnvModePrefix("dev.");
+		setAppMainColor('test');
+	}else{
+		setEnvModePrefix("test.");
+		setAppMainColor('test');
+	}	
+	setEnvModePrefix(utm.envModePrefix);
+}
+
+function setEnvModePrefix(env){
+	utm.envModePrefix =env;
+	utm.serviceUrl = 'https://'+env +'youthisme.com/api/v1/';	
+}
 
 //############### Application Event Handlers ###############
 
@@ -295,6 +310,16 @@ function setActivityIndicator(_message) {
 	utm.activityIndicator.setMessage(_message);
 }
 
+function setAppMainColor(env){
+	if(env==='dev'){
+		utm.color = '#C0C0C0';
+		utm.barColor = utm.color;
+	}else{
+		utm.color = utm.color_org; 
+		utm.barColor = utm.color;
+	}
+	
+}
 
 Ti.Network.addEventListener('change', function(e) {
 	log('Network Status Changed:' + e.online);
