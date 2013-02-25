@@ -382,7 +382,7 @@ var PreviewMessage_window =function() {
 			//USE this if we care if the sender has twitter in current myHort			
 			if(utm.curUserCurMyHortHasTwitter){
 				twitterButton.setEnabled(true);
-				twitterButton.setChecked(true);
+				//twitterButton.setChecked(true);
 			}	
 			/* USE this if we care if the reciever has twitter
 			if(e.sentToContactList[x].userData.HasTwitter){
@@ -397,6 +397,12 @@ var PreviewMessage_window =function() {
 			//if(utm.User.UserProfile.HasFaceBook
 				facebookButton.setEnabled(false);	//todo once we have facebook working	
 			
+		}
+		
+		//IF All members have mobile we want to override to uncheck all BUT SMS 
+		if(doAllRecipentsHaveMobile(e.sentToContactList)){
+			setButtonBarUnChecked();
+			smsButton.setChecked(true);
 		}
 	}
 	
@@ -429,6 +435,20 @@ var PreviewMessage_window =function() {
 		
 		return messageType;
 	}
+	
+	
+	function doAllRecipentsHaveMobile(sentToList){
+		var allHaveMobile=true;
+		for (var x=0;x<sentToList.length;x++)
+		{	
+			if(!sentToList[x].userData.HasMobile){
+				allHaveMobile = false;
+				break;
+			}		
+		}					
+		return allHaveMobile;
+	}
+	
 	
 	function checkMessageSendTypesForReceipents(sentToList){
 		var invalidRecips='';
