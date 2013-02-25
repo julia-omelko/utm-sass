@@ -16,6 +16,7 @@ var pHeight = Ti.Platform.displayCaps.platformHeight;
 utm.SCREEN_WIDTH = (pWidth > pHeight) ? pHeight : pWidth;
 utm.SCREEN_HEIGHT = (pWidth > pHeight) ? pWidth : pHeight;
 utm.enableSendMessageButton=false;
+utm.appPauseTime=0;
 
 appInit();
 
@@ -390,6 +391,30 @@ function handleError(e,status,responseText) {
  		}
  	}         
 }
+
+Ti.App.addEventListener("pause", function(e){
+	log('-------  APP Paused ------');
+	appPauseTime= new Date();
+	log('-------  APP Paused appPauseTime='+appPauseTime.valueOf());
+});
+
+//IF the app is left for more then one minute force login
+Ti.App.addEventListener("resumed", function(e){
+	log('-------  APP resumed ------');
+
+	var curDate = new Date();
+	var curMil =curDate.valueOf() ;
+	var pauseMil = appPauseTime.valueOf();
+	var diff = curMil-pauseMil;
+	
+	if( diff  > 60000){
+			log('-------  APP resumed  FORCE LOGIN');
+			showLoginView();
+	}else{
+			log('-------  APP resumed  NO FORCE LOGIN');
+	}	
+});
+
 
 function recordError(message) {
 	log('Error:' + message);
