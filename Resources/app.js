@@ -115,8 +115,8 @@ function showMessageWindow() {
 
 Ti.App.addEventListener('app:showChooseMyHortWindow', showChooseMyHortWindow);
 function showChooseMyHortWindow() {
-	utm.navGroup.open(utm.chooseMyHortView);
 	Ti.App.fireEvent('app:populateMyHortPicker');
+	utm.navGroup.open(utm.chooseMyHortView);	
 }
 
 Ti.App.addEventListener('app:showMyAccountWindow', showMyAccountWindow);
