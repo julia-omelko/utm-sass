@@ -1,8 +1,8 @@
 function message_window() {
-	//Ti.include('lib/date.format.js');
+
 	var moment = require('lib/moment');
 	var navGroup = false;
-	//utm.easyDateFormat = require('lib/date.format');
+	var curMode = 'recieved';
 
 	var win = Ti.UI.createWindow({
 		layout : 'vertical',
@@ -11,7 +11,8 @@ function message_window() {
 		backgroundColor : utm.backgroundColor,
 		barColor : utm.barColor
 	});
-	var curMode = 'recieved';
+
+	var lastRow = 4;
 
 	var tabBar = Titanium.UI.iOS.createTabbedBar({
 		labels : [L('messages_recieved'), L('messages_sent')],
@@ -27,8 +28,8 @@ function message_window() {
 	tabBar.addEventListener('click', function(e) {
 		//get out  of edit mode.
 		win.setRightNavButton(edit);
-		tableview.editing = false;
-		tableview.setData([]);
+		tableView.editing = false;
+		tableView.setData([]);
 		
 		if (tabBar.index == 0) {
 			curMode = "recieved";
@@ -39,15 +40,15 @@ function message_window() {
 		}
 	});
 
-	// create table view
-	var tableview = Titanium.UI.createTableView({
+	var tableView = Titanium.UI.createTableView({
 		left : 2,
 		editable : true,
 		allowsSelectionDuringEditing : true
 	});
-
+	win.add(tableView);
+	
 	//Add Click to Details for drilldown
-	tableview.addEventListener('click', function(e) {
+	tableView.addEventListener('click', function(e) {
 		var messageData = e.rowData.messageData;
 		utm.MessageDetailWindow = require('screens/MessageDetail');
 		utm.messageDetailWindow = new utm.MessageDetailWindow(messageData, curMode);
@@ -56,13 +57,13 @@ function message_window() {
 	});
 
 	//Add Swipe event to delete messages
-	/*tableview.addEventListener('swipe', function(eventObject){
+	/*tableView.addEventListener('swipe', function(eventObject){
 
 	deleteMessage(eventObject.row.messageData.Id,false);
 	});*/
 
 	// add delete event listener
-	tableview.addEventListener('delete', function(e) {
+	tableView.addEventListener('delete', function(e) {
 		var s = e.section;
 		deleteMessage(e.rowData.messageData.Id, false)
 	});
@@ -111,7 +112,7 @@ function message_window() {
 
 	edit.addEventListener('click', function() {
 		win.setRightNavButton(cancel);
-		tableview.editing = true;
+		tableView.editing = true;
 	});
 
 	var cancel = Titanium.UI.createButton({
@@ -120,30 +121,13 @@ function message_window() {
 	});
 	cancel.addEventListener('click', function() {
 		win.setRightNavButton(edit);
-		tableview.editing = false;
+		tableView.editing = false;
 	});
 
 	win.setRightNavButton(edit);
-
-	function showClickEventInfo(e, islongclick) {
-		// event data
-		var index = e.index;
-		var section = e.section;
-		var row = e.row;
-		var rowdata = e.rowData;
-		Ti.API.info('detail ' + e.detail);
-		var msg = 'row ' + row + ' index ' + index + ' section ' + section + ' row data ' + rowdata;
-		if (islongclick) {
-			msg = "LONGCLICK " + msg;
-		}
-		Titanium.UI.createAlertDialog({
-			title : 'Table View',
-			message : msg
-		}).show();
-	}
-
-	// add table view to the window
-	win.add(tableview);
+	
+	
+	
 
 	Ti.App.addEventListener('app:showMessages', showMessageWindow);
 	function showMessageWindow() {
@@ -161,23 +145,23 @@ function message_window() {
 
 	Ti.App.addEventListener('app:refreshMessages', refreshMessages);
 	function refreshMessages(data) {
-		
-		if(data.showProgress) {
-			showProgress=true;
-		}else{
-			showProgress=false;
-		} 
-		
-		getMessages(curMode,showProgress);
+		if (data.showProgress) {
+			showProgress = true;
+		} else {
+			showProgress = false;
+		}
+
+		getMessages(curMode, showProgress);
 	}
 
-	function getMessages(mode,showProgress) {
-		if(typeof showProgress === 'undefined') showProgress=true;
-		
-		if(showProgress){
+	function getMessages(mode, showProgress) {
+		if ( typeof showProgress === 'undefined')
+			showProgress = true;
+
+		if (showProgress) {
 			setActivityIndicator('Getting your messages...');
 		}
-		
+
 		if (mode == 'recieved') {
 			getMessagesReq.open("GET", utm.serviceUrl + "ReceivedMessages?$orderby=DateSent desc");
 		} else {
@@ -204,11 +188,11 @@ function message_window() {
 		var json = this.responseData;
 		var response = JSON.parse(json);
 		var tableData = [];
-		
+		setActivityIndicator('');
 		Titanium.Analytics.featureEvent('user.viewed_messages');
 		if (this.status == 200) {
 
-			log("message data returned:" + response);
+			log("message data returned " +  response.length + '  messages');
 
 			for (var i = 0; i < response.length; i++) {
 				var row = Ti.UI.createTableViewRow({
@@ -239,17 +223,20 @@ function message_window() {
 				}
 
 				var fromMessage = Ti.UI.createLabel({
-					backgroundColor:'#fff',
-					color: '#000',
-					font: {fontSize:14 , fontWeight: 'bold' } ,
-					objName: 'fromMessage' ,
-					text: (curMode=='sent' ? response[i].ToHeader : response[i].FromUserName),
-					touchEnabled: true,
-					top:2,
-					left: 17,
-					width: utm.SCREEN_WIDTH-100,
-					height:15,
-					ellipsize:true
+					backgroundColor : '#fff',
+					color : '#000',
+					font : {
+						fontSize : 14,
+						fontWeight : 'bold'
+					},
+					objName : 'fromMessage',
+					text : (curMode == 'sent' ? response[i].ToHeader : response[i].FromUserName),
+					touchEnabled : true,
+					top : 2,
+					left : 17,
+					width : utm.SCREEN_WIDTH - 100,
+					height : 15,
+					ellipsize : true
 				});
 				hView.add(fromMessage);
 
@@ -288,10 +275,10 @@ function message_window() {
 				hView.add(timeLabel);
 
 				row.add(hView);
-				tableData.push(row);
+				tableData.push(row);	
 			}
 
-			tableview.setData(tableData);
+			tableView.setData(tableData);
 
 		} else if (this.status == 400) {
 
@@ -301,150 +288,168 @@ function message_window() {
 			recordError("error");
 		}
 
-		setActivityIndicator('');
-
-		/*
-
-		 //Add in Scrolling support
-		 var border = Ti.UI.createView({
-		 backgroundColor:"#576c89",
-		 height:2,
-		 bottom:0
-		 })
-
-		 var tableHeader = Ti.UI.createView({
-		 backgroundColor:"#e2e7ed",
-		 width:320,
-		 height:60
-		 });
-		 tableHeader.add(border);
-
-		 tableView.headerPullView = tableHeader;
-
-		 var arrow = Ti.UI.createView({
-		 //backgroundImage:"../images/whiteArrow.png",
-		 width:23,
-		 height:60,
-		 bottom:10,
-		 left:20
-		 });
-
-		 var statusLabel = Ti.UI.createLabel({
-		 text:"Pull to reload",
-		 left:55,
-		 width:200,
-		 bottom:30,
-		 height:"auto",
-		 color:"#576c89",
-		 textAlign:"center",
-		 font:{fontSize:13,fontWeight:"bold"},
-		 shadowColor:"#999",
-		 shadowOffset:{x:0,y:1}
-		 });
-
-		 var lastUpdatedLabel = Ti.UI.createLabel({
-		 text:"Last Updated: "+formatDate(),
-		 left:55,
-		 width:200,
-		 bottom:15,
-		 height:"auto",
-		 color:"#576c89",
-		 textAlign:"center",
-		 font:{fontSize:12},
-		 shadowColor:"#999",
-		 shadowOffset:{x:0,y:1}
-		 });
-		 var actInd = Titanium.UI.createActivityIndicator({
-		 left:20,
-		 bottom:13,
-		 width:30,
-		 height:30
-		 });
-
-		 function formatDate()
-		 {
-		 var d = new Date;
-		 var datestr = d.getMonth()+'/'+d.getDate()+'/'+d.getFullYear();
-		 if (d.getHours()>=12)
-		 {
-		 datestr+=' '+(d.getHours()==12 ?
-		 d.getHours() : d.getHours()-12)+':'+
-		 d.getMinutes()+' PM';
-		 }
-		 else
-		 {
-		 datestr+=' '+date.getHours()+':'+date.getMinutes()+' AM';
-		 }
-		 return datestr;
-		 }
-
-		 //tableView.headerPullView = tableHeader;
-		 log('before add ev list');
-
-		 tableView.addEventListener('scroll',function(e)
-		 {	log('Scroll Started');
-		 var offset = e.contentOffset.y;
-		 if (offset <= -65.0 && !pulling)
-		 {
-		 var t = Ti.UI.create2DMatrix();
-		 t = t.rotate(-180);
-		 pulling = true;
-		 arrow.animate({transform:t,duration:180});
-		 statusLabel.text = "Release to refresh...";
-		 }
-		 else if (pulling && offset > -65.0 && offset < 0)
-		 {
-		 pulling = false;
-		 var t = Ti.UI.create2DMatrix();
-		 arrow.animate({transform:t,duration:180});
-		 statusLabel.text = "Pull down to refresh...";
-		 }
-		 });
-		 tableView.addEventListener('scrollEnd',function(e)
-		 {
-		 if (pulling && !reloading && e.contentOffset.y <= -65.0)
-		 {
-		 reloading = true;
-		 pulling = false;
-		 arrow.hide();
-		 actInd.show();
-		 statusLabel.text = "Reloading...";
-		 tableView.setContentInsets({top:60},{animated:true});
-		 arrow.transform=Ti.UI.create2DMatrix();
-		 beginReloading();
-		 }
-		 });
-
-		 var pulling = false;
-		 var reloading = false;
-
-		 function beginReloading()
-		 {log('begin loading');
-		 // just mock out the reload
-		 setTimeout(endReloading,2000);
-		 }
-
-		 function endReloading()
-		 {
-		 // // simulate loading
-		 // for (var c=lastRow;c<lastRow+10;c++)
-		 // {
-		 // tableView.appendRow({title:"Row "+c});
-		 // }
-		 // lastRow += 10;
-		 //
-		 log('Scroll end');
-		 // when you're done, just reset
-		 tableView.setContentInsets({top:0},{animated:true});
-		 reloading = false;
-		 lastUpdatedLabel.text = "Last Updated: "+formatDate();
-		 statusLabel.text = "Pull down to refresh...";
-		 actInd.hide();
-		 arrow.show();
-		 }
-
-		 */
 	};
+
+	// #############################  Scroll Refresh Start #############################
+
+	var border = Ti.UI.createView({
+		backgroundColor : "#576c89",
+		height : 2,
+		bottom : 0
+	});
+
+	var tableHeader = Ti.UI.createView({
+		backgroundColor : "#e2e7ed",
+		width : 320,
+		height : 60
+	});
+
+	tableHeader.add(border);
+
+	var arrow = Ti.UI.createView({
+		backgroundImage : "/images/whiteArrow.png",
+		width : 23,
+		height : 60,
+		bottom : 10,
+		left : 20
+	});
+
+	var statusLabel = Ti.UI.createLabel({
+		text : "Pull to reload",
+		left : 55,
+		width : 200,
+		bottom : 30,
+		height : "auto",
+		color : "#576c89",
+		textAlign : "center",
+		font : {
+			fontSize : 13,
+			fontWeight : "bold"
+		},
+		shadowColor : "#999",
+		shadowOffset : {
+			x : 0,
+			y : 1
+		}
+	});
+
+	var lastUpdatedLabel = Ti.UI.createLabel({
+		text : "Last Updated: " + formatDate(),
+		left : 55,
+		width : 200,
+		bottom : 15,
+		height : "auto",
+		color : "#576c89",
+		textAlign : "center",
+		font : {
+			fontSize : 12
+		},
+		shadowColor : "#999",
+		shadowOffset : {
+			x : 0,
+			y : 1
+		}
+	});
+
+	var actInd = Titanium.UI.createActivityIndicator({
+		left : 20,
+		bottom : 13,
+		width : 30,
+		height : 30
+	});
+
+	tableHeader.add(arrow);
+	tableHeader.add(statusLabel);
+	tableHeader.add(lastUpdatedLabel);
+	tableHeader.add(actInd);
+
+	tableView.headerPullView = tableHeader;
+
+	var pulling = false;
+	var reloading = false;
+
+	function beginReloading() {
+		// just mock out the reload
+		setTimeout(endReloading, 500);
+	}
+
+	function endReloading() {		
+		var data='';
+		//call to get the data
+		getMessages(curMode, true);
+
+		lastRow += 10;
+
+		// when done reset
+		tableView.setContentInsets({
+			top : 0
+		}, {
+			animated : true
+		});
+		reloading = false;
+		lastUpdatedLabel.text = "Last Updated: " + formatDate();
+		statusLabel.text = "Pull down to refresh...";
+		actInd.hide();
+		arrow.show();
+	}
+
+
+	tableView.addEventListener('scroll', function(e) {
+		var offset = e.contentOffset.y;
+		if (offset <= -65.0 && !pulling && !reloading) {
+			var t = Ti.UI.create2DMatrix();
+			t = t.rotate(-180);
+			pulling = true;
+			arrow.animate({
+				transform : t,
+				duration : 180
+			});
+			statusLabel.text = "Release to refresh...";
+		} else if (pulling && (offset > -65.0 && offset < 0) && !reloading) {
+			pulling = false;
+			var t = Ti.UI.create2DMatrix();
+			arrow.animate({
+				transform : t,
+				duration : 180
+			});
+			statusLabel.text = "Pull down to refresh...";
+		}
+	});
+
+	var event1 = 'dragEnd';
+	if (Ti.version >= '3.0.0') {
+		event1 = 'dragend';
+	}
+
+	tableView.addEventListener(event1, function(e) {
+		if (pulling && !reloading) {
+			reloading = true;
+			pulling = false;
+			arrow.hide();
+			actInd.show();
+			statusLabel.text = "Reloading...";
+			tableView.setContentInsets({
+				top : 60
+			}, {
+				animated : true
+			});
+			arrow.transform = Ti.UI.create2DMatrix();
+			beginReloading();
+		}
+	});
+
+	function formatDate() {
+		var date = new Date();
+		var datestr = date.getMonth() + '/' + date.getDate() + '/' + date.getFullYear();
+		if (date.getHours() >= 12) {
+			datestr += ' ' + (date.getHours() == 12 ? date.getHours() : date.getHours() - 12) + ':' + date.getMinutes() + ' PM';
+		} else {
+			datestr += ' ' + date.getHours() + ':' + date.getMinutes() + ' AM';
+		}
+		return datestr;
+	}
+
+	// #############################  Scroll Refresh End #############################
 
 	var deleteMessagesReq = Ti.Network.createHTTPClient({
 		validatesSecureCertificate : utm.validatesSecureCertificate,
@@ -465,10 +470,12 @@ function message_window() {
 	
 	win.addEventListener('blur', function() {
    		win.setRightNavButton(edit);
-		tableview.editing = false;
+		tableView.editing = false;
 	});
+
+
 
 	return win;
 };
 
-module.exports = message_window; 
+module.exports = message_window;
