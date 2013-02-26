@@ -376,7 +376,7 @@ var PreviewMessage_window =function() {
 			
 			if(e.sentToContactList[x].userData.HasEmail){
 				emailButton.setEnabled(true);
-				emailButton.setChecked(true);
+				//emailButton.setChecked(true);
 			}
 			
 			//USE this if we care if the sender has twitter in current myHort			
