@@ -289,6 +289,14 @@ function message_window() {
 		}
 
 	};
+	
+	//RE #260 - Mobile Ti App: ver 0.28 Beta: Latency, can briefly see messages from previously logged in user
+	Ti.App.addEventListener('app:loginSuccess', handleLoginSuccess);
+	function handleLoginSuccess(event) {
+		tableData = [];	
+	}
+	
+	
 
 	// #############################  Scroll Refresh Start #############################
 
