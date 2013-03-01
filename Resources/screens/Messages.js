@@ -445,14 +445,25 @@ function message_window() {
 			beginReloading();
 		}
 	});
+	
+	
+	Number.prototype.pad = function (len) {
+ 	   return (new Array(len+1).join("0") + this).slice(-len);
+	}
+	
+	function pad(val){
+		val = val < 10 ? '0' +val: '' +val;
+		return val;
+	}
+	
 
 	function formatDate() {
 		var date = new Date();
 		var datestr = (date.getMonth()+1 ) + '/' + date.getDate() + '/' + date.getFullYear();
 		if (date.getHours() >= 12) {
-			datestr += ' ' + (date.getHours() == 12 ? date.getHours() : date.getHours() - 12) + ':' + date.getMinutes() + ' PM';
+			datestr += ' ' + (date.getHours() == 12 ? date.getHours() : date.getHours() - 12) + ':' + pad(date.getMinutes()) + ' PM';
 		} else {
-			datestr += ' ' + date.getHours() + ':' + date.getMinutes() + ' AM';
+			datestr += ' ' + date.getHours() + ':' + pad(date.getMinutes()) + ' AM';
 		}
 		return datestr;
 	}
