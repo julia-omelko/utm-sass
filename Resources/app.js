@@ -1,4 +1,8 @@
 //utm is the js namespace for this app
+
+var gaModule = require('Ti.Google.Analytics');
+var analytics = new gaModule('UA-38943374-1');
+
 var utm = {};
 utm.loggedIn = false;
 utm.envModePrefix = "";
@@ -23,7 +27,7 @@ appInit();
 Ti.UI.setBackgroundColor('#fff');
 
 utm.Login = require('screens/login');
-utm.loginView = new utm.Login();
+utm.loginView = new utm.Login(utm);
 
 utm.mainWindow = Ti.UI.createWindow();
 utm.mainWindow.barColor=utm.barColor;
@@ -57,10 +61,16 @@ utm.writeMessageView = new utm.WriteMessageView();
 utm.PreviewMessageView = require('/ui/handheld/PreviewMessage');
 utm.previewMessageView = new utm.PreviewMessageView();
 
+utm.MyHortView = require('screens/MyHorts');
+utm.myHortView = new utm.MyHortView();
+
 
 function appInit(){	
+	
+	analytics.start(10,true);
+	
 	if (Ti.Platform.model === 'Simulator') { 
-		setEnvModePrefix("dev.");
+		setEnvModePrefix("local");
 		setAppMainColor('test');
 	}else{
 		setEnvModePrefix("test.");
@@ -69,9 +79,13 @@ function appInit(){
 	setEnvModePrefix(utm.envModePrefix);
 }
 
-function setEnvModePrefix(env){
+ function setEnvModePrefix(env){
 	utm.envModePrefix =env;
-	utm.serviceUrl = 'https://'+env +'youthisme.com/api/v1/';	
+	if (env==='local') { 
+		utm.serviceUrl = 'http://192.168.244.194/api/v1/';
+	}else if(env==='dev' || env === 'test'){
+		utm.serviceUrl = 'https://'+env +'youthisme.com/api/v1/';
+	}	
 }
 
 //############### Application Event Handlers ###############
@@ -86,9 +100,12 @@ function handleLoginSuccess(event) {
 	utm.User = event.userData;
 	utm.AuthToken = event.userData.UserProfile.AuthToken;
 	
+	analytics.trackPageview('/login');
+	
 	utm.myHorts = event.userData.MyHorts;
 	if(utm.myHorts.length ===0 ){
 		utm.enableSendMessageButton=false;
+		recordAnalytics('login failed', utm.User.UserProfile.UserName );
 		var dialog = Ti.UI.createAlertDialog({
 		    cancel: 1,
 			    buttonNames: [L('ok_button')],
@@ -97,6 +114,7 @@ function handleLoginSuccess(event) {
 			  });	//TODO add option to link to website to create MyHort
 			  dialog.show();
 	}else{
+		recordAnalytics('login succes', utm.User.UserProfile.UserName );
 		utm.enableSendMessageButton=true;
 	}
 	
@@ -112,6 +130,7 @@ function showLandingView() {
 Ti.App.addEventListener('app:showMessages', showMessageWindow);
 function showMessageWindow() {
 	utm.navGroup.open(utm.messageWindow);
+	recordAnalytics('show messages', '' );
 }
 
 Ti.App.addEventListener('app:showChooseMyHortWindow', showChooseMyHortWindow);
@@ -119,14 +138,20 @@ function showChooseMyHortWindow() {
 	Ti.App.fireEvent('app:populateMyHortPicker');
 	//Re #237 moved to ChooseMyHort.js
 	//utm.navGroup.open(utm.chooseMyHortView);	
+	recordAnalytics('Start Send Message', '' );
 }
 
 Ti.App.addEventListener('app:showMyAccountWindow', showMyAccountWindow);
 function showMyAccountWindow() {
 	utm.navGroup.open(utm.myAccountWindow);
+	recordAnalytics('Show Account Window', '' );
 }
 
-
+Ti.App.addEventListener('app:showMyHortWindow', showMyHortWindow);
+function showMyHortWindow() {
+	utm.navGroup.open(utm.myHortView);
+	recordAnalytics('Show MyHort Window', '' );
+}
 
 Ti.App.addEventListener('app:myHortChoosen', setMyHort);
 function setMyHort(e) {
@@ -295,6 +320,7 @@ utm.logoutReq = Ti.Network.createHTTPClient({
 	}
 	,timeout:utm.netTimeout
 });
+
 function callLogoutService(){
 	//call logout service
 	utm.logoutReq.open("POST", utm.serviceUrl + "Logout");
@@ -370,9 +396,17 @@ function closeAllScreens(){
 		utm.navGroup.close(utm.myAccountWindow);
 	}
 	
+	if (utm.myHortView != undefined){
+		utm.navGroup.close(utm.myHortView);
+	}
+	
+	if(utm.myHortDetailWindow != undefined){
+		utm.navGroup.close(utm.myHortDetailWindow);
+	}
+	
 }
 
-function handleError(e,status,responseText) {			
+function handleError(e,status,responseText) {			sdf
 	setActivityIndicator('');
 	var err = JSON.parse(responseText);
 	if(status ==403){
@@ -416,6 +450,10 @@ Ti.App.addEventListener("resumed", function(e){
 	}	
 });
 
+Titanium.App.addEventListener('close', function(e){
+	analytics.stop();
+});
+
 
 function recordError(message) {
 	log('Error:' + message);
@@ -423,4 +461,13 @@ function recordError(message) {
 
 function log(message) {
 	Ti.API.info(message);
+}
+
+function log(message) {
+	Ti.API.info(message);
+}
+
+function recordAnalytics(theEvent,theData){
+	//	category, action, label, value
+	analytics.trackEvent('Usage',theEvent,'Lbl1',theData );	
 }

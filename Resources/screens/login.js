@@ -1,4 +1,4 @@
-var TheLoginScreen_view = function() {
+var TheLoginScreen_view = function(utm) {
 	
 	var loginView = Ti.UI.createWindow({		
 		layout:'vertical'
@@ -67,7 +67,7 @@ var TheLoginScreen_view = function() {
 	
 	
 	function check_network() {
-		log('Check network: '+Titanium.Network.networkType == Titanium.Network.NETWORK_NONE);
+		//log('Check network: '+Titanium.Network.networkType == Titanium.Network.NETWORK_NONE);
 		
 		if (Titanium.Network.networkType == Titanium.Network.NETWORK_NONE) {
 			log('Check Connection');
@@ -138,8 +138,9 @@ var TheLoginScreen_view = function() {
 		},
 		onerror:function(e){
 			//clear out the password
+			setActivityIndicator('');
 			password.value='';
-			username.value="";
+			//username.value="";
 			if(this.status==401){
 			  	setActivityIndicator('');
 				
@@ -169,7 +170,7 @@ var TheLoginScreen_view = function() {
 		password.blur();
 		setActivityIndicator('Logging in');
 		setMessageArea("");
-		
+		log('Logging on using '+ utm.serviceUrl);
 		if (username.value != '' && password.value != '')
 		{	
 			log(username.value +' is logging in to UTM');
@@ -231,19 +232,17 @@ var TheLoginScreen_view = function() {
 	{	
 		var dialog = Ti.UI.createAlertDialog({
 				cancel : 1,
-				buttonNames : ['Dev', 'Test', L('cancel')],
+				buttonNames : ['Local','Dev', 'Test', L('cancel')],
 				title : 'Choose The Environment'
 			});
 			dialog.addEventListener('click', function(e) {
 				if (e.index === 0) {
-					setEnvModePrefix("dev.");					
-					//setAppMainColor('dev');
-					
+					setEnvModePrefix("local");					
 				} else if (e.index === 1) {
+					setEnvModePrefix("dev.");
+				} else if (e.index === 2) {
 					setEnvModePrefix("test.");
-					//setAppMainColor('test');
 				}
-				//loginView.barColor=utm.barColor;
 				versionLabel.text=utm.appVersion + '  ('+utm.envModePrefix +' DB)';
 				
 			});
