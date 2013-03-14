@@ -185,7 +185,7 @@ function message_window(utm) {
 	var getMessagesReq = Ti.Network.createHTTPClient({
 		validatesSecureCertificate : utm.validatesSecureCertificate,
 		onerror : function(e) {
-			handleError(e, this.status, this.responseText);
+			utm.handleError(e, this.status, this.responseText);
 		},
 		timeout : utm.netTimeout
 	});
@@ -488,7 +488,7 @@ function message_window(utm) {
 			 });*/
 		},
 		onerror : function(e) {
-			handleError(e, this.status, this.responseText);
+			utm.handleError(e, this.status, this.responseText);
 		},
 		timeout : utm.netTimeout
 	});

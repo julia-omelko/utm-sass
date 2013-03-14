@@ -150,7 +150,7 @@ function messageDetail_window(_messageData,_curMode,utm) {
 		     },
 		     // function called when an error occurs, including a timeout
 		     onerror : function(e) {		        
-		        	handleError(e,this.status,this.responseText); 
+		        	utm.handleError(e,this.status,this.responseText); 
 		     }
 		     ,timeout:utm.netTimeout
 		});	
@@ -211,7 +211,7 @@ function messageDetail_window(_messageData,_curMode,utm) {
 				alert('The message you are looking for does not exist.');	
 				Ti.App.fireEvent('app:refreshMessages', {showProgress:false});
 			}else{
-         		handleError(e,this.status,this.responseText);
+         		utm.handleError(e,this.status,this.responseText);
          	}         			
 		}
 		,timeout:utm.netTimeout
@@ -238,7 +238,7 @@ var getMarkMessageAsReadReq = Ti.Network.createHTTPClient({
 		
 	},		
 	onerror:function(e){
-		handleError(e,this.status,this.responseText); 			
+		utm.handleError(e,this.status,this.responseText); 			
 	}
 	,timeout:utm.netTimeout
 });	

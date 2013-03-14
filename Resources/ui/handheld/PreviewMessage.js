@@ -275,7 +275,7 @@ var PreviewMessage_window =function(utm) {
 		},
 		onerror:function(e){
 			sendButton.enabled=true;
-         	handleError(e,this.status,this.responseText); 			
+         	utm.handleError(e,this.status,this.responseText); 			
 		}
 		,timeout:utm.netTimeout
 	});	
@@ -318,7 +318,7 @@ var PreviewMessage_window =function(utm) {
 		onerror:function(e){
 			utm.setActivityIndicator('');
 			sendButton.enabled=true;
-         	handleError(e,this.status,this.responseText); 		
+         	utm.handleError(e,this.status,this.responseText); 		
 		}
 		,timeout:10000  //seams like send can take longer so override this timeout.
 	});	

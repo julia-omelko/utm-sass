@@ -74,7 +74,7 @@ var MyHorts_window = function(utm) {
 	var getMyHortsReq = Ti.Network.createHTTPClient({
 		validatesSecureCertificate : utm.validatesSecureCertificate,
 		onerror : function(e) {
-			handleError(e, this.status, this.responseText);
+			utm.handleError(e, this.status, this.responseText);
 		},
 		onload : function(e) {
 			var json = this.responseData;

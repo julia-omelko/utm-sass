@@ -203,7 +203,7 @@ function myHortDetail_window(_myHortData,utm) {
 			if (this.status != undefined && this.status === 404) {
 				alert('The myHort you are looking for does not exist.');
 			} else {
-				handleError(e, this.status, this.responseText);
+				utm.handleError(e, this.status, this.responseText);
 			}
 		},
 		timeout : utm.netTimeout
@@ -235,7 +235,7 @@ function myHortDetail_window(_myHortData,utm) {
 					showProgress : false
 				});
 			} else {
-				handleError(e, this.status, this.responseText);
+				utm.handleError(e, this.status, this.responseText);
 				saveButton.enabled=true;
 			}
 		},

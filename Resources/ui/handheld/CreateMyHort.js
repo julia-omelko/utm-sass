@@ -89,7 +89,7 @@ function createMyHortWindow(utm) {
 			refreshMyHortList();
 			myHortWindow.close();
 		},onerror: function(e){
-			handleError(e, this.status, this.responseText);
+			utm.handleError(e, this.status, this.responseText);
 			refreshMyHortList();
 		}		
 		

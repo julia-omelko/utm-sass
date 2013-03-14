@@ -65,7 +65,7 @@ var MyAccount_window = function(utm) {
 		},
 		onerror : function(e) {
 			Ti.App.fireEvent("app:logout", {});
-			handleError(e, this.status, this.responseText);
+			utm.handleError(e, this.status, this.responseText);
 		},
 		timeout : utm.netTimeout
 	});

@@ -179,7 +179,7 @@ var ChooseContacts_window = function(utm) {
 			// function called when an error occurs, including a timeout
 			onerror : function(e) {
 				utm.setActivityIndicator('');
-				handleError(e, this.status, this.responseText);
+				utm.handleError(e, this.status, this.responseText);
 			},
 			timeout : utm.netTimeout
 		});

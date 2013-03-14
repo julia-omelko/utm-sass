@@ -373,7 +373,7 @@ utm.logoutReq = Ti.Network.createHTTPClient({
 		}
 	},
 	onerror : function(e) {
-		//handleError(e,this.status,this.responseText); 
+		//utm.handleError(e,this.status,this.responseText); 
 		//Note it logout fails its probable auth token does not exist and nothing we can do but record error
 		utm.recordError("Status="+this.status + "   Message:"+this.responseText);
 	}
@@ -465,7 +465,7 @@ function closeAllScreens(){
 	
 }
 
-function handleError(e,status,responseText) {	
+utm.handleError = function (e,status,responseText) {	
 	utm.setActivityIndicator('');
 	var err = JSON.parse(responseText);
 	if(status ==403){

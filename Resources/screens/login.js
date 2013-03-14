@@ -152,7 +152,7 @@ var TheLoginScreen_view = function(utm) {
 				//Invalid UserName/Password
 				Titanium.Analytics.featureEvent('user.logged_in_invalid');
 			}else{
-			  	handleError(e,this.status,this.responseText);
+			  	utm.utm.handleError(e,this.status,this.responseText);
 			}
  	         	
 		}		
