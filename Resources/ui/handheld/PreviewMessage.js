@@ -1,4 +1,4 @@
-var PreviewMessage_window =function() {
+var PreviewMessage_window =function(utm) {
 	
 	var curUtmText='';
 	var curRjCrypt='';
@@ -181,7 +181,7 @@ var PreviewMessage_window =function() {
 		
 		if(invalidRecips != ''){
 			//Found issue that one or more users will not get the message because of the user chosen types	
-			var dialog = Ti.UI.createAlertDialog({
+			var dialog = Ti.UI.createAlertDiautm.log({
 			    cancel: 1,
 			    buttonNames: [L('ok_button'),L('cancel'),L('help')],
 			    message: 'Some of the people you choose to receive this message will not get the message based on the message types you choose, do you want to continue and send the message anyway?',
@@ -227,7 +227,7 @@ var PreviewMessage_window =function() {
 			//Sending a new message
 			for(v=0; v < utm.sentToContactList.length; v++){
 				copiedToUsers.push(utm.sentToContactList[v].userId);	
-				log('Preparing to send message to '+utm.sentToContactList[v].userId);		
+				utm.log('Preparing to send message to '+utm.sentToContactList[v].userId);		
 			}
 				
 			var params = {
@@ -243,8 +243,8 @@ var PreviewMessage_window =function() {
 			};
 		}
 		
-		log(JSON.stringify(params));
-		setActivityIndicator('Sending ...');
+		utm.log(JSON.stringify(params));
+		utm.setActivityIndicator('Sending ...');
 		sendMessageReq.open("POST",utm.serviceUrl+"SendMessage");
 		sendMessageReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");
 		sendMessageReq.setRequestHeader('Authorization-Token', utm.AuthToken);
@@ -262,14 +262,14 @@ var PreviewMessage_window =function() {
 			var json = this.responseData;
 			var response = JSON.parse(json);
 			sendButton.enabled=true;
-			log('PreviewMessages Service Returned');
+			utm.log('PreviewMessages Service Returned');
 			if(this.status ==200){
 				customUtmMessage.value=response.UtmText;				
 				yourOrgMessageValue.value = response.PlainText;
 				curRjCrypt=response.RjCrypt;
 				encryptedValue.value=curRjCrypt;		
 			}else{		
-				recordError(response.Message+ ' ExceptionMessag:'+response.ExceptionMessage);
+				utm.recordError(response.Message+ ' ExceptionMessag:'+response.ExceptionMessage);
 			}		
 			
 		},
@@ -286,9 +286,9 @@ var PreviewMessage_window =function() {
 		{
 			var json = this.responseData;
 			var response = JSON.parse(json);
-			setActivityIndicator('');
+			utm.setActivityIndicator('');
 			if(this.status ==200 && response.Status =='Success'){
-				log('Send Successful');
+				utm.log('Send Successful');
 				
 				
 				Ti.App.fireEvent("app:showMessagesAfterSend", {}); 
@@ -297,9 +297,9 @@ var PreviewMessage_window =function() {
 				Titanium.Analytics.featureEvent('user.sent_message');
 		
 			}else if(this.status ==200 && response.Status =='Warning'){
-				log('Send Successful with warning:'+response.Message);
+				utm.log('Send Successful with warning:'+response.Message);
 				//todo decide if we show warning here or not
-				/*var dialog = Ti.UI.createAlertDialog({
+				/*var dialog = Ti.UI.createAlertDiautm.log({
 				    	message: 'Warning: Not all recipents will recieve the messages based on the types you choose to send to.',
 				    ok: L('ok_button),
 				    title: 'Message Delivery Warning'
@@ -310,13 +310,13 @@ var PreviewMessage_window =function() {
 					Titanium.Analytics.featureEvent('user.sent_message');			
 			}else{
 				//Error:UserId: 1007 cannot accept Email messages
-				setActivityIndicator('');
-				recordError(response.Message+ ' ExceptionMessag:'+response.ExceptionMessage);
+				utm.setActivityIndicator('');
+				utm.recordError(response.Message+ ' ExceptionMessag:'+response.ExceptionMessage);
 			}		
 			
 		},
 		onerror:function(e){
-			setActivityIndicator('');
+			utm.setActivityIndicator('');
 			sendButton.enabled=true;
          	handleError(e,this.status,this.responseText); 		
 		}
@@ -358,7 +358,7 @@ var PreviewMessage_window =function() {
 	
 	Ti.App.addEventListener('app:contactsChoosen',setContactsChoosen);
 	function setContactsChoosen(e){			
-		log('PreviewMessage setContactsChoosen() fired sentToContactList='+e.sentToContactList);
+		utm.log('PreviewMessage setContactsChoosen() fired sentToContactList='+e.sentToContactList);
 		
 		sentToContactListString='To: ';
 		setButtonBarEnabled(false);

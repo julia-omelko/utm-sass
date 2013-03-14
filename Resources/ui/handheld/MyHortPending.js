@@ -1,4 +1,4 @@
-function createMyHortWindow(myHortId) {
+function createMyHortWindow(myHortId,utm) {
 
 	var myHortPendingWindow = Ti.UI.createWindow({
 		backgroundColor : '#fff',
@@ -23,7 +23,7 @@ function createMyHortWindow(myHortId) {
 
 	//Load list on focus event
 	myHortPendingWindow.addEventListener("focus", function() {
-		setActivityIndicator('Getting your Pending Invitations...');
+		utm.setActivityIndicator('Getting your Pending Invitations...');
 		loadPending();
 	});
 
@@ -41,10 +41,10 @@ function createMyHortWindow(myHortId) {
 		onload : function(e) {
 			var json = this.responseData;
 			var response = JSON.parse(json);
-			setActivityIndicator('');
+			utm.setActivityIndicator('');
 			Titanium.Analytics.featureEvent('user.viewed_myHortPending');
 			if (this.status == 200) {
-				log("MyHort data returned " + response.length + '  pending returned');
+				utm.log("MyHort data returned " + response.length + '  pending returned');
 				populateTable(response);
 			}
 		},

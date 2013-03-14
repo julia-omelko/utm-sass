@@ -124,10 +124,10 @@ var Analytics = AnalyticsBase.extend({
 			this._httpClient = Titanium.Network.createHTTPClient({
 				onload : function()
 				{
-					log('success');	
+					utm.log('success');	
 				}
 				,onerror:function(e){
-					log('error');
+					utm.log('error');
 				}
 			});
 

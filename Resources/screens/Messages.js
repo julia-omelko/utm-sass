@@ -1,4 +1,4 @@
-function message_window() {
+function message_window(utm) {
 
 	var moment = require('lib/moment');
 	var navGroup = false;
@@ -14,12 +14,12 @@ function message_window() {
 
 	var lastRow = 4;
 
-	var tabBar = Titanium.UI.iOS.createTabbedBar({
+	var tabBar = Titanium.UI.createButtonBar({
 		labels : [L('messages_recieved'), L('messages_sent')],
 		backgroundColor : utm.color,
 		top : 2,
 		index : 0,
-		style : Titanium.UI.iPhone.SystemButtonStyle.BAR,
+		//style : Titanium.UI.iPhone.SystemButtonStyle.BAR,
 		height : 35,
 		width : 250
 	});
@@ -27,7 +27,9 @@ function message_window() {
 
 	tabBar.addEventListener('click', function(e) {
 		//get out  of edit mode.
-		win.setRightNavButton(edit);
+		if(Ti.Platform.osname == 'iphone'){
+			win.setRightNavButton(edit);
+		}
 		tableView.editing = false;
 		tableView.setData([]);
 		
@@ -51,9 +53,9 @@ function message_window() {
 	tableView.addEventListener('click', function(e) {
 		var messageData = e.rowData.messageData;
 		utm.MessageDetailWindow = require('screens/MessageDetail');
-		utm.messageDetailWindow = new utm.MessageDetailWindow(messageData, curMode);
+		utm.messageDetailWindow = new utm.MessageDetailWindow(messageData, curMode,utm);
 		utm.messageDetailWindow.title = 'Message';
-		utm.navGroup.open(utm.messageDetailWindow);
+		utm.navigation.push(utm.messageDetailWindow);
 	});
 
 	//Add Swipe event to delete messages
@@ -72,7 +74,7 @@ function message_window() {
 
 		if (curMode == 'sent') {
 
-			var dialog = Ti.UI.createAlertDialog({
+			var dialog = Ti.UI.createAlertDiautm.log({
 				cancel : 1,
 				buttonNames : ['Delete Message?', 'Super Delete Message?', L('cancel')],
 				message : '“Delete Message” simply deletes this message from your  message box; “Super Delete Message” also deletes it from the message boxes of all recipients. ',
@@ -97,7 +99,7 @@ function message_window() {
 	}
 
 	function callDeleteMessage(messageId, isSuperDelete) {
-		log("About to delete message:" + messageId + '  isSuperDelete:' + isSuperDelete);
+		utm.log("About to delete message:" + messageId + '  isSuperDelete:' + isSuperDelete);
 		deleteMessagesReq.open('delete', utm.serviceUrl + 'Messages/DeleteMessage/' + messageId + '?isSuperDelete=' + isSuperDelete);
 		deleteMessagesReq.setRequestHeader('Authorization-Token', utm.AuthToken);
 		deleteMessagesReq.send();
@@ -111,7 +113,9 @@ function message_window() {
 	});
 
 	edit.addEventListener('click', function() {
-		win.setRightNavButton(cancel);
+		if(Ti.Platform.osname == 'iphone'){
+			win.setRightNavButton(cancel);
+		}	
 		tableView.editing = true;
 	});
 
@@ -120,12 +124,14 @@ function message_window() {
 		style : Titanium.UI.iPhone.SystemButtonStyle.DONE
 	});
 	cancel.addEventListener('click', function() {
-		win.setRightNavButton(edit);
+		if(Ti.Platform.osname == 'iphone'){
+			win.setRightNavButton(edit);
+		}
 		tableView.editing = false;
 	});
-
-	win.setRightNavButton(edit);
-	
+	if(Ti.Platform.osname == 'iphone'){
+		win.setRightNavButton(edit);
+	}
 	
 	
 
@@ -138,7 +144,7 @@ function message_window() {
 	Ti.App.addEventListener('app:backToMessageWindow', backToMessageWindow);
 	function backToMessageWindow() {
 		//Ti.App.fireEvent('app:showMessages');
-		utm.navGroup.open(utm.messageWindow);
+		utm.navigation.push(utm.messageWindow);
 		getMessages(curMode);
 	}
 
@@ -159,7 +165,7 @@ function message_window() {
 			showProgress = true;
 
 		if (showProgress) {
-			setActivityIndicator('Getting your messages...');
+			utm.setActivityIndicator('Getting your messages...');
 		}
 
 		if (mode == 'recieved') {
@@ -188,11 +194,11 @@ function message_window() {
 		var json = this.responseData;
 		var response = JSON.parse(json);
 		var tableData = [];
-		setActivityIndicator('');
+		utm.setActivityIndicator('');
 		Titanium.Analytics.featureEvent('user.viewed_messages');
 		if (this.status == 200) {
 
-			log("message data returned " +  response.length + '  messages');
+			utm.log("message data returned " +  response.length + '  messages');
 
 			for (var i = 0; i < response.length; i++) {
 				var row = Ti.UI.createTableViewRow({
@@ -282,10 +288,10 @@ function message_window() {
 
 		} else if (this.status == 400) {
 
-			recordError("Error:" + this.responseText);
+			utm.recordError("Error:" + this.responseText);
 
 		} else {
-			recordError("error");
+			utm.recordError("error");
 		}
 
 	};
@@ -473,10 +479,10 @@ function message_window() {
 	var deleteMessagesReq = Ti.Network.createHTTPClient({
 		validatesSecureCertificate : utm.validatesSecureCertificate,
 		onload : function(e) {
-			log('Message was deleted');
+			utm.log('Message was deleted');
 
 			/*var opts = {options: [L('ok_button')], title:L('messages_message_deleted')};
-			 var dialog = Ti.UI.createOptionDialog(opts).show();
+			 var dialog = Ti.UI.createOptionDiautm.log(opts).show();
 			 dialog.addEventListener('click', function(e){
 			 getMessages(curMode);
 			 });*/

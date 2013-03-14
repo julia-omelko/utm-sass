@@ -1,4 +1,4 @@
-var ChooseContacts_window = function() {
+var ChooseContacts_window = function(utm) {
 
 	var allChecked = false;
 	var selectedContacts = [];
@@ -53,8 +53,8 @@ var ChooseContacts_window = function() {
 		var section = e.section;
 
 		setTimeout(function() {
-			log('row clicked:' + section.rows[index]);
-			log('row data:' + e.rowData.UserId);
+			utm.log('row clicked:' + section.rows[index]);
+			utm.log('row data:' + e.rowData.UserId);
 			// set current check
 
 			if (section.rows[index].getHasCheck()) {
@@ -122,20 +122,20 @@ var ChooseContacts_window = function() {
 		allChecked = false;
 		writeMessageButton.enabled=false;
 		//Clear out the list
-		setActivityIndicator('Getting your MyHort Contacts...');
-		log('call server and get contact list for myHortId:' + utm.targetMyHortID);
+		utm.setActivityIndicator('Getting your MyHort Contacts...');
+		utm.log('call server and get contact list for myHortId:' + utm.targetMyHortID);
 
 		var getMembersReq = Ti.Network.createHTTPClient({
 			validatesSecureCertificate : utm.validatesSecureCertificate,
 			onload : function(e) {
-				setActivityIndicator('');
+				utm.setActivityIndicator('');
 				Ti.API.info("Received text: " + this.responseText);
 				var json = this.responseData;
 				var response = JSON.parse(json);
 				//Received text: [{"UserId":1004,"MyHortId":1003,"MemberType":"Primary","NickName":"Ant","HasMobile":true,"HasEmail":true,"HasFaceBook":false,"HasTwitter":false}]
 
 				if (this.status == 200) {
-					log("data returned:" + response);
+					utm.log("data returned:" + response);
 					var data = [];
 					utm.curUserCurMyHortHasTwitter = false;
 
@@ -171,14 +171,14 @@ var ChooseContacts_window = function() {
 					tableview.data = data;
 
 				} else if (this.status == 400) {
-					recordError(response.Message + ' ExceptionMessag:' + response.ExceptionMessage);
+					utm.recordError(response.Message + ' ExceptionMessag:' + response.ExceptionMessage);
 				} else {
-					log("error");
+					utm.log("error");
 				}
 			},
 			// function called when an error occurs, including a timeout
 			onerror : function(e) {
-				setActivityIndicator('');
+				utm.setActivityIndicator('');
 				handleError(e, this.status, this.responseText);
 			},
 			timeout : utm.netTimeout

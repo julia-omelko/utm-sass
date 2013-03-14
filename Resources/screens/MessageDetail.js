@@ -1,4 +1,4 @@
-function messageDetail_window(_messageData,_curMode) {
+function messageDetail_window(_messageData,_curMode,utm) {
 	var moment = require('lib/moment');
 	var win = Ti.UI.createWindow({
 		layout:'vertical'
@@ -87,7 +87,7 @@ function messageDetail_window(_messageData,_curMode) {
 	//-----------------Reply To Button ----------------------
 	var replyButton = Ti.UI.createButton({title:'Reply', visible:false, top:3});
 	replyButton.addEventListener('click', function()
-	{	log('replyButton fired');
+	{	utm.log('replyButton fired');
 	
 		getReplyToUserData(_messageData.FromUserId);
 	
@@ -110,7 +110,7 @@ function messageDetail_window(_messageData,_curMode) {
 				//Received text: [{"UserId":1004,"MyHortId":1003,"MemberType":"Primary","NickName":"Ant","HasMobile":true,"HasEmail":true,"HasFaceBook":false,"HasTwitter":false}]
 				
 				if(this.status ==200){					
-					log("data returned:"+response);
+					utm.log("data returned:"+response);
 					var data = [];
 					utm.curUserCurMyHortHasTwitter = false;
 					
@@ -143,9 +143,9 @@ function messageDetail_window(_messageData,_curMode) {
 		*/
 					
 				}else if(this.status == 400){				
-					recordError(response.Message+ ' ExceptionMessag:'+response.ExceptionMessage);			
+					utm.recordError(response.Message+ ' ExceptionMessag:'+response.ExceptionMessage);			
 				}else{
-					log("error");				
+					utm.log("error");				
 				}		
 		     },
 		     // function called when an error occurs, including a timeout
@@ -164,13 +164,13 @@ function messageDetail_window(_messageData,_curMode) {
 	var getMessageDetailReq = Ti.Network.createHTTPClient({
 		validatesSecureCertificate:utm.validatesSecureCertificate 
 		,onload: function()
-		{	setActivityIndicator('');
+		{	utm.setActivityIndicator('');
 			win.visible=true;
 			var json = this.responseData;
 			var response = JSON.parse(json);
 			
 			if(this.status ==200){
-				log("message data returned:"+response);
+				utm.log("message data returned:"+response);
 				if(response.Message.length > 200){
 					realMessageValue.height='55%'
 				}else{
@@ -183,7 +183,7 @@ function messageDetail_window(_messageData,_curMode) {
 				realMessageValue.value = response.Message;
 				
 				//Mark Message as Read
-				log('Mark Message as Read'+ ! _messageData.WasRead);
+				utm.log('Mark Message as Read'+ ! _messageData.WasRead);
 				if(  _messageData.WasRead !=1){
 					//#124 Fix issue with message list not refreshing IF message is marked as Read
 					setMessageAsRead(_messageData.Id);
@@ -199,13 +199,13 @@ function messageDetail_window(_messageData,_curMode) {
 					
 				
 			}else if(this.status == 400){
-				recordError(response.Message)
+				utm.recordError(response.Message)
 			}else{
-				recordError(response.Message)
+				utm.recordError(response.Message)
 			}		
 		},		
 		onerror:function(e){	
-			setActivityIndicator('');	
+			utm.setActivityIndicator('');	
 			if(this.status != undefined && this.status ===404)
 			{
 				alert('The message you are looking for does not exist.');	
@@ -222,7 +222,7 @@ function messageDetail_window(_messageData,_curMode) {
 		getMessageDetailReq.open("GET",utm.serviceUrl+"SentMessages/"+_messageData.Id);
 	}
 	
-	setActivityIndicator('Getting your message...');	
+	utm.setActivityIndicator('Getting your message...');	
 	getMessageDetailReq.setRequestHeader('Authorization-Token', utm.AuthToken);	
 	getMessageDetailReq.send();		
 

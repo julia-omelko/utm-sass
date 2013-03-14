@@ -1,4 +1,4 @@
-function myHortDetail_window(_myHortData) {
+function myHortDetail_window(_myHortData,utm) {
 
 	var InputField = require('ui/common/baseui/InputField');
 	var MyHortPendingWindow = require('ui/handheld/MyHortPending');
@@ -111,7 +111,7 @@ function myHortDetail_window(_myHortData) {
 		enabled : false
 	});
 	saveButton.addEventListener('click', function() {
-		log('saveButton fired');
+		utm.log('saveButton fired');
 		updateMyHortData();
 	});
 	win.add(saveButton);
@@ -156,7 +156,7 @@ function myHortDetail_window(_myHortData) {
 			}
 		}
 
-		setActivityIndicator('Updating...');
+		utm.setActivityIndicator('Updating...');
 		updateMyHortDetailReq.open("POST", utm.serviceUrl + "MyHort/UpdateMyHortDetails");
 		updateMyHortDetailReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");
 		updateMyHortDetailReq.setRequestHeader('Authorization-Token', utm.AuthToken);
@@ -174,7 +174,7 @@ function myHortDetail_window(_myHortData) {
 			utm.myHortDetails = JSON.parse(json);
 
 			if (this.status == 200) {
-				log("myHort data returned:" + utm.myHortDetails);
+				utm.log("myHort data returned:" + utm.myHortDetails);
 
 				//Now that we have date set all the values
 				email.setValue(utm.myHortDetails.PrimaryUser.Email);
@@ -191,15 +191,15 @@ function myHortDetail_window(_myHortData) {
 				saveButton.enabled = true;
 				//TODO handle errors better
 			} else if (this.status == 400) {
-				recordError(utm.myHortDetails.MyHort)
+				utm.recordError(utm.myHortDetails.MyHort)
 			} else {
-				recordError(utm.myHortDetails.MyHort)
+				utm.recordError(utm.myHortDetails.MyHort)
 			}
 			topButtonBar.enabled=true;
-			setActivityIndicator('');
+			utm.setActivityIndicator('');
 		},
 		onerror : function(e) {
-			setActivityIndicator('');
+			utm.setActivityIndicator('');
 			if (this.status != undefined && this.status === 404) {
 				alert('The myHort you are looking for does not exist.');
 			} else {
@@ -216,19 +216,19 @@ function myHortDetail_window(_myHortData) {
 			
 			var json = this.responseData;
 			if (this.status == 200) {
-				setActivityIndicator('Update Complete');
+				utm.setActivityIndicator('Update Complete');
 				utm.navGroup.close(utm.myHortDetailWindow);
 				Ti.App.fireEvent("app:showMyHortWindow", {});
-				setActivityIndicator('');
+				utm.setActivityIndicator('');
 				//TODO handle errors better
 			} else if (this.status == 400) {
-				recordError('error')
+				utm.recordError('error')
 			} else {
-				recordError(utm.myHortDetails.MyHort)
+				utm.recordError(utm.myHortDetails.MyHort)
 			}
 		},
 		onerror : function(e) {
-			setActivityIndicator('');
+			utm.setActivityIndicator('');
 			if (this.status != undefined && this.status === 404) {
 				alert('MyHort Update Failed');
 				Ti.App.fireEvent('app:refreshMyHorts', {
@@ -243,12 +243,12 @@ function myHortDetail_window(_myHortData) {
 	});
 
 	win.addEventListener("focus", function() {
-		log('Focus MyHortDetails');
+		utm.log('Focus MyHortDetails');
 		loadMyHortDetail();
 	});
 
 	function loadMyHortDetail() {
-		setActivityIndicator('Getting your MyHort Details...');
+		utm.setActivityIndicator('Getting your MyHort Details...');
 		getMyHortDetailReq.open("GET", utm.serviceUrl + "MyHort/GetMyHortDetails?myHortId=" + _myHortData.MyHortId);
 		getMyHortDetailReq.setRequestHeader('Authorization-Token', utm.AuthToken);
 		getMyHortDetailReq.send();
@@ -258,7 +258,7 @@ function myHortDetail_window(_myHortData) {
 
 		if (e.index === 0) {
 			//Invite
-			utm.myHortInviteWindow = new MyHortInviteWindow( _myHortData);
+			utm.myHortInviteWindow = new MyHortInviteWindow( _myHortData,utm);
 			utm.myHortInviteWindow.open({
 				modal : true,
 				modalTransitionStyle : Ti.UI.iPhone.MODAL_TRANSITION_STYLE_PARTIAL_CURL,
@@ -269,7 +269,7 @@ function myHortDetail_window(_myHortData) {
 			
 		} else if (e.index === 1) {
 			//Show Pending			
-			utm.myHortPendingWindow = new MyHortPendingWindow( _myHortData.MyHortId);
+			utm.myHortPendingWindow = new MyHortPendingWindow( _myHortData.MyHortId,utm);
 			utm.myHortPendingWindow.open({
 				modal : true,
 				modalTransitionStyle : Ti.UI.iPhone.MODAL_TRANSITION_STYLE_PARTIAL_CURL,

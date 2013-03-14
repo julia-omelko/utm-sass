@@ -1,4 +1,4 @@
-var MyAccount_window = function() {
+var MyAccount_window = function(utm) {
 
 	var myAccountWindow = Titanium.UI.createWindow({
 		layout : 'vertical',
@@ -32,7 +32,7 @@ var MyAccount_window = function() {
 
 	forgetMeButton.addEventListener('click', function() {
 
-		var dialog = Ti.UI.createAlertDialog({
+		var dialog = Ti.UI.createAlertDiautm.log({
 			cancel : 1,
 			buttonNames : [L('forget_me'), L('cancel')],
 			message : 'CONFIRM - Your account will be deleted, all MyHorts and Messages will be deleted? - NOTE: This can not be undone and messages are gone forever!',
@@ -50,7 +50,7 @@ var MyAccount_window = function() {
 	});
 
 	function callForgetMe() {
-		log("About to call forget me");
+		utm.log("About to call forget me");
 		forgetMeReq.open('delete', utm.serviceUrl + 'ForgetMe');
 		forgetMeReq.setRequestHeader('Authorization-Token', utm.AuthToken);
 		forgetMeReq.send();
@@ -59,7 +59,7 @@ var MyAccount_window = function() {
 	var forgetMeReq = Ti.Network.createHTTPClient({
 		validatesSecureCertificate : utm.validatesSecureCertificate,
 		onload : function(e) {
-			log('USER Was Forgotten');
+			utm.log('USER Was Forgotten');
 			alert("You have been removed from YouThisMe.");
 			Ti.App.fireEvent("app:logout", {});
 		},

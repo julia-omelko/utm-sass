@@ -1,4 +1,4 @@
-var MyHorts_window = function() {
+var MyHorts_window = function(utm) {
 
 	var CreateMyHortWindow = require('ui/handheld/CreateMyHort');
 
@@ -17,7 +17,7 @@ var MyHorts_window = function() {
 	myHortsWindow.add(createButton);
 
 	createButton.addEventListener('click', function() {
-		utm.createMyHortWindow = new CreateMyHortWindow(myHortsWindow);
+		utm.createMyHortWindow = new CreateMyHortWindow(utm);
 		utm.createMyHortWindow.open({
 			modal : true,
 			modalTransitionStyle : Ti.UI.iPhone.MODAL_TRANSITION_STYLE_PARTIAL_CURL,
@@ -35,8 +35,8 @@ var MyHorts_window = function() {
 	myHortsWindow.add(tableView);
 
 	myHortsWindow.addEventListener("focus", function() {
-		log('Focus');
-		setActivityIndicator('Getting your MyHorts...');
+		utm.log('Focus');
+		utm.setActivityIndicator('Getting your MyHorts...');
 		loadMyHorts();
 	});
 
@@ -45,7 +45,9 @@ var MyHorts_window = function() {
 	});
 
 	edit.addEventListener('click', function() {
-		myHortsWindow.setRightNavButton(cancel);
+		if(Ti.Platform.osname == 'iphone'){
+			myHortsWindow.setRightNavButton(cancel);
+		}	
 		tableView.editing = true;
 	});
 
@@ -54,12 +56,15 @@ var MyHorts_window = function() {
 		style : Titanium.UI.iPhone.SystemButtonStyle.DONE
 	});
 	cancel.addEventListener('click', function() {
-		myHortsWindow.setRightNavButton(edit);
+		if(Ti.Platform.osname == 'iphone'){
+			myHortsWindow.setRightNavButton(edit);
+		}	
 		tableView.editing = false;
 	});
-
-	myHortsWindow.setRightNavButton(edit);
-
+	if(Ti.Platform.osname == 'iphone'){
+		myHortsWindow.setRightNavButton(edit);
+	}
+	
 	function loadMyHorts() {
 		getMyHortsReq.open("GET", utm.serviceUrl + "MyHort?$orderby=FriendlyName");
 		getMyHortsReq.setRequestHeader('Authorization-Token', utm.AuthToken);
@@ -74,11 +79,11 @@ var MyHorts_window = function() {
 		onload : function(e) {
 			var json = this.responseData;
 			var response = JSON.parse(json);
-			setActivityIndicator('');
+			utm.setActivityIndicator('');
 			Titanium.Analytics.featureEvent('user.viewed_myHorts');
 			if (this.status == 200) {
 
-				log("MyHort data returned " + response.length + '  myHorts returned');
+				utm.log("MyHort data returned " + response.length + '  myHorts returned');
 				populateTable(response);
 
 			}
@@ -135,9 +140,9 @@ var MyHorts_window = function() {
 	tableView.addEventListener('click', function(e) {
 		var myHortData = e.rowData.myHortData;
 		utm.MyHortDetailWindow = require('screens/MyHortDetail');
-		utm.myHortDetailWindow = new utm.MyHortDetailWindow(myHortData);
+		utm.myHortDetailWindow = new utm.MyHortDetailWindow(myHortData,utm);
 		utm.myHortDetailWindow.title = 'MyHort Info';
-		utm.navGroup.open(utm.myHortDetailWindow);
+		utm.navigation.push(utm.myHortDetailWindow);
 	});
 
 	tableView.addEventListener('delete', function(e) {
@@ -146,7 +151,7 @@ var MyHorts_window = function() {
 	});
 
 	function confirmDeleteMyHort(myHortId) {
-		var dialog = Ti.UI.createAlertDialog({
+		var dialog = Ti.UI.createAlertDiautm.log({
 			cancel : 1,
 			buttonNames : ['Delete', L('cancel')],
 			message : 'Delete this MyHort will delete all your information in this MyHort - do you want to continue? ',
@@ -163,8 +168,8 @@ var MyHorts_window = function() {
 
 	// ##################### DELETE MyHort #####################
 	function deleteMyHort(myHortId) {
-		log('Deleting MyHort ' + myHortId);
-		setActivityIndicator('Deleting...');
+		utm.log('Deleting MyHort ' + myHortId);
+		utm.setActivityIndicator('Deleting...');
 		deleteMyHortDetailReq.open("GET", utm.serviceUrl + "MyHort/DeleteUsersMyHort?myhortId=" + myHortId);
 		deleteMyHortDetailReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");
 		deleteMyHortDetailReq.setRequestHeader('Authorization-Token', utm.AuthToken);
@@ -175,11 +180,11 @@ var MyHorts_window = function() {
 	var deleteMyHortDetailReq = Ti.Network.createHTTPClient({
 		validatesSecureCertificate : utm.validatesSecureCertificate,
 		onload : function() {
-			setActivityIndicator('');
+			utm.setActivityIndicator('');
 			//loadMyHorts();
 		},
 		onerror : function() {
-			log('error');
+			utm.log('error');
 		}
 	});
 

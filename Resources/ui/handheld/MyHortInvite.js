@@ -1,4 +1,4 @@
-function inviteMyHortWindow(myHortInfo) {
+function inviteMyHortWindow(myHortInfo,utm) {
 	var InputField = require('ui/common/baseui/InputField');
 	var CheckBoxField = require('ui/common/baseui/CheckBox');
 	var needsAuth = false;
@@ -88,8 +88,8 @@ function inviteMyHortWindow(myHortInfo) {
 	})
 	emailBox.add(chooseButton);
 
-	//log(Ti.Contacts)
-	//log(Ti.Contacts.contactsAuthorization );
+	//utm.log(Ti.Contacts)
+	//utm.log(Ti.Contacts.contactsAuthorization );
 
 	var values = {
 		cancel : function() {
@@ -192,7 +192,7 @@ function inviteMyHortWindow(myHortInfo) {
 
 	// ##################### CREATE MyHort #####################
 	function inviteMyHort() {
-		setActivityIndicator('Inviting New MyHort Members...');
+		utm.setActivityIndicator('Inviting New MyHort Members...');
 		inviteMyHortReq.open("POST", utm.serviceUrl + "MyHort/Invite");
 		inviteMyHortReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");
 		inviteMyHortReq.setRequestHeader('Authorization-Token', utm.AuthToken);
@@ -220,7 +220,7 @@ function inviteMyHortWindow(myHortInfo) {
 	var inviteMyHortReq = Ti.Network.createHTTPClient({
 		validatesSecureCertificate : utm.validatesSecureCertificate,
 		onload : function() {
-			setActivityIndicator('');
+			utm.setActivityIndicator('');
 			myHortInviteWindow.close();
 		},
 		onerror : function(e) {
@@ -235,7 +235,7 @@ function inviteMyHortWindow(myHortInfo) {
 			getContacts();
 			//	performAddressBookFunction();
 		} else {
-			log(privs);
+			utm.log(privs);
 			addressBookDisallowed();
 			// if (privs===Ti.Contacts.AUTHORIZATION_RESTRICTED){
 			// /b1.visible = false;

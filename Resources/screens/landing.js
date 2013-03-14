@@ -1,4 +1,4 @@
-var TheLandingScreen_view = function() {
+var TheLandingScreen_view = function(utm) {
 
 	var landingView = Ti.UI.createWindow({			
 		layout:'vertical',title:''

@@ -1,4 +1,4 @@
-function createMyHortWindow(_parentWindow) {
+function createMyHortWindow(utm) {
 	var InputField = require('ui/common/baseui/InputField');
 	
 	var myHortWindow = Ti.UI.createWindow({
@@ -71,8 +71,8 @@ function createMyHortWindow(_parentWindow) {
 	
 	// ##################### CREATE MyHort #####################
 	function createMyHort(myHortName){		
-		log('Create MyHort: '+myHortName);
-		setActivityIndicator('Adding New MyHort...');
+		utm.log('Create MyHort: '+myHortName);
+		utm.setActivityIndicator('Adding New MyHort...');
 		createMyHortReq.open("POST", utm.serviceUrl + "MyHort/CreateMyHortDetails");
 		createMyHortReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");
 		createMyHortReq.setRequestHeader('Authorization-Token', utm.AuthToken);
@@ -85,7 +85,7 @@ function createMyHortWindow(_parentWindow) {
 	var createMyHortReq = Ti.Network.createHTTPClient({
 		validatesSecureCertificate : utm.validatesSecureCertificate,
 		onload : function() {
-			setActivityIndicator('');
+			utm.setActivityIndicator('');
 			refreshMyHortList();
 			myHortWindow.close();
 		},onerror: function(e){
@@ -96,7 +96,7 @@ function createMyHortWindow(_parentWindow) {
 	});
 	
 	function refreshMyHortList(){
-		setActivityIndicator('Refreshing your MyHorts...');	
+		utm.setActivityIndicator('Refreshing your MyHorts...');	
 		Ti.App.fireEvent("app:loadMyHorts");
 	}
 	

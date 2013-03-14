@@ -1,4 +1,4 @@
-var ChooseMyHort_window =function() {
+var ChooseMyHort_window =function(utm) {
 	
 	var chooseMyHortView = Ti.UI.createWindow({
 		layout:'vertical'
@@ -33,7 +33,7 @@ var ChooseMyHort_window =function() {
 		myHortPicker.add(data);
 		
 		//Re #237 Moved the window change call to after the myhort picklist is done setting
-		utm.navGroup.open(utm.chooseMyHortView);	
+		utm.navigation.push(utm.chooseMyHortView);	
 		
 	} 
 

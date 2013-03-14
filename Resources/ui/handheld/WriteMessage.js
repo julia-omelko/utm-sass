@@ -1,4 +1,4 @@
-var WriteMessage_window =function() {
+var WriteMessage_window =function(utm) {
 
 	var replyMode=false;
 	var messageData=false;
@@ -63,7 +63,7 @@ var WriteMessage_window =function() {
 		{	
 			previewButton.enabled =true;
 		}else{
-			log('disable it');
+			utm.log('disable it');
 			previewButton.enabled =false;
 		}
 	})
@@ -79,7 +79,7 @@ var WriteMessage_window =function() {
 	
 	Ti.App.addEventListener('app:contactsChoosen',setContactsChoosen);
 	function setContactsChoosen(e){			
-		log('PreviewMessage setContactsChoosen() fired sentToContactList='+e.sentToContactList);
+		utm.log('PreviewMessage setContactsChoosen() fired sentToContactList='+e.sentToContactList);
 		
 		sentToContactListString='To: ';
 		

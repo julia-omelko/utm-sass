@@ -67,10 +67,10 @@ var TheLoginScreen_view = function(utm) {
 	
 	
 	function check_network() {
-		//log('Check network: '+Titanium.Network.networkType == Titanium.Network.NETWORK_NONE);
+		//utm.log('Check network: '+Titanium.Network.networkType == Titanium.Network.NETWORK_NONE);
 		
 		if (Titanium.Network.networkType == Titanium.Network.NETWORK_NONE) {
-			log('Check Connection');
+			utm.log('Check Connection');
 		  	setMessageArea('No Internet Connection Available- the UTM Application requires that you have a Internet Connection.');
 		  	loginBtn.enabled=false;
 		} else {
@@ -115,11 +115,11 @@ var TheLoginScreen_view = function(utm) {
 			var json = this.responseData;
 			var response = JSON.parse(json);
 
-			setActivityIndicator('');
+			utm.setActivityIndicator('');
 			//clear out the password
 			password.value='';
 			username.value='';
-			log('Login Service Returned');
+			utm.log('Login Service Returned');
 			if(this.status ==200){
 				//username.value('Login Successfull');
 				Ti.App.fireEvent("app:loginSuccess", {
@@ -130,7 +130,7 @@ var TheLoginScreen_view = function(utm) {
 			    
 				
 			}else{
-				log('Login Error');
+				utm.log('Login Error');
 				messageArea.test="error";
 				setMessageArea("Error in Service");
 			}		
@@ -138,11 +138,11 @@ var TheLoginScreen_view = function(utm) {
 		},
 		onerror:function(e){
 			//clear out the password
-			setActivityIndicator('');
+			utm.setActivityIndicator('');
 			password.value='';
 			//username.value="";
 			if(this.status==401){
-			  	setActivityIndicator('');
+			  	utm.setActivityIndicator('');
 				
 				var err = JSON.parse(this.responseText);
 				setMessageArea(err.Message);
@@ -168,12 +168,12 @@ var TheLoginScreen_view = function(utm) {
 	{
 		username.blur();
 		password.blur();
-		setActivityIndicator('Logging in');
+		utm.setActivityIndicator('Logging in');
 		setMessageArea("");
-		log('Logging on using '+ utm.serviceUrl);
+		utm.log('Logging on using '+ utm.serviceUrl);
 		if (username.value != '' && password.value != '')
 		{	
-			log(username.value +' is logging in to UTM');
+			utm.log(username.value +' is logging in to UTM');
 			loginReq.open("POST",utm.serviceUrl+"Login");				
 
 			var params = {
@@ -186,7 +186,7 @@ var TheLoginScreen_view = function(utm) {
 		}
 		else
 		{
-			setActivityIndicator('');
+			utm.setActivityIndicator('');
 			alert(L('user_name_password_req'));			
 		}
 	});
@@ -230,7 +230,7 @@ var TheLoginScreen_view = function(utm) {
 	
 	versionLabel.addEventListener('longpress',function(e)
 	{	
-		var dialog = Ti.UI.createAlertDialog({
+		var dialog = Ti.UI.createAlertDiautm.log({
 				cancel : 1,
 				buttonNames : ['Local','Dev', 'Test', L('cancel')],
 				title : 'Choose The Environment'
