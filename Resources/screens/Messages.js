@@ -55,7 +55,7 @@ function message_window(utm) {
 		utm.MessageDetailWindow = require('screens/MessageDetail');
 		utm.messageDetailWindow = new utm.MessageDetailWindow(messageData, curMode,utm);
 		utm.messageDetailWindow.title = 'Message';
-		utm.navigation.push(utm.messageDetailWindow);
+		utm.controller.open(utm.messageDetailWindow);
 	});
 
 	//Add Swipe event to delete messages
@@ -109,7 +109,7 @@ function message_window(utm) {
 	//  create edit/cancel buttons for nav bar
 	//
 	var edit = Titanium.UI.createButton({
-		title : 'Edit'
+		title : 'Delete'
 	});
 
 	edit.addEventListener('click', function() {
@@ -144,7 +144,7 @@ function message_window(utm) {
 	Ti.App.addEventListener('app:backToMessageWindow', backToMessageWindow);
 	function backToMessageWindow() {
 		//Ti.App.fireEvent('app:showMessages');
-		utm.navigation.push(utm.messageWindow);
+		utm.controller.open(utm.messageWindow);
 		getMessages(curMode);
 	}
 
@@ -191,8 +191,7 @@ function message_window(utm) {
 	});
 
 	getMessagesReq.onload = function() {
-		var json = this.responseData;
-		var response = JSON.parse(json);
+		var response = eval('('+this.responseText+')');
 		var tableData = [];
 		utm.setActivityIndicator('');
 		Titanium.Analytics.featureEvent('user.viewed_messages');

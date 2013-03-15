@@ -33,7 +33,7 @@ var ChooseMyHort_window =function(utm) {
 		myHortPicker.add(data);
 		
 		//Re #237 Moved the window change call to after the myhort picklist is done setting
-		utm.navigation.push(utm.chooseMyHortView);	
+		utm.controller.open(utm.chooseMyHortView);	
 		
 	} 
 

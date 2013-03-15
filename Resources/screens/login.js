@@ -106,9 +106,9 @@ var TheLoginScreen_view = function(utm) {
 		,tlsVersion:Ti.Network.TLS_VERSION_1_2
 		,onload : function()
 		{
-			var json = this.responseData;
-			var response = JSON.parse(json);
-utm.log('success');
+
+			var response = eval('('+this.responseText+')');
+			utm.log('success');
 			utm.setActivityIndicator('');
 			//clear out the password
 			password.value='';

@@ -50,7 +50,7 @@ function messageDetail_window(_messageData,_curMode,utm) {
 	var utmMessageValue = Ti.UI.createLabel({
 		text:'',
 		width:utm.SCREEN_WIDTH-10,
-		font: {fontSize:14},
+		font: {fontSize:16},
 		top:2,
 		height:'auto',
 		textAlign:'left'
@@ -75,7 +75,7 @@ function messageDetail_window(_messageData,_curMode,utm) {
 	var realMessageValue = Ti.UI.createTextArea({
 		value:'',
 		width:'100%',
-		font: {fontSize:14},
+		font: {fontSize:16},
 		color:utm.textFieldColor,
 		top:2,
 		height:'auto',
@@ -105,8 +105,7 @@ function messageDetail_window(_messageData,_curMode,utm) {
 		     validatesSecureCertificate:utm.validatesSecureCertificate 
 			,onload : function(e) {
 		         Ti.API.info("Received text: " + this.responseText);
-		        var json = this.responseData;
-				var response = JSON.parse(json);
+		        var response = eval('('+this.responseText+')');
 				//Received text: [{"UserId":1004,"MyHortId":1003,"MemberType":"Primary","NickName":"Ant","HasMobile":true,"HasEmail":true,"HasFaceBook":false,"HasTwitter":false}]
 				
 				if(this.status ==200){					
@@ -166,8 +165,7 @@ function messageDetail_window(_messageData,_curMode,utm) {
 		,onload: function()
 		{	utm.setActivityIndicator('');
 			win.visible=true;
-			var json = this.responseData;
-			var response = JSON.parse(json);
+			var response = eval('('+this.responseText+')');
 			
 			if(this.status ==200){
 				utm.log("message data returned:"+response);

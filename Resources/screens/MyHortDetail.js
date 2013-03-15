@@ -217,7 +217,7 @@ function myHortDetail_window(_myHortData,utm) {
 			var json = this.responseData;
 			if (this.status == 200) {
 				utm.setActivityIndicator('Update Complete');
-				utm.navGroup.close(utm.myHortDetailWindow);
+			///	utm.navGroup.close(utm.myHortDetailWindow);
 				Ti.App.fireEvent("app:showMyHortWindow", {});
 				utm.setActivityIndicator('');
 				//TODO handle errors better
