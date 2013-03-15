@@ -53,18 +53,12 @@ var TheLoginScreen_view = function(utm) {
 	
 	var loginBtn = Ti.UI.createButton({
 		title:L('login'),
-		top:utm.Android ? 40 : 5=20,
+		top:utm.Android ? 40 : 20,
 		width:100,
 		borderRadius:1,
 		font:{fontFamily:'Arial',fontWeight:'bold',fontSize:14}
 	});
 	loginView.add(loginBtn);
-	
-	
-	fillInTestLogin();
-	
-	check_network();
-	
 	
 	function check_network() {
 		//utm.log('Check network: '+Titanium.Network.networkType == Titanium.Network.NETWORK_NONE);
@@ -114,7 +108,7 @@ var TheLoginScreen_view = function(utm) {
 		{
 			var json = this.responseData;
 			var response = JSON.parse(json);
-
+utm.log('success');
 			utm.setActivityIndicator('');
 			//clear out the password
 			password.value='';
@@ -141,6 +135,7 @@ var TheLoginScreen_view = function(utm) {
 			utm.setActivityIndicator('');
 			password.value='';
 			//username.value="";
+			utm.log('errro');
 			if(this.status==401){
 			  	utm.setActivityIndicator('');
 				
@@ -175,7 +170,7 @@ var TheLoginScreen_view = function(utm) {
 		{	
 			utm.log(username.value +' is logging in to UTM');
 			loginReq.open("POST",utm.serviceUrl+"Login");				
-
+utm.log('1');
 			var params = {
 				UserName: username.value,
 				Password: password.value,
@@ -222,7 +217,8 @@ var TheLoginScreen_view = function(utm) {
 		}
 	}
 	function fillInTestLogin(){
-		if (Ti.Platform.model == 'Simulator') { 
+		utm.log('Ti.Platform.model = ' +Ti.Platform.model );
+		if (Ti.Platform.model === 'Simulator'  || Ti.Platform.model ===  'google_sdk') { 
  			username.value='ad';
  			password.value='testtest1';
 		}
@@ -249,6 +245,9 @@ var TheLoginScreen_view = function(utm) {
 			dialog.show();
 	});
 	
+	fillInTestLogin();
+	
+	check_network();
 
 	return loginView;
 };
