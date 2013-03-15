@@ -181,7 +181,7 @@ var PreviewMessage_window =function(utm) {
 		
 		if(invalidRecips != ''){
 			//Found issue that one or more users will not get the message because of the user chosen types	
-			var dialog = Ti.UI.createAlertDiautm.log({
+			var dialog = Ti.UI.createAlertDialog({
 			    cancel: 1,
 			    buttonNames: [L('ok_button'),L('cancel'),L('help')],
 			    message: 'Some of the people you choose to receive this message will not get the message based on the message types you choose, do you want to continue and send the message anyway?',
@@ -299,7 +299,7 @@ var PreviewMessage_window =function(utm) {
 			}else if(this.status ==200 && response.Status =='Warning'){
 				utm.log('Send Successful with warning:'+response.Message);
 				//todo decide if we show warning here or not
-				/*var dialog = Ti.UI.createAlertDiautm.log({
+				/*var dialog = Ti.UI.createAlertDialog({
 				    	message: 'Warning: Not all recipents will recieve the messages based on the types you choose to send to.',
 				    ok: L('ok_button),
 				    title: 'Message Delivery Warning'

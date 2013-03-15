@@ -18,28 +18,29 @@ var TheLoginScreen_view = function(utm) {
 		image:'/images/ytm_Narrow.png',
 		width:275,
 		height:71,
-		top:20
+		top:20,
+		bottom:utm.Android ? 50 : 0
 	});
 	loginView.add(utmLogo);
 	
 	var username = Ti.UI.createTextField({
 		color:utm.textFieldColor,		
 		width:300,
-		height:40,
 		hintText:L('label_user_name'),
 		autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
 		autocorrect: false,
 		keyboardType:Ti.UI.KEYBOARD_DEFAULT,
 		returnKeyType:Ti.UI.RETURNKEY_DEFAULT,
-		borderStyle:Ti.UI.INPUT_BORDERSTYLE_ROUNDED
+		borderStyle:Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
+		top:utm.Android ? 30 : 5
 	});
 	loginView.add(username);
 	
 	var password = Ti.UI.createTextField({
 		color:utm.textFieldColor,
-		top:20,
+		top:utm.Android ? 40 : 20,
 		width:300,
-		height:40,
+
 		hintText:L('label_password'),
 		passwordMask:true,
 		autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
@@ -52,9 +53,8 @@ var TheLoginScreen_view = function(utm) {
 	
 	var loginBtn = Ti.UI.createButton({
 		title:L('login'),
-		top:20,
+		top:utm.Android ? 40 : 5=20,
 		width:100,
-		height:35,
 		borderRadius:1,
 		font:{fontFamily:'Arial',fontWeight:'bold',fontSize:14}
 	});
@@ -152,7 +152,7 @@ var TheLoginScreen_view = function(utm) {
 				//Invalid UserName/Password
 				Titanium.Analytics.featureEvent('user.logged_in_invalid');
 			}else{
-			  	utm.utm.handleError(e,this.status,this.responseText);
+			  	utm.handleError(e,this.status,this.responseText);
 			}
  	         	
 		}		
@@ -230,18 +230,18 @@ var TheLoginScreen_view = function(utm) {
 	
 	versionLabel.addEventListener('longpress',function(e)
 	{	
-		var dialog = Ti.UI.createAlertDiautm.log({
+		var dialog = Ti.UI.createAlertDialog({
 				cancel : 1,
 				buttonNames : ['Local','Dev', 'Test', L('cancel')],
 				title : 'Choose The Environment'
 			});
 			dialog.addEventListener('click', function(e) {
 				if (e.index === 0) {
-					setEnvModePrefix("local");					
+					utm.setEnvModePrefix("local");					
 				} else if (e.index === 1) {
-					setEnvModePrefix("dev.");
+					utm.setEnvModePrefix("dev.");
 				} else if (e.index === 2) {
-					setEnvModePrefix("test.");
+					utm.setEnvModePrefix("test.");
 				}
 				versionLabel.text=utm.appVersion + '  ('+utm.envModePrefix +' DB)';
 				

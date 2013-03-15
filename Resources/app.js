@@ -1,15 +1,5 @@
 //utm is the js namespace for this app
 
-var iPhone = false;
-var Android = false;
-if(Ti.Platform.osname == 'iphone'){
-	iPhone = true
-};
-if(Ti.Platform.osname == 'android'){
-	Android = true
-};
-
-
 var gaModule = require('Ti.Google.Analytics');
 var analytics = new gaModule('UA-38943374-1');
 
@@ -32,13 +22,28 @@ utm.SCREEN_HEIGHT = (pWidth > pHeight) ? pWidth : pHeight;
 utm.enableSendMessageButton=false;
 utm.appPauseTime=0;
 
+utm.iPhone = false;
+utm.Android = false;
+if(Ti.Platform.osname == 'iphone'){
+	utm.iPhone = true
+};
+if(Ti.Platform.osname == 'android'){
+	utm.Android = true
+};
+
+
+utm.log=function (message) {
+	Ti.API.info(message);
+}
+
+
 //***************************************************************************
 function NavigationController(a){
 	// this is to avoid errors
 	a = a || {};
 	a.window = a.window || Ti.UI.createWindow();
 	// this is to handle the iPhone Nav functionality
-	if(iPhone){
+	if(utm.iPhone){
 		var win = Ti.UI.createWindow({
 			barColor:utm.barColor
 		});
@@ -55,7 +60,7 @@ function NavigationController(a){
 		return win;
 	}
 	// there is no Nav in Android, so let's return the window
-	if(Android){
+	if(utm.Android){
 		a.window.push = function(b){
 			b.open({
 				fullscreen:false
@@ -86,6 +91,18 @@ utm.navigation = NavigationController({
 });
 // open it
 utm.navigation.open();
+
+utm.setEnvModePrefix= function (env){
+	utm.envModePrefix =env;
+	if (env==='local') { 
+		//utm.serviceUrl = 'http://192.168.244.194/api/v1/';
+		utm.serviceUrl = 'https://dev.youthisme.com/api/v1/';
+	}else if(env==='dev.' || env === 'test.'){
+		utm.serviceUrl = 'https://'+env +'youthisme.com/api/v1/';
+	}	
+	utm.log('env='+env);
+	utm.log('utm.seviceUrl='+utm.serviceUrl);
+}
 
 appInit();
 
@@ -122,30 +139,23 @@ utm.MyHortView = require('screens/MyHorts');
 utm.myHortView = new utm.MyHortView(utm);
 
 
+
 function appInit(){	
 	
 	analytics.start(10,true);
 	
 	if (Ti.Platform.model === 'Simulator') { 
-		setEnvModePrefix("local");
+		utm.setEnvModePrefix("local");
 		setAppMainColor('test');
 	}else{
-		setEnvModePrefix("test.");
+		utm.setEnvModePrefix("test.");
 		setAppMainColor('test');
 	}	
-	setEnvModePrefix(utm.envModePrefix);
+	//utm.setEnvModePrefix(utm.envModePrefix);
 	
 	utm.navigation.push(utm.loginView);
 }
 
- function setEnvModePrefix(env){
-	utm.envModePrefix =env;
-	if (env==='local') { 
-		utm.serviceUrl = 'http://192.168.244.194/api/v1/';
-	}else if(env==='dev' || env === 'test'){
-		utm.serviceUrl = 'https://'+env +'youthisme.com/api/v1/';
-	}	
-}
 
 //############### Application Event Handlers ###############
 
@@ -165,7 +175,7 @@ function handleLoginSuccess(event) {
 	if(utm.myHorts.length ===0 ){
 		utm.enableSendMessageButton=false;
 		utm.recordAnalytics('login failed', utm.User.UserProfile.UserName );
-		var dialog = Ti.UI.createAlertDiautm.log({
+		var dialog = Ti.UI.createAlertDialog({
 		    cancel: 1,
 			    buttonNames: [L('ok_button')],
 			    message: 'You have not setup any MyHorts to group the people you wish to communicate with, please create at least one MyHort',
@@ -516,10 +526,6 @@ Titanium.App.addEventListener('close', function(e){
 
 utm.recordError = function (message) {
 	utm.log('Error:' + message);
-}
-
-utm.log=function (message) {
-	Ti.API.info(message);
 }
 
 

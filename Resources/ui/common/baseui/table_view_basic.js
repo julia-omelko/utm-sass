@@ -27,7 +27,7 @@ function tv_basic() {
 		if (islongclick) {
 			msg = "LONGCLICK " + msg;
 		}
-		Titanium.UI.createAlertDiautm.log({title:'Table View',message:msg}).show();
+		Titanium.UI.createAlertDialog({title:'Table View',message:msg}).show();
 	}
 	
 	// create table view event listener

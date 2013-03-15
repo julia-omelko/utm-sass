@@ -74,7 +74,7 @@ function message_window(utm) {
 
 		if (curMode == 'sent') {
 
-			var dialog = Ti.UI.createAlertDiautm.log({
+			var dialog = Ti.UI.createAlertDialog({
 				cancel : 1,
 				buttonNames : ['Delete Message?', 'Super Delete Message?', L('cancel')],
 				message : '“Delete Message” simply deletes this message from your  message box; “Super Delete Message” also deletes it from the message boxes of all recipients. ',

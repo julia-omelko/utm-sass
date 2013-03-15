@@ -32,7 +32,7 @@ var MyAccount_window = function(utm) {
 
 	forgetMeButton.addEventListener('click', function() {
 
-		var dialog = Ti.UI.createAlertDiautm.log({
+		var dialog = Ti.UI.createAlertDialog({
 			cancel : 1,
 			buttonNames : [L('forget_me'), L('cancel')],
 			message : 'CONFIRM - Your account will be deleted, all MyHorts and Messages will be deleted? - NOTE: This can not be undone and messages are gone forever!',

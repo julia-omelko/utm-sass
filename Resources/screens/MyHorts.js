@@ -151,7 +151,7 @@ var MyHorts_window = function(utm) {
 	});
 
 	function confirmDeleteMyHort(myHortId) {
-		var dialog = Ti.UI.createAlertDiautm.log({
+		var dialog = Ti.UI.createAlertDialog({
 			cancel : 1,
 			buttonNames : ['Delete', L('cancel')],
 			message : 'Delete this MyHort will delete all your information in this MyHort - do you want to continue? ',
