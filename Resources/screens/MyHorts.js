@@ -189,7 +189,9 @@ var MyHorts_window = function(utm) {
 	});
 
 	myHortsWindow.addEventListener('blur', function() {
-		myHortsWindow.setRightNavButton(edit);
+		if(Ti.Platform.osname == 'iphone'){
+			myHortsWindow.setRightNavButton(edit);
+		}
 		tableView.editing = false;
 	});
 

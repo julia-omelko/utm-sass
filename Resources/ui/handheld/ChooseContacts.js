@@ -3,10 +3,19 @@ var ChooseContacts_window = function(utm) {
 	var allChecked = false;
 	var selectedContacts = [];
 	
-	var chooseContactsView = Titanium.UI.createWindow({
+	/* var chooseContactsView = Titanium.UI.createWindow({
 		width : 'auto',
 		height : 'auto',
 		layout : 'absolute',
+		title : L('send_choose_contacts'),
+		backgroundColor : utm.backgroundColor,
+		barColor : utm.barColor
+	}); */
+	
+	var chooseContactsView = Titanium.UI.createWindow({
+		// width : 'auto',
+		// height : 'auto',
+		layout : 'vertical',
 		title : L('send_choose_contacts'),
 		backgroundColor : utm.backgroundColor,
 		barColor : utm.barColor

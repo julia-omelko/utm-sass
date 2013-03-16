@@ -493,7 +493,9 @@ function message_window(utm) {
 	});
 	
 	win.addEventListener('blur', function() {
-   		win.setRightNavButton(edit);
+		if(Ti.Platform.osname == 'iphone'){
+			win.setRightNavButton(edit);
+		}   		
 		tableView.editing = false;
 	});
 

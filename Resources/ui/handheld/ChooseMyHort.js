@@ -23,7 +23,10 @@ var ChooseMyHort_window =function(utm) {
 	Ti.App.addEventListener('app:populateMyHortPicker',populateMyHortPicker);
 	function populateMyHortPicker(){	
 		var data = [];
-		myHortPicker.columns = [];
+
+		if(Ti.Platform.osname == 'iphone'){
+			myHortPicker.columns = [];
+		}
 		
 		var intOption = 0, intOptionLen = utm.myHorts.length;
 		for (intOption = 0; intOption < intOptionLen; intOption = intOption + 1) {
@@ -41,7 +44,7 @@ var ChooseMyHort_window =function(utm) {
 		title:L('send_choose_contacts'),
 		top:34,
 		width:'auto',
-		height:30
+		// height:30
 	});	
 	chooseMyHortView.add(chooseMyhortButton);
 	
