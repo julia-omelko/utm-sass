@@ -19,7 +19,6 @@ var TheLandingScreen_view = function(utm) {
 		title:L('landing_view_messages'),
 		top:20,
 		width:200,
-		height:35,
 		font:{fontFamily:'Arial',fontWeight:'bold',fontSize:14}
 	});
 	landingView.add(viewMessageBtn);
@@ -28,7 +27,6 @@ var TheLandingScreen_view = function(utm) {
 		title:L('landing_send_messages'),
 		top:20,
 		width:200,
-		height:35,
 		font:{fontFamily:'Arial',fontWeight:'bold',fontSize:14}
 	});
 	landingView.add(sendMessageBtn);	
@@ -37,7 +35,6 @@ var TheLandingScreen_view = function(utm) {
 		title:'MyHorts',
 		top:20,
 		width:200,
-		height:35,
 		font:{fontFamily:'Arial',fontWeight:'bold',fontSize:14}
 	});
 	landingView.add(myHortBtn);	
@@ -46,7 +43,6 @@ var TheLandingScreen_view = function(utm) {
 		title:L('landing_my_account'),
 		top:20,
 		width:200,
-		height:35,
 		font:{fontFamily:'Arial',fontWeight:'bold',fontSize:14}
 	});
 	landingView.add(myAccountBtn);	
