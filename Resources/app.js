@@ -1,8 +1,4 @@
 //utm is the js namespace for this app
-
-var gaModule = require('Ti.Google.Analytics');
-//var analytics = new gaModule('UA-38943374-1');
-
 var utm = {};
 utm.loggedIn = false;
 utm.envModePrefix = "";
@@ -22,6 +18,10 @@ utm.SCREEN_WIDTH = (pWidth > pHeight) ? pHeight : pWidth;
 utm.SCREEN_HEIGHT = (pWidth > pHeight) ? pWidth : pHeight;
 utm.enableSendMessageButton=false;
 utm.appPauseTime=0;
+var gaModule = require('Ti.Google.Analytics');
+var analytics = new gaModule('UA-38943374-1');
+
+
 
 utm.iPhone = false;
 utm.Android = false;
@@ -76,8 +76,10 @@ utm.setEnvModePrefix= function (env){
 	if (env==='local') { 
 		//utm.serviceUrl = 'http://192.168.244.194/api/v1/';
 		utm.serviceUrl = 'https://dev.youthisme.com/api/v1/';
-	}else if(env==='dev.' || env === 'test.'){
-		utm.serviceUrl = 'https://'+env +'youthisme.com/api/v1/';
+	}else if(env==='dev' || env === 'test'){
+		utm.serviceUrl = 'https://'+env +'.youthisme.com/api/v1/';
+	}else if(env === 'prod'){
+		utm.serviceUrl = 'https://youthisme.com/api/v1/';
 	}	
 	utm.log('env='+env);
 	utm.log('utm.seviceUrl='+utm.serviceUrl);
@@ -121,17 +123,15 @@ utm.myHortView = new utm.MyHortView(utm);
 
 function appInit(){	
 	
-	//analytics.start(10,true);
+	analytics.start(10,true);
 	
 	if (Ti.Platform.model === 'Simulator' || Ti.Platform.model ===  'google_sdk') { 
 		utm.setEnvModePrefix("local");
-		setAppMainColor('test');
 	}else{
-		utm.setEnvModePrefix("test.");
-		setAppMainColor('test');
+		utm.setEnvModePrefix("test");
 	}	
-	//utm.setEnvModePrefix(utm.envModePrefix);
 	
+	utm.loginView.setVersionLabel();
 	//utm.controller.open(utm.loginView);
 }
 
@@ -148,7 +148,7 @@ function handleLoginSuccess(event) {
 	utm.User = event.userData;
 	utm.AuthToken = event.userData.UserProfile.AuthToken;
 	
-	//analytics.trackPageview('/login');
+	analytics.trackPageview('/login');
 	
 	utm.myHorts = event.userData.MyHorts;
 	if(utm.myHorts.length ===0 ){
@@ -342,8 +342,7 @@ utm.logoutReq = Ti.Network.createHTTPClient({
 	validatesSecureCertificate:utm.validatesSecureCertificate 
 	,timeout:utm.netTimeout,
 	onload : function() {
-		var json = this.responseData;
-		var response = JSON.parse(json);
+		var response = eval('('+this.responseText+')');
 		utm.log('Logout Service Returned');
 		if (this.status != 200) {
 			utm.log('Logout Error');
@@ -373,17 +372,6 @@ utm.setActivityIndicator =function (_message) {
 		utm.activityIndicator.hide();
 	}
 	utm.activityIndicator.setMessage(_message);
-}
-
-function setAppMainColor(env){
-	if(env==='dev'){
-		utm.color = '#C0C0C0';
-		utm.barColor = utm.color;
-	}else{
-		utm.color = utm.color_org; 
-		utm.barColor = utm.color;
-	}
-	
 }
 
 Ti.Network.addEventListener('change', function(e) {
@@ -450,7 +438,9 @@ utm.handleError = function (e,status,responseText) {
 		alert('Your session is no longer valid, you need to log back in.');		
 		closeAllScreens();	
 		showLoginView();	
-	}else if(e.error != 'undefined' & e.error.indexOf('timed out') > 0){
+	}else if(err  != 'undefined' ){
+		alert(err.Message);	
+ 	}else if(e.error != 'undefined' & e.error.indexOf('timed out') > 0){
  		//"Error Domain=ASIHTTPRequestErrorDomain Code=2 "The request timed out" UserInfo=0xb2b10e0 {NSLocalizedDescription=The request timed out}"
 		alert('Your connection may be slow - please retry.');	
  	}else{
@@ -488,7 +478,7 @@ Ti.App.addEventListener("resumed", function(e){
 });
 
 Titanium.App.addEventListener('close', function(e){
-//	analytics.stop();
+	analytics.stop();
 });
 
 
@@ -499,5 +489,5 @@ utm.recordError = function (message) {
 
 utm.recordAnalytics = function (theEvent,theData){
 	//	category, action, label, value
-	//analytics.trackEvent('Usage',theEvent,'Lbl1',theData );	
+	analytics.trackEvent('Usage',theEvent,'Lbl1',theData );	
 }

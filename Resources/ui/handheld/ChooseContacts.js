@@ -23,11 +23,9 @@ var ChooseContacts_window = function(utm) {
 	
 	var topView = Ti.UI.createView({top:4,layout:'horizontal', width:'100%', height : 30});
 	var mainView = Ti.UI.createView({layout:'vertical', width:'100%', height : '75%'});
-	var bottomView = Ti.UI.createView({center:0, bottom:8, layout:'horizontal', width:'100%', height : 30});
 
 	chooseContactsView.add(topView);
 	chooseContactsView.add(mainView);
-	chooseContactsView.add(bottomView);
 
 	/*var chooseContactsLabel = Ti.UI.createLabel({
 		text : L('send_select_recipient') + '(s)',
@@ -97,11 +95,9 @@ var ChooseContacts_window = function(utm) {
 	var writeMessageButton = Ti.UI.createButton({
 		title : L('send_write_your_message'),
 		enabled : false,
-		width : 200,
-		height : 30,
-		left : (Ti.Platform.displayCaps.platformWidth - 200) / 2,
+		top:10
 	});
-	bottomView.add(writeMessageButton);
+	chooseContactsView.add(writeMessageButton);
 
 	writeMessageButton.addEventListener('click', function() {
 		selectedContacts = [];
@@ -139,8 +135,7 @@ var ChooseContacts_window = function(utm) {
 			onload : function(e) {
 				utm.setActivityIndicator('');
 				Ti.API.info("Received text: " + this.responseText);
-				var json = this.responseData;
-				var response = JSON.parse(json);
+				var response = eval('('+this.responseText+')');
 				//Received text: [{"UserId":1004,"MyHortId":1003,"MemberType":"Primary","NickName":"Ant","HasMobile":true,"HasEmail":true,"HasFaceBook":false,"HasTwitter":false}]
 
 				if (this.status == 200) {

@@ -14,12 +14,12 @@ function message_window(utm) {
 
 	var lastRow = 4;
 
-	var tabBar = Titanium.UI.createButtonBar({
+	var tabBar = Ti.UI.iOS.createTabbedBar({
 		labels : [L('messages_recieved'), L('messages_sent')],
 		backgroundColor : utm.color,
 		top : 2,
 		index : 0,
-		//style : Titanium.UI.iPhone.SystemButtonStyle.BAR,
+		style : Titanium.UI.iPhone.SystemButtonStyle.BAR,
 		height : 35,
 		width : 250
 	});
@@ -36,9 +36,11 @@ function message_window(utm) {
 		if (tabBar.index == 0) {
 			curMode = "recieved";
 			getMessages('recieved');
+			tabBar.setIndex(0);
 		} else {
 			curMode = "sent";
 			getMessages('sent');
+			tabBar.setIndex(1);
 		}
 	});
 
@@ -52,11 +54,16 @@ function message_window(utm) {
 	//Add Click to Details for drilldown
 	tableView.addEventListener('click', function(e) {
 		var messageData = e.rowData.messageData;
-		utm.MessageDetailWindow = require('screens/MessageDetail');
-		utm.messageDetailWindow = new utm.MessageDetailWindow(messageData, curMode,utm);
-		utm.messageDetailWindow.title = 'Message';
-		utm.controller.open(utm.messageDetailWindow);
+		showMessageDetail(messageData);
 	});
+
+  	function showMessageDetail(_messageData){
+  		utm.MessageDetailWindow = require('screens/MessageDetail');
+		utm.messageDetailWindow = new utm.MessageDetailWindow(_messageData, curMode,utm);
+		utm.messageDetailWindow.title = 'Message';
+		utm.controller.open(utm.messageDetailWindow);  		
+  	}
+
 
 	//Add Swipe event to delete messages
 	/*tableView.addEventListener('swipe', function(eventObject){
@@ -299,9 +306,8 @@ function message_window(utm) {
 	Ti.App.addEventListener('app:loginSuccess', handleLoginSuccess);
 	function handleLoginSuccess(event) {
 		tableData = [];	
-	}
-	
-	
+		tableView.setData(tableData);
+	}	
 
 	// #############################  Scroll Refresh Start #############################
 

@@ -43,8 +43,6 @@ var ChooseMyHort_window =function(utm) {
 	var chooseMyhortButton = Ti.UI.createButton({
 		title:L('send_choose_contacts'),
 		top:34,
-		width:'auto',
-		// height:30
 	});	
 	chooseMyHortView.add(chooseMyhortButton);
 	

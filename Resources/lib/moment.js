@@ -443,7 +443,7 @@
     // function to convert string input to date
     function addTimeToArrayFromToken(token, input, datePartArray, config) {
         var a;
-        //console.log('addTime', format, input);
+        //console.utm.log('addTime', format, input);
         switch (token) {
         // MONTH
         case 'M' : // fall through to MM

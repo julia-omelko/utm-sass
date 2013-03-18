@@ -111,8 +111,7 @@ var TheLoginScreen_view = function(utm) {
 			utm.log('success');
 			utm.setActivityIndicator('');
 			//clear out the password
-			password.value='';
-			username.value='';
+			
 			utm.log('Login Service Returned');
 			if(this.status ==200){
 				//username.value('Login Successfull');
@@ -121,7 +120,8 @@ var TheLoginScreen_view = function(utm) {
 			    });		
 			    
 			    Titanium.Analytics.featureEvent('user.logged_in');
-			    
+			    password.value='';
+				username.value='';
 				
 			}else{
 				utm.log('Login Error');
@@ -170,7 +170,7 @@ var TheLoginScreen_view = function(utm) {
 		{	
 			utm.log(username.value +' is logging in to UTM');
 			loginReq.open("POST",utm.serviceUrl+"Login");				
-utm.log('1');
+
 			var params = {
 				UserName: username.value,
 				Password: password.value,
@@ -244,6 +244,11 @@ utm.log('1');
 			});
 			dialog.show();
 	});
+	
+	loginView.setVersionLabel =function(){
+		versionLabel.text=utm.appVersion + '  ('+utm.envModePrefix +' DB)';
+	}
+	
 	
 	fillInTestLogin();
 	

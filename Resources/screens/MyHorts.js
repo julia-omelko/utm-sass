@@ -77,8 +77,7 @@ var MyHorts_window = function(utm) {
 			utm.handleError(e, this.status, this.responseText);
 		},
 		onload : function(e) {
-			var json = this.responseData;
-			var response = JSON.parse(json);
+			var response = eval('('+this.responseText+')');
 			utm.setActivityIndicator('');
 			Titanium.Analytics.featureEvent('user.viewed_myHorts');
 			if (this.status == 200) {

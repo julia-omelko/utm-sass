@@ -38,6 +38,7 @@ var WriteMessage_window =function(utm) {
 	  borderColor: '#bbb',
 	  borderRadius: 5,
 	  color:utm.textFieldColor,
+	  font: {fontSize:16},
 	  hintText:L('send_start_your_message_here'),
 	  suppressReturn:false,
 	  textAlign: 'left',
@@ -53,7 +54,6 @@ var WriteMessage_window =function(utm) {
 		title:L('send_preview_your_message'),
 		top:20,
 		width:'auto',
-		height:30,
 		enabled :false
 	});	
 	scrollableView.add(previewButton);

@@ -32,7 +32,7 @@ var PreviewMessage_window =function(utm) {
 
 	var yourOrgMessageValue = Ti.UI.createTextArea({
 		value:'',
-		font: {fontSize:12},
+		font: {fontSize:16},
 		color:utm.textFieldColor,
 		editable:false,
 		width:utm.SCREEN_WIDTH-10,
@@ -55,7 +55,7 @@ var PreviewMessage_window =function(utm) {
 	//previewMessageView.add(encryptedLabel);
 	var encryptedValue = Ti.UI.createTextArea({
 		text:'',
-		font: {fontSize:12},
+		font: {fontSize:16},
 		color:utm.textFieldColor,
 		editable:false,
 		width:utm.SCREEN_WIDTH-10,
@@ -84,7 +84,7 @@ var PreviewMessage_window =function(utm) {
 	  borderColor: '#bbb',
 	  borderRadius: 5,
 	  color:utm.textFieldColor,
-	  font: {fontSize:12},
+	  font: {fontSize:16},
 	  textAlign: 'left',
 	  top: 5,
 	  width: utm.SCREEN_WIDTH-10,
@@ -162,9 +162,7 @@ var PreviewMessage_window =function(utm) {
 	//------------- Send Button ------------------ 
 	var sendButton = Ti.UI.createButton({
 		title:L('send_UTM_message_now'),
-		top:10,
-		width:'auto',
-		height:30
+		top:10
 	});	
 	
 	previewMessageView.add(sendButton);
@@ -259,8 +257,7 @@ var PreviewMessage_window =function(utm) {
 		validatesSecureCertificate:utm.validatesSecureCertificate 
 		,onload : function()
 		{
-			var json = this.responseData;
-			var response = JSON.parse(json);
+			var response = eval('('+this.responseText+')');
 			sendButton.enabled=true;
 			utm.log('PreviewMessages Service Returned');
 			if(this.status ==200){
@@ -284,8 +281,7 @@ var PreviewMessage_window =function(utm) {
 		validatesSecureCertificate:utm.validatesSecureCertificate 
 		,onload : function()
 		{
-			var json = this.responseData;
-			var response = JSON.parse(json);
+			var response = eval('('+this.responseText+')');
 			utm.setActivityIndicator('');
 			if(this.status ==200 && response.Status =='Success'){
 				utm.log('Send Successful');
