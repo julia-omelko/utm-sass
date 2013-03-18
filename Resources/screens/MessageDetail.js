@@ -244,7 +244,7 @@ var getMarkMessageAsReadReq = Ti.Network.createHTTPClient({
 function setMessageAsRead(messageId){
 	
 	//setTimeout(function(){callMessageAsRead(_messageData)}, 2500);	
-	getMarkMessageAsReadReq.open("POST",utm.serviceUrl+"Messages/"+messageId);	
+	getMarkMessageAsReadReq.open("POST",utm.serviceUrl+"Messages/MarkAsRead/"+messageId);	
 	getMarkMessageAsReadReq.setRequestHeader('Authorization-Token', utm.AuthToken);	
 	getMarkMessageAsReadReq.send();		
 }
