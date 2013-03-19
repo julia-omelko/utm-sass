@@ -16,11 +16,11 @@
     <sdk-version>3.0.0.GA</sdk-version>
     <id>com.utm</id>
     <name>UTM_TI</name>
-    <version>0.30 Beta</version>
+    <version>0.31 Beta</version>
     <publisher>youthisme</publisher>
     <url>http://youthisme.com</url>
     <description>Test</description>
-    <copyright>2012 by youthisme</copyright>
+    <copyright>2013 by youthisme</copyright>
     <icon>appicon.png</icon>
     <persistent-wifi>false</persistent-wifi>
     <prerendered-icon>false</prerendered-icon>

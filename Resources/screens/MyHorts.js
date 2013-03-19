@@ -160,6 +160,8 @@ var MyHorts_window = function(utm) {
 		dialog.addEventListener('click', function(e) {
 			if (e.index === 0) {
 				deleteMyHort(myHortId);
+			}else{
+				populateTable(utm.User.MyHorts);
 			}
 		});
 		dialog.show();

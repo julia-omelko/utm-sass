@@ -150,8 +150,8 @@ function handleLoginSuccess(event) {
 	
 	analytics.trackPageview('/login');
 	
-	utm.myHorts = event.userData.MyHorts;
-	if(utm.myHorts.length ===0 ){
+	utm.User.MyHorts = event.userData.MyHorts;
+	if(utm.User.MyHorts.length ===0 ){
 		utm.enableSendMessageButton=false;
 		utm.recordAnalytics('login failed', utm.User.UserProfile.UserName );
 		var dialog = Ti.UI.createAlertDialog({

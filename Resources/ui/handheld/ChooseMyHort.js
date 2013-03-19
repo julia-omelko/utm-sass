@@ -28,9 +28,9 @@ var ChooseMyHort_window =function(utm) {
 			myHortPicker.columns = [];
 		}
 		
-		var intOption = 0, intOptionLen = utm.myHorts.length;
+		var intOption = 0, intOptionLen = utm.User.MyHorts.length;
 		for (intOption = 0; intOption < intOptionLen; intOption = intOption + 1) {
-			data[intOption]=Ti.UI.createPickerRow({title:utm.myHorts[intOption].FriendlyName,custom_item:utm.myHorts[intOption].MyHortId});
+			data[intOption]=Ti.UI.createPickerRow({title:utm.User.MyHorts[intOption].FriendlyName,custom_item:utm.User.MyHorts[intOption].MyHortId});
 		}
 
 		myHortPicker.add(data);
