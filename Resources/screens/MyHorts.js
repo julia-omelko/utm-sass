@@ -172,7 +172,7 @@ var MyHorts_window = function(utm) {
 		deleteMyHortDetailReq.open("GET", utm.serviceUrl + "MyHort/DeleteUsersMyHort?myhortId=" + myHortId);
 		deleteMyHortDetailReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");
 		deleteMyHortDetailReq.setRequestHeader('Authorization-Token', utm.AuthToken);
-
+		removeFromUsersList(myHortId);
 		deleteMyHortDetailReq.send();
 	}
 
@@ -180,12 +180,24 @@ var MyHorts_window = function(utm) {
 		validatesSecureCertificate : utm.validatesSecureCertificate,
 		onload : function() {
 			utm.setActivityIndicator('');
+						
 			//loadMyHorts();
 		},
 		onerror : function() {
 			utm.log('error');
 		}
 	});
+	
+	function removeFromUsersList(myHortId){
+		for(i=0; i< utm.User.MyHorts.length; i++ ){
+			var mh = utm.User.MyHorts[i];
+			if(mh.MyHortId= myHortId){
+				utm.User.MyHorts.splice(i,1);
+				break;
+			}
+		}
+	}
+	
 
 	myHortsWindow.addEventListener('blur', function() {
 		if(Ti.Platform.osname == 'iphone'){
