@@ -141,7 +141,7 @@ var MyHorts_window = function(utm) {
 		utm.MyHortDetailWindow = require('screens/MyHortDetail');
 		utm.myHortDetailWindow = new utm.MyHortDetailWindow(myHortData,utm);
 		utm.myHortDetailWindow.title = 'MyHort Info';
-		utm.controller.open(utm.myHortDetailWindow);
+		utm.navController.open(utm.myHortDetailWindow);
 	});
 
 	tableView.addEventListener('delete', function(e) {

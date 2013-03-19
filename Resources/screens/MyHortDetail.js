@@ -108,7 +108,7 @@ function myHortDetail_window(_myHortData,utm) {
 	var saveButton = Ti.UI.createButton({
 		title : 'Save MyHort',
 		top : 3,
-		enabled : false
+		enabled : true
 	});
 	saveButton.addEventListener('click', function() {
 		utm.log('saveButton fired');
@@ -137,6 +137,7 @@ function myHortDetail_window(_myHortData,utm) {
 
 	function updateMyHortData() {
 		saveButton.enabled=false;
+		utm.setActivityIndicator('Update MyHort...');
 		utm.myHortDetails.PrimaryUser.Email = email.getValue();
 		utm.myHortDetails.PrimaryUser.Mobile = mobile.getValue();
 		utm.myHortDetails.PrimaryUser.FaceBook = faceBook.getValue();
@@ -156,7 +157,6 @@ function myHortDetail_window(_myHortData,utm) {
 			}
 		}
 
-		utm.setActivityIndicator('Updating...');
 		updateMyHortDetailReq.open("POST", utm.serviceUrl + "MyHort/UpdateMyHortDetails");
 		updateMyHortDetailReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");
 		updateMyHortDetailReq.setRequestHeader('Authorization-Token', utm.AuthToken);
@@ -226,6 +226,8 @@ function myHortDetail_window(_myHortData,utm) {
 			} else {
 				utm.recordError(utm.myHortDetails.MyHort)
 			}
+			saveButton.enabled=true;
+			utm.setActivityIndicator('');
 		},
 		onerror : function(e) {
 			utm.setActivityIndicator('');
@@ -235,9 +237,10 @@ function myHortDetail_window(_myHortData,utm) {
 					showProgress : false
 				});
 			} else {
-				utm.handleError(e, this.status, this.responseText);
-				saveButton.enabled=true;
+				utm.handleError(e, this.status, this.responseText);				
 			}
+			saveButton.enabled=true;
+			utm.setActivityIndicator('');
 		},
 		timeout : utm.netTimeout
 	});

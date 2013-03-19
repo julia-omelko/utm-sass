@@ -22,7 +22,6 @@ var gaModule = require('Ti.Google.Analytics');
 var analytics = new gaModule('UA-38943374-1');
 
 
-
 utm.iPhone = false;
 utm.Android = false;
 if(Ti.Platform.osname == 'iphone'){
@@ -37,14 +36,13 @@ utm.log=function (message) {
 	Ti.API.info(message);
 }
 
-
 Ti.UI.setBackgroundColor('#fff');
 
-
-var NavigationController = require('/lib/NavigationController').NavigationController,
+//Note 2 diff controllers based on platform folders
+var NavigationController = require('NavigationController')
 MainWindow = require('/screens/MainWindow').MainWindow;
 
-utm.controller = new NavigationController(utm);
+utm.navController = new NavigationController(utm);
 
 utm.activityIndicatorStyle;
 if (Ti.Platform.name === 'iPhone OS'){
@@ -69,7 +67,7 @@ utm.activityIndicator = Ti.UI.createActivityIndicator({
 //open initial window
 utm.Login = require('screens/login');
 utm.loginView = new utm.Login(utm);
-utm.controller.open(utm.loginView );
+utm.navController.open(utm.loginView );
 
 utm.setEnvModePrefix= function (env){
 	utm.envModePrefix =env;
@@ -132,7 +130,7 @@ function appInit(){
 	}	
 	
 	utm.loginView.setVersionLabel();
-	//utm.controller.open(utm.loginView);
+	//utm.navController.open(utm.loginView);
 }
 
 
@@ -172,13 +170,13 @@ function handleLoginSuccess(event) {
 Ti.App.addEventListener('app:showLandingView', showLandingView);
 function showLandingView() {		
 	utm.landingView.setEnableSendMessageButton(utm.enableSendMessageButton);
-	utm.controller.closeAllWindows();
-	utm.controller.open(utm.landingView);
+	//utm.navController.closeAllWindows();
+	utm.navController.open(utm.landingView);
 }
 
 Ti.App.addEventListener('app:showMessages', showMessageWindow);
 function showMessageWindow() {
-	utm.controller.open(utm.messageWindow);
+	utm.navController.open(utm.messageWindow);
 	utm.recordAnalytics('show messages', '' );
 }
 
@@ -186,19 +184,19 @@ Ti.App.addEventListener('app:showChooseMyHortWindow', showChooseMyHortWindow);
 function showChooseMyHortWindow() {
 	Ti.App.fireEvent('app:populateMyHortPicker');
 	//Re #237 moved to ChooseMyHort.js
-	//utm.controller.open(utm.chooseMyHortView);	
+	//utm.navController.open(utm.chooseMyHortView);	
 	utm.recordAnalytics('Start Send Message', '' );
 }
 
 Ti.App.addEventListener('app:showMyAccountWindow', showMyAccountWindow);
 function showMyAccountWindow() {
-	utm.controller.open(utm.myAccountWindow);
+	utm.navController.open(utm.myAccountWindow);
 	utm.recordAnalytics('Show Account Window', '' );
 }
 
 Ti.App.addEventListener('app:showMyHortWindow', showMyHortWindow);
 function showMyHortWindow() {
-	utm.controller.open(utm.myHortView);
+	utm.navController.open(utm.myHortView);
 	utm.recordAnalytics('Show MyHort Window', '' );
 }
 
@@ -206,7 +204,7 @@ Ti.App.addEventListener('app:myHortChoosen', setMyHort);
 function setMyHort(e) {
 	utm.log('setMyHort() fired myHortId=' + e.myHortId);
 	utm.targetMyHortID = e.myHortId
-	utm.controller.open(utm.chooseContactsView);
+	utm.navController.open(utm.chooseContactsView);
 
 	//Fire event to trigger call to get contacts
 	Ti.App.fireEvent('app:getContacts');
@@ -226,7 +224,7 @@ function setContactsChoosen(e) {
 	 utm.sentToContactListString=utm.sentToContactListString.slice(0, - 1);
 	 */
 
-	utm.controller.open(utm.writeMessageView);
+	utm.navController.open(utm.writeMessageView);
 
 }
 
@@ -237,7 +235,7 @@ function showWriteMessageView(e) {
 	utm.writeMessageView.setMessageData(e.messageData);
 	
 	//originalMessageId:_messageData.Id, replyTo:_messageData.FromUserId
-	utm.controller.open(utm.writeMessageView);	
+	utm.navController.open(utm.writeMessageView);	
 }
 
 Ti.App.addEventListener('app:showPreview', showPreview);
@@ -248,7 +246,7 @@ function showPreview(e) {
 	utm.previewMessageView.setMode(e.mode)
 	utm.previewMessageView.setMessageData(e.messageData);
 	
-	utm.controller.open(utm.previewMessageView)
+	utm.navController.open(utm.previewMessageView)
 	Ti.App.fireEvent('app:getMessagePreview', {
 		messageText : e.messageText
 	});
@@ -258,35 +256,24 @@ Ti.App.addEventListener('app:showMessagesAfterSend', showMessagesAfterSend);
 function showMessagesAfterSend() {
 	utm.log('showMessagesAfterSend() fired');
 	
-	if(utm.writeMessageView !=undefined){
-		utm.writeMessageView.restForm();
-		//utm.navigation.close(utm.writeMessageView,{animated:false});
-	}	
 		
 	if(utm.chooseContactsView != undefined){
 		utm.chooseContactsView.restForm();
-		//utm.navigation.close(utm.chooseContactsView,{animated:false});	
+		utm.navController.close(utm.chooseContactsView,{animated:false});	
 	}
 	
 	if(utm.chooseMyHortView !=undefined){
 		//utm.chooseMyHortView.restForm();
-		//utm.navigation.close(utm.chooseMyHortView,{animated:false});
-	}
-	
-	if(utm.MessageDetailWindow !=undefined ){
-		//utm.navigation.close(utm.messageDetailWindow,{animated:false}); 
-	}
-	if(utm.messageWindow  !=undefined ){
-		//utm.navigation.close(utm.messageWindow ,{animated:false}); 
-	}
-	
+		utm.navController.close(utm.chooseMyHortView,{animated:false});
+	}	
+		
 	if(utm.writeMessageView !=undefined){
 		utm.writeMessageView.restForm();
-		//utm.navigation.close(utm.writeMessageView,{animated:false});
+		utm.navController.close(utm.writeMessageView,{animated:false});
 	}	
 	
 	if(utm.previewMessageView != undefined){
-		//utm.navigation.close(utm.previewMessageView);		
+		utm.navController.close(utm.previewMessageView,{animated:false});
 	}
 	showLandingView();
 }
@@ -294,7 +281,7 @@ function showMessagesAfterSend() {
 Ti.App.addEventListener('app:logout', showLoginView);
 function showLoginView() {
 	closeAllScreens();
-	utm.controller.open(utm.loginView);
+	utm.navController.open(utm.loginView);
 	
 	callLogoutService();
 }
@@ -386,47 +373,47 @@ Ti.Network.addEventListener('change', function(e) {
 
 function closeAllScreens(){
 	if(utm.writeMessageView !=undefined){
-		utm.navigation.close(utm.writeMessageView,{animated:false});
+		utm.navController.close(utm.writeMessageView,{animated:false});
 	}	
 		
 	if(utm.chooseContactsView != undefined){
-		utm.navigation.close(utm.chooseContactsView,{animated:false});	
+		utm.navController.close(utm.chooseContactsView,{animated:false});	
 	}
 	
 	if(utm.chooseMyHortView !=undefined){
-		utm.navigation.close(utm.chooseMyHortView,{animated:false});
+		utm.navController.close(utm.chooseMyHortView,{animated:false});
 	}
 	
 	if(utm.MessageDetailWindow !=undefined ){
-		utm.navigation.close(utm.messageDetailWindow,{animated:false}); 
+		utm.navController.close(utm.messageDetailWindow,{animated:false}); 
 	}
 	
 	if(utm.messageWindow  !=undefined ){
-		utm.navigation.close(utm.messageWindow ,{animated:false}); 
+		utm.navController.close(utm.messageWindow ,{animated:false}); 
 	}
 	
 	if(utm.writeMessageView !=undefined){
 		utm.writeMessageView.restForm();
-		utm.navigation.close(utm.writeMessageView,{animated:false});
+		utm.navController.close(utm.writeMessageView,{animated:false});
 	}	
 	
 	if(utm.previewMessageView != undefined){
-		utm.navigation.close(utm.previewMessageView);		
+		utm.navController.close(utm.previewMessageView);		
 	}
 	
 	if(utm.landingView != undefined){
-		utm.navigation.close(utm.landingView);		
+		utm.navController.close(utm.landingView);		
 	}	
 	if(utm.myAccountWindow != undefined){
-		utm.navigation.close(utm.myAccountWindow);
+		utm.navController.close(utm.myAccountWindow);
 	}
 	
 	if (utm.myHortView != undefined){
-		utm.navigation.close(utm.myHortView);
+		utm.navController.close(utm.myHortView);
 	}
 	
 	if(utm.myHortDetailWindow != undefined){
-		utm.navigation.close(utm.myHortDetailWindow);
+		utm.navController.close(utm.myHortDetailWindow);
 	}
 	
 }

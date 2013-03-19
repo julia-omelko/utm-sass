@@ -61,7 +61,7 @@ function message_window(utm) {
   		utm.MessageDetailWindow = require('screens/MessageDetail');
 		utm.messageDetailWindow = new utm.MessageDetailWindow(_messageData, curMode,utm);
 		utm.messageDetailWindow.title = 'Message';
-		utm.controller.open(utm.messageDetailWindow);  		
+		utm.navController.open(utm.messageDetailWindow);  		
   	}
 
 
@@ -151,7 +151,7 @@ function message_window(utm) {
 	Ti.App.addEventListener('app:backToMessageWindow', backToMessageWindow);
 	function backToMessageWindow() {
 		//Ti.App.fireEvent('app:showMessages');
-		utm.controller.open(utm.messageWindow);
+		utm.navController.open(utm.messageWindow);
 		getMessages(curMode);
 	}
 
