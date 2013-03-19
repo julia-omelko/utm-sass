@@ -235,9 +235,9 @@ var TheLoginScreen_view = function(utm) {
 				if (e.index === 0) {
 					utm.setEnvModePrefix("local");					
 				} else if (e.index === 1) {
-					utm.setEnvModePrefix("dev.");
+					utm.setEnvModePrefix("dev");
 				} else if (e.index === 2) {
-					utm.setEnvModePrefix("test.");
+					utm.setEnvModePrefix("test");
 				}
 				versionLabel.text=utm.appVersion + '  ('+utm.envModePrefix +' DB)';
 				
