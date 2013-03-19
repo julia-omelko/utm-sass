@@ -84,7 +84,7 @@ var MyHorts_window = function(utm) {
 
 				utm.log("MyHort data returned " + response.length + '  myHorts returned');
 				populateTable(response);
-
+				utm.User.MyHorts=response;
 			}
 		},
 		timeout : utm.netTimeout
