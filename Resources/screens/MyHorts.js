@@ -35,7 +35,6 @@ var MyHorts_window = function(utm) {
 	myHortsWindow.add(tableView);
 
 	myHortsWindow.addEventListener("focus", function() {
-		utm.log('Focus');
 		utm.setActivityIndicator('Getting your MyHorts...');
 		loadMyHorts();
 	});
@@ -52,7 +51,7 @@ var MyHorts_window = function(utm) {
 	});
 
 	var cancel = Titanium.UI.createButton({
-		title : L('cancel'),
+		title : 'Done',
 		style : Titanium.UI.iPhone.SystemButtonStyle.DONE
 	});
 	cancel.addEventListener('click', function() {
@@ -139,7 +138,7 @@ var MyHorts_window = function(utm) {
 	tableView.addEventListener('click', function(e) {
 		var myHortData = e.rowData.myHortData;
 		utm.MyHortDetailWindow = require('screens/MyHortDetail');
-		utm.myHortDetailWindow = new utm.MyHortDetailWindow(myHortData,utm);
+		utm.myHortDetailWindow = new utm.MyHortDetailWindow(myHortData,utm,myHortData.IsOwner);
 		utm.myHortDetailWindow.title = 'MyHort Info';
 		utm.navController.open(utm.myHortDetailWindow);
 	});

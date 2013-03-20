@@ -202,7 +202,7 @@ function inviteMyHortWindow(myHortInfo,utm) {
 			,UsersToInvite:emailsField.value
 			,InviteMessage:inviteMessageField.value
 			,FromNickName: primaryMemberNickName
-			,MemberType:'Invisible'
+			,MemberType:typeCheckBox.isChecked() ? 'Invisible': 'Secondary'
 			,InviteCode:'autogen'
 		};
 

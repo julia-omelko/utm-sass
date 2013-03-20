@@ -1,4 +1,4 @@
-function myHortDetail_window(_myHortData,utm) {
+function myHortDetail_window(_myHortData,utm,isOwner) {
 
 	var InputField = require('ui/common/baseui/InputField');
 	var MyHortPendingWindow = require('ui/handheld/MyHortPending');
@@ -22,7 +22,8 @@ function myHortDetail_window(_myHortData,utm) {
 		style : Titanium.UI.iPhone.SystemButtonStyle.BAR,
 		height : 40,
 		width : '95%',
-		enable:false
+		enable:false,
+		visible :isOwner
 	});
 	win.add(topButtonBar);
 
@@ -106,7 +107,7 @@ function myHortDetail_window(_myHortData,utm) {
 	win.add(mobile);
 
 	var saveButton = Ti.UI.createButton({
-		title : 'Save MyHort',
+		title : 'Save',
 		top : 3,
 		enabled : true
 	});
@@ -138,9 +139,11 @@ function myHortDetail_window(_myHortData,utm) {
 	function updateMyHortData() {
 		saveButton.enabled=false;
 		utm.setActivityIndicator('Update MyHort...');
-		utm.myHortDetails.PrimaryUser.Email = email.getValue();
-		utm.myHortDetails.PrimaryUser.Mobile = mobile.getValue();
-		utm.myHortDetails.PrimaryUser.FaceBook = faceBook.getValue();
+		
+		
+		utm.curMyHortDetails.Email = email.getValue();
+		utm.curMyHortDetails.Mobile = mobile.getValue();
+		utm.curMyHortDetails.FaceBook = faceBook.getValue();
 		//TODO Handle Twitter diff myHortDetails.PrimaryUser.TwitterToken=;
 
 		if (twitterSwitch.getValue()) {
@@ -152,11 +155,20 @@ function myHortDetail_window(_myHortData,utm) {
 		} else {
 			if (twitterEnabledForUser) {
 				//Original value has changes so we need to deactivate twitter
-				utm.myHortDetails.PrimaryUser.TwitterToken = '';
-				utm.myHortDetails.PrimaryUser.TwitterSecret = '';
+				utm.curMyHortDetails.TwitterToken = '';
+				utm.curMyHortDetails.TwitterSecret = '';
 			}
 		}
-
+				
+		if(utm.myHortDetails.IsOwner){
+			 utm.myHortDetails.PrimaryUser = utm.curMyHortDetails;
+			 utm.myHortDetails.MyInformation='';
+			
+		}else{
+			utm.myHortDetails.MyInformation=utm.curMyHortDetails;
+			utm.myHortDetails.PrimaryUser='';
+		}	
+		
 		updateMyHortDetailReq.open("POST", utm.serviceUrl + "MyHort/UpdateMyHortDetails");
 		updateMyHortDetailReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");
 		updateMyHortDetailReq.setRequestHeader('Authorization-Token', utm.AuthToken);
@@ -174,14 +186,22 @@ function myHortDetail_window(_myHortData,utm) {
 			utm.myHortDetails = JSON.parse(json);
 
 			if (this.status == 200) {
-				utm.log("myHort data returned:" + utm.myHortDetails);
-
+				
+				if(utm.myHortDetails.IsOwner){
+					utm.curMyHortDetails = utm.myHortDetails.PrimaryUser;
+					topButtonBar.visable=true;
+					
+				}else{
+					utm.curMyHortDetails = utm.myHortDetails.MyInformation;
+					topButtonBar.visable=false;
+				}	
+							
 				//Now that we have date set all the values
-				email.setValue(utm.myHortDetails.PrimaryUser.Email);
-				mobile.setValue(utm.myHortDetails.PrimaryUser.Mobile);
-				faceBook.setValue(utm.myHortDetails.PrimaryUser.FaceBook);
+				email.setValue(utm.curMyHortDetails.Email);
+				mobile.setValue(utm.curMyHortDetails.Mobile);
+				faceBook.setValue(utm.curMyHortDetails.FaceBook);
 
-				if (utm.myHortDetails.PrimaryUser.TwitterToken != '') {
+				if (utm.curMyHortDetails.TwitterToken != '') {
 					twitterSwitch.setValue(true);
 					twitterEnabledForUser = true;
 				} else {
@@ -191,9 +211,9 @@ function myHortDetail_window(_myHortData,utm) {
 				saveButton.enabled = true;
 				//TODO handle errors better
 			} else if (this.status == 400) {
-				utm.recordError(utm.myHortDetails.MyHort)
+				utm.recordError('Error')
 			} else {
-				utm.recordError(utm.myHortDetails.MyHort)
+				utm.recordError('Error')
 			}
 			topButtonBar.enabled=true;
 			utm.setActivityIndicator('');
@@ -217,7 +237,6 @@ function myHortDetail_window(_myHortData,utm) {
 			var json = this.responseData;
 			if (this.status == 200) {
 				utm.setActivityIndicator('Update Complete');
-			///	utm.navGroup.close(utm.myHortDetailWindow);
 				Ti.App.fireEvent("app:showMyHortWindow", {});
 				utm.setActivityIndicator('');
 				//TODO handle errors better
