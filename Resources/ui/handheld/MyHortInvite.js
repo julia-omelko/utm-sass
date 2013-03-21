@@ -1,17 +1,17 @@
-function inviteMyHortWindow(myHortInfo,utm) {
+function inviteMyHortWindow(myHortInfo, utm) {
 	var InputField = require('ui/common/baseui/InputField');
 	var CheckBoxField = require('ui/common/baseui/CheckBox');
 	var needsAuth = false;
 	var supportsAuthAPI = (Ti.version >= '2.1.3');
 	var primaryMemberNickName = '';
 
-	function init(){		
+	function init() {
 		var primaryMember = getPrimaryMember(myHortInfo.Members);
 		primaryMemberNickName = primaryMember.NickName;
 	}
-	
+
 	init();
-	
+
 	if (Titanium.Platform.name == 'iPhone OS') {
 		needsAuth = isiOS6Plus();
 	}
@@ -19,53 +19,65 @@ function inviteMyHortWindow(myHortInfo,utm) {
 	var myHortInviteWindow = Ti.UI.createWindow({
 		backgroundColor : '#fff',
 		layout : 'vertical',
-		});
+	});
+
+	var scrollingView = Ti.UI.createScrollView({
+		showVerticalScrollIndicator : true,
+		showHorizontalScrollIndicator : false
+	});
+	myHortInviteWindow.add(scrollingView);
+
+	var view = Ti.UI.createView({
+		height : 2000,
+		layout : 'vertical'
+	});
+
+	scrollingView.add(view);
 
 	var titleLbl = Ti.UI.createLabel({
 		text : 'Invite users to ' + myHortInfo.FriendlyName + ' Group',
 		top : 60,
-		color:utm.color_org,
+		color : utm.color_org,
 		height : 60,
 		font : {
 			fontWeight : 'bold',
 			fontSize : 16
 		}
 	});
-	myHortInviteWindow.add(titleLbl);
+	view.add(titleLbl);
 
 	var inviteMessageLabel = Ti.UI.createLabel({
 		text : 'Invite message for e-mail',
 		top : 10,
-		left:5,
+		left : 5,
 		font : {
 			fontWeight : 'bold',
 			fontSize : 14
 		}
 	});
-	myHortInviteWindow.add(inviteMessageLabel);
+	view.add(inviteMessageLabel);
 
 	var inviteMessageField = Ti.UI.createTextArea({
 		borderWidth : 2,
 		borderColor : '#bbb',
 		borderRadius : 5,
 		color : utm.textFieldColor,
-		suppressReturn : false,
 		textAlign : 'left',
 		top : 5,
 		height : 'auto',
 		width : utm.SCREEN_WIDTH - 10,
 		height : utm.SCREEN_HEIGHT - (utm.SCREEN_HEIGHT / 1.2),
-		value : 'You have been invited to join the MyHort ' + myHortInfo.FriendlyName + ' which is owned by '+primaryMemberNickName+'. Please use the provided link to accept.'
+		value : 'You have been invited to join the MyHort ' + myHortInfo.FriendlyName + ' which is owned by ' + primaryMemberNickName + '. Please use the provided link to accept.'
 	});
-	myHortInviteWindow.add(inviteMessageField);
+	view.add(inviteMessageField);
 
 	var emailBox = Ti.UI.createView({
-		layout:'horizontal'
-		,height:50
-		,left:5
+		layout : 'horizontal',
+		height : 50,
+		left : 5
 	});
-	myHortInviteWindow.add(emailBox);
-	
+	view.add(emailBox);
+
 	var emailLabel = Ti.UI.createLabel({
 		text : 'Email address to send invites to',
 		top : 25,
@@ -79,12 +91,12 @@ function inviteMyHortWindow(myHortInfo,utm) {
 	//############ Choose Contacts Buttons ################
 	var chooseButton = Ti.UI.createButton({
 		//title : 'Choose',
-		backgroundImage:'/images/iosContacts.jpeg',
-		width:43,
-		height:43,
+		backgroundImage : '/images/iosContacts.jpeg',
+		width : 43,
+		height : 43,
 		enabled : true,
-		top:5,
-		left:10
+		top : 5,
+		left : 10
 	})
 	emailBox.add(chooseButton);
 
@@ -97,19 +109,19 @@ function inviteMyHortWindow(myHortInfo,utm) {
 		}
 	};
 	chooseButton.addEventListener('click', function() {
-		Ti.Contacts.requestAuthorization(requestPermission);	
+		Ti.Contacts.requestAuthorization(requestPermission);
 	});
 
 	var getContacts = function() {
 		var parms = {
 			animated : true,
-			fields: ['email'],
+			fields : ['email'],
 			selectedProperty : function(e) {
-				if(emailsField.value.length > 0){
-					emailsField.value=emailsField.value + ','+e.value;
-				}else{
-					emailsField.value=e.value;
-				}		
+				if (emailsField.value.length > 0) {
+					emailsField.value = emailsField.value + ',' + e.value;
+				} else {
+					emailsField.value = e.value;
+				}
 				inviteButton.enabled = true;
 			}
 		};
@@ -131,7 +143,7 @@ function inviteMyHortWindow(myHortInfo,utm) {
 		width : utm.SCREEN_WIDTH - 10,
 		height : 50
 	});
-	myHortInviteWindow.add(emailsField);
+	view.add(emailsField);
 
 	emailsField.addEventListener('change', function() {
 		if (emailsField.value.length > 0) {
@@ -140,37 +152,36 @@ function inviteMyHortWindow(myHortInfo,utm) {
 			inviteButton.enabled = false;
 		}
 	});
-	
+
 	//############ Choose Type ################
 	var typeBox = Ti.UI.createView({
-		layout:'horizontal',
-		height:30,
-		left:5,
-		top:10
+		layout : 'horizontal',
+		height : 30,
+		left : 5,
+		top : 10
 	});
-	var typeLabel=Ti.UI.createLabel({
-		text:'Invisible to Others',
+	var typeLabel = Ti.UI.createLabel({
+		text : 'Invisible to Others',
 		font : {
 			fontWeight : 'bold',
 			fontSize : 14
 		},
-		width:150
+		width : 150
 	});
-	typeBox.add(typeLabel)
-	;
-	var typeCheckBox = new CheckBoxField();
+	typeBox.add(typeLabel);
+
+	var typeCheckBox = new CheckBoxField(true);
 	typeBox.add(typeCheckBox);
-	
-	myHortInviteWindow.add(typeBox);
-	
+	view.add(typeBox);
+
 	//############ Buttons ################
 	var buttonView = Ti.UI.createView({
 		layout : 'horizontal',
 		width : '100%',
 		top : 5,
-		left:5
+		left : 5
 	});
-	myHortInviteWindow.add(buttonView);
+	view.add(buttonView);
 
 	var inviteButton = Ti.UI.createButton({
 		title : 'Send',
@@ -196,25 +207,25 @@ function inviteMyHortWindow(myHortInfo,utm) {
 		inviteMyHortReq.open("POST", utm.serviceUrl + "MyHort/Invite");
 		inviteMyHortReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");
 		inviteMyHortReq.setRequestHeader('Authorization-Token', utm.AuthToken);
-		
+
 		var myHortInviteModel = {
-			MyHortInfo : myHortInfo
-			,UsersToInvite:emailsField.value
-			,InviteMessage:inviteMessageField.value
-			,FromNickName: primaryMemberNickName
-			,MemberType:typeCheckBox.isChecked() ? 'Invisible': 'Secondary'
-			,InviteCode:'autogen'
+			MyHortInfo : myHortInfo,
+			UsersToInvite : emailsField.value,
+			InviteMessage : inviteMessageField.value,
+			FromNickName : primaryMemberNickName,
+			MemberType : typeCheckBox.isChecked() ? 'Invisible' : 'Secondary',
+			InviteCode : 'autogen'
 		};
 
 		inviteMyHortReq.send(JSON.stringify(myHortInviteModel));
 	}
-	
-	function getPrimaryMember(_members){		
-		for(ii=0;ii<_members.length;ii++){
-			if(_members[ii].MemberType ==='Primary'){
+
+	function getPrimaryMember(_members) {
+		for ( ii = 0; ii < _members.length; ii++) {
+			if (_members[ii].MemberType === 'Primary') {
 				return _members[ii];
-			}				
-		}	
+			}
+		}
 	}
 
 	var inviteMyHortReq = Ti.Network.createHTTPClient({
