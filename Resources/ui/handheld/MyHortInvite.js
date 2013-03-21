@@ -203,6 +203,13 @@ function inviteMyHortWindow(myHortInfo, utm) {
 
 	// ##################### CREATE MyHort #####################
 	function inviteMyHort() {
+		
+		var invalidEmail = validateEmails(emailsField.value);
+		if(invalidEmail !=''){
+			alert(invalidEmail + ' is not a valid email - please update and try again.');
+			return;
+		}
+		
 		utm.setActivityIndicator('Inviting New MyHort Members...');
 		inviteMyHortReq.open("POST", utm.serviceUrl + "MyHort/Invite");
 		inviteMyHortReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");
@@ -218,6 +225,19 @@ function inviteMyHortWindow(myHortInfo, utm) {
 		};
 
 		inviteMyHortReq.send(JSON.stringify(myHortInviteModel));
+	}
+
+	function validateEmails(_emails) {
+		var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;   
+		var emailList = _emails.split(',');
+		
+		for(i=0;i<emailList.length; i++ ){
+			
+			 if(reg.test(emailList[i]) == false) {
+			 	return emailList[i];
+			 }			
+		}
+		return '';
 	}
 
 	function getPrimaryMember(_members) {
