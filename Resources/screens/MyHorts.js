@@ -108,7 +108,16 @@ var MyHorts_window = function(utm) {
 				backgroundColor : '#fff',
 				objName : 'hView'
 			});
-
+			
+			var icon = Ti.UI.createImageView({
+					image : myHortData[i].IsOwner ? '/images/ownerIcon.png' : '/images/memberIcon.png',
+					width : 20,
+					height : 20,
+					left:3,
+					top:15
+			});
+			hView.add(icon);
+			
 			var myHortName = Ti.UI.createLabel({
 				backgroundColor : '#fff',
 				color : '#000',
@@ -120,7 +129,7 @@ var MyHorts_window = function(utm) {
 				text : myHortData[i].FriendlyName,
 				touchEnabled : true,
 				//top : 5,
-				left : 2,
+				left : 27,
 				width : utm.SCREEN_WIDTH - 100,
 				height : 15,
 				ellipsize : true

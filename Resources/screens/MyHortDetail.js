@@ -20,7 +20,7 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 		top : 3,
 		backgroundColor : '#336699',
 		style : Titanium.UI.iPhone.SystemButtonStyle.BAR,
-		height : 40,
+		height : isOwner? 40: 0,
 		width : '95%',
 		enable:false,
 		visible :isOwner
