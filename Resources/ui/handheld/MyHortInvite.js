@@ -182,7 +182,7 @@ function inviteMyHortWindow(myHortInfo,utm) {
 		inviteMyHort();
 	})
 	var closeButton = Ti.UI.createButton({
-		title : 'Cancel',
+		title : 'Done',
 		left : 10
 	});
 	closeButton.addEventListener('click', function() {

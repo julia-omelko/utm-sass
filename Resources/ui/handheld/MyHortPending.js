@@ -20,6 +20,19 @@ function createMyHortWindow(myHortId,utm) {
 		height : '60%'
 	});
 	myHortPendingWindow.add(tableView);
+	
+	//############ Buttons ################
+	var buttonView = Ti.UI.createView();
+	myHortPendingWindow.add(buttonView);
+	var closeButton = Ti.UI.createButton({
+		title : 'Done'
+	});
+	closeButton.addEventListener('click', function() {
+		myHortPendingWindow.close();
+	});
+	buttonView.add(closeButton);
+
+	
 
 	//Load list on focus event
 	myHortPendingWindow.addEventListener("focus", function() {
