@@ -3,7 +3,14 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 	var InputField = require('ui/common/baseui/InputField');
 	var MyHortPendingWindow = require('ui/handheld/MyHortPending');
 	var MyHortInviteWindow = require('ui/handheld/MyHortInvite');
-	//var Social = require("com.0x82.social");
+	var social = require("lib/social");
+	
+	var twitter = social.create({
+			site : 'Twitter', // <-- this example is for Twitter. I'll expand this to other sites in the future.
+			consumerKey : '8qiy2PJv3MpVyzuhfNXkOw', // <--- you'll want to replace this
+			consumerSecret : 'Qq0rth4MHGB70nh20nSzov2zz6GbVxuVndCh2IxkRWI' // <--- and this with your own keys!
+		});
+	
 	
 	var twitterEnabledForUser = false;
 	utm.MyHortDetails = false;
@@ -13,6 +20,20 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 		backgroundColor : utm.backgroundColor,
 		barColor : utm.barColor
 	});
+
+	var scrollingView = Ti.UI.createScrollView({
+		showVerticalScrollIndicator : true,
+		showHorizontalScrollIndicator : false
+	});
+	win.add(scrollingView);
+
+	var view = Ti.UI.createView({
+		height : 2000,
+		layout : 'vertical'
+	});
+
+	scrollingView.add(view);
+
 
 	//-----------------Top Buttons  ----------------------
 	var topButtonBar = Titanium.UI.createButtonBar({
@@ -25,7 +46,7 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 		enable:false,
 		visible :isOwner
 	});
-	win.add(topButtonBar);
+	view.add(topButtonBar);
 
 	//-----------------MyHort Name  ----------------------
 	var myHortNameGroup = Ti.UI.createView({
@@ -36,7 +57,7 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 		bottom : 3,
 		height : 50
 	});
-	win.add(myHortNameGroup);
+	view.add(myHortNameGroup);
 
 	var myHortNamelbl = Ti.UI.createLabel({
 		text : 'MyHort ',
@@ -64,7 +85,7 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 
 	//----------Email--------------------
 	var email = new InputField('Email', 80, '', 210, Ti.UI.KEYBOARD_EMAIL);
-	win.add(email);
+	view.add(email);
 
 	//----------Twitter On off Switch--------------------
 	var twitterGroup = Ti.UI.createView({
@@ -87,24 +108,50 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 
 	var twitterSwitch = Ti.UI.createSwitch({
 		value : false,
-		enabled:false
+		enabled:true
 	});
 	twitterGroup.add(twitterSwitch);
 
 	twitterSwitch.addEventListener('change', function(e) {		
 		if(e.value){
-		//	authTwitter();
-		}
+			if(!twitter.isAuthorized()){
+				authTwitter();
+			}
+			twitterEnabledForUser=true;
+		}else{
+			//twitter.deauthorize(); NOTE this deauthrizes for ALL MYHORTS - dont want to do that uless its the only myhort with twitter set.
+			//TODO OR asks user IF they want to deauthorize for ALL MyHorts or just this one....			
+			
+				var dialog = Ti.UI.createAlertDialog({
+					cancel : 1,
+					buttonNames : ['For this MyHort?', 'For ALL MyHorts?', L('cancel')],
+					message : 'You can Deauthorize the YouThisMe application for this MyHort only or for ALL your MyHorts that your a member of. ',
+					title : 'Deactivate Options'
+				});
+				dialog.addEventListener('click', function(e) {
+					if (e.index === 0) {
+						utm.TwitterToken = '';
+	    					utm.TwitterTokenSecret = '';    	
+					} else if (e.index === 1) {
+						twitter.deauthorize(); 
+					} else if (e.index === 2) {
+						Ti.API.info('The cancel button was clicked');
+					}
+				});
+				dialog.show();
+			
+			}
+		
 	});
-	win.add(twitterGroup);
+	view.add(twitterGroup);
 
 	//----------Facebook--------------------
 	var faceBook = new InputField('FaceBook', 80, '', 210);
-	win.add(faceBook);
+	view.add(faceBook);
 
 	//----------Mobile # --------------------
 	var mobile = new InputField('Mobile', 80, '', 210, Ti.UI.KEYBOARD_DECIMAL_PAD);
-	win.add(mobile);
+	view.add(mobile);
 
 	var saveButton = Ti.UI.createButton({
 		title : 'Save',
@@ -115,25 +162,10 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 		utm.log('saveButton fired');
 		updateMyHortData();
 	});
-	win.add(saveButton);
+	view.add(saveButton);
 
 	function authTwitter() {
-
-		var twitter = social.create({
-			site : 'Twitter', // <-- this example is for Twitter. I'll expand this to other sites in the future.
-			consumerKey : '8qiy2PJv3MpVyzuhfNXkOw', // <--- you'll want to replace this
-			consumerSecret : 'Qq0rth4MHGB70nh20nSzov2zz6GbVxuVndCh2IxkRWI' // <--- and this with your own keys!
-		});
-
-		twitter.share({
-			message : 'Hello, world!',
-			success : function() {
-				alert('Tweeted!');
-			},
-			error : function(error) {
-				alert('Oh no! ' + error);
-			}
-		});
+		twitter.authorize();
 	}
 
 	function updateMyHortData() {
@@ -147,10 +179,17 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 		//TODO Handle Twitter diff myHortDetails.PrimaryUser.TwitterToken=;
 
 		if (twitterSwitch.getValue()) {
-			if (!twitterEnabledForUser) {
+			///if (!twitterEnabledForUser) {
 				//original value has changed so now we need to enable twitter
-				authTwitter();
-			}
+				//authTwitter();
+				if(!twitter.isAuthorized()){
+					authTwitter();
+				}
+				twitterEnabledForUser=true;
+				utm.curMyHortDetails.TwitterToken = utm.TwitterToken;
+				utm.curMyHortDetails.TwitterSecret = utm.TwitterTokenSecret ;
+				
+			//}
 
 		} else {
 			if (twitterEnabledForUser) {
@@ -201,7 +240,7 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 				mobile.setValue(utm.curMyHortDetails.Mobile);
 				faceBook.setValue(utm.curMyHortDetails.FaceBook);
 
-				if (utm.curMyHortDetails.TwitterToken != '') {
+				if (utm.curMyHortDetails.TwitterToken != '' & utm.curMyHortDetails.TwitterToken != null) {
 					twitterSwitch.setValue(true);
 					twitterEnabledForUser = true;
 				} else {
@@ -264,8 +303,7 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 		timeout : utm.netTimeout
 	});
 
-	win.addEventListener("focus", function() {
-		utm.log('Focus MyHortDetails');
+	win.addEventListener("open", function() {
 		loadMyHortDetail();
 	});
 
