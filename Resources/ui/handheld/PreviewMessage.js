@@ -458,7 +458,7 @@ var PreviewMessage_window =function(utm) {
 			if(emailButton.isChecked() & sentToList[x].userData.HasEmail){
 				typesOk = true;
 			}
-			if(twitterButton.isChecked() & sentToList[x].userData.HasTwitter){
+			if(twitterButton.isChecked() & utm.curUserCurMyHortHasTwitter){ //sentToList[x].userData.HasTwitter){
 				typesOk = true;	
 			}
 			if(facebookButton.isChecked() & sentToList[x].userData.HasFacebook){
