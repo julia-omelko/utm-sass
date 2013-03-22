@@ -140,7 +140,7 @@ var TheLoginScreen_view = function(utm) {
 			  	utm.setActivityIndicator('');
 				
 				var err = JSON.parse(this.responseText);
-				setMessageArea(err.Message);
+				alert(err.Message);
 				//TODO come up with error number system so we can internationalize errors
 				//setMessageArea(L("invalid_login"));
 				//Too many tries - Account is locked for 1 hour.
