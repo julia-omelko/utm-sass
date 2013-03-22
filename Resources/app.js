@@ -255,6 +255,12 @@ Ti.App.addEventListener('app:showMessagesAfterSend', showMessagesAfterSend);
 function showMessagesAfterSend() {
 	utm.log('showMessagesAfterSend() fired');
 	
+	if(utm.MessageDetailWindow !=undefined ){
+		utm.navController.close(utm.messageDetailWindow,{animated:false}); 
+	}
+	if(utm.messageWindow  !=undefined ){
+		utm.navController.close(utm.messageWindow ,{animated:false}); 
+	}	
 		
 	if(utm.chooseContactsView != undefined){
 		utm.chooseContactsView.restForm();
@@ -274,6 +280,9 @@ function showMessagesAfterSend() {
 	if(utm.previewMessageView != undefined){
 		utm.navController.close(utm.previewMessageView,{animated:false});
 	}
+	
+	
+	
 	showLandingView();
 }
 
