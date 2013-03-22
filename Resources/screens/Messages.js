@@ -13,36 +13,38 @@ function message_window(utm) {
 	});
 
 	var lastRow = 4;
-
-	var tabBar = Ti.UI.iOS.createTabbedBar({
-		labels : [L('messages_recieved'), L('messages_sent')],
-		backgroundColor : utm.color,
-		top : 2,
-		index : 0,
-		style : Titanium.UI.iPhone.SystemButtonStyle.BAR,
-		height : 35,
-		width : 250
-	});
-	win.add(tabBar);
-
-	tabBar.addEventListener('click', function(e) {
-		//get out  of edit mode.
-		if(Ti.Platform.osname == 'iphone'){
-			win.setRightNavButton(edit);
-		}
-		tableView.editing = false;
-		tableView.setData([]);
-		
-		if (tabBar.index == 0) {
-			curMode = "recieved";
-			getMessages('recieved');
-			tabBar.setIndex(0);
-		} else {
-			curMode = "sent";
-			getMessages('sent');
-			tabBar.setIndex(1);
-		}
-	});
+	
+	if(utm.iPhone){
+		var tabBar = Ti.UI.iOS.createTabbedBar({
+			labels : [L('messages_recieved'), L('messages_sent')],
+			backgroundColor : utm.color,
+			top : 2,
+			index : 0,
+			style : Titanium.UI.iPhone.SystemButtonStyle.BAR,
+			height : 35,
+			width : 250
+		});
+		win.add(tabBar);
+	
+		tabBar.addEventListener('click', function(e) {
+			//get out  of edit mode.
+			if(Ti.Platform.osname == 'iphone'){
+				win.setRightNavButton(edit);
+			}
+			tableView.editing = false;
+			tableView.setData([]);
+			
+			if (tabBar.index == 0) {
+				curMode = "recieved";
+				getMessages('recieved');
+				tabBar.setIndex(0);
+			} else {
+				curMode = "sent";
+				getMessages('sent');
+				tabBar.setIndex(1);
+			}
+		});
+	}	
 
 	var tableView = Titanium.UI.createTableView({
 		left : 2,

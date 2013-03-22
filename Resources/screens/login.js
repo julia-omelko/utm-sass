@@ -131,7 +131,7 @@ var TheLoginScreen_view = function(utm) {
 			
 		},
 		onerror:function(e){
-			//clear out the password
+			//clear out the password   //FIXME  e.error   needs to be 
 			utm.setActivityIndicator('');
 			password.value='';
 			//username.value="";

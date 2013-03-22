@@ -1,4 +1,4 @@
-function checkBox(){
+function checkBox(_isChecked){
 	var isChecked=false;
 	var self = Ti.UI.createView({
         backgroundColor:'white', 
@@ -32,6 +32,11 @@ function checkBox(){
  	self.isChecked=function(){
  		return isChecked;
  	}
+	
+	if(_isChecked){
+		self.setChecked(true);
+	}
+	
 	
     return self;
  }
