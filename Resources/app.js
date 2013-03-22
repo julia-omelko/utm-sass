@@ -9,7 +9,7 @@ utm.backgroundColor='#fff';
 utm.textColor='#000';
 utm.textFieldColor='#336699';
 utm.appVersion = 'Version:'+Ti.App.version;
-utm.netTimeout=8000;
+utm.netTimeout=18000;
 utm.sentToContactListString = '';
 utm.networkIsOnline = false;
 var pWidth = Ti.Platform.displayCaps.platformWidth;
@@ -41,7 +41,6 @@ Ti.UI.setBackgroundColor('#fff');
 //Note 2 diff controllers based on platform folders
 var NavigationController = require('NavigationController')
 MainWindow = require('/screens/MainWindow').MainWindow;
-
 utm.navController = new NavigationController(utm);
 
 utm.activityIndicatorStyle;
@@ -425,7 +424,7 @@ utm.handleError = function (e,status,responseText) {
 		alert('Your session is no longer valid, you need to log back in.');		
 		closeAllScreens();	
 		showLoginView();	
-	}else if(err  != 'undefined' ){
+	}else if(err  != 'undefined' & err !=null ){
 		alert(err.Message);	
  	}else if(e.error != 'undefined' & e.error.indexOf('timed out') > 0){
  		//"Error Domain=ASIHTTPRequestErrorDomain Code=2 "The request timed out" UserInfo=0xb2b10e0 {NSLocalizedDescription=The request timed out}"
