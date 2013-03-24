@@ -1,11 +1,35 @@
 var TheLandingScreen_view = function(utm) {
 
-	var landingView = Ti.UI.createWindow({			
-		layout:'vertical',title:''
-		, backButtonTitle:L('logout')
-		, backgroundColor:utm.backgroundColor
-		, barColor:utm.barColor
-	});
+	if(utm.iPhone){
+		var landingView = Ti.UI.createWindow({			
+			layout:'vertical',title:''
+			, backButtonTitle:L('logout')
+			, backgroundColor:utm.backgroundColor
+			, barColor:utm.barColor
+		});
+	}
+	
+	if(utm.Android){
+		//create the base screen and hid the Android navbar
+		var landingView = Titanium.UI.createWindow({
+		    layout : 'vertical',
+		 	backgroundColor : utm.backgroundColor,
+		    navBarHidden:true
+		});
+		
+		//create a navbar for Android
+		var my_navbar = Ti.UI.createLabel({
+		    height : 50,
+		    width : '100%',
+		    backgroundColor : utm.barColor,
+		    color : utm.backgroundColor,
+		    text:'',
+		    top:0
+		});
+ 
+ 		//add the navbar to the screen
+		landingView.add(my_navbar);
+	}
 	
 	var utmLogo = Ti.UI.createImageView({
 		image:'/images/ytm_Narrow.png',

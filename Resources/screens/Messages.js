@@ -4,17 +4,18 @@ function message_window(utm) {
 	var navGroup = false;
 	var curMode = 'recieved';
 
-	var win = Ti.UI.createWindow({
-		layout : 'vertical',
-		title : 'Messages',
-		backButtonTitle : L('button_back'),
-		backgroundColor : utm.backgroundColor,
-		barColor : utm.barColor
-	});
-
 	var lastRow = 4;
 	
 	if(utm.iPhone){
+		var win = Ti.UI.createWindow({
+			layout : 'vertical',
+			title : 'Messages',
+			backButtonTitle : L('button_back'),
+			backgroundColor : utm.backgroundColor,
+			barColor : utm.barColor
+		});
+		
+		
 		var tabBar = Ti.UI.iOS.createTabbedBar({
 			labels : [L('messages_recieved'), L('messages_sent')],
 			backgroundColor : utm.color,
@@ -45,6 +46,53 @@ function message_window(utm) {
 			}
 		});
 	}	
+
+	if(utm.Android){
+		//create the base screen and hid the Android navbar
+		var win = Titanium.UI.createWindow({
+		    layout : 'vertical',
+		 	backgroundColor : utm.backgroundColor,
+		    navBarHidden:true
+	    });
+
+ 		//create a navbar for Android
+		var my_navbar = Ti.UI.createLabel({
+		    height : 50,
+		    width : '100%',
+		    backgroundColor : utm.barColor,
+		    text:'Messages',
+		    color : utm.backgroundColor,
+		    font:{fontSize:utm.androidTitleFontSize,fontWeight:utm.androidTitleFontWeight},
+		    textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+		    top:0
+		});
+ 
+ 		//add the navbar to the screen
+		win.add(my_navbar);
+		
+		//create a view to contain Android tab buttons
+		var tabBar = Titanium.UI.createView ({
+   			layout : 'horizontal',
+   			height : 54
+		});
+		win.add(tabBar);
+		
+		var receivedButton = Ti.UI.createButton({
+			title : 'Received',
+			index : 0,
+			top : 4
+		});
+		tabBar.add(receivedButton);
+		
+		var sentButton = Ti.UI.createButton({
+			title : 'Sent',
+			index : 1,
+			top : 4
+		});
+		tabBar.add(sentButton);		
+	
+	}
+		
 
 	var tableView = Titanium.UI.createTableView({
 		left : 2,
