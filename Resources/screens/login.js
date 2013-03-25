@@ -1,10 +1,33 @@
 var TheLoginScreen_view = function(utm) {
+	if(utm.iPhone){
+		var loginView = Ti.UI.createWindow({			
+			layout:'vertical',title:''
+			, backgroundColor:utm.backgroundColor
+			, barColor:utm.barColor
+		});
+	}
 	
-	var loginView = Ti.UI.createWindow({		
-		layout:'vertical'
-		,backgroundColor:utm.backgroundColor
-		,barColor : utm.barColor
-	});
+	if(utm.Android){
+		//create the base screen and hid the Android navbar
+		var loginView = Titanium.UI.createWindow({
+		    layout : 'vertical',
+		 	backgroundColor : utm.backgroundColor,
+		    navBarHidden:true
+		});
+		
+		//create a navbar for Android
+		var my_navbar = Ti.UI.createLabel({
+		    height : 50,
+		    width : '100%',
+		    backgroundColor : utm.barColor,
+		    color : utm.backgroundColor,
+		    text:'',
+		    top:0
+		});
+ 
+ 		//add the navbar to the screen
+		loginView.add(my_navbar);
+	}
 	
 	var messageArea = Ti.UI.createLabel({
 	  color: utm.textColor,
