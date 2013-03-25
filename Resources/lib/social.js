@@ -891,7 +891,18 @@ var OAuthAdapter = function (pConsumerSecret, pConsumerKey, pSignatureMethod) {
 
     // will tell if the consumer is authorized
     this.isAuthorized = function () {
-        return !(accessToken == null || accessTokenSecret == null);
+    		if( !(accessToken == null || accessTokenSecret == null)){
+    			  	utm.TwitterToken = accessToken;
+   				utm.TwitterTokenSecret=accessTokenSecret;
+   				return true;
+    		}else{
+    			  	utm.TwitterToken='';
+    				utm.TwitterTokenSecret='';
+    				return false;
+    		}
+  
+    	
+      //  return !(accessToken == null || accessTokenSecret == null);
     };
 
     // creates a message to send to the service
@@ -1218,6 +1229,9 @@ var supportedSites = {
  * @returns An object that can be used to share with the created site.
  */
 exports.create = function (settings) {
+
+
+//TODO  ATD need a function to call and get tokens per service.
 
     var site = (settings.site || 'twitter').toLowerCase();
 
