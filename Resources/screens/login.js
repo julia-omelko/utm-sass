@@ -27,6 +27,9 @@ var TheLoginScreen_view = function(utm) {
  
  		//add the navbar to the screen
 		loginView.add(my_navbar);
+		
+		//add activityIndicator to window
+		loginView.add(utm.activityIndicator)
 	}
 	
 	var messageArea = Ti.UI.createLabel({

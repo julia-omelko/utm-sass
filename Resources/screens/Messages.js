@@ -48,7 +48,7 @@ function message_window(utm) {
 	}	
 
 	if(utm.Android){
-		//create the base screen and hid the Android navbar
+		//create the base screen and hide the Android navbar
 		var win = Titanium.UI.createWindow({
 		    layout : 'vertical',
 		 	backgroundColor : utm.backgroundColor,
@@ -73,24 +73,45 @@ function message_window(utm) {
 		//create a view to contain Android tab buttons
 		var tabBar = Titanium.UI.createView ({
    			layout : 'horizontal',
-   			height : 54
+   			width : '100%',
+   			height : 45
 		});
 		win.add(tabBar);
 		
 		var receivedButton = Ti.UI.createButton({
 			title : 'Received',
-			index : 0,
-			top : 4
+			top : 2,
+			Height : Titanium.UI.SIZE - 4,
+			font:{fontFamily:'Arial',fontWeight:'bold',fontSize:14}
 		});
 		tabBar.add(receivedButton);
 		
+		receivedButton.addEventListener('click',function(e)
+		{
+			tableView.editing = false;
+			tableView.setData([]);
+			curMode = "recieved";
+			getMessages('recieved');			
+		});
+		
 		var sentButton = Ti.UI.createButton({
 			title : 'Sent',
-			index : 1,
-			top : 4
+			top : 2,
+			Height : Titanium.UI.SIZE - 4,
+			font:{fontFamily:'Arial',fontWeight:'bold',fontSize:14}
 		});
-		tabBar.add(sentButton);		
-	
+		tabBar.add(sentButton);
+		
+		sentButton.addEventListener('click',function(e)
+		{
+			tableView.editing = false;
+			tableView.setData([]);
+			curMode = "sent";
+			getMessages('sent');
+		});			
+		
+		//add activityIndicator to window
+		win.add(utm.activityIndicator)
 	}
 		
 
@@ -189,8 +210,7 @@ function message_window(utm) {
 	if(Ti.Platform.osname == 'iphone'){
 		win.setRightNavButton(edit);
 	}
-	
-	
+		
 
 	Ti.App.addEventListener('app:showMessages', showMessageWindow);
 	function showMessageWindow() {

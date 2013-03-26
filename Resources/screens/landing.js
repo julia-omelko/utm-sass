@@ -29,6 +29,12 @@ var TheLandingScreen_view = function(utm) {
  
  		//add the navbar to the screen
 		landingView.add(my_navbar);
+	
+		//since there is no back ("Logout") button in Nav bar, must fire logout event when user uses back button on landing page
+		landingView.addEventListener('android:back', function () {
+  			utm.log("Back button pressed while on landing screen on Android. Firing app:logout");
+  			Ti.App.fireEvent("app:logout", {});
+		});
 	}
 	
 	var utmLogo = Ti.UI.createImageView({
