@@ -1,6 +1,7 @@
 function myHortDetail_window(_myHortData,utm,isOwner) {
 
 	var InputField = require('ui/common/baseui/InputField');
+	var MyHortMembersWindow = require('ui/handheld/MyHortMembers');
 	var MyHortPendingWindow = require('ui/handheld/MyHortPending');
 	var MyHortInviteWindow = require('ui/handheld/MyHortInvite');
 	var social = require("lib/social");
@@ -10,7 +11,6 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 			consumerKey : '8qiy2PJv3MpVyzuhfNXkOw', // <--- you'll want to replace this
 			consumerSecret : 'Qq0rth4MHGB70nh20nSzov2zz6GbVxuVndCh2IxkRWI' // <--- and this with your own keys!
 		});
-	
 	
 	var twitterEnabledForUser = false;
 	utm.MyHortDetails = false;
@@ -33,19 +33,31 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 	});
 
 	scrollingView.add(view);
-
+	
+	var buttons = [
+    {title:'Members', enabled:false},
+    {title:'Invite', enabled:false},
+     {title:'Pending Invites', enabled:false}
+];
 
 	//-----------------Top Buttons  ----------------------
 	var topButtonBar = Titanium.UI.createButtonBar({
-		labels : ['Invite', 'Pending Invites'],
+		labels : buttons,
 		top : 3,
 		backgroundColor : '#336699',
 		style : Titanium.UI.iPhone.SystemButtonStyle.BAR,
 		height : isOwner? 40: 0,
-		width : '95%',
-		enable:false,
+		width : '95%',		
 		visible :isOwner
 	});
+	
+	function enableButtonBar(_enable){
+		buttons[0].enabled = _enable;
+		buttons[1].enabled = _enable;
+		buttons[2].enabled = _enable;
+		topButtonBar.labels = buttons;  
+	}
+	
 	view.add(topButtonBar);
 
 	//-----------------MyHort Name  ----------------------
@@ -120,7 +132,6 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 			twitterEnabledForUser=true;
 		}else{
 			//twitter.deauthorize(); NOTE this deauthrizes for ALL MYHORTS - dont want to do that uless its the only myhort with twitter set.
-			//TODO OR asks user IF they want to deauthorize for ALL MyHorts or just this one....			
 			
 				var dialog = Ti.UI.createAlertDialog({
 					cancel : 1,
@@ -221,8 +232,8 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 		onload : function() {			
 			
 			win.visible = true;
-			var json = this.responseData;
-			utm.myHortDetails = JSON.parse(json);
+			var response = eval('('+this.responseText+')');
+			utm.myHortDetails = response;
 
 			if (this.status == 200) {
 				
@@ -247,7 +258,8 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 					twitterSwitch.setValue(false);
 					twitterEnabledForUser = false;
 				}
-				saveButton.enabled = true;
+				
+				enableButtonBar(true);
 				//TODO handle errors better
 			} else if (this.status == 400) {
 				utm.recordError('Error')
@@ -318,6 +330,20 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 
 		if (e.index === 0) {
 			//Invite
+			utm.myHortMembersWindow = new MyHortMembersWindow( _myHortData,utm);
+			
+			utm.navController.open(utm.myHortMembersWindow);
+			/*
+			utm.myHortMembersWindow.open({
+				modal : true,
+				modalTransitionStyle : Ti.UI.iPhone.MODAL_TRANSITION_STYLE_PARTIAL_CURL,
+				modalStyle : Ti.UI.iPhone.MODAL_PRESENTATION_FORMSHEET,
+				navBarHidden : true
+			});			*/
+			
+			
+		} else if (e.index === 1) {
+			//Invite
 			utm.myHortInviteWindow = new MyHortInviteWindow( _myHortData,utm);
 			utm.myHortInviteWindow.open({
 				modal : true,
@@ -327,7 +353,7 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 			});			
 			
 			
-		} else if (e.index === 1) {
+		} else if (e.index === 2) {
 			//Show Pending			
 			utm.myHortPendingWindow = new MyHortPendingWindow( _myHortData.MyHortId,utm);
 			utm.myHortPendingWindow.open({
