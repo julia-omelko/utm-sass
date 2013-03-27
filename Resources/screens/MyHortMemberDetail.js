@@ -59,7 +59,8 @@ function myHortDetail_window(_myHortMember, utm) {
 		layout : 'horizontal',
 		height : 30,
 		left : 5,
-		top : 10
+		top : 10,
+		visible: 	_myHortMember.MemberType == 'Primary'?false:true		
 	});
 	var typeLabel = Ti.UI.createLabel({
 		text : 'Invisible to Others',
@@ -91,12 +92,15 @@ function myHortDetail_window(_myHortMember, utm) {
 		utm.setActivityIndicator('Updating...');
 
 		_myHortMember.NickName = nickNameTextField.value;
-
-		if (typeCheckBox.isChecked) {
-			_myHortMember.MemberType = 'Invisible';
-		} else {
-			_myHortMember.MemberType = 'Secondary';
+		
+		if(_myHortMember.MemberType != 'Primary'){
+			if (typeCheckBox.isChecked) {
+				_myHortMember.MemberType = 'Invisible';
+			} else {
+				_myHortMember.MemberType = 'Secondary';
+			}
 		}
+		
 
 		updateMemberDetailReq.open("POST", utm.serviceUrl + "MyHort/UpdateMyHortMember");
 		updateMemberDetailReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");
