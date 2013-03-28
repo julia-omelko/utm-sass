@@ -95,7 +95,7 @@ function myHortDetail_window(_myHortMember, utm) {
 		_myHortMember.NickName = nickNameTextField.value;
 		
 		if(_myHortMember.MemberType != 'Primary'){
-			if (typeCheckBox.isChecked) {
+			if (typeCheckBox.isChecked()) {
 				_myHortMember.MemberType = 'Invisible';
 			} else {
 				_myHortMember.MemberType = 'Secondary';
