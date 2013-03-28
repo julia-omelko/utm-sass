@@ -15,7 +15,7 @@ function createMyHortWindow(_myHortData, utm) {
 	win.add(colHeader);
 	
 	var nickNameLbl = Ti.UI.createLabel({
-		text : 'Nick Name',
+		text : 'Nickname',
 		font : {
 			fontWeight : 'bold',
 			fontSize : 16
@@ -23,7 +23,6 @@ function createMyHortWindow(_myHortData, utm) {
 		color : utm.color_org
 	})
 	colHeader.add(nickNameLbl);
-	
 	
 	var memberTypeLbl = Ti.UI.createLabel({
 		text : 'Member Type',
@@ -72,7 +71,7 @@ function createMyHortWindow(_myHortData, utm) {
 				touchEnabled : false,
 				height : 55,
 				hasChild : false,
-				myHortMembersData : myHortMembersData[i]
+				myHortMembersRowData : myHortMembersData[i]
 			});
 
 			var hView = Ti.UI.createView({
@@ -161,7 +160,7 @@ function createMyHortWindow(_myHortData, utm) {
 	//Add Click to Details for drilldown
 	tableView.addEventListener('click', function(e) {
 		utm.MemberDetailsWindow = require('screens/MyHortMemberDetail');
-		utm.memberDetailsWindow = new utm.MemberDetailsWindow(e.rowData.myHortMembersData,utm);
+		utm.memberDetailsWindow = new utm.MemberDetailsWindow(e.rowData.myHortMembersRowData,utm);
 		utm.navController.open(utm.memberDetailsWindow);
 	});
 
