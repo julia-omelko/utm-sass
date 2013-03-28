@@ -22,7 +22,7 @@ function myHortDetail_window(_myHortMember, utm) {
 
 	scrollingView.add(view);
 	
-	//-----------------Nick Name  ----------------------
+	//-----------------NickName  ----------------------
 	var nickNameView = Ti.UI.createView({
 		layout : 'horizontal',
 		height : 30,
@@ -32,7 +32,7 @@ function myHortDetail_window(_myHortMember, utm) {
 	view.add(nickNameView);
 
 	var nickNamelbl = Ti.UI.createLabel({
-		text : 'NickName ',
+		text : 'Nickname ',
 		font : {
 			fontSize : 14,
 			fontWeight : 'bold'
@@ -72,9 +72,10 @@ function myHortDetail_window(_myHortMember, utm) {
 	});
 	typeBox.add(typeLabel);
 
-	var typeCheckBox = new CheckBoxField(true);
+	var typeCheckBox = new CheckBoxField(_myHortMember.MemberType === 'Invisible');
 	typeBox.add(typeCheckBox);
 	view.add(typeBox);
+
 
 	//############ Save Button ################
 	var saveButton = Ti.UI.createButton({
