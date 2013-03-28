@@ -6,7 +6,18 @@ function messageDetail_window(_messageData,_curMode,utm) {
 		,barColor:utm.barColor,
 		visible:false
 	 });
-	var navGroup=false;
+	var scrollingView = Ti.UI.createScrollView({
+		showVerticalScrollIndicator : true,
+		showHorizontalScrollIndicator : false
+	});
+	win.add(scrollingView);
+
+	var view = Ti.UI.createView({
+		height : 2000,
+		layout : 'vertical'
+	});
+
+	scrollingView.add(view);
 			
 	
 	//-----------------Sent On  ----------------------
@@ -18,7 +29,7 @@ function messageDetail_window(_messageData,_curMode,utm) {
 		top:2,
 		textAlign:'left'
 	});
-	win.add(toDate);
+	view.add(toDate);
 	
 	//-----------------To/From  ----------------------
 	var toLabel = Ti.UI.createLabel({
@@ -29,10 +40,10 @@ function messageDetail_window(_messageData,_curMode,utm) {
 		top:2,
 		textAlign:'left'
 	});
-	win.add(toLabel);
+	view.add(toLabel);
 	
 	var grayLine1 = Ti.UI.createLabel({text:' ',backgroundColor:'gray',width:'100%',	height:.5,top:2});
-	win.add(grayLine1);
+	view.add(grayLine1);
 	
 	
 	//-----------------UTM Message Label  ----------------------
@@ -41,10 +52,9 @@ function messageDetail_window(_messageData,_curMode,utm) {
 		width:utm.SCREEN_WIDTH-10,
 		font: {fontSize:14, fontWeight:'bold'},
 		top:4,
-		height:'auto',
 		textAlign:'left'
 	});
-	win.add(utmMessageLabel);
+	view.add(utmMessageLabel);
 	
 	//-----------------UTM Message Value  ----------------------
 	var utmMessageValue = Ti.UI.createLabel({
@@ -55,10 +65,10 @@ function messageDetail_window(_messageData,_curMode,utm) {
 		height:'auto',
 		textAlign:'left'
 	});
-	win.add(utmMessageValue);
+	view.add(utmMessageValue);
 	
 	var grayLine2 = Ti.UI.createLabel({text:' ',backgroundColor:'gray',width:'100%',	height:.5,top:2});
-	win.add(grayLine2);
+	view.add(grayLine2);
 	
 	//-----------------Real Message Label  ----------------------
 	var realMessageLabel = Ti.UI.createLabel({
@@ -66,26 +76,25 @@ function messageDetail_window(_messageData,_curMode,utm) {
 		width:utm.SCREEN_WIDTH-10,
 		font: {fontSize:14, fontWeight:'bold'},
 		top:3,
-		height:'auto',
+		height:Titanium.UI.SIZE ,
 		textAlign:'left'
 	});
-	win.add(utmMessageLabel);
+	view.add(realMessageLabel);
 	
 	//-----------------Real Message Value ----------------------
-	var realMessageValue = Ti.UI.createTextArea({
+	var realMessageValue = Ti.UI.createLabel({
 		value:'',
-		width:'100%',
+		width:utm.SCREEN_WIDTH-10,
 		font: {fontSize:16},
 		color:utm.textFieldColor,
 		top:2,
-		height:'auto',
-		textAlign:'left',
-		editable:false
+		height:Titanium.UI.SIZE ,
+		textAlign:'left'
 	});
-	win.add(realMessageValue);
+	view.add(realMessageValue);
 	
 	//-----------------Reply To Button ----------------------
-	var replyButton = Ti.UI.createButton({title:'Reply', visible:false, top:3});
+	var replyButton = Ti.UI.createButton({title:'Reply', visible:false});
 	replyButton.addEventListener('click', function()
 	{	utm.log('replyButton fired');
 	
@@ -95,7 +104,10 @@ function messageDetail_window(_messageData,_curMode,utm) {
 		//utm.containerWindow.leftNavButton = utm.emptyView;
 		
 	});
-	win.add(replyButton);
+	view.add(replyButton);
+	
+	var bottomSpacerView = Ti.UI.createView({height:10});
+	view.add(bottomSpacerView)
 
 // ##################### Call out to get Reply To User Data #####################
 
@@ -169,16 +181,16 @@ function messageDetail_window(_messageData,_curMode,utm) {
 			
 			if(this.status ==200){
 				utm.log("message data returned:"+response);
-				if(response.Message.length > 200){
-					realMessageValue.height='55%'
+				if(response.Message.length > 1000){
+					view.height=Titanium.UI.SIZE ;
 				}else{
-					realMessageValue.height='auto';
+					view.height=2000;
 				}
 				
 				//Now that we have date set all the values
 				toDate.text = 'Sent On: '+moment(_messageData.DateSent).fromNow();
 				utmMessageValue.text=_messageData.UtmText;	
-				realMessageValue.value = response.Message;
+				realMessageValue.text = response.Message;
 				
 				//Mark Message as Read
 				utm.log('Mark Message as Read'+ ! _messageData.WasRead);
