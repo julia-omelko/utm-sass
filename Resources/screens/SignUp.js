@@ -80,10 +80,24 @@ function signUp_window(utm) {
 			utm.signUps = response;
 
 			if (this.status == 200) {
-				saveButton.enabled = false;
-				alert('Thank you for registering. Please check your email for a confirmation request with a link that will confirm your account. Once you click the link, your registration will be complete.'); 
-				utm.navController.close(utm.signupView);
-				//TODO handle errors better
+				
+				if(this.responseData){
+					saveButton.enabled = true;
+					var error = eval('(' + this.responseData + ')');
+					
+					if(error.Status ==='Error'){
+						if(error.Message ==="DuplicateEmail"){
+							alert('This email is aready registered.');
+						}else{
+							alert(error.Message);	
+						}
+					}
+				}else{
+					saveButton.enabled = false;
+					alert('Thank you for registering. Please check your email for a confirmation request with a link that will confirm your account. Once you click the link, your registration will be complete.'); 
+					utm.navController.close(utm.signupView);
+				}
+
 			} else if (this.status == 400) {
 				saveButton.enabled = true;
 				utm.recordError('Error')
