@@ -82,20 +82,21 @@ function signUp_window(utm) {
 			if (this.status == 200) {
 				
 				if(this.responseData){
-					saveButton.enabled = true;
+					
 					var error = eval('(' + this.responseData + ')');
 					
 					if(error.Status ==='Error'){
+						saveButton.enabled = true;
 						if(error.Message ==="DuplicateEmail"){
 							alert('This email is aready registered.');
 						}else{
 							alert(error.Message);	
 						}
 					}
-				}else{
+					//Success
 					saveButton.enabled = false;
 					alert('Thank you for registering. Please check your email for a confirmation request with a link that will confirm your account. Once you click the link, your registration will be complete.'); 
-					utm.navController.close(utm.signupView);
+					utm.navController.close(utm.signupView);					
 				}
 
 			} else if (this.status == 400) {
