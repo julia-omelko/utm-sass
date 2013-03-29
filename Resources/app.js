@@ -481,7 +481,7 @@ Ti.App.addEventListener("resumed", function(e){
 	var pauseMil = appPauseTime.valueOf();
 	var diff = curMil-pauseMil;
 	
-	if( diff  > 600){
+	if( diff  > 600000){
 			utm.log('-------  APP resumed  FORCE LOGIN');
 			showLoginScreenLockView();
 	}else{
