@@ -72,6 +72,7 @@ function createMyHortWindow(utm) {
 	// ##################### CREATE MyHort #####################
 	function createMyHort(myHortName){		
 		utm.log('Create MyHort: '+myHortName);
+		createButton.enabled=false;
 		utm.setActivityIndicator('Adding New MyHort...');
 		createMyHortReq.open("POST", utm.serviceUrl + "MyHort/CreateMyHortDetails");
 		createMyHortReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");
@@ -89,6 +90,7 @@ function createMyHortWindow(utm) {
 			refreshMyHortList();
 			myHortWindow.close();
 		},onerror: function(e){
+			createButton.enabled=true;
 			utm.handleError(e, this.status, this.responseText);
 			refreshMyHortList();
 		}		
