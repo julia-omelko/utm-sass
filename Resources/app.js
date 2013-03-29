@@ -8,6 +8,7 @@ utm.barColor= '#F66F00';
 utm.backgroundColor='#fff';
 utm.textColor='#000';
 utm.textFieldColor='#336699';
+utm.textErrorColor='#800000';
 utm.androidTitleFontSize=25
 utm.androidTitleFontWeight='bold'
 utm.appVersion = 'Version:'+Ti.App.version;
@@ -42,7 +43,7 @@ Ti.UI.setBackgroundColor('#fff');
 
 //Note 2 diff controllers based on platform folders
 var NavigationController = require('NavigationController')
-MainWindow = require('/screens/MainWindow').MainWindow;
+//MainWindow = require('/screens/MainWindow').MainWindow;
 utm.navController = new NavigationController(utm);
 
 utm.activityIndicatorStyle;
@@ -74,11 +75,15 @@ utm.setEnvModePrefix= function (env){
 	utm.envModePrefix =env;
 	if (env==='local') { 
 		//utm.serviceUrl = 'http://192.168.244.194/api/v1/';
+		//utm.webUrl ='http://192.168.244.194'; 
 		utm.serviceUrl = 'https://dev.youthisme.com/api/v1/';
+		utm.webUrl = 'https://dev.youthisme.com';
 	}else if(env==='dev' || env === 'test'){
 		utm.serviceUrl = 'https://'+env +'.youthisme.com/api/v1/';
+		utm.webUrl = 'https://'+env +'.youthisme.com';
 	}else if(env === 'prod'){
 		utm.serviceUrl = 'https://youthisme.com/api/v1/';
+		utm.webUrl ='https://youthisme.com';
 	}	
 	utm.log('env='+env);
 	utm.log('utm.seviceUrl='+utm.serviceUrl);
@@ -291,9 +296,15 @@ function showMessagesAfterSend() {
 Ti.App.addEventListener('app:logout', showLoginView);
 function showLoginView() {
 	closeAllScreens();
-	utm.navController.open(utm.loginView);
-	
+	utm.navController.open(utm.loginView);	
 	callLogoutService();
+}
+
+function showLoginScreenLockView() {	
+	//TODO figure out how to NOT have to close all the windows to open the login window
+	//Maybe a model popup 100% x 100%
+	closeAllScreens();
+	utm.navController.open(utm.loginView);	
 }
 
 //Left Nav Buttons
@@ -360,6 +371,7 @@ function callLogoutService(){
 	utm.logoutReq.setRequestHeader('Authorization-Token', utm.AuthToken);
 	utm.logoutReq.send();
 	Titanium.Analytics.featureEvent('user.logged_out');	
+	
 }
 
 utm.setActivityIndicator =function (_message) {
@@ -382,17 +394,14 @@ Ti.Network.addEventListener('change', function(e) {
 
 
 function closeAllScreens(){
-	if(utm.writeMessageView !=undefined){
-		utm.navController.close(utm.writeMessageView,{animated:false});
-	}	
-		
-	if(utm.chooseContactsView != undefined){
-		utm.navController.close(utm.chooseContactsView,{animated:false});	
-	}
 	
 	if(utm.chooseMyHortView !=undefined){
 		utm.navController.close(utm.chooseMyHortView,{animated:false});
 	}
+		
+	if(utm.chooseContactsView != undefined){
+		utm.navController.close(utm.chooseContactsView,{animated:false});	
+	}	
 	
 	if(utm.MessageDetailWindow !=undefined ){
 		utm.navController.close(utm.messageDetailWindow,{animated:false}); 
@@ -408,24 +417,24 @@ function closeAllScreens(){
 	}	
 	
 	if(utm.previewMessageView != undefined){
-		utm.navController.close(utm.previewMessageView);		
+		utm.navController.close(utm.previewMessageView,{animated:false});		
 	}
 	
-	if(utm.landingView != undefined){
-		utm.navController.close(utm.landingView);		
-	}	
+		
 	if(utm.myAccountWindow != undefined){
-		utm.navController.close(utm.myAccountWindow);
+		utm.navController.close(utm.myAccountWindow,{animated:false});
 	}
 	
 	if (utm.myHortView != undefined){
-		utm.navController.close(utm.myHortView);
+		utm.navController.close(utm.myHortView,{animated:false});
 	}
 	
 	if(utm.myHortDetailWindow != undefined){
-		utm.navController.close(utm.myHortDetailWindow);
+		utm.navController.close(utm.myHortDetailWindow,{animated:false});
 	}
-	
+	if(utm.landingView != undefined){
+		utm.navController.close(utm.landingView,{animated:false});		
+	}
 }
 
 utm.handleError = function (e,status,responseText) {	
@@ -451,6 +460,12 @@ utm.handleError = function (e,status,responseText) {
  	}         
 }
 
+Ti.App.addEventListener('app:signup', function(){
+	utm.SignupView = require('screens/SignUp');
+	utm.signupView = new utm.SignupView(utm);
+	utm.navController.open(utm.signupView);
+});
+
 Ti.App.addEventListener("pause", function(e){
 	utm.log('-------  APP Paused ------');
 	appPauseTime= new Date();
@@ -466,9 +481,9 @@ Ti.App.addEventListener("resumed", function(e){
 	var pauseMil = appPauseTime.valueOf();
 	var diff = curMil-pauseMil;
 	
-	if( diff  > 60000){
+	if( diff  > 600){
 			utm.log('-------  APP resumed  FORCE LOGIN');
-			showLoginView();
+			showLoginScreenLockView();
 	}else{
 			utm.log('-------  APP resumed  NO FORCE LOGIN');
 	}	
