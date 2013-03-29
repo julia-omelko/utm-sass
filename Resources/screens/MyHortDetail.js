@@ -46,8 +46,7 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 		top : 3,
 		backgroundColor : '#336699',
 		style : Titanium.UI.iPhone.SystemButtonStyle.BAR,
-		height : isOwner? 40: 0,
-		width : '95%',		
+		height : isOwner? 40: 0,	
 		visible :isOwner
 	});
 	
@@ -104,7 +103,7 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 		layout : 'horizontal',
 		width : '100%',
 		top : 3,
-		left : 3,
+		left : 8,
 		height : 50
 	});
 	var twitterLabel = Ti.UI.createLabel({
@@ -113,7 +112,7 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 			fontSize : 14,
 			fontWeight : 'bold'
 		},
-		width : 100,
+		width : 80,
 		textAlign : 'left'
 	});
 	twitterGroup.add(twitterLabel);
@@ -330,28 +329,13 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 
 		if (e.index === 0) {
 			//Invite
-			utm.myHortMembersWindow = new MyHortMembersWindow( _myHortData,utm);
-			
+			utm.myHortMembersWindow = new MyHortMembersWindow( _myHortData,utm);			
 			utm.navController.open(utm.myHortMembersWindow);
-			/*
-			utm.myHortMembersWindow.open({
-				modal : true,
-				modalTransitionStyle : Ti.UI.iPhone.MODAL_TRANSITION_STYLE_PARTIAL_CURL,
-				modalStyle : Ti.UI.iPhone.MODAL_PRESENTATION_FORMSHEET,
-				navBarHidden : true
-			});			*/
-			
 			
 		} else if (e.index === 1) {
 			//Invite
 			utm.myHortInviteWindow = new MyHortInviteWindow( _myHortData,utm);
-			utm.myHortInviteWindow.open({
-				modal : true,
-				modalTransitionStyle : Ti.UI.iPhone.MODAL_TRANSITION_STYLE_PARTIAL_CURL,
-				modalStyle : Ti.UI.iPhone.MODAL_PRESENTATION_FORMSHEET,
-				navBarHidden : true
-			});			
-			
+			utm.navController.open(utm.myHortInviteWindow);			
 			
 		} else if (e.index === 2) {
 			//Show Pending			
