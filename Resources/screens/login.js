@@ -106,8 +106,19 @@ var TheLoginScreen_view = function(utm) {
 	loginView.add(forgotPWLabel);
 		
 	//Want to sign up?
-	var signUpLabel = createLink(L('login_signup'), 'https://'+utm.envModePrefix +'youthisme.com/Account/Register')
+	//var signUpLabel = createLink(L('login_signup'), 'https://'+utm.envModePrefix +'youthisme.com/Account/Register')
+	var signUpLabel = Ti.UI.createLabel({
+		 text:L('login_signup'),
+		 color: utm.textColor,		
+		 textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+		 top: 20,
+		 width:'auto', 
+		 height: 20
+	}) 
 	loginView.add(signUpLabel);
+	signUpLabel.addEventListener('click',function(){
+		Ti.App.fireEvent('app:signup');
+	})
 	
 	//About UTM
 	var tosLabel = createLink(L('login_about'), 'http://'+utm.envModePrefix +'youthisme.com/Home/About')
@@ -115,7 +126,7 @@ var TheLoginScreen_view = function(utm) {
 
 	//Version 0.12 Alpha	
 	var versionLabel = Ti.UI.createLabel({
-		  color: '#000',
+		  color: utm.textColor,	
 		  font: { fontSize:14 },
 		  text: utm.appVersion + '  ('+utm.envModePrefix +' DB)',
 		  textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
@@ -125,8 +136,7 @@ var TheLoginScreen_view = function(utm) {
 		});
 	
 	loginView.add(versionLabel);
-	
-	
+		
 	var loginReq = Ti.Network.createHTTPClient({
 		validatesSecureCertificate:utm.validatesSecureCertificate 
 		,tlsVersion:Ti.Network.TLS_VERSION_1_2
@@ -215,8 +225,7 @@ var TheLoginScreen_view = function(utm) {
 	function createLink(lbl,url){
 		
 		var newLinkButton = Ti.UI.createLabel({
-		  color: utm.textColor,
-		  font: { fontSize:14 },
+		  color: utm.textColor,		
 		  text: lbl,
 		  textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
 		  top: 20,
@@ -279,6 +288,7 @@ var TheLoginScreen_view = function(utm) {
 	fillInTestLogin();
 	
 	check_network();
+	
 
 	return loginView;
 };
