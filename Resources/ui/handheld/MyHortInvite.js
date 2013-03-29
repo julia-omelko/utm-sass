@@ -17,8 +17,10 @@ function inviteMyHortWindow(myHortInfo, utm) {
 	}
 
 	var myHortInviteWindow = Ti.UI.createWindow({
-		backgroundColor : '#fff',
+		backgroundColor:utm.backgroundColor
+		,barColor:utm.barColor,
 		layout : 'vertical',
+		backButtonTitle:'MyHort Info'
 	});
 
 	var scrollingView = Ti.UI.createScrollView({
@@ -28,7 +30,7 @@ function inviteMyHortWindow(myHortInfo, utm) {
 	myHortInviteWindow.add(scrollingView);
 
 	var view = Ti.UI.createView({
-		height : 2000,
+		height :1500,
 		layout : 'vertical'
 	});
 
@@ -36,7 +38,7 @@ function inviteMyHortWindow(myHortInfo, utm) {
 
 	var titleLbl = Ti.UI.createLabel({
 		text : 'Invite users to ' + myHortInfo.FriendlyName + ' Group',
-		top : 60,
+		top : 10,
 		color : utm.color_org,
 		height : 60,
 		font : {
@@ -64,6 +66,7 @@ function inviteMyHortWindow(myHortInfo, utm) {
 		color : utm.textFieldColor,
 		textAlign : 'left',
 		top : 5,
+		font: {fontSize:16},
 		height : 'auto',
 		width : utm.SCREEN_WIDTH - 10,
 		height : utm.SCREEN_HEIGHT - (utm.SCREEN_HEIGHT / 1.2),
@@ -141,7 +144,11 @@ function inviteMyHortWindow(myHortInfo, utm) {
 		top : 5,
 		height : 'auto',
 		width : utm.SCREEN_WIDTH - 10,
-		height : 50
+		height : 50,
+		font: {fontSize:16},
+		keyboardType:Ti.UI.KEYBOARD_EMAIL,
+		autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
+		autocorrect: false
 	});
 	view.add(emailsField);
 
@@ -193,7 +200,7 @@ function inviteMyHortWindow(myHortInfo, utm) {
 		inviteMyHort();
 	})
 	var closeButton = Ti.UI.createButton({
-		title : 'Done',
+		title : L('cancel'),
 		left : 10
 	});
 	closeButton.addEventListener('click', function() {
@@ -203,7 +210,7 @@ function inviteMyHortWindow(myHortInfo, utm) {
 
 	// ##################### CREATE MyHort #####################
 	function inviteMyHort() {
-		
+		inviteButton.enabled=false;
 		var invalidEmail = validateEmails(emailsField.value);
 		if(invalidEmail !=''){
 			alert(invalidEmail + ' is not a valid email - please update and try again.');
@@ -252,9 +259,10 @@ function inviteMyHortWindow(myHortInfo, utm) {
 		validatesSecureCertificate : utm.validatesSecureCertificate,
 		onload : function() {
 			utm.setActivityIndicator('');
-			myHortInviteWindow.close();
+			utm.navController.close(myHortInviteWindow);
 		},
 		onerror : function(e) {
+			inviteButton.enabled=true;
 			utm.handleError(e, this.status, this.responseText);
 		}
 	});

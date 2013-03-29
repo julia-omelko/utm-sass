@@ -59,7 +59,7 @@ function myHortDetail_window(_myHortMember, utm) {
 		layout : 'horizontal',
 		height : 30,
 		left : 5,
-		top : 10,
+		top : 30,
 		visible: 	_myHortMember.MemberType == 'Primary'?false:true		
 	});
 	var typeLabel = Ti.UI.createLabel({
@@ -80,7 +80,7 @@ function myHortDetail_window(_myHortMember, utm) {
 	//############ Save Button ################
 	var saveButton = Ti.UI.createButton({
 		title : 'Save',
-		top : 3,
+		top : 30,
 		enabled : true
 	});
 	saveButton.addEventListener('click', function() {
