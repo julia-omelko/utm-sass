@@ -12,14 +12,43 @@ var PreviewMessage_window =function(utm) {
 	var deleteOnRead=false;
 	var messageData=false;
 		
-	var previewMessageView = Titanium.UI.createWindow({
-	   width:'auto'
-	   ,height:'auto'
-	   ,layout:'vertical'
-	   ,backgroundColor:utm.backgroundColor
-	   ,barColor:utm.barColor
-	});	
+	if(utm.iPhone){
+		var previewMessageView = Titanium.UI.createWindow({
+		   width:'auto'
+		   ,height:'auto'
+		   ,layout:'vertical'
+		   ,backgroundColor:utm.backgroundColor
+		   ,barColor:utm.barColor
+		});	
+	}
 	
+	if(utm.Android){
+		//create the base screen and hide the Android navbar
+		var previewMessageView = Titanium.UI.createWindow({
+		    layout : 'vertical',
+		 	backgroundColor : utm.backgroundColor,
+		    navBarHidden:true
+	    });
+
+ 		//create a navbar for Android
+		var my_navbar = Ti.UI.createLabel({
+		    height : 50,
+		    width : '100%',
+		    backgroundColor : utm.barColor,
+		    text:'Message',
+		    color : utm.backgroundColor,
+		    font:{fontSize:utm.androidTitleFontSize,fontWeight:utm.androidTitleFontWeight},
+		    textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+		    top:0
+		});
+		
+ 		//add the navbar to the screen
+		previewMessageView.add(my_navbar);
+		
+		//add activityIndicator to window
+		previewMessageView.add(utm.activityIndicator)		
+	}
+		
 	//---------------Original Message -------------------- 	
 	var yourOrgMessageLabel = Ti.UI.createLabel({
 		text:L('send_your_original_message')+':',

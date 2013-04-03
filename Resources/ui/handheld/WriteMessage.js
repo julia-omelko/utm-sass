@@ -3,12 +3,41 @@ var WriteMessage_window =function(utm) {
 	var replyMode=false;
 	var messageData=false;
 	
-	var writeMessageWindow = Titanium.UI.createWindow({
-		layout:'vertical'
-		,title:'Write Message'
-		,backgroundColor:utm.backgroundColor
-	   ,barColor:utm.barColor
-	});
+	if(utm.iPhone){
+		var writeMessageWindow = Titanium.UI.createWindow({
+			layout:'vertical'
+			,title:'Write Message'
+			,backgroundColor:utm.backgroundColor
+		   ,barColor:utm.barColor
+		});
+	}
+	
+	if(utm.Android){
+		//create the base screen and hide the Android navbar
+		var writeMessageWindow = Titanium.UI.createWindow({
+		    layout : 'vertical',
+		 	backgroundColor : utm.backgroundColor,
+		    navBarHidden:true
+	    });
+
+ 		//create a navbar for Android
+		var my_navbar = Ti.UI.createLabel({
+		    height : 50,
+		    width : '100%',
+		    backgroundColor : utm.barColor,
+		    text:'Write Message',
+		    color : utm.backgroundColor,
+		    font:{fontSize:utm.androidTitleFontSize,fontWeight:utm.androidTitleFontWeight},
+		    textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+		    top:0
+		});
+		
+ 		//add the navbar to the screen
+		writeMessageWindow.add(my_navbar);
+		
+		//add activityIndicator to window
+		writeMessageWindow.add(utm.activityIndicator)		
+	}	
 
 	var scrollableView = Ti.UI.createScrollView({
 		contentHeight:'auto',
