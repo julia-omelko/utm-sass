@@ -16,7 +16,7 @@
     <sdk-version>3.0.0.GA</sdk-version>
     <id>com.utm</id>
     <name>UTM_TI</name>
-    <version>0.36 Beta</version>
+    <version>0.37 Beta</version>
     <publisher>youthisme</publisher>
     <url>http://youthisme.com</url>
     <description>Test</description>
@@ -53,5 +53,7 @@
     </mobileweb>
     <modules>
         <module platform="commonjs" version="2.3.0">ti.cloud</module>
+        <module platform="iphone">com.qbset.unlockscreen</module>
+        <module platform="iphone">com.0x82.key.chain</module>
     </modules>
 </ti:app>
