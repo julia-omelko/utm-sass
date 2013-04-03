@@ -1,8 +1,11 @@
 var MyAccount_window = function(utm) {
+	
+	var SetPinWindow = require('/ui/handheld/SetPin');
+	
 
 	var myAccountWindow = Titanium.UI.createWindow({
 		layout : 'vertical',
-		title : 'Messages',
+		title : 'My Account',
 		backButtonTitle : L('button_back'),
 		backgroundColor : utm.backgroundColor,
 		barColor : utm.barColor
@@ -11,21 +14,33 @@ var MyAccount_window = function(utm) {
 	var upgradeButton = Ti.UI.createButton({
 		title : 'Upgrade Me',
 		top : 20,
-		width : 'auto',
-		height : 30,
+		width : 200,	
 		enabled : false
 	});
 	myAccountWindow.add(upgradeButton);
 
 	upgradeButton.addEventListener('click', function() {
-
+		
+	});	
+	
+	var setPinLockButton = Ti.UI.createButton({
+		title : 'Set Unlock Code',
+		top : 20,
+		width : 200,	
+		enabled : true
 	});
+	myAccountWindow.add(setPinLockButton);
+
+	setPinLockButton.addEventListener('click', function() {
+		utm.setPinWindow = new SetPinWindow(utm);		
+		utm.navController.open(utm.setPinWindow);		
+	});
+	
 
 	var forgetMeButton = Ti.UI.createButton({
 		title : L('forget_me'),
 		top : 20,
-		width : 'auto',
-		height : 30,
+		width : 200,	
 		enabled : true
 	});
 	myAccountWindow.add(forgetMeButton);
