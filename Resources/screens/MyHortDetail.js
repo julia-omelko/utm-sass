@@ -34,26 +34,32 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 
 	scrollingView.add(view);
 	
-	var buttons = [
-    {title:'Members', enabled:false},
-    {title:'Invite', enabled:false},
-     {title:'Pending Invites', enabled:false}
-];
+	if(isOwner){
+		var buttons = [
+	    {title:'Members', enabled:false},
+	    {title:'Invite', enabled:false},
+	     {title:'Pending Invites', enabled:false}];
+	}else{	
+			var buttons = [
+	   		 {title:'Members', enabled:false}];		
+	}
 
 	//-----------------Top Buttons  ----------------------
 	var topButtonBar = Titanium.UI.createButtonBar({
 		labels : buttons,
 		top : 3,
 		backgroundColor : '#336699',
-		style : Titanium.UI.iPhone.SystemButtonStyle.BAR,
-		height : isOwner? 40: 0,	
-		visible :isOwner
+		style : Titanium.UI.iPhone.SystemButtonStyle.BAR//,
+		//height : isOwner? 40: 0,	
+		//visible :isOwner
 	});
 	
 	function enableButtonBar(_enable){
 		buttons[0].enabled = _enable;
-		buttons[1].enabled = _enable;
-		buttons[2].enabled = _enable;
+		if(isOwner){
+			buttons[1].enabled = _enable;
+			buttons[2].enabled = _enable;
+		}
 		topButtonBar.labels = buttons;  
 	}
 	
@@ -329,7 +335,7 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 
 		if (e.index === 0) {
 			//Invite
-			utm.myHortMembersWindow = new MyHortMembersWindow( _myHortData,utm);			
+			utm.myHortMembersWindow = new MyHortMembersWindow( _myHortData,utm, isOwner);			
 			utm.navController.open(utm.myHortMembersWindow);
 			
 		} else if (e.index === 1) {

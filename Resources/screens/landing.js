@@ -84,7 +84,12 @@ var TheLandingScreen_view = function(utm) {
 	
 	sendMessageBtn.addEventListener('click',function(e)
 	{	
-		Ti.App.fireEvent("app:showChooseMyHortWindow", {});
+		
+		if(utm.User.MyHorts.length==1){
+			Ti.App.fireEvent("app:myHortChoosen", {myHortId:utm.User.MyHorts[0].MyHortId, direct:true});	//Direct tells us we need to setBackButtonTitle()
+		}else{
+			Ti.App.fireEvent("app:showChooseMyHortWindow", {});
+		}
 	});
 	
 	myHortBtn.addEventListener('click',function(e)

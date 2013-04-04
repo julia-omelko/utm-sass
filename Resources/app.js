@@ -218,6 +218,7 @@ function setMyHort(e) {
 	utm.log('setMyHort() fired myHortId=' + e.myHortId);
 	utm.targetMyHortID = e.myHortId
 	utm.navController.open(utm.chooseContactsView);
+	if(e.direct) utm.chooseContactsView.setBackButtonTitle(L('back')); 
 
 	//Fire event to trigger call to get contacts
 	Ti.App.fireEvent('app:getContacts');
