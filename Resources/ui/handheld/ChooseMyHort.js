@@ -8,11 +8,13 @@ var ChooseMyHort_window =function(utm) {
 		,barColor:utm.barColor
 	});	
 	
-	var myHortPicker = Ti.UI.createPicker();
+	var myHortPicker = Ti.UI.createPicker({
+		selectionIndicator:true		
+	});
 	
 	// turn on the selection indicator (off by default)
-	myHortPicker.selectionIndicator = true;	
-	myHortPicker.setSelectedRow(0,-1,false);
+	//myHortPicker.selectionIndicator = true;	
+	//myHortPicker.setSelectedRow(0,-1,false);
 	var tmpData=[];
 	tmpData[0]=Ti.UI.createPickerRow({title:'',custom_item:0});
 	myHortPicker.add(tmpData);
