@@ -42,7 +42,7 @@ function inputField(_label, _labelWidth,  _val, _valWidth, _keyboardType,_return
 	var fldMessageLabel = Ti.UI.createLabel({
 		height:0
 		, top:55
-		, right:3
+		, left:_labelWidth+8
 		, color:utm.textErrorColor 
 		, visible:false
 		,font:{fontWeight:'bold',fontSize:12}
