@@ -1,7 +1,9 @@
 function signUp_window(utm) {
 
 	var InputField = require('ui/common/baseui/InputField');
-
+	var isFormValid = false;
+	var isUserNameValid=false;
+	
 	var win = Ti.UI.createWindow({
 		layout : 'vertical',
 		backgroundColor : utm.backgroundColor,
@@ -47,7 +49,7 @@ function signUp_window(utm) {
 	var saveButton = Ti.UI.createButton({
 		title :'Signup',
 		top : 3,
-		enabled : true
+		enabled : false
 	});
 	saveButton.addEventListener('click', function() {
 		utm.log('saveButton fired');
@@ -130,10 +132,25 @@ function signUp_window(utm) {
 	});
 
 	userName.addEventListenerEvent('blur', function checkUserName(){		
-		checkUserNameRquest.open("GET", utm.serviceUrl + "Account/IsUserNameFound?userName="+userName.getValue());
-		checkUserNameRquest.setRequestHeader("Content-Type", "application/json; charset=utf-8");
-		checkUserNameRquest.send();
+		checkExistingUserName();
 	});
+	
+	password.addEventListenerEvent('blur', function checkUserName(){		
+		validateForm();
+	});
+	
+	confirm.addEventListenerEvent('blur', function checkUserName(){		
+		validateForm();
+	});
+	
+	email.addEventListenerEvent('blur', function checkUserName(){		
+		validateForm();
+	});
+	
+	mobile.addEventListenerEvent('blur', function checkUserName(){		
+		validateForm();
+	});
+		
 	
 	var checkUserNameRquest = Ti.Network.createHTTPClient({
 		validatesSecureCertificate : utm.validatesSecureCertificate,
@@ -143,9 +160,11 @@ function signUp_window(utm) {
 			if(response){
 				userName.setMessage('This user name is aready used');
 				saveButton.enabled=false;
+				isUserNameValid=false;
 			}else{
 				userName.setMessage('');
-				saveButton.enabled=true;
+				isUserNameValid=true;
+				validateForm();
 			}
 			
 		},
@@ -160,17 +179,57 @@ function signUp_window(utm) {
 		timeout : utm.netTimeout
 	});
 	
-	confirm.addEventListenerEvent('blur',function(){
+	
+	function validateForm(){
 		
-		if(password.getValue() != confirm.getValue()){
-			confirm.setMessage('Passwords do not match');
-			saveButton.enabled=false;
+		if( isUserNameValid
+			&& checkConfirmPassword(password.getValue(),confirm.getValue())
+		 	&& isValidEmail(email.getValue())
+		 	&& isValidPhone(mobile.getValue())
+		){
+			//Form is valid
+			saveButton.enabled=true;	
+			isFormValid=true;
 		}else{
-			confirm.setMessage('');
-			saveButton.enabled=true;
+			//Form is INValid
+			saveButton.enabled=false;	
+			isFormValid=false;
+		}		
+		// hard to deal with this one checkExistingUserName		
+	}
+	
+	function checkExistingUserName(){
+		checkUserNameRquest.open("GET", utm.serviceUrl + "Account/IsUserNameFound?userName="+userName.getValue());
+		checkUserNameRquest.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+		checkUserNameRquest.send();
+	}
+	
+	function checkConfirmPassword(_password, _confirmPassword){
+		if(_password!= _confirmPassword){
+			confirm.setMessage('Passwords do not match');			
+			return false;
+		}else{
+			confirm.setMessage('');			
+			return true;
 		}
-		
-	})
+	}
+	
+	function isValidEmail(_emailAddress){
+		 var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;   
+		   if(reg.test(_emailAddress) == true) {	
+		      	return true;
+		    } else {
+		         return false;
+		    }		
+	}
+	
+	function isValidPhone(_phone){
+		if(_phone && _phone.length > 0){
+			return true;
+		}else{
+			return false;
+		}		
+	}
 
 	return win;
 };
