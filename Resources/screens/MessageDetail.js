@@ -108,6 +108,11 @@ function messageDetail_window(_messageData,_curMode,utm) {
 	
 	var bottomSpacerView = Ti.UI.createView({height:10});
 	view.add(bottomSpacerView)
+	
+	var imageView = Ti.UI.createImageView();
+	view.add(imageView);
+	
+	
 
 // ##################### Call out to get Reply To User Data #####################
 
@@ -185,6 +190,13 @@ function messageDetail_window(_messageData,_curMode,utm) {
 					view.height=Titanium.UI.SIZE ;
 				}else{
 					view.height=2000;
+				}
+				
+				if(_messageData.Attachments){
+					if(_messageData.Attachments.length >0){
+						var imageSrc = _messageData.Attachments[0].Attachment;						
+						imageView.setImage(Ti.Utils.base64decode(imageSrc));
+					}
 				}
 				
 				//Now that we have date set all the values
