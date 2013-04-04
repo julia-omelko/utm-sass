@@ -1,15 +1,54 @@
 function messageDetail_window(_messageData,_curMode,utm) {
 	var moment = require('lib/moment');
-	var win = Ti.UI.createWindow({
+	
+	if(utm.iPhone){
+		var win = Ti.UI.createWindow({
 		layout:'vertical'
 		,backgroundColor:utm.backgroundColor
 		,barColor:utm.barColor,
 		visible:false
-	 });
-	var scrollingView = Ti.UI.createScrollView({
+	 	});
+ 	}
+	 
+	if(utm.Android){
+		//create the base screen and hide the Android navbar
+		var win = Titanium.UI.createWindow({
+		    layout : 'vertical',
+		 	backgroundColor : utm.backgroundColor,
+		    navBarHidden:true
+	    });
+
+ 		//create a navbar for Android
+		var my_navbar = Ti.UI.createLabel({
+		    height : 50,
+		    width : '100%',
+		    backgroundColor : utm.barColor,
+		    text:'Message',
+		    color : utm.backgroundColor,
+		    font:{fontSize:utm.androidTitleFontSize,fontWeight:utm.androidTitleFontWeight},
+		    textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+		    top:0
+		});
+		
+ 		//add the navbar to the screen
+		win.add(my_navbar);
+		
+		//add activityIndicator to window
+		win.add(utm.activityIndicator)		
+	}
+	
+	// set scroll context differently for platform
+	if(utm.Android){
+		var scrollingView = Ti.UI.createScrollView({
+		scrollType : 'vertical'
+		});
+	}
+	if(utm.iPhone){
+		var scrollingView = Ti.UI.createScrollView({
 		showVerticalScrollIndicator : true,
 		showHorizontalScrollIndicator : false
-	});
+		});
+	}
 	win.add(scrollingView);
 
 	var view = Ti.UI.createView({
