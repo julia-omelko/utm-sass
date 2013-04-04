@@ -24,6 +24,8 @@ utm.appPauseTime=0;
 var gaModule = require('Ti.Google.Analytics');
 var analytics = new gaModule('UA-38943374-1');
 
+var unlockWindow = null;
+
 
 utm.iPhone = false;
 utm.Android = false;
@@ -34,6 +36,11 @@ if(Ti.Platform.osname == 'android'){
 	utm.Android = true
 };
 
+
+if(utm.iPhone){
+	var unpinLockScreen = require('com.qbset.unlockscreen');
+	var keychain = require("com.0x82.key.chain");
+}
 
 utm.log=function (message) {
 	Ti.API.info(message);
@@ -394,47 +401,27 @@ Ti.Network.addEventListener('change', function(e) {
 
 
 function closeAllScreens(){
+	//Close any open window in the opposite order opened - on slow devices you can sometime see them close
+	if(utm.MessageDetailWindow !=undefined ){utm.navController.close(utm.messageDetailWindow,{animated:false});}
+	if(utm.messageWindow  !=undefined ){utm.navController.close(utm.messageWindow ,{animated:false}); }	
+
+	if(utm.previewMessageView != undefined){utm.navController.close(utm.previewMessageView,{animated:false});}	
+	if(utm.writeMessageView !=undefined){utm.writeMessageView.restForm();utm.navController.close(utm.writeMessageView,{animated:false});}	
+	if(utm.chooseContactsView != undefined){utm.navController.close(utm.chooseContactsView,{animated:false});}	
+	if(utm.chooseMyHortView !=undefined){utm.navController.close(utm.chooseMyHortView,{animated:false});}
 	
-	if(utm.chooseMyHortView !=undefined){
-		utm.navController.close(utm.chooseMyHortView,{animated:false});
-	}
-		
-	if(utm.chooseContactsView != undefined){
-		utm.navController.close(utm.chooseContactsView,{animated:false});	
-	}	
+	if(utm.chooseContactsView != undefined){utm.navController.close(utm.chooseContactsView,{animated:false});}
+	if(utm.myHortInviteWindow != undefined){utm.navController.close(utm.myHortInviteWindow,{animated:false});}
+	if(utm.MemberDetailsWindow != undefined){utm.navController.close(utm.MemberDetailsWindow,{animated:false});}
 	
-	if(utm.MessageDetailWindow !=undefined ){
-		utm.navController.close(utm.messageDetailWindow,{animated:false}); 
-	}
+	if(utm.myHortMembersWindow != undefined){utm.navController.close(utm.myHortMembersWindow,{animated:false});}
+	if(utm.myHortPendingWindow != undefined){utm.navController.close(utm.myHortPendingWindow,{animated:false});}
+	if(utm.myHortView != undefined){utm.navController.close(utm.myHortView,{animated:false});}
+	if(utm.myHortDetailWindow != undefined){utm.navController.close(utm.myHortDetailWindow,{animated:false});}
+	if(utm.myAccountWindow != undefined){	utm.navController.close(utm.myAccountWindow,{animated:false});}	
 	
-	if(utm.messageWindow  !=undefined ){
-		utm.navController.close(utm.messageWindow ,{animated:false}); 
-	}
-	
-	if(utm.writeMessageView !=undefined){
-		utm.writeMessageView.restForm();
-		utm.navController.close(utm.writeMessageView,{animated:false});
-	}	
-	
-	if(utm.previewMessageView != undefined){
-		utm.navController.close(utm.previewMessageView,{animated:false});		
-	}
-	
-		
-	if(utm.myAccountWindow != undefined){
-		utm.navController.close(utm.myAccountWindow,{animated:false});
-	}
-	
-	if (utm.myHortView != undefined){
-		utm.navController.close(utm.myHortView,{animated:false});
-	}
-	
-	if(utm.myHortDetailWindow != undefined){
-		utm.navController.close(utm.myHortDetailWindow,{animated:false});
-	}
-	if(utm.landingView != undefined){
-		utm.navController.close(utm.landingView,{animated:false});		
-	}
+	//leave to last
+	if(utm.landingView != undefined){utm.navController.close(utm.landingView,{animated:false});	}
 }
 
 utm.handleError = function (e,status,responseText) {	
@@ -481,13 +468,59 @@ Ti.App.addEventListener("resumed", function(e){
 	var pauseMil = appPauseTime.valueOf();
 	var diff = curMil-pauseMil;
 	
-	if( diff  > 600000){
+	if( diff  > 600){
 			utm.log('-------  APP resumed  FORCE LOGIN');
-			showLoginScreenLockView();
+			
+			if(utm.iPhone){
+				showPinLockScreen();			
+			}else if(utm.Android){
+				showLoginScreenLockView();
+			}
+				
 	}else{
 			utm.log('-------  APP resumed  NO FORCE LOGIN');
 	}	
 });
+
+if(utm.iPhone){
+	function showPinLockScreen(){
+		
+		var pass = keychain.getPasswordForService('utm', 'lockscreen');
+		
+		if(pass == null){
+			return;	
+		}
+		
+		//if(unlockWindow == null){
+			unlockWindow = unpinLockScreen.loadWindow({
+			// main properties for the module
+				configLockScreen: { // main properties for the module
+					passCode: pass, // set the passcode (string)
+					attempts: 3, // zero for infinite attempts and no timeout (int)
+					timeOut: 5000, // time out in miliseconds after amount of incorrect attempts. Only when attempts is bigger then zero (int)
+					timeOutMultiplier: 2, // after each set of attempts the time out is multiplied with this property (int)
+					vibrateOnIncorrect: true, // vibrate phone on incorrect passcode input (bool)				
+				},
+					// properties for the messageBox
+				messageBox: {
+					text: 'Enter Unlock Code',
+					textCorrect: 'Unlock Code Accepted',
+					textIncorrect: 'Wrong Unlock Code',
+					textColorCorrect: '#ffffff',
+					textColorIncorrect: '#ff0000',
+					vibrateOnIncorrect: true,
+					borderColor: '#ffffff',
+					backgroundColor: '#F66F00'				
+				}
+			});
+	//	}else{
+		//	   unlockWindow.open();
+		//}
+		
+	}
+}
+
+
 
 Titanium.App.addEventListener('close', function(e){
 	analytics.stop();
