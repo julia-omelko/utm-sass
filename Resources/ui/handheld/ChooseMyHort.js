@@ -37,8 +37,15 @@ var ChooseMyHort_window =function(utm) {
 
 		myHortPicker.add(data);
 		
-		//Re #237 Moved the window change call to after the myhort picklist is done setting
-		utm.navController.open(utm.chooseMyHortView);	
+		if(data.length ==1){
+			var curRow =  myHortPicker.getSelectedRow(0,0);
+			var val = data[0].custom_item;	
+			utm.navController.open(utm.chooseMyHortView);	
+			Ti.App.fireEvent("app:myHortChoosen", {myHortId:val});	
+		}else{
+			//Re #237 Moved the window change call to after the myhort picklist is done setting
+			utm.navController.open(utm.chooseMyHortView);
+		}
 		
 	} 
 
