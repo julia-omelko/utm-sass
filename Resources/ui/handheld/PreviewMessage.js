@@ -24,7 +24,7 @@ var PreviewMessage_window = function(utm) {
 		camera.captureImage();		
 	})
 
-	var previewMessageView = Titanium.UI.createWindow({
+	var win = Titanium.UI.createWindow({
 		width : 'auto',
 		height : 'auto',
 		layout : 'vertical',
@@ -44,7 +44,7 @@ var PreviewMessage_window = function(utm) {
 		top : 2,
 		textAlign : 'left'
 	});
-	previewMessageView.add(yourOrgMessageLabel);
+	win.add(yourOrgMessageLabel);
 
 	var yourOrgMessageValue = Ti.UI.createTextArea({
 		value : '',
@@ -57,7 +57,7 @@ var PreviewMessage_window = function(utm) {
 		height : '20%', //utm.SCREEN_HEIGHT-(utm.SCREEN_HEIGHT/1.2)
 		textAlign : 'left'
 	});
-	previewMessageView.add(yourOrgMessageValue);
+	win.add(yourOrgMessageValue);
 
 	//------------ Preview of Encrypted (NOW HIDDEN)---------------------------
 	var encryptedLabel = Ti.UI.createLabel({
@@ -72,7 +72,7 @@ var PreviewMessage_window = function(utm) {
 		textAlign : 'left',
 		visible : false //HIDEN
 	});
-	//previewMessageView.add(encryptedLabel);
+	//win.add(encryptedLabel);
 	var encryptedValue = Ti.UI.createTextArea({
 		text : '',
 		font : {
@@ -85,7 +85,7 @@ var PreviewMessage_window = function(utm) {
 		textAlign : 'left',
 		visible : false //HIDEN
 	});
-	//previewMessageView.add(encryptedValue);
+	//win.add(encryptedValue);
 
 	//------------- Customize Your Message ------------------
 	var customMessageLabel = Ti.UI.createLabel({
@@ -99,7 +99,7 @@ var PreviewMessage_window = function(utm) {
 		height : 'auto',
 		textAlign : 'left'
 	});
-	previewMessageView.add(customMessageLabel);
+	win.add(customMessageLabel);
 
 	var customUtmMessage = Ti.UI.createTextArea({
 		borderWidth : 2,
@@ -115,7 +115,7 @@ var PreviewMessage_window = function(utm) {
 		height : '20%',  //utm.SCREEN_HEIGHT-(utm.SCREEN_HEIGHT/1.2)
 	});
 	//todo get the screen width so we can make this wider if possible
-	previewMessageView.add(customUtmMessage);
+	win.add(customUtmMessage);
 
 	customUtmMessage.addEventListener('click', function() {//fold up to give more room to edit
 		expandCustomUtmMessageEdit(true);
@@ -144,7 +144,7 @@ var PreviewMessage_window = function(utm) {
 		height : 50,
 		width : 200
 	});
-	previewMessageView.add(hView);
+	win.add(hView);
 
 	var CheckButton = require('ui/common/checkButton');
 	var smsButton = new CheckButton('sms');
@@ -170,7 +170,7 @@ var PreviewMessage_window = function(utm) {
 		height : 30,
 		width : utm.SCREEN_WIDTH 
 	});
-	previewMessageView.add(deleteView);
+	win.add(deleteView);
 	
 	var deleteOnReadLabel = Ti.UI.createLabel({
 		text : L('send_delete_on_read'),
@@ -198,14 +198,14 @@ var PreviewMessage_window = function(utm) {
 		title : L('send_UTM_message_now'),
 		top : 8
 	});
-	previewMessageView.add(sendButton);
+	win.add(sendButton);
 	
 	/*
 	var scrollingView = Ti.UI.createScrollView({
 		showVerticalScrollIndicator : true,
 		showHorizontalScrollIndicator : false
 	});
-	previewMessageView.add(scrollingView);
+	win.add(scrollingView);
 
 	var view = Ti.UI.createView({
 		height : 2000,
@@ -216,7 +216,7 @@ var PreviewMessage_window = function(utm) {
 */
 
 	var camera = new Camera();
-	previewMessageView.add(camera);
+	win.add(camera);
 	
 
 
@@ -286,9 +286,9 @@ var PreviewMessage_window = function(utm) {
 			
 			if(theImage){				
 				// sendImage = Ti.Utils.base64encode(theImage.imageAsResized(250,250)).text;
-				// utm.log(theImage);
+				//
 				 var sendImageSrc = Ti.Utils.base64encode(theImage);
-
+				 utm.log(sendImageSrc.length);
 				var attachments = [{ Attachment: sendImageSrc.toString(),MimeType:theImage.mimeType,WasVirusScanned:true  }];
 			}else{
 				attachments=null;
@@ -550,18 +550,18 @@ var PreviewMessage_window = function(utm) {
 	}
 
 
-	previewMessageView.setMode = function(_theMode) {
+	win.setMode = function(_theMode) {
 		if (_theMode === 'reply')
 			replyMode = true;
 		else
 			replyMode = false;
 	}
 
-	previewMessageView.setMessageData = function(_messageData) {
+	win.setMessageData = function(_messageData) {
 		messageData = _messageData;
 	}
 	
-	return previewMessageView;
+	return win;
 
 }
 module.exports = PreviewMessage_window;

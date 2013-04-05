@@ -1,6 +1,7 @@
 function messageDetail_window(_messageData,_curMode,utm) {
 	var moment = require('lib/moment');
-	
+	var imageViews=[];
+
 	if(utm.iPhone){
 		var win = Ti.UI.createWindow({
 		layout:'vertical'
@@ -148,9 +149,13 @@ function messageDetail_window(_messageData,_curMode,utm) {
 	var bottomSpacerView = Ti.UI.createView({height:10});
 	view.add(bottomSpacerView)
 	
-	var imageView = Ti.UI.createImageView();
-	view.add(imageView);
-	
+	var scrollVu = Ti.UI.createScrollableView({	  
+	    cacheSize:3,
+	    height:200,
+	    width:200,
+	    visible:false
+	});
+	view.add(scrollVu);
 	
 
 // ##################### Call out to get Reply To User Data #####################
@@ -231,11 +236,8 @@ function messageDetail_window(_messageData,_curMode,utm) {
 					view.height=2000;
 				}
 				
-				if(_messageData.Attachments){
-					if(_messageData.Attachments.length >0){
-						var imageSrc = _messageData.Attachments[0].Attachment;						
-						imageView.setImage(Ti.Utils.base64decode(imageSrc));
-					}
+				if(_messageData.HasAttachments){
+					callOutToGetAttachments(_messageData);
 				}
 				
 				//Now that we have date set all the values
@@ -286,31 +288,78 @@ function messageDetail_window(_messageData,_curMode,utm) {
 	utm.setActivityIndicator('Getting your message...');	
 	getMessageDetailReq.setRequestHeader('Authorization-Token', utm.AuthToken);	
 	getMessageDetailReq.send();		
+	
+	var getMarkMessageAsReadReq = Ti.Network.createHTTPClient({
+		validatesSecureCertificate:utm.validatesSecureCertificate 
+		,onload: function()
+		{
+			Ti.App.fireEvent('app:refreshMessages', {showProgress:false});
+			
+		},		
+		onerror:function(e){
+			utm.handleError(e,this.status,this.responseText); 			
+		}
+		,timeout:utm.netTimeout
+	});	
+	
+	function setMessageAsRead(messageId){		
+		//setTimeout(function(){callMessageAsRead(_messageData)}, 2500);	
+		getMarkMessageAsReadReq.open("POST",utm.serviceUrl+"Messages/MarkAsRead/"+messageId);	
+		getMarkMessageAsReadReq.setRequestHeader('Authorization-Token', utm.AuthToken);	
+		getMarkMessageAsReadReq.send();		
+	}
+		
+	function callOutToGetAttachments(_messageData){		
+		for(i=0;i < _messageData.Attachments.length;i++){					
+			getAttachmentsReq.open("GET",utm.serviceUrl+"Attachment/"+_messageData.Attachments[i].Id);	
+			getAttachmentsReq.setRequestHeader('Authorization-Token', utm.AuthToken);	
+			getAttachmentsReq.send();				
+		}		
+		
+		if( _messageData.Attachments.length ==1){
+			scrollVu.visible=true;
+			showPagingControl:false
+		}else if( _messageData.Attachments.length > 1){
+			scrollVu.visible=true;
+			showPagingControl=true;
+	    		pagingControlOnTop=true;
+		}
+	}
+	
+	var getAttachmentsReq = Ti.Network.createHTTPClient({
+		validatesSecureCertificate:utm.validatesSecureCertificate 
+		,onload: function()
+		{
+			var response = eval('('+this.responseText+')');
+				
+			if(this.status ==200){
+				populateImageViews(response);
+			}
+			
+		},		
+		onerror:function(e){
+			utm.handleError(e,this.status,this.responseText); 			
+		}
+		,timeout:utm.netTimeout
+	});	
+
+	function populateImageViews(_attachment){
+		var imageSrc = _attachment.Attachment;	
+
+		try{
+				var singleImageView = Ti.UI.createImageView();
+			singleImageView.setImage(Ti.Utils.base64decode(imageSrc));
+			imageViews.push(singleImageView);
+			scrollVu.views=imageViews;	
+		}catch(e){
+			//alert('');	
+			//could fail but nothing we can do with it
+		}
+	}
 
 	
 	return win;
 };
-
-var getMarkMessageAsReadReq = Ti.Network.createHTTPClient({
-	validatesSecureCertificate:utm.validatesSecureCertificate 
-	,onload: function()
-	{
-		Ti.App.fireEvent('app:refreshMessages', {showProgress:false});
-		
-	},		
-	onerror:function(e){
-		utm.handleError(e,this.status,this.responseText); 			
-	}
-	,timeout:utm.netTimeout
-});	
-
-function setMessageAsRead(messageId){
-	
-	//setTimeout(function(){callMessageAsRead(_messageData)}, 2500);	
-	getMarkMessageAsReadReq.open("POST",utm.serviceUrl+"Messages/MarkAsRead/"+messageId);	
-	getMarkMessageAsReadReq.setRequestHeader('Authorization-Token', utm.AuthToken);	
-	getMarkMessageAsReadReq.send();		
-}
 
 
 module.exports = messageDetail_window;
