@@ -473,7 +473,13 @@ Ti.App.addEventListener("resumed", function(e){
 			utm.log('-------  APP resumed  FORCE LOGIN');
 			
 			if(utm.iPhone){
-				showPinLockScreen();			
+				var pass = keychain.getPasswordForService('utm', 'lockscreen');
+				if(pass == null){
+					showLoginScreenLockView();
+				}else{
+					showPinLockScreen(pass);		
+				}
+				
 			}else if(utm.Android){
 				showLoginScreenLockView();
 			}
@@ -484,11 +490,9 @@ Ti.App.addEventListener("resumed", function(e){
 });
 
 if(utm.iPhone){
-	function showPinLockScreen(){
+	function showPinLockScreen(_pass){
 		
-		var pass = keychain.getPasswordForService('utm', 'lockscreen');
-		
-		if(pass == null){
+		if(_pass == null){
 			return;	
 		}
 		
@@ -496,7 +500,7 @@ if(utm.iPhone){
 			unlockWindow = unpinLockScreen.loadWindow({
 			// main properties for the module
 				configLockScreen: { // main properties for the module
-					passCode: pass, // set the passcode (string)
+					passCode: _pass, // set the passcode (string)
 					attempts: 3, // zero for infinite attempts and no timeout (int)
 					timeOut: 5000, // time out in miliseconds after amount of incorrect attempts. Only when attempts is bigger then zero (int)
 					timeOutMultiplier: 2, // after each set of attempts the time out is multiplied with this property (int)

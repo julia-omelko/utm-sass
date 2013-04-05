@@ -1,6 +1,7 @@
 var SetPin_window = function(utm) {
 	var keychain = require("com.0x82.key.chain");	
 	var leftPadTextFld = (utm.SCREEN_WIDTH-200)/5;
+	var currentPin = keychain.getPasswordForService('utm', 'lockscreen');
 	
 	var win = Titanium.UI.createWindow({
 		layout : 'vertical',
@@ -213,11 +214,25 @@ var SetPin_window = function(utm) {
 	
 	var saveButton = Ti.UI.createButton({
 		title : L('ok_button'),
-		width : 50,
+		width : 200,
 		enabled : false
 	});
 	win.add(saveButton);
 
+	var clearButton = Ti.UI.createButton({
+		title : 'Clear',
+	});
+
+	clearButton.addEventListener('click', function(e) {
+		keychain.deletePasswordForService('utm', 'lockscreen');
+		currentPin=null;
+	});
+	
+	if( currentPin != null)
+	{
+		win.setRightNavButton(clearButton);
+	}
+	
 	saveButton.addEventListener('click', function() {
 		var newPass = getPinNumberValue();
 		//TODO look into can we HASH the PW?
