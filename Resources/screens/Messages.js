@@ -6,7 +6,7 @@ function message_window(utm) {
 
 	var lastRow = 4;
 	
-	if(utm.iPhone){
+	if(utm.iPhone || utm.iPad ){
 		var win = Ti.UI.createWindow({
 			layout : 'vertical',
 			title : 'Messages',

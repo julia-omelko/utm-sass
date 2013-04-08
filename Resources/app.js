@@ -28,16 +28,18 @@ var unlockWindow = null;
 
 
 utm.iPhone = false;
+utm.iPad = false;
 utm.Android = false;
 if(Ti.Platform.osname == 'iphone'){
-	utm.iPhone = true
-};
-if(Ti.Platform.osname == 'android'){
-	utm.Android = true
+	utm.iPhone = true;
+}else if(Ti.Platform.osname == 'ipad'){
+	utm.iPad = true;
+}else if(Ti.Platform.osname == 'android'){
+	utm.Android = true;
 };
 
 
-if(utm.iPhone){
+if(utm.iPhone || utm.iPad ){
 	var unpinLockScreen = require('com.qbset.unlockscreen');
 	var keychain = require("com.0x82.key.chain");
 }
@@ -303,6 +305,8 @@ function showMessagesAfterSend() {
 
 Ti.App.addEventListener('app:logout', showLoginView);
 function showLoginView() {
+	utm.loggedIn=false;
+	utm.User =null;
 	closeAllScreens();
 	utm.navController.open(utm.loginView);	
 	callLogoutService();
@@ -463,6 +467,8 @@ Ti.App.addEventListener("pause", function(e){
 //IF the app is left for more then one minute force login
 Ti.App.addEventListener("resumed", function(e){
 	utm.log('-------  APP resumed ------');
+	
+	if(!utm.loggedIn) return;
 
 	var curDate = new Date();
 	var curMil =curDate.valueOf() ;
@@ -472,7 +478,7 @@ Ti.App.addEventListener("resumed", function(e){
 	if( diff  > 600){
 			utm.log('-------  APP resumed  FORCE LOGIN');
 			
-			if(utm.iPhone){
+			if(utm.iPhone || utm.iPad ){
 				var pass = keychain.getPasswordForService('utm', 'lockscreen');
 				if(pass == null){
 					showLoginScreenLockView();
@@ -489,7 +495,7 @@ Ti.App.addEventListener("resumed", function(e){
 	}	
 });
 
-if(utm.iPhone){
+if(utm.iPhone || utm.iPad ){
 	function showPinLockScreen(_pass){
 		
 		if(_pass == null){

@@ -147,6 +147,11 @@ function CameraView(_win) {
 		return resizedImage;
 	}
 	
+	CameraView.reset = function(){
+		imageContainer.setVisible(false);
+		resizedImage=null;			
+	}
+	
 
 	return CameraView;
 };

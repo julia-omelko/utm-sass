@@ -2,7 +2,7 @@ function messageDetail_window(_messageData,_curMode,utm) {
 	var moment = require('lib/moment');
 	var imageViews=[];
 
-	if(utm.iPhone){
+	if(utm.iPhone || utm.iPad ){
 		var win = Ti.UI.createWindow({
 		layout:'vertical'
 		,backgroundColor:utm.backgroundColor
@@ -44,7 +44,7 @@ function messageDetail_window(_messageData,_curMode,utm) {
 		scrollType : 'vertical'
 		});
 	}
-	if(utm.iPhone){
+	if(utm.iPhone || utm.iPad ){
 		var scrollingView = Ti.UI.createScrollView({
 		showVerticalScrollIndicator : true,
 		showHorizontalScrollIndicator : false
