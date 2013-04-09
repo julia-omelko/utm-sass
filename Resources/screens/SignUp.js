@@ -146,14 +146,21 @@ function signUp_window(utm) {
 		validateForm();
 	});
 	
-	email.addEventListenerEvent('blur', function checkUserName(){		
+	confirm.addEventListenerEvent('change', function checkUserName(){		
 		validateForm();
 	});
 	
 	mobile.addEventListenerEvent('blur', function checkUserName(){		
 		validateForm();
 	});
-		
+
+	email.addEventListenerEvent('blur', function checkUserName(){		
+		validateForm();
+	});
+	
+	email.addEventListenerEvent('change', function checkUserName(){		
+		validateForm();
+	});		
 	
 	var checkUserNameRquest = Ti.Network.createHTTPClient({
 		validatesSecureCertificate : utm.validatesSecureCertificate,
