@@ -201,7 +201,7 @@ var PreviewMessage_window = function(utm) {
 	//----------Delete On Read Switch--------------------
 	var deleteView = Ti.UI.createView({
 		layout : 'horizontal',
-		height : 30,
+		//height : 30,
 		width : utm.SCREEN_WIDTH 
 	});
 	win.add(deleteView);
