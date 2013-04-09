@@ -22,6 +22,7 @@ var PreviewMessage_window = function(utm) {
 		    navBarHidden:true
 	    });
 	
+	
 		//create a navbar for Android
 		var my_navbar = Ti.UI.createLabel({
 		    height : 50,
@@ -217,8 +218,7 @@ var PreviewMessage_window = function(utm) {
 	deleteView.add(deleteOnReadLabel);
 
 	var deleteOnReadSwitch = Ti.UI.createSwitch({
-		value : false,
-		height : deleteView.height - 2
+		value : false
 	});
 	deleteView.add(deleteOnReadSwitch);
 
