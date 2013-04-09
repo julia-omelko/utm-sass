@@ -1,15 +1,25 @@
 var TheLandingScreen_view = function(utm) {
 
 	if(utm.iPhone || utm.iPad ){
+		
 		var landingView = Ti.UI.createWindow({			
-			layout:'vertical',title:''
-			, backButtonTitle:L('logout')
+			layout:'vertical',title:''		
 			, backgroundColor:utm.backgroundColor
 			, barColor:utm.barColor
 		});
-	}
-	
-	if(utm.Android){
+		
+		var logoutBtn = Ti.UI.createButton({
+			title:L('logout'),
+			font:{fontFamily:'Arial',fontWeight:'bold',fontSize:14}
+		});
+		logoutBtn.addEventListener('click', function(){
+			utm.log("Back button pressed while on landing screen on ios. Firing app:logout");
+  			Ti.App.fireEvent("app:logout", {});			
+		});
+		landingView.leftNavButton=logoutBtn;
+		
+	}else	if(utm.Android){
+		
 		//create the base screen and hid the Android navbar
 		var landingView = Titanium.UI.createWindow({
 		    layout : 'vertical',
