@@ -3,12 +3,38 @@ var ChooseContacts_window = function(utm) {
 	var allChecked = false;
 	var selectedContacts = [];
 	
-	var chooseContactsView = Titanium.UI.createWindow({
-		layout : 'vertical',
-		title : L('send_choose_contacts'),
-		backgroundColor : utm.backgroundColor,
-		barColor : utm.barColor
-	});
+	if(utm.iPhone){
+		var chooseContactsView = Titanium.UI.createWindow({
+			layout : 'vertical',
+			title : L('send_choose_contacts'),
+			backgroundColor : utm.backgroundColor,
+			barColor : utm.barColor
+		});
+	}
+	
+	if(utm.Android){
+		//create the base screen and hide the Android navbar
+		var chooseContactsView = Titanium.UI.createWindow({
+		    layout : 'vertical',
+		 	backgroundColor : utm.backgroundColor,
+		    navBarHidden:true
+	    });
+
+ 		//create a navbar for Android
+		var my_navbar = Ti.UI.createLabel({
+		    height : 50,
+		    width : '100%',
+		    backgroundColor : utm.barColor,
+		    text : L('send_choose_contacts'),
+		    color : utm.backgroundColor,
+		    font:{fontSize:utm.androidTitleFontSize,fontWeight:utm.androidTitleFontWeight},
+		    textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+		    top:0
+		});
+		
+		//add the navbar to the screen
+		chooseContactsView.add(my_navbar);
+	}
 	
 	var topView = Ti.UI.createView({top:4,layout:'horizontal', width:'100%', height : 30});
 	var mainView = Ti.UI.createView({layout:'vertical', width:'100%', height : '75%'});

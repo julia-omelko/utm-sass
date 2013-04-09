@@ -9,7 +9,7 @@ var AddWindow = function() {
 		
 	var tf = Ti.UI.createTextField({
 		color:utm.textFieldColor,
-		height:(Ti.Platform.osname==='android') ? Ti.UI.SIZE : 40,
+		height:(utm.Android) ? Ti.UI.SIZE : 40,
 		top:50,
 		width:250,
 		keyboardType:Titanium.UI.KEYBOARD_DEFAULT,

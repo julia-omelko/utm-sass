@@ -1,12 +1,38 @@
 var ChooseMyHort_window =function(utm) {
 	
-	var chooseMyHortView = Ti.UI.createWindow({
+	if(utm.iPhone){
+		var chooseMyHortView = Ti.UI.createWindow({
 		layout:'vertical'
 		, title:L('send_choose_myhort')
 		,backButtonTitle:'Back'
 		,backgroundColor:utm.backgroundColor
 		,barColor:utm.barColor
-	});	
+		});	
+	}
+	
+	if(utm.Android){
+		//create the base screen and hide the Android navbar
+		var chooseMyHortView = Titanium.UI.createWindow({
+		    layout : 'vertical',
+		 	backgroundColor : utm.backgroundColor,
+		    navBarHidden:true
+	    });
+
+ 		//create a navbar for Android
+		var my_navbar = Ti.UI.createLabel({
+		    height : 50,
+		    width : '100%',
+		    backgroundColor : utm.barColor,
+		    text : L('send_choose_myhort'),
+		    color : utm.backgroundColor,
+		    font:{fontSize:utm.androidTitleFontSize,fontWeight:utm.androidTitleFontWeight},
+		    textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+		    top:0
+		});
+		
+		//add the navbar to the screen
+		chooseMyHortView.add(my_navbar);
+	}
 	
 	var myHortPicker = Ti.UI.createPicker({
 		selectionIndicator:true		
@@ -26,7 +52,7 @@ var ChooseMyHort_window =function(utm) {
 	function populateMyHortPicker(){	
 		var data = [];
 
-		if(Ti.Platform.osname == 'iphone'){
+		if(utm.iPhone){
 			myHortPicker.columns = [];
 		}
 		

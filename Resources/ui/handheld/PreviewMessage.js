@@ -14,25 +14,57 @@ var PreviewMessage_window = function(utm) {
 	var messageData = false;
 	var postImage='';
 	
-	var cameraButton= Ti.UI.createButton({
+	if(utm.Android){
+		//create the base screen and hide the Android navbar
+		var win = Titanium.UI.createWindow({
+		    layout : 'vertical',
+		 	backgroundColor : utm.backgroundColor,
+		    navBarHidden:true
+	    });
+	
+		//create a navbar for Android
+		var my_navbar = Ti.UI.createLabel({
+		    height : 50,
+		    width : '100%',
+		    backgroundColor : utm.barColor,
+		    color : utm.backgroundColor,
+		    font:{fontSize:utm.androidTitleFontSize,fontWeight:utm.androidTitleFontWeight},
+		    top:0
+		});
+	 
+	 	//add the navbar to the screen
+		win.add(my_navbar);
+		
+		//create a view to contain Android tab buttons
+		var tabBar = Titanium.UI.createView ({
+			layout : 'horizontal',
+			width : '100%',
+			height : 45
+		});
+		win.add(tabBar);
+		
+		var cameraButton= Ti.UI.createButton({
+			backgroundImage:'/images/camera-ip.png',
+			width:40,
+			Height : Titanium.UI.SIZE,
+		});
+		
+		tabBar.add(cameraButton);
+		
+	}
+	
+	if(utm.iPhone){
+		var cameraButton= Ti.UI.createButton({
 		backgroundImage:'/images/camera-ip.png',
 		width:40,
 		height:36,
 		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
-	});
-	cameraButton.addEventListener('click', function(){
-		camera.captureImage();		
-	})
-
-	var win = Titanium.UI.createWindow({
-		width : 'auto',
-		height : 'auto',
-		layout : 'vertical',
-		backgroundColor : utm.backgroundColor,
-		barColor : utm.barColor,
-		rightNavButton:cameraButton
-	});			
+		});
+	}
 	
+	cameraButton.addEventListener('click', function(){
+	camera.captureImage();		
+	})	
 	//---------------Original Message --------------------
 	var yourOrgMessageLabel = Ti.UI.createLabel({
 		text : L('send_your_original_message') + ':',
@@ -185,7 +217,8 @@ var PreviewMessage_window = function(utm) {
 	deleteView.add(deleteOnReadLabel);
 
 	var deleteOnReadSwitch = Ti.UI.createSwitch({
-		value : false
+		value : false,
+		height : deleteView.height - 2
 	});
 	deleteView.add(deleteOnReadSwitch);
 
