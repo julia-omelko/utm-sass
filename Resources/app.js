@@ -407,26 +407,26 @@ Ti.Network.addEventListener('change', function(e) {
 
 function closeAllScreens(){
 	//Close any open window in the opposite order opened - on slow devices you can sometime see them close
+	if(utm.landingView != undefined){utm.navController.close(utm.landingView,{animated:false});	}
+	
 	if(utm.MessageDetailWindow !=undefined ){utm.navController.close(utm.messageDetailWindow,{animated:false});}
 	if(utm.messageWindow  !=undefined ){utm.navController.close(utm.messageWindow ,{animated:false}); }	
-
-	if(utm.previewMessageView != undefined){utm.navController.close(utm.previewMessageView,{animated:false});}	
-	if(utm.writeMessageView !=undefined){utm.writeMessageView.restForm();utm.navController.close(utm.writeMessageView,{animated:false});}	
-	if(utm.chooseContactsView != undefined){utm.navController.close(utm.chooseContactsView,{animated:false});}	
-	if(utm.chooseMyHortView !=undefined){utm.navController.close(utm.chooseMyHortView,{animated:false});}
 	
+	if(utm.chooseMyHortView !=undefined){utm.navController.close(utm.chooseMyHortView,{animated:false});}	
 	if(utm.chooseContactsView != undefined){utm.navController.close(utm.chooseContactsView,{animated:false});}
-	if(utm.myHortInviteWindow != undefined){utm.navController.close(utm.myHortInviteWindow,{animated:false});}
-	if(utm.MemberDetailsWindow != undefined){utm.navController.close(utm.MemberDetailsWindow,{animated:false});}
-	
-	if(utm.myHortMembersWindow != undefined){utm.navController.close(utm.myHortMembersWindow,{animated:false});}
-	if(utm.myHortPendingWindow != undefined){utm.navController.close(utm.myHortPendingWindow,{animated:false});}
+	if(utm.writeMessageView !=undefined){utm.writeMessageView.restForm();utm.navController.close(utm.writeMessageView,{animated:false});}	
+	if(utm.previewMessageView != undefined){utm.navController.close(utm.previewMessageView,{animated:false});}	
+
+
+	if(utm.myAccountWindow != undefined){	utm.navController.close(utm.myAccountWindow,{animated:false});}	
 	if(utm.myHortView != undefined){utm.navController.close(utm.myHortView,{animated:false});}
 	if(utm.myHortDetailWindow != undefined){utm.navController.close(utm.myHortDetailWindow,{animated:false});}
-	if(utm.myAccountWindow != undefined){	utm.navController.close(utm.myAccountWindow,{animated:false});}	
+	if(utm.MemberDetailsWindow != undefined){utm.navController.close(utm.MemberDetailsWindow,{animated:false});}
 	
-	//leave to last
-	if(utm.landingView != undefined){utm.navController.close(utm.landingView,{animated:false});	}
+	if(utm.myHortInviteWindow != undefined){utm.navController.close(utm.myHortInviteWindow,{animated:false});}
+	if(utm.myHortMembersWindow != undefined){utm.navController.close(utm.myHortMembersWindow,{animated:false});}
+	if(utm.myHortPendingWindow != undefined){utm.navController.close(utm.myHortPendingWindow,{animated:false});}
+
 }
 
 utm.handleError = function (e,status,responseText) {	
