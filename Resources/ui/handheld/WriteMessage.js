@@ -3,7 +3,7 @@ var WriteMessage_window =function(utm) {
 	var replyMode=false;
 	var messageData=false;
 	
-	if(utm.iPhone){
+	if(utm.iPhone || utm.iPad ){
 		var writeMessageWindow = Titanium.UI.createWindow({
 			layout:'vertical'
 			,title:'Write Message'

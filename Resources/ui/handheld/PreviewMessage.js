@@ -13,6 +13,7 @@ var PreviewMessage_window = function(utm) {
 	var deleteOnRead = false;
 	var messageData = false;
 	var postImage='';
+	var attachments=null;
 	
 	if(utm.Android){
 		//create the base screen and hide the Android navbar
@@ -211,8 +212,8 @@ var PreviewMessage_window = function(utm) {
 			fontSize : 14,
 			fontWeight : 'bold'
 		},
-		width : 200,
 		top : 8,
+		left:5,
 		textAlign : 'left'
 	});
 	deleteView.add(deleteOnReadLabel);
@@ -322,7 +323,7 @@ var PreviewMessage_window = function(utm) {
 				//
 				 var sendImageSrc = Ti.Utils.base64encode(theImage);
 				 utm.log(sendImageSrc.length);
-				var attachments = [{ Attachment: sendImageSrc.toString(),MimeType:theImage.mimeType,WasVirusScanned:true  }];
+				attachments = [{ Attachment: sendImageSrc.toString(),MimeType:theImage.mimeType,WasVirusScanned:true  }];
 			}else{
 				attachments=null;
 			}
@@ -354,10 +355,17 @@ var PreviewMessage_window = function(utm) {
 		sendMessageReq.open("POST", utm.serviceUrl + "SendMessage");
 		sendMessageReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");
 		sendMessageReq.setRequestHeader('Authorization-Token', utm.AuthToken);
-
+		sendMessageReq.timeout = attachments != null ? 20000 : utm.netTimeout;
 		sendMessageReq.send(JSON.stringify(params));
 		//NOTE: Had to add stringify here else Ti will escape the Array [] and no messages go out.
 		Titanium.Analytics.featureEvent('user.sent_message');
+		
+		if(attachments !=null){
+			Ti.App.fireEvent("app:showMessagesAfterSend", {});
+			resetScreen();
+			utm.setActivityIndicator('');
+		}
+		
 	}
 
 	var getMessagesPreviewReq = Ti.Network.createHTTPClient({
@@ -390,10 +398,13 @@ var PreviewMessage_window = function(utm) {
 			utm.setActivityIndicator('');
 			if (this.status == 200 && response.Status == 'Success') {
 				utm.log('Send Successful');
-
-				Ti.App.fireEvent("app:showMessagesAfterSend", {});
-				resetScreen();
-
+				
+				if(attachments==null){
+					Ti.App.fireEvent("app:showMessagesAfterSend", {});
+					resetScreen();
+				}else{
+					attachments=null;
+				}
 				Titanium.Analytics.featureEvent('user.sent_message');
 
 			} else if (this.status == 200 && response.Status == 'Warning') {
@@ -405,8 +416,12 @@ var PreviewMessage_window = function(utm) {
 				 title: 'Message Delivery Warning'
 				 }).show();
 				 */
-				Ti.App.fireEvent("app:showMessagesAfterSend", {});
-				resetScreen();
+				if(attachments==null){
+					Ti.App.fireEvent("app:showMessagesAfterSend", {});
+					resetScreen();
+				}else{
+					attachments=null;
+				}
 				Titanium.Analytics.featureEvent('user.sent_message');
 			} else {
 				//Error:UserId: 1007 cannot accept Email messages
@@ -453,6 +468,8 @@ var PreviewMessage_window = function(utm) {
 		twitterButton.setChecked(false);
 		facebookButton.setChecked(false);
 		sendButton.enabled = true;
+		theImage=null;
+		camera.reset();
 	}
 
 

@@ -1,5 +1,5 @@
 var TheLoginScreen_view = function(utm) {
-	if(utm.iPhone){
+	if(utm.iPhone || utm.iPad ){
 		var loginView = Ti.UI.createWindow({			
 			layout:'vertical',title:''
 			, backgroundColor:utm.backgroundColor

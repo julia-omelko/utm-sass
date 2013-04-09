@@ -1,6 +1,6 @@
 var TheLandingScreen_view = function(utm) {
 
-	if(utm.iPhone){
+	if(utm.iPhone || utm.iPad ){
 		var landingView = Ti.UI.createWindow({			
 			layout:'vertical',title:''
 			, backButtonTitle:L('logout')

@@ -38,13 +38,16 @@ function signUp_window(utm) {
 	var confirm = new InputField('Confirm Password', 80, '', 210, Ti.UI.KEYBOARD_DEFAULT,'',true, 'password');
 	view.add(confirm);
 	//confirm.setValue('testtest1');
-	//----------Email--------------------
-	var email = new InputField('Email', 80, '', 210, Ti.UI.KEYBOARD_EMAIL,'',true);
-	view.add(email);
 
 	//----------Mobile # --------------------
 	var mobile = new InputField('Mobile Number', 80, '', 210, Ti.UI.KEYBOARD_DECIMAL_PAD,'',true);
 	view.add(mobile);
+
+	//----------Email--------------------
+	var email = new InputField('Email', 80, '', 210, Ti.UI.KEYBOARD_EMAIL,'',true);
+	view.add(email);
+
+
 
 	var saveButton = Ti.UI.createButton({
 		title :'Signup',
