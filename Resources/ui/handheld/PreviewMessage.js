@@ -1,6 +1,7 @@
 var PreviewMessage_window = function(utm) {
 
 	var Camera =require("/lib/Camera");
+	var camera = new Camera();
 	var curUtmText = '';
 	var curRjCrypt = '';
 
@@ -15,14 +16,21 @@ var PreviewMessage_window = function(utm) {
 	var postImage='';
 	var attachments=null;
 	
+	var cameraButton= Ti.UI.createButton({
+			backgroundImage:'/images/camera-ip.png'		
+	});		
+	cameraButton.addEventListener('click', function(){
+		camera.captureImage();		
+	});	
+	
 	if(utm.Android){
+		
 		//create the base screen and hide the Android navbar
 		var win = Titanium.UI.createWindow({
 		    layout : 'vertical',
 		 	backgroundColor : utm.backgroundColor,
 		    navBarHidden:true
-	    });
-	
+	    });	
 	
 		//create a navbar for Android
 		var my_navbar = Ti.UI.createLabel({
@@ -43,30 +51,31 @@ var PreviewMessage_window = function(utm) {
 			width : '100%',
 			height : 45
 		});
-		win.add(tabBar);
+		win.add(tabBar);		
 		
-		var cameraButton= Ti.UI.createButton({
-			backgroundImage:'/images/camera-ip.png',
-			width:40,
-			Height : Titanium.UI.SIZE,
-		});
-		
+		cameraButton.width=40;
+		cameraButton.Height = Titanium.UI.SIZE;
+			
 		tabBar.add(cameraButton);
 		
+		
+	}else if(utm.iPhone){		
+		
+		cameraButton.width=40;
+		cameraButton.height=36;
+		cameraButton.style = Ti.UI.iPhone.SystemButtonStyle.PLAIN;
+		
+		var win = Titanium.UI.createWindow({
+			width : 'auto',
+			height : 'auto',
+			layout : 'vertical',
+			backgroundColor : utm.backgroundColor,
+			barColor : utm.barColor,
+			rightNavButton:cameraButton
+		});			
 	}
 	
-	if(utm.iPhone){
-		var cameraButton= Ti.UI.createButton({
-		backgroundImage:'/images/camera-ip.png',
-		width:40,
-		height:36,
-		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
-		});
-	}
 	
-	cameraButton.addEventListener('click', function(){
-	camera.captureImage();		
-	})	
 	//---------------Original Message --------------------
 	var yourOrgMessageLabel = Ti.UI.createLabel({
 		text : L('send_your_original_message') + ':',
@@ -201,7 +210,7 @@ var PreviewMessage_window = function(utm) {
 	//----------Delete On Read Switch--------------------
 	var deleteView = Ti.UI.createView({
 		layout : 'horizontal',
-		//height : 30,
+		height : 30,
 		width : utm.SCREEN_WIDTH 
 	});
 	win.add(deleteView);
@@ -249,7 +258,7 @@ var PreviewMessage_window = function(utm) {
 	scrollingView.add(view);
 */
 
-	var camera = new Camera();
+
 	win.add(camera);
 	
 
