@@ -15,11 +15,12 @@ function createMyHortWindow(utm) {
 	var fldView = Ti.UI.createView({
 		layout:'horizontal'
 		,width:'100%'
-		,height:60
+		,height:Ti.UI.SIZE
 	});
 	var nameLabel = Ti.UI.createLabel({
-		text:'Name '
-		,font:{fontFamily:'Arial',fontWeight:'bold',fontSize:14}
+		text:'MyHort Name '
+		//,font:{fontFamily:'Arial',fontWeight:'bold',fontSize:14}
+		,font:(utm.Android) ? {fontFamily:'Arial',fontWeight:'bold',fontSize:utm.androidLabelFontSize} : {fontFamily:'Arial',fontWeight:'bold',fontSize:14}
 	});
 	fldView.add(nameLabel);
 	
@@ -27,7 +28,7 @@ function createMyHortWindow(utm) {
 		color:utm.textFieldColor,		
 		width:200,
 		left:10,
-		height:40,
+		//height:40,
 		borderStyle:Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
 		borderRadius :5
 	});

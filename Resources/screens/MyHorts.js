@@ -2,29 +2,58 @@ var MyHorts_window = function(utm) {
 
 	var CreateMyHortWindow = require('ui/handheld/CreateMyHort');
 
-	var myHortsWindow = Titanium.UI.createWindow({
-		layout : 'vertical',
-		title : 'MyHorts',
-		backgroundColor : utm.backgroundColor,
-		backButtonTitle : L('button_back'),
-		barColor : utm.barColor
-	});
+	if(utm.iPhone || utm.iPad ){
+		var myHortsWindow = Titanium.UI.createWindow({
+			layout : 'vertical',
+			title : 'MyHorts',
+			backgroundColor : utm.backgroundColor,
+			backButtonTitle : L('button_back'),
+			barColor : utm.barColor
+		});
+	}
+	if(utm.Android){
+		//create the base screen and hide the Android navbar
+		var myHortsWindow = Titanium.UI.createWindow({
+		    layout : 'vertical',
+		 	backgroundColor : utm.backgroundColor,
+		    navBarHidden:true
+	    });
 
+ 		//create a navbar for Android
+		var my_navbar = Ti.UI.createLabel({
+		    height : 50,
+		    width : '100%',
+		    backgroundColor : utm.barColor,
+		    text:'MyHorts',
+		    color : utm.backgroundColor,
+		    font:{fontSize:utm.androidTitleFontSize,fontWeight:utm.androidTitleFontWeight},
+		    textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+		    top:0
+		});
+ 
+ 		//add the navbar to the screen
+		myHortsWindow.add(my_navbar);
+		
+		//add activityIndicator to window
+		myHortsWindow.add(utm.activityIndicator)
+		
+	}
+	
 	var createButton = Ti.UI.createButton({
 		title : 'Create a New MyHort',
-		top : 10
+		//top : 10
 	});
 	myHortsWindow.add(createButton);
 
 	createButton.addEventListener('click', function() {
 		utm.createMyHortWindow = new CreateMyHortWindow(utm);
+		
 		utm.createMyHortWindow.open({
 			modal : true,
 			modalTransitionStyle : Ti.UI.iPhone.MODAL_TRANSITION_STYLE_PARTIAL_CURL,
 			modalStyle : Ti.UI.iPhone.MODAL_PRESENTATION_FORMSHEET,
 			navBarHidden : true
 		});
-
 	});
 
 	var tableView = Titanium.UI.createTableView({
@@ -44,7 +73,7 @@ var MyHorts_window = function(utm) {
 	});
 
 	edit.addEventListener('click', function() {
-		if(Ti.Platform.osname == 'iphone'){
+		if(utm.iPhone || utm.iPad ){
 			myHortsWindow.setRightNavButton(cancel);
 		}	
 		tableView.editing = true;
@@ -55,12 +84,12 @@ var MyHorts_window = function(utm) {
 		style : Titanium.UI.iPhone.SystemButtonStyle.DONE
 	});
 	cancel.addEventListener('click', function() {
-		if(Ti.Platform.osname == 'iphone'){
+		if(utm.iPhone || utm.iPad ){
 			myHortsWindow.setRightNavButton(edit);
 		}	
 		tableView.editing = false;
 	});
-	if(Ti.Platform.osname == 'iphone'){
+	if(utm.iPhone || utm.iPad ){
 		myHortsWindow.setRightNavButton(edit);
 	}
 	
@@ -210,7 +239,7 @@ var MyHorts_window = function(utm) {
 	
 
 	myHortsWindow.addEventListener('blur', function() {
-		if(Ti.Platform.osname == 'iphone'){
+		if(utm.iPhone || utm.iPad){
 			myHortsWindow.setRightNavButton(edit);
 		}
 		tableView.editing = false;
