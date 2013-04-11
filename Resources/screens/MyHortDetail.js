@@ -13,6 +13,10 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 		});
 	
 	var twitterEnabledForUser = false;
+	
+	Titanium.Facebook.appid = utm.facebookAppId;
+	Titanium.Facebook.permissions = ['publish_stream', 'read_stream'];
+	
 	utm.MyHortDetails = false;
 
 	var win = Ti.UI.createWindow({
@@ -162,8 +166,69 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 	view.add(twitterGroup);
 
 	//----------Facebook--------------------
-	var faceBook = new InputField('FaceBook', 80, '', 210);
-	view.add(faceBook);
+	var faceBookGroup = Ti.UI.createView({
+		layout : 'horizontal',
+		width : '100%',
+		top : 3,
+		left : 8,
+		height : 50
+	});
+	view.add(faceBookGroup);
+	
+	var faceBookLabel = Ti.UI.createLabel({
+		text : 'Facebook',
+		font : {
+			fontSize : 14,
+			fontWeight : 'bold'
+		},
+		width : 80,
+		textAlign : 'left'
+	});
+	faceBookGroup.add(faceBookLabel);
+	
+	var facebookSwitch = Ti.UI.createSwitch({
+		value : false,
+		enabled:true
+	});
+	faceBookGroup.add(facebookSwitch);
+
+	facebookSwitch.addEventListener('change', function(e) {		
+		if(e.value){
+			Ti.Facebook.authorize();
+			//twitterEnabledForUser=true;
+		}else{
+			var dialog = Ti.UI.createAlertDialog({
+					cancel : 1,
+					buttonNames : ['For this MyHort?', 'For ALL MyHorts?', L('cancel')],
+					message : 'You can Deauthorize the YouThisMe application for this MyHort only or for ALL your MyHorts that your a member of. ',
+					title : 'Deactivate Options'
+				});
+				dialog.addEventListener('click', function(e) {
+					if (e.index === 0) {
+						Ti.Facebook.logout();	
+	    					Ti.Facebook.setForceDialogAuth(false);
+					} else if (e.index === 1) {
+						Ti.Facebook.logout();
+						Ti.Facebook.setForceDialogAuth(true);
+					} else if (e.index === 2) {
+						Ti.API.info('The cancel button was clicked');
+					}
+				});
+				dialog.show();
+		}
+	});
+	
+	Ti.Facebook.addEventListener('login', function(e) {
+	    if (e.success) {
+	    		var facebookToken =   Ti.Facebook.getAccessToken();	        
+	    } else if (e.error) {
+	        alert(e.error);
+	    } else if (e.cancelled) {
+	       // alert("Canceled");
+	    }
+	});
+	
+
 
 	//----------Mobile # --------------------
 	var mobile = new InputField('Mobile', 80, '', 210, Ti.UI.KEYBOARD_DECIMAL_PAD);
@@ -254,7 +319,7 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 				//Now that we have date set all the values
 				email.setValue(utm.curMyHortDetails.Email);
 				mobile.setValue(utm.curMyHortDetails.Mobile);
-				faceBook.setValue(utm.curMyHortDetails.FaceBook);
+			//	faceBook.setValue(utm.curMyHortDetails.FaceBook);
 
 				if (utm.curMyHortDetails.TwitterToken != '' & utm.curMyHortDetails.TwitterToken != null) {
 					twitterSwitch.setValue(true);
@@ -355,6 +420,15 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 		}
 
 	});
+	
+	function authFacebook(){
+		Titanium.Facebook.forceDialogAuth = true;
+	//	forceButton.title = "Force dialog: "+Titanium.Facebook.forceDialogAuth;
+		
+		Titanium.Facebook.addEventListener('login', updateLoginStatus);
+		Titanium.Facebook.addEventListener('logout', updateLoginStatus);
+		
+	}
 	
 
 	return win;

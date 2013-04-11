@@ -27,6 +27,9 @@ utm.appPauseTime=0;
 var gaModule = require('Ti.Google.Analytics');
 var analytics = new gaModule('UA-38943374-1');
 
+utm.facebookAppId = '236751426467358';
+//MAYNOT NEED THIS utm.facebookSecret='8ed1b20580d8e878826ce9239211faee';
+
 var unlockWindow = null;
 
 
@@ -59,7 +62,7 @@ var NavigationController = require('NavigationController')
 utm.navController = new NavigationController(utm);
 
 utm.activityIndicatorStyle;
-if (utm.iPhone){
+if (utm.iPhone || utm.iPad){
   utm.activityIndicatorStyle = Ti.UI.iPhone.ActivityIndicatorStyle.DARK;
 }
 else {
