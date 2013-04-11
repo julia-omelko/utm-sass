@@ -12,6 +12,7 @@ utm.textFieldColor='#336699';
 utm.textErrorColor='#800000';
 utm.androidTitleFontSize=25
 utm.androidTitleFontWeight='bold'
+utm.androidLabelFontSize=25
 utm.appVersion = 'Version:'+Ti.App.version;
 utm.netTimeout=18000;
 utm.screenLockTime=30000;
@@ -58,7 +59,7 @@ var NavigationController = require('NavigationController')
 utm.navController = new NavigationController(utm);
 
 utm.activityIndicatorStyle;
-if (Ti.Platform.name === 'iPhone OS'){
+if (utm.iPhone){
   utm.activityIndicatorStyle = Ti.UI.iPhone.ActivityIndicatorStyle.DARK;
 }
 else {
