@@ -124,11 +124,11 @@ var Analytics = AnalyticsBase.extend({
 			this._httpClient = Titanium.Network.createHTTPClient({
 				onload : function()
 				{
-					utm.log('success');	
+					//utm.log('success');	
 				}
-				,onerror:function(e){
-					utm.log('error');
-				}
+				/*,onerror:function(e){
+					alert('error recording analytics');
+				}*/
 			});
 
 			var context = this;
@@ -252,16 +252,17 @@ var Analytics = AnalyticsBase.extend({
 					label:eventRows.fieldByName('label'),
 					value:eventRows.fieldByName('value'),
 				};
-				
-				var path = this._constructRequestPath(event);
-				
-				this._httpClient.open('GET', 'http://www.google-analytics.com' + path, this._isAsync);
-				this._httpClient.setRequestHeader('User-Agent', this._USER_AGENT);
-				this._httpClient.send();
-				
-				eventsToDelete.push(event.event_id);
-				
-				eventRows.next();
+				try{
+					var path = this._constructRequestPath(event);
+					
+					this._httpClient.open('GET', 'http://www.google-analytics.com' + path, this._isAsync);
+					this._httpClient.setRequestHeader('User-Agent', this._USER_AGENT);
+					this._httpClient.send();
+					
+					eventsToDelete.push(event.event_id);
+					
+					eventRows.next();
+				}catch(e){}
 			}
 			
 			eventRows.close();		
