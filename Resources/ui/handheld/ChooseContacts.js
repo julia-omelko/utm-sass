@@ -3,7 +3,7 @@ var ChooseContacts_window = function(utm) {
 	var allChecked = false;
 	var selectedContacts = [];
 	
-	if(utm.iPhone){
+	if(utm.iPhone || utm.iPad){
 		var chooseContactsView = Titanium.UI.createWindow({
 			layout : 'vertical',
 			title : L('send_choose_contacts'),
