@@ -86,20 +86,7 @@ var TheLoginScreen_view = function(utm) {
 	});
 	loginView.add(loginBtn);
 	
-	function check_network() {
-		//utm.log('Check network: '+Titanium.Network.networkType == Titanium.Network.NETWORK_NONE);
-		
-		if (Titanium.Network.networkType == Titanium.Network.NETWORK_NONE) {
-			utm.log('Check Connection');
-		  	setMessageArea('No Internet Connection Available- the UTM Application requires that you have a Internet Connection.');
-		  	loginBtn.enabled=false;
-		} else {
-			loginBtn.enabled=true;
-		   	setMessageArea('');
-		}
-			
-	 	return Titanium.Network.online;
-	}
+
 	
 	//Forgot Your Password?
 	var forgotPWLabel = createLink(L('login_forgot_password'), 'https://'+utm.envModePrefix +'youthisme.com/Account/PasswordReset')
@@ -191,9 +178,6 @@ var TheLoginScreen_view = function(utm) {
 		}
 	);
 	
-	//check this - may hold memory listening for events at this level.
-	Ti.App.addEventListener('app:networkChange',check_network);
-
 	
 	loginBtn.addEventListener('click',function(e)
 	{
@@ -240,17 +224,6 @@ var TheLoginScreen_view = function(utm) {
 		return newLinkButton;
 	}
 	
-	function setMessageArea(msg){
-		if(msg.length){
-			messageArea.text=msg;
-			messageArea.height='auto';
-			messageArea.show();	
-		}else{
-			messageArea.text='';
-			messageArea.height=0;
-			messageArea.hide();
-		}
-	}
 	function fillInTestLogin(){
 		utm.log('Ti.Platform.model = ' +Ti.Platform.model );
 		if (Ti.Platform.model === 'Simulator'  || Ti.Platform.model ===  'google_sdk') { 
@@ -284,11 +257,29 @@ var TheLoginScreen_view = function(utm) {
 		versionLabel.text=utm.appVersion + '  ('+utm.envModePrefix +' DB)';
 	}
 	
+	loginView.setMessageArea = function(_msg){
+		setMessageArea(_msg)
+	}
+	
+	function setMessageArea(msg){
+		if(msg.length){
+			messageArea.text=msg;
+			messageArea.height='auto';
+			messageArea.show();	
+		}else{
+			messageArea.text='';
+			messageArea.height=0;
+			messageArea.hide();
+		}
+	}
+	
+	
 	
 	fillInTestLogin();
 	
-	check_network();
-	
+	loginView.enableLoginButton = function(_enable){
+		loginBtn.enabled=_enable;
+	}	
 
 	return loginView;
 };

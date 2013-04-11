@@ -1,6 +1,7 @@
 //utm is the js namespace for this app
 var utm = {};
 utm.loggedIn = false;
+utm.isInPinLock=false;
 utm.envModePrefix = "";
 utm.validatesSecureCertificate=false;
 utm.color_org = '#F66F00';
@@ -13,6 +14,7 @@ utm.androidTitleFontSize=25
 utm.androidTitleFontWeight='bold'
 utm.appVersion = 'Version:'+Ti.App.version;
 utm.netTimeout=18000;
+utm.screenLockTime=30000;
 utm.sentToContactListString = '';
 utm.networkIsOnline = false;
 var pWidth = Ti.Platform.displayCaps.platformWidth;
@@ -305,11 +307,14 @@ function showMessagesAfterSend() {
 
 Ti.App.addEventListener('app:logout', showLoginView);
 function showLoginView() {
-	utm.loggedIn=false;
+	
+	if(utm.loggedIn){
+		callLogoutService();
+		utm.loggedIn=false;
+	}	
 	utm.User =null;
 	closeAllScreens();
 	utm.navController.open(utm.loginView);	
-	callLogoutService();
 }
 
 function showLoginScreenLockView() {	
@@ -427,7 +432,8 @@ function closeAllScreens(){
 	if(utm.myHortInviteWindow != undefined){utm.navController.close(utm.myHortInviteWindow,{animated:false});}
 	if(utm.myHortMembersWindow != undefined){utm.navController.close(utm.myHortMembersWindow,{animated:false});}
 	if(utm.myHortPendingWindow != undefined){utm.navController.close(utm.myHortPendingWindow,{animated:false});}
-
+	
+	if(utm.signupView != undefined){utm.navController.close(utm.signupView,{animated:false});	}
 }
 
 utm.handleError = function (e,status,responseText) {	
@@ -476,7 +482,7 @@ Ti.App.addEventListener("resumed", function(e){
 	var pauseMil = appPauseTime.valueOf();
 	var diff = curMil-pauseMil;
 	
-	if( diff  > 600){
+	if( diff  > utm.screenLockTime){
 			utm.log('-------  APP resumed  FORCE LOGIN');
 			
 			if(utm.iPhone || utm.iPad ){
@@ -499,10 +505,10 @@ Ti.App.addEventListener("resumed", function(e){
 if(utm.iPhone || utm.iPad ){
 	function showPinLockScreen(_pass){
 		
-		if(_pass == null){
+		if(_pass == null || utm.isInPinLock){
 			return;	
 		}
-		
+		 utm.isInPinLock=true;
 		//if(unlockWindow == null){
 			unlockWindow = unpinLockScreen.loadWindow({
 			// main properties for the module
@@ -523,16 +529,32 @@ if(utm.iPhone || utm.iPad ){
 					vibrateOnIncorrect: true,
 					borderColor: '#ffffff',
 					backgroundColor: '#F66F00'				
-				}
-			});
-	//	}else{
-		//	   unlockWindow.open();
-		//}
+				},
+				correct: function() {  	
+					utm.isInPinLock=false;			      	
+			    }
+			});	
 		
 	}
 }
 
 
+Ti.App.addEventListener('app:networkChange',
+	function () {
+
+		if (Titanium.Network.networkType == Titanium.Network.NETWORK_NONE) {
+			utm.log('Check Connection');
+		  	utm.loginView.setMessageArea('No Internet Connection Available- the UTM Application requires that you have a Internet Connection.');			  	
+		  	utm.loginView.enableLoginButton(false);
+		} else {
+		   	utm.loginView.setMessageArea('');
+		   	utm.loginView.enableLoginButton(true);
+		}
+			
+	 	return Titanium.Network.online;
+	}
+
+);
 
 Titanium.App.addEventListener('close', function(e){
 	analytics.stop();
