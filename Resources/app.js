@@ -68,7 +68,7 @@ utm.activityIndicator = Ti.UI.createActivityIndicator({
 	color : utm.color_org,
 	font : {
 		fontFamily : 'Helvetica Neue',
-		fontSize : 18,
+		fontSize : '18dp',
 		fontWeight : 'bold'
 	},
 	style : utm.activityIndicatorStyle,

@@ -82,7 +82,7 @@ var TheLoginScreen_view = function(utm) {
 		top:utm.Android ? 40 : 20,
 		width:100,
 		borderRadius:1,
-		font:{fontFamily:'Arial',fontWeight:'bold',fontSize:14}
+		font:{fontFamily:'Arial',fontWeight:'bold',fontSize:'14dp'}
 	});
 	loginView.add(loginBtn);
 	
@@ -127,12 +127,12 @@ var TheLoginScreen_view = function(utm) {
 	//Version 0.12 Alpha	
 	var versionLabel = Ti.UI.createLabel({
 		  color: utm.textColor,	
-		  font: { fontSize:14 },
+		  font: { fontSize:'14dp' },
 		  text: utm.appVersion + '  ('+utm.envModePrefix +' DB)',
 		  textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
 		  top: 10,
 		  width: 220, 
-		  height: 50
+		  //height: 50
 		});
 	
 	loginView.add(versionLabel);
