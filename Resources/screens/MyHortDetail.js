@@ -21,6 +21,7 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 		barColor : utm.barColor
 	});
 
+
 	var scrollingView = Ti.UI.createScrollView({
 		showVerticalScrollIndicator : true,
 		showHorizontalScrollIndicator : false
