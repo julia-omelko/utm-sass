@@ -49,7 +49,8 @@ var WriteMessage_window =function(utm) {
 	var toLabel = Ti.UI.createLabel({
 		text:utm.sentToContactListString,
 		width:'auto',
-		height:30,
+		font: { fontSize:'20dp' },
+		//height:30,
 		textAlign:'left'
 	});
 	scrollableView.add(toLabel);
@@ -57,6 +58,7 @@ var WriteMessage_window =function(utm) {
 	var yourMessageLabel = Ti.UI.createLabel({
 		text:L('send_your_message'),
 		width:'auto',
+		font: { fontSize:'20dp' },
 		height:'auto',
 		textAlign:'left'
 	});
@@ -67,7 +69,7 @@ var WriteMessage_window =function(utm) {
 	  borderColor: '#bbb',
 	  borderRadius: 5,
 	  color:utm.textFieldColor,
-	  font: {fontSize:16},
+	  font: {fontSize:'16dp'},
 	  hintText:L('send_start_your_message_here'),
 	  suppressReturn:false,
 	  textAlign: 'left',
@@ -83,6 +85,7 @@ var WriteMessage_window =function(utm) {
 		title:L('send_preview_your_message'),
 		top:20,
 		width:'auto',
+		font: { fontSize:'20dp' },
 		enabled :false
 	});	
 	scrollableView.add(previewButton);

@@ -112,8 +112,9 @@ var TheLoginScreen_view = function(utm) {
 		 color: utm.textColor,		
 		 textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
 		 top: 20,
-		 width:'auto', 
-		 height: 20
+		 width:'auto',
+		 font: { fontSize:'20dp' }
+		 //height: 20
 	}) 
 	loginView.add(signUpLabel);
 	signUpLabel.addEventListener('click',function(){
@@ -128,10 +129,10 @@ var TheLoginScreen_view = function(utm) {
 	var versionLabel = Ti.UI.createLabel({
 		  color: utm.textColor,	
 		  font: { fontSize:'14dp' },
-		  text: utm.appVersion + '  ('+utm.envModePrefix +' DB)',
+		  text: utm.appVersion + " " + '  ('+utm.envModePrefix +' DB)',
 		  textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
 		  top: 10,
-		  width: 220, 
+		  //width: 220, 
 		  //height: 50
 		});
 	
@@ -229,8 +230,9 @@ var TheLoginScreen_view = function(utm) {
 		  text: lbl,
 		  textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
 		  top: 20,
-		  width:'auto', 
-		  height: 20
+		  width:'auto',
+		  font: { fontSize:'20dp' }
+		  //height: 20
 		});
 		
 		newLinkButton.addEventListener('click', function(e) {

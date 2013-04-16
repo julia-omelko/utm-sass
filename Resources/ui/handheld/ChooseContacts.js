@@ -34,9 +34,12 @@ var ChooseContacts_window = function(utm) {
 		
 		//add the navbar to the screen
 		chooseContactsView.add(my_navbar);
+		
+		//add activityIndicator to window
+		chooseContactsView.add(utm.activityIndicator)
 	}
 	
-	var topView = Ti.UI.createView({top:4,layout:'horizontal', width:'100%', height : 30});
+	var topView = Ti.UI.createView({top:4,layout:'horizontal', width:'100%', height : Titanium.UI.SIZE});
 	var mainView = Ti.UI.createView({layout:'vertical', width:'100%', height : '75%'});
 
 	chooseContactsView.add(topView);
@@ -46,7 +49,8 @@ var ChooseContacts_window = function(utm) {
 		text : '[Choose All]',
 		right : 4,
 		width : '100%',
-		height : 30,
+		height : '30dp',
+		font: { fontSize:'18dp' },
 		textAlign : 'right'
 	});
 	topView.add(chooseAllLabel);
@@ -155,16 +159,16 @@ var ChooseContacts_window = function(utm) {
 							UserId : response[i].UserId,
 							id : i,
 							nickName : response[i].NickName,
-							height : 35,
+							height : '35dp',
 							userData : response[i]
 						});
 
 						var l = Ti.UI.createLabel({
 							left : 5,
 							font : {
-								fontSize : 16
+								fontSize : '16dp'
 							},
-							height : 30,
+							height : '30dp',
 							color : '#000',
 							text : response[i].NickName
 						});

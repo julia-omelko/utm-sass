@@ -74,7 +74,7 @@ function message_window(utm) {
 		var tabBar = Titanium.UI.createView ({
    			layout : 'horizontal',
    			width : '100%',
-   			height : 45
+   			height : 55
 		});
 		win.add(tabBar);
 		
@@ -82,7 +82,7 @@ function message_window(utm) {
 			title : 'Received',
 			top : 2,
 			Height : Titanium.UI.SIZE - 4,
-			font:{fontFamily:'Arial',fontWeight:'bold',fontSize:14}
+			font:{fontFamily:'Arial',fontSize:'14dp'}
 		});
 		tabBar.add(receivedButton);
 		
@@ -98,7 +98,7 @@ function message_window(utm) {
 			title : 'Sent',
 			top : 2,
 			Height : Titanium.UI.SIZE - 4,
-			font:{fontFamily:'Arial',fontWeight:'bold',fontSize:14}
+			font:{fontFamily:'Arial',fontSize:'14dp'}
 		});
 		tabBar.add(sentButton);
 		
