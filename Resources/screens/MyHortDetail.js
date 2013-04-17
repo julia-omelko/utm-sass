@@ -5,14 +5,16 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 	var MyHortPendingWindow = require('ui/handheld/MyHortPending');
 	var MyHortInviteWindow = require('ui/handheld/MyHortInvite');
 	var social = require("lib/social");
+	utm.facebookToken='';
 	
 	var twitter = social.create({
 			site : 'Twitter', // <-- this example is for Twitter. I'll expand this to other sites in the future.
-			consumerKey : '8qiy2PJv3MpVyzuhfNXkOw', // <--- you'll want to replace this
-			consumerSecret : 'Qq0rth4MHGB70nh20nSzov2zz6GbVxuVndCh2IxkRWI' // <--- and this with your own keys!
+			consumerKey : utm.twitterConsumerKey, // <--- you'll want to replace this
+			consumerSecret : utm.twitterConsumerSecret // <--- and this with your own keys!
 		});
 	
 	var twitterEnabledForUser = false;
+	var facebookEnabledForUser = false;
 	
 	Titanium.Facebook.appid = utm.facebookAppId;
 	Titanium.Facebook.permissions = ['publish_stream', 'read_stream'];
@@ -171,8 +173,9 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 		width : '100%',
 		top : 3,
 		left : 8,
-		height : 50
-	});
+		height : 50,
+		visible:true
+	});  //TODO  Hidden for now
 	view.add(faceBookGroup);
 	
 	var faceBookLabel = Ti.UI.createLabel({
@@ -194,8 +197,9 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 
 	facebookSwitch.addEventListener('change', function(e) {		
 		if(e.value){
+			Ti.Facebook.setForceDialogAuth(true);
 			Ti.Facebook.authorize();
-			//twitterEnabledForUser=true;
+			facebookEnabledForUser=true;
 		}else{
 			var dialog = Ti.UI.createAlertDialog({
 					cancel : 1,
@@ -206,10 +210,10 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 				dialog.addEventListener('click', function(e) {
 					if (e.index === 0) {
 						Ti.Facebook.logout();	
-	    					Ti.Facebook.setForceDialogAuth(false);
+	    					//Ti.Facebook.setForceDialogAuth(false);
 					} else if (e.index === 1) {
 						Ti.Facebook.logout();
-						Ti.Facebook.setForceDialogAuth(true);
+						//Ti.Facebook.setForceDialogAuth(false);
 					} else if (e.index === 2) {
 						Ti.API.info('The cancel button was clicked');
 					}
@@ -220,8 +224,9 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 	
 	Ti.Facebook.addEventListener('login', function(e) {
 	    if (e.success) {
-	    		var facebookToken =   Ti.Facebook.getAccessToken();	        
+	    		utm.facebookToken =   Ti.Facebook.getAccessToken();	        
 	    } else if (e.error) {
+	    		utm.facebookToken =='';
 	        alert(e.error);
 	    } else if (e.cancelled) {
 	       // alert("Canceled");
@@ -256,7 +261,7 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 		
 		utm.curMyHortDetails.Email = email.getValue();
 		utm.curMyHortDetails.Mobile = mobile.getValue();
-		utm.curMyHortDetails.FaceBook = faceBook.getValue();
+		
 		//TODO Handle Twitter diff myHortDetails.PrimaryUser.TwitterToken=;
 
 		if (twitterSwitch.getValue()) {
@@ -279,6 +284,13 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 				utm.curMyHortDetails.TwitterSecret = '';
 			}
 		}
+		
+		if (facebookSwitch.getValue()) {
+			utm.curMyHortDetails.FaceBook =  Ti.Facebook.getAccessToken();
+		} else {
+			utm.curMyHortDetails.FaceBook='';
+		}
+		
 				
 		if(utm.myHortDetails.IsOwner){
 			 utm.myHortDetails.PrimaryUser = utm.curMyHortDetails;
@@ -327,6 +339,14 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 				} else {
 					twitterSwitch.setValue(false);
 					twitterEnabledForUser = false;
+				}
+				
+				if (utm.curMyHortDetails.FaceBook != '' & utm.curMyHortDetails.FaceBook != null) {
+					facebookSwitch.setValue(true);
+					facebookEnabledForUser = true;
+				} else {
+					facebookSwitch.setValue(false);
+					facebookEnabledForUser = false;
 				}
 				
 				enableButtonBar(true);
@@ -422,8 +442,7 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 	});
 	
 	function authFacebook(){
-		Titanium.Facebook.forceDialogAuth = true;
-	//	forceButton.title = "Force dialog: "+Titanium.Facebook.forceDialogAuth;
+		Titanium.Facebook.forceDialogAuth = false;
 		
 		Titanium.Facebook.addEventListener('login', updateLoginStatus);
 		Titanium.Facebook.addEventListener('logout', updateLoginStatus);

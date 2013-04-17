@@ -176,8 +176,7 @@ var ChooseContacts_window = function(utm) {
 							}
 							if (response[i].HasFaceBook) {
 								utm.curUserCurMyHortHasFacebook = true;
-							}
-							
+							}							
 							
 						}
 
