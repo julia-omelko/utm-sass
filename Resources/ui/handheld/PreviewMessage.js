@@ -328,22 +328,12 @@ var PreviewMessage_window = function(utm) {
 			var theImage = camera.getImage();
 			
 			if(theImage){				
-				// sendImage = Ti.Utils.base64encode(theImage.imageAsResized(250,250)).text;
-				//
-				 var sendImageSrc = Ti.Utils.base64encode(theImage);
-				 utm.log(sendImageSrc.length);
+				//var sendImageSrc = Ti.Utils.base64encode(theImage);
+				var sendImageSrc = Ti.Utils.base64encode(theImage);
 				attachments = [{ Attachment: sendImageSrc.toString(),MimeType:theImage.mimeType,WasVirusScanned:true  }];
 			}else{
 				attachments=null;
 			}
-			/*		
-		    {
-		      "Id": 1,
-		      "MimeType": "sample string 2",
-		      "Attachment": "sample string 3",
-		      "WasVirusScanned": true
-		    }*/
-			
 
 			var params = {
 				MyHortId : utm.targetMyHortID,
@@ -516,12 +506,9 @@ var PreviewMessage_window = function(utm) {
 			twitterButton.setChecked(true);
 			}*/
 
-			//if(utm.User.UserProfile.HasFaceBook
-
-			//if(e.sentToContactList[x].userData.HasFaceBook)
-			//if(utm.User.UserProfile.HasFaceBook
-			facebookButton.setEnabled(false);
-			//todo once we have facebook working
+			if(utm.curUserCurMyHortHasFacebook){
+				facebookButton.setEnabled(true);
+			}
 
 		}
 
@@ -559,7 +546,7 @@ var PreviewMessage_window = function(utm) {
 		if (twitterButton.isChecked())
 			messageType += 'twitter,';
 		if (facebookButton.isChecked())
-			messageType += 'facebook,';
+			messageType += 'fb,';
 
 		//remove last comma
 		messageType = messageType.slice(0, -1);
@@ -592,7 +579,7 @@ var PreviewMessage_window = function(utm) {
 			if (twitterButton.isChecked() & utm.curUserCurMyHortHasTwitter) {//sentToList[x].userData.HasTwitter){
 				typesOk = true;
 			}
-			if (facebookButton.isChecked() & sentToList[x].userData.HasFacebook) {
+			if (facebookButton.isChecked() & utm.curUserCurMyHortHasFacebook) {
 				typesOk = true;
 			}
 
