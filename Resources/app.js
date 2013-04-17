@@ -27,11 +27,11 @@ utm.appPauseTime=0;
 var gaModule = require('Ti.Google.Analytics');
 var analytics = new gaModule('UA-38943374-1');
 
+utm.twitterConsumerKey='8qiy2PJv3MpVyzuhfNXkOw';
+utm.twitterConsumerSecret ='Qq0rth4MHGB70nh20nSzov2zz6GbVxuVndCh2IxkRWI';
 utm.facebookAppId = '236751426467358';
-//MAYNOT NEED THIS utm.facebookSecret='8ed1b20580d8e878826ce9239211faee';
 
 var unlockWindow = null;
-
 
 utm.iPhone = false;
 utm.iPad = false;
