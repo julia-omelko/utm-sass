@@ -174,6 +174,11 @@ var ChooseContacts_window = function(utm) {
 							if (response[i].HasTwitter) {
 								utm.curUserCurMyHortHasTwitter = true;
 							}
+							if (response[i].HasFaceBook) {
+								utm.curUserCurMyHortHasFacebook = true;
+							}
+							
+							
 						}
 
 						data[i] = row;
