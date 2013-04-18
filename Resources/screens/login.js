@@ -132,6 +132,7 @@ var TheLoginScreen_view = function(utm) {
 		  text: utm.appVersion + " " + '  ('+utm.envModePrefix +' DB)',
 		  textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
 		  top: 10,
+		  visible:false //HIDDEN
 		  //width: 220, 
 		  //height: 50
 		});
