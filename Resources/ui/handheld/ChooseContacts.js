@@ -153,6 +153,8 @@ var ChooseContacts_window = function(utm) {
 					utm.log("data returned:" + response);
 					var data = [];
 					utm.curUserCurMyHortHasTwitter = false;
+					utm.curUserCurMyHortHasFacebook = false;
+					
 
 					for (var i = 0; i < response.length; i++) {
 						var row = Ti.UI.createTableViewRow({
