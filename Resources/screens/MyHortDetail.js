@@ -1,75 +1,217 @@
-function myHortDetail_window(_myHortData,utm,isOwner) {
+function myHortDetail_window(_myHortData, utm, isOwner) {
 
 	var InputField = require('ui/common/baseui/InputField');
 	var MyHortMembersWindow = require('ui/handheld/MyHortMembers');
 	var MyHortPendingWindow = require('ui/handheld/MyHortPending');
 	var MyHortInviteWindow = require('ui/handheld/MyHortInvite');
 	var social = require("lib/social");
-	utm.facebookToken='';
-	
+	utm.facebookToken = '';
+
 	var twitter = social.create({
-			site : 'Twitter', // <-- this example is for Twitter. I'll expand this to other sites in the future.
-			consumerKey : utm.twitterConsumerKey, // <--- you'll want to replace this
-			consumerSecret : utm.twitterConsumerSecret // <--- and this with your own keys!
-		});
-	
+		site : 'Twitter', // <-- this example is for Twitter. I'll expand this to other sites in the future.
+		consumerKey : utm.twitterConsumerKey, // <--- you'll want to replace this
+		consumerSecret : utm.twitterConsumerSecret // <--- and this with your own keys!
+	});
+
 	var twitterEnabledForUser = false;
 	var facebookEnabledForUser = false;
-	
+
 	Titanium.Facebook.appid = utm.facebookAppId;
 	Titanium.Facebook.permissions = ['publish_stream', 'read_stream'];
-	
+
 	utm.MyHortDetails = false;
 
-	var win = Ti.UI.createWindow({
-		layout : 'vertical',
-		backgroundColor : utm.backgroundColor,
-		barColor : utm.barColor
-	});
+	//####################   iOS Button Bar #################### 
+	if (utm.iPhone || utm.iPad) {
+		var win = Ti.UI.createWindow({
+			layout : 'vertical',
+			backgroundColor : utm.backgroundColor,
+			barColor : utm.barColor
+		});
 
-	var scrollingView = Ti.UI.createScrollView({
-		showVerticalScrollIndicator : true,
-		showHorizontalScrollIndicator : false
-	});
-	win.add(scrollingView);
+		var scrollingView = Ti.UI.createScrollView({
+			showVerticalScrollIndicator : true,
+			showHorizontalScrollIndicator : false
+		});
+		win.add(scrollingView);
 
-	var view = Ti.UI.createView({
-		height : 2000,
-		layout : 'vertical'
-	});
+		var view = Ti.UI.createView({
+			height : 2000,
+			layout : 'vertical'
+		});
 
-	scrollingView.add(view);
-	
-	if(isOwner){
-		var buttons = [
-	    {title:'Members', enabled:false},
-	    {title:'Invite', enabled:false},
-	     {title:'Pending Invites', enabled:false}];
-	}else{	
-			var buttons = [
-	   		 {title:'Members', enabled:false}];		
+		scrollingView.add(view);
+
+		if (isOwner) {
+			var buttons = [{
+				title : 'Members',
+				enabled : false
+			}, {
+				title : 'Invite',
+				enabled : false
+			}, {
+				title : 'Pending Invites',
+				enabled : false
+			}];
+		} else {
+			var buttons = [{
+				title : 'Members',
+				enabled : false
+			}, {
+				title : 'Invite',
+				enabled : false
+			}, {
+				title : 'Pending Invites',
+				enabled : false
+			}];
+		}
+
+		//-----------------Top Buttons  ----------------------
+		var topButtonBar = Titanium.UI.createButtonBar({
+			labels : buttons,
+			top : 3,
+			backgroundColor : '#336699',
+			style : Titanium.UI.iPhone.SystemButtonStyle.BAR//,
+			//height : isOwner? 40: 0,
+			//visible :isOwner
+		});
+
+		function enableButtonBar(_enable) {
+			buttons[0].enabled = _enable;
+			if (isOwner) {
+				buttons[1].enabled = _enable;
+				buttons[2].enabled = _enable;
+			}
+			topButtonBar.labels = buttons;
+		}
+
+
+		view.add(topButtonBar);
 	}
+	//#################### Android Tab Bar #################### 
+	if (utm.Android) {
+		//create the base screen and hide the Android navbar
+		var win = Titanium.UI.createWindow({
+			layout : 'vertical',
+			backgroundColor : utm.backgroundColor,
+			navBarHidden : true
+		});
 
-	//-----------------Top Buttons  ----------------------
-	var topButtonBar = Titanium.UI.createButtonBar({
-		labels : buttons,
-		top : 3,
-		backgroundColor : '#336699',
-		style : Titanium.UI.iPhone.SystemButtonStyle.BAR//,
-		//height : isOwner? 40: 0,	
-		//visible :isOwner
-	});
+		//create a navbar for Android
+		var my_navbar = Ti.UI.createLabel({
+			height : 50,
+			width : '100%',
+			backgroundColor : utm.barColor,
+			text : 'MyHort Info',
+			color : utm.backgroundColor,
+			font : {
+				fontSize : utm.androidTitleFontSize,
+				fontWeight : utm.androidTitleFontWeight
+			},
+			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+			top : 0
+		});
+
+		//add the navbar to the screen
+		win.add(my_navbar);
+
+		var scrollingView = Ti.UI.createScrollView({
+			showVerticalScrollIndicator : true,
+			showHorizontalScrollIndicator : false
+		});
+
+		win.add(scrollingView);
+
+		var view = Ti.UI.createView({
+			height : 2000,
+			layout : 'vertical'
+		});
+
+		scrollingView.add(view);
+
+		var spacer = Math.round(Ti.Platform.displayCaps.platformWidth * 0.33);
+		var btnWidth = spacer - 2;
+		var btnHeight = 34;
+		var leftPos = Math.round((Ti.Platform.displayCaps.platformWidth - btnWidth * 3) * 0.5)
+
+		// TAB BAR aka Button Bar for Android
+		var tabBar = Ti.UI.createView({
+			width : '100%',
+			height : 40,
+			left : 0,
+			bottom : 0,
+			layout : 'horizontal'
+		});
+		view.add(tabBar);
+		// TAB 1
+		var tab1 = Ti.UI.createView({
+			width : btnWidth,
+			height : btnHeight,
+			left : leftPos,
+			top : 2,
+			backgroundColor : '#336699',
+			borderColor : '#000000',
+			borderWidth : 1,
+			borderRadius : 2
+		});
+		var tab1Label = Ti.UI.createLabel({
+			text : 'Members',
+			color : '#FFF'
+		});
+		tab1.add(tab1Label);
+		tabBar.add(tab1);
+
+		// TAB 2
+		var tab2 = Ti.UI.createView({
+			width : btnWidth,
+			height : btnHeight,
+			top : 2,
+			backgroundColor : '#336699',
+			borderColor : '#000000',
+			borderWidth : 1
+		});
+		var tab2Label = Ti.UI.createLabel({
+			text : 'Invite',
+			color : '#FFF'
+		});
+		tab2.add(tab2Label);
+		tabBar.add(tab2);
+
+		// TAB 3
+		var tab3 = Ti.UI.createView({
+			width : btnWidth,
+			height : btnHeight,
+			top : 2,
+			backgroundColor : '#336699',
+			borderColor : '#000000',
+			borderWidth : 1,
+			borderRadius : 2
+		});
+		var tab3Label = Ti.UI.createLabel({
+			text : 'Pending Invites',
+			color : '#FFF'
+		});
+		tab3.add(tab3Label);
+		tabBar.add(tab3);
+
+		//add activityIndicator to view
+		view.add(utm.activityIndicator)
+	}
 	
-	function enableButtonBar(_enable){
+	
+	function enableButtonBar(_enable) {
 		buttons[0].enabled = _enable;
-		if(isOwner){
+		if (isOwner) {
 			buttons[1].enabled = _enable;
 			buttons[2].enabled = _enable;
 		}
-		topButtonBar.labels = buttons;  
+		topButtonBar.labels = buttons;
 	}
-	
+
+
 	view.add(topButtonBar);
+	
+	
 
 	//-----------------MyHort Name  ----------------------
 	var myHortNameGroup = Ti.UI.createView({
@@ -85,7 +227,7 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 	var myHortNamelbl = Ti.UI.createLabel({
 		text : 'MyHort ',
 		font : {
-			fontSize : 14,
+			fontSize : '14dp',
 			fontWeight : 'bold'
 		},
 		height : 'auto',
@@ -98,7 +240,7 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 		text : _myHortData.FriendlyName,
 		width : utm.SCREEN_WIDTH - 100,
 		font : {
-			fontSize : 14,
+			fontSize : '14dp',
 		},
 		height : 'auto',
 		top : 2,
@@ -118,10 +260,12 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 		left : 8,
 		height : 50
 	});
+	view.add(twitterGroup);
+	
 	var twitterLabel = Ti.UI.createLabel({
 		text : 'Twitter',
 		font : {
-			fontSize : 14,
+			fontSize : '14dp',
 			fontWeight : 'bold'
 		},
 		width : 80,
@@ -131,41 +275,41 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 
 	var twitterSwitch = Ti.UI.createSwitch({
 		value : false,
-		enabled:true
+		enabled : true
 	});
 	twitterGroup.add(twitterSwitch);
 
-	twitterSwitch.addEventListener('change', function(e) {		
-		if(e.value){
-			if(!twitter.isAuthorized()){
+	twitterSwitch.addEventListener('change', function(e) {
+		if (e.value) {
+			if (!twitter.isAuthorized()) {
 				authTwitter();
 			}
-			twitterEnabledForUser=true;
-		}else{
+			twitterEnabledForUser = true;
+		} else {
 			//twitter.deauthorize(); NOTE this deauthrizes for ALL MYHORTS - dont want to do that uless its the only myhort with twitter set.
-			
-				var dialog = Ti.UI.createAlertDialog({
-					cancel : 1,
-					buttonNames : ['For this MyHort?', 'For ALL MyHorts?', L('cancel')],
-					message : 'You can Deauthorize the YouThisMe application for this MyHort only or for ALL your MyHorts that your a member of. ',
-					title : 'Deactivate Options'
-				});
-				dialog.addEventListener('click', function(e) {
-					if (e.index === 0) {
-						utm.TwitterToken = '';
-	    					utm.TwitterTokenSecret = '';    	
-					} else if (e.index === 1) {
-						twitter.deauthorize(); 
-					} else if (e.index === 2) {
-						Ti.API.info('The cancel button was clicked');
-					}
-				});
-				dialog.show();
-			
-			}
-		
+
+			var dialog = Ti.UI.createAlertDialog({
+				cancel : 1,
+				buttonNames : ['For this MyHort?', 'For ALL MyHorts?', L('cancel')],
+				message : 'You can Deauthorize the YouThisMe application for this MyHort only or for ALL your MyHorts that your a member of. ',
+				title : 'Deactivate Options'
+			});
+			dialog.addEventListener('click', function(e) {
+				if (e.index === 0) {
+					utm.TwitterToken = '';
+					utm.TwitterTokenSecret = '';
+				} else if (e.index === 1) {
+					twitter.deauthorize();
+				} else if (e.index === 2) {
+					Ti.API.info('The cancel button was clicked');
+				}
+			});
+			dialog.show();
+
+		}
+
 	});
-	view.add(twitterGroup);
+
 
 	//----------Facebook--------------------
 	var faceBookGroup = Ti.UI.createView({
@@ -174,10 +318,10 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 		top : 3,
 		left : 8,
 		height : 50,
-		visible:true
-	});  //TODO  Hidden for now
+		visible : true
+	});
 	view.add(faceBookGroup);
-	
+
 	var faceBookLabel = Ti.UI.createLabel({
 		text : 'Facebook',
 		font : {
@@ -188,52 +332,50 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 		textAlign : 'left'
 	});
 	faceBookGroup.add(faceBookLabel);
-	
+
 	var facebookSwitch = Ti.UI.createSwitch({
 		value : false,
-		enabled:true
+		enabled : true
 	});
 	faceBookGroup.add(facebookSwitch);
 
-	facebookSwitch.addEventListener('change', function(e) {		
-		if(e.value){
+	facebookSwitch.addEventListener('change', function(e) {
+		if (e.value) {
 			Ti.Facebook.setForceDialogAuth(true);
 			Ti.Facebook.authorize();
-			facebookEnabledForUser=true;
-		}else{
+			facebookEnabledForUser = true;
+		} else {
 			var dialog = Ti.UI.createAlertDialog({
-					cancel : 1,
-					buttonNames : ['For this MyHort?', 'For ALL MyHorts?', L('cancel')],
-					message : 'You can Deauthorize the YouThisMe application for this MyHort only or for ALL your MyHorts that your a member of. ',
-					title : 'Deactivate Options'
-				});
-				dialog.addEventListener('click', function(e) {
-					if (e.index === 0) {
-						Ti.Facebook.logout();	
-	    					//Ti.Facebook.setForceDialogAuth(false);
-					} else if (e.index === 1) {
-						Ti.Facebook.logout();
-						//Ti.Facebook.setForceDialogAuth(false);
-					} else if (e.index === 2) {
-						Ti.API.info('The cancel button was clicked');
-					}
-				});
-				dialog.show();
+				cancel : 1,
+				buttonNames : ['For this MyHort?', 'For ALL MyHorts?', L('cancel')],
+				message : 'You can Deauthorize the YouThisMe application for this MyHort only or for ALL your MyHorts that your a member of. ',
+				title : 'Deactivate Options'
+			});
+			dialog.addEventListener('click', function(e) {
+				if (e.index === 0) {
+					Ti.Facebook.logout();
+					//Ti.Facebook.setForceDialogAuth(false);
+				} else if (e.index === 1) {
+					Ti.Facebook.logout();
+					//Ti.Facebook.setForceDialogAuth(false);
+				} else if (e.index === 2) {
+					Ti.API.info('The cancel button was clicked');
+				}
+			});
+			dialog.show();
 		}
 	});
-	
-	Ti.Facebook.addEventListener('login', function(e) {
-	    if (e.success) {
-	    		utm.facebookToken =   Ti.Facebook.getAccessToken();	        
-	    } else if (e.error) {
-	    		utm.facebookToken =='';
-	        alert(e.error);
-	    } else if (e.cancelled) {
-	       // alert("Canceled");
-	    }
-	});
-	
 
+	Ti.Facebook.addEventListener('login', function(e) {
+		if (e.success) {
+			utm.facebookToken = Ti.Facebook.getAccessToken();
+		} else if (e.error) {
+			utm.facebookToken == '';
+			alert(e.error);
+		} else if (e.cancelled) {
+			// alert("Canceled");
+		}
+	});
 
 	//----------Mobile # --------------------
 	var mobile = new InputField('Mobile', 80, '', 210, Ti.UI.KEYBOARD_DECIMAL_PAD);
@@ -255,26 +397,25 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 	}
 
 	function updateMyHortData() {
-		saveButton.enabled=false;
+		saveButton.enabled = false;
 		utm.setActivityIndicator('Update MyHort...');
-		
-		
+
 		utm.curMyHortDetails.Email = email.getValue();
 		utm.curMyHortDetails.Mobile = mobile.getValue();
-		
+
 		//TODO Handle Twitter diff myHortDetails.PrimaryUser.TwitterToken=;
 
 		if (twitterSwitch.getValue()) {
 			///if (!twitterEnabledForUser) {
-				//original value has changed so now we need to enable twitter
-				//authTwitter();
-				if(!twitter.isAuthorized()){
-					authTwitter();
-				}
-				twitterEnabledForUser=true;
-				utm.curMyHortDetails.TwitterToken = utm.TwitterToken;
-				utm.curMyHortDetails.TwitterSecret = utm.TwitterTokenSecret ;
-				
+			//original value has changed so now we need to enable twitter
+			//authTwitter();
+			if (!twitter.isAuthorized()) {
+				authTwitter();
+			}
+			twitterEnabledForUser = true;
+			utm.curMyHortDetails.TwitterToken = utm.TwitterToken;
+			utm.curMyHortDetails.TwitterSecret = utm.TwitterTokenSecret;
+
 			//}
 
 		} else {
@@ -284,23 +425,22 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 				utm.curMyHortDetails.TwitterSecret = '';
 			}
 		}
-		
+
 		if (facebookSwitch.getValue()) {
-			utm.curMyHortDetails.FaceBook =  Ti.Facebook.getAccessToken();
+			utm.curMyHortDetails.FaceBook = Ti.Facebook.getAccessToken();
 		} else {
-			utm.curMyHortDetails.FaceBook='';
+			utm.curMyHortDetails.FaceBook = '';
 		}
-		
-				
-		if(utm.myHortDetails.IsOwner){
-			 utm.myHortDetails.PrimaryUser = utm.curMyHortDetails;
-			 utm.myHortDetails.MyInformation='';
-			
-		}else{
-			utm.myHortDetails.MyInformation=utm.curMyHortDetails;
-			utm.myHortDetails.PrimaryUser='';
-		}	
-		
+
+		if (utm.myHortDetails.IsOwner) {
+			utm.myHortDetails.PrimaryUser = utm.curMyHortDetails;
+			utm.myHortDetails.MyInformation = '';
+
+		} else {
+			utm.myHortDetails.MyInformation = utm.curMyHortDetails;
+			utm.myHortDetails.PrimaryUser = '';
+		}
+
 		updateMyHortDetailReq.open("POST", utm.serviceUrl + "MyHort/UpdateMyHortDetails");
 		updateMyHortDetailReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");
 		updateMyHortDetailReq.setRequestHeader('Authorization-Token', utm.AuthToken);
@@ -311,27 +451,27 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 	// ##################### Call out to get myHort detail #####################
 	var getMyHortDetailReq = Ti.Network.createHTTPClient({
 		validatesSecureCertificate : utm.validatesSecureCertificate,
-		onload : function() {			
-			
+		onload : function() {
+
 			win.visible = true;
-			var response = eval('('+this.responseText+')');
+			var response = eval('(' + this.responseText + ')');
 			utm.myHortDetails = response;
 
 			if (this.status == 200) {
-				
-				if(utm.myHortDetails.IsOwner){
+
+				if (utm.myHortDetails.IsOwner) {
 					utm.curMyHortDetails = utm.myHortDetails.PrimaryUser;
-					topButtonBar.visable=true;
-					
-				}else{
+					topButtonBar.visable = true;
+
+				} else {
 					utm.curMyHortDetails = utm.myHortDetails.MyInformation;
-					topButtonBar.visable=false;
-				}	
-							
+					topButtonBar.visable = false;
+				}
+
 				//Now that we have date set all the values
 				email.setValue(utm.curMyHortDetails.Email);
 				mobile.setValue(utm.curMyHortDetails.Mobile);
-			//	faceBook.setValue(utm.curMyHortDetails.FaceBook);
+				//	faceBook.setValue(utm.curMyHortDetails.FaceBook);
 
 				if (utm.curMyHortDetails.TwitterToken != '' & utm.curMyHortDetails.TwitterToken != null) {
 					twitterSwitch.setValue(true);
@@ -340,7 +480,7 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 					twitterSwitch.setValue(false);
 					twitterEnabledForUser = false;
 				}
-				
+
 				if (utm.curMyHortDetails.FaceBook != '' & utm.curMyHortDetails.FaceBook != null) {
 					facebookSwitch.setValue(true);
 					facebookEnabledForUser = true;
@@ -348,7 +488,7 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 					facebookSwitch.setValue(false);
 					facebookEnabledForUser = false;
 				}
-				
+
 				enableButtonBar(true);
 				//TODO handle errors better
 			} else if (this.status == 400) {
@@ -356,7 +496,7 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 			} else {
 				utm.recordError('Error')
 			}
-			topButtonBar.enabled=true;
+			topButtonBar.enabled = true;
 			utm.setActivityIndicator('');
 		},
 		onerror : function(e) {
@@ -374,7 +514,7 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 	var updateMyHortDetailReq = Ti.Network.createHTTPClient({
 		validatesSecureCertificate : utm.validatesSecureCertificate,
 		onload : function() {
-			
+
 			var json = this.responseData;
 			if (this.status == 200) {
 				utm.setActivityIndicator('Update Complete');
@@ -386,7 +526,7 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 			} else {
 				utm.recordError(utm.myHortDetails.MyHort)
 			}
-			saveButton.enabled=true;
+			saveButton.enabled = true;
 			utm.setActivityIndicator('');
 		},
 		onerror : function(e) {
@@ -397,9 +537,9 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 					showProgress : false
 				});
 			} else {
-				utm.handleError(e, this.status, this.responseText);				
+				utm.handleError(e, this.status, this.responseText);
 			}
-			saveButton.enabled=true;
+			saveButton.enabled = true;
 			utm.setActivityIndicator('');
 		},
 		timeout : utm.netTimeout
@@ -416,39 +556,79 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 		getMyHortDetailReq.send();
 	}
 
-	topButtonBar.addEventListener('click', function(e) {
+	if (utm.iPhone || utm.iPad) {
+		topButtonBar.addEventListener('click', function(e) {
 
-		if (e.index === 0) {
-			//Invite
-			utm.myHortMembersWindow = new MyHortMembersWindow( _myHortData,utm, isOwner);			
+			if (e.index === 0) {
+				//Invite
+				utm.myHortMembersWindow = new MyHortMembersWindow(_myHortData, utm, isOwner);
+				utm.navController.open(utm.myHortMembersWindow);
+
+			} else if (e.index === 1) {
+				//Invite
+				utm.myHortInviteWindow = new MyHortInviteWindow(_myHortData, utm);
+				utm.navController.open(utm.myHortInviteWindow);
+
+			} else if (e.index === 2) {
+				//Show Pending
+				utm.myHortPendingWindow = new MyHortPendingWindow(_myHortData.MyHortId, utm);
+				utm.myHortPendingWindow.open({
+					modal : true,
+					modalTransitionStyle : Ti.UI.iPhone.MODAL_TRANSITION_STYLE_PARTIAL_CURL,
+					modalStyle : Ti.UI.iPhone.MODAL_PRESENTATION_FORMSHEET,
+					navBarHidden : true
+				});
+			}
+
+		});
+	}
+	if (utm.Android) {
+		// Add event listeners for tabs
+		tab1.addEventListener('click', function() {
+			currTab.backgroundColor = '#000';
+			currTab.children[0].color = '#333';
+			this.backgroundColor = '#333';
+			this.children[0].color = '#FFF';
+			currTab = this;
+			//Members
+			utm.myHortMembersWindow = new MyHortMembersWindow(_myHortData, utm, isOwner);
 			utm.navController.open(utm.myHortMembersWindow);
-			
-		} else if (e.index === 1) {
+		});
+		tab2.addEventListener('click', function() {
+			currTab.backgroundColor = '#000';
+			currTab.children[0].color = '#333';
+			this.backgroundColor = '#333';
+			this.children[0].color = '#FFF';
+			currTab = this;
 			//Invite
-			utm.myHortInviteWindow = new MyHortInviteWindow( _myHortData,utm);
-			utm.navController.open(utm.myHortInviteWindow);			
-			
-		} else if (e.index === 2) {
-			//Show Pending			
-			utm.myHortPendingWindow = new MyHortPendingWindow( _myHortData.MyHortId,utm);
+			utm.myHortMembersWindow = new MyHortMembersWindow(_myHortData, utm, isOwner);
+			utm.navController.open(utm.myHortMembersWindow);
+		});
+		tab3.addEventListener('click', function() {
+			currTab.backgroundColor = '#000';
+			currTab.children[0].color = '#333';
+			this.backgroundColor = '#333';
+			this.children[0].color = '#FFF';
+			currTab = this;
+			//Show Pending
+			utm.myHortPendingWindow = new MyHortPendingWindow(_myHortData.MyHortId, utm);
 			utm.myHortPendingWindow.open({
 				modal : true,
 				modalTransitionStyle : Ti.UI.iPhone.MODAL_TRANSITION_STYLE_PARTIAL_CURL,
 				modalStyle : Ti.UI.iPhone.MODAL_PRESENTATION_FORMSHEET,
 				navBarHidden : true
-			});			
-		}
+			});
 
-	});
-	
-	function authFacebook(){
+		});
+	}
+
+	function authFacebook() {
 		Titanium.Facebook.forceDialogAuth = false;
-		
+
 		Titanium.Facebook.addEventListener('login', updateLoginStatus);
 		Titanium.Facebook.addEventListener('logout', updateLoginStatus);
-		
+
 	}
-	
 
 	return win;
 };
