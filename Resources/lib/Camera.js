@@ -63,9 +63,17 @@ function CameraView(_win) {
 					mediaTypes:[Ti.Media.MEDIA_TYPE_PHOTO],  //, Ti.Media.MEDIA_TYPE_VIDEO this will need work to get video working
 					success:function(event) {
 						resizedImage = event.media;
+						
+						resizeRatio = (Math.max(event.media.width/3,event.media.height/3));
+						resizeWidth = Math.round(event.media.width/resizeRatio);
+						resizeHeight = Math.round(event.media.height/resizeRatio);
+						
+						resizedImage = resizedImage.imageAsResized(resizeWidth, resizeHeight);
+						
 						displayRatio = (Math.max(event.media.width/imageBorder.getWidth(),event.media.height/imageBorder.getHeight()));
 						thumbWidth = Math.round(event.media.width/displayRatio);
 						thumbHeight = Math.round(event.media.height/displayRatio);
+						
 						
 						imageContainer.setVisible(false);
 						imageContainer.setWidth(thumbWidth);
