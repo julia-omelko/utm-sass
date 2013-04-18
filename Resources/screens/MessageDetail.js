@@ -53,7 +53,6 @@ function messageDetail_window(_messageData,_curMode,utm) {
 	win.add(scrollingView);
 
 	var view = Ti.UI.createView({
-		height : 2000,
 		layout : 'vertical'
 	});
 
@@ -150,9 +149,8 @@ function messageDetail_window(_messageData,_curMode,utm) {
 	view.add(bottomSpacerView)
 	
 	var scrollVu = Ti.UI.createScrollableView({	  
+		top:4,
 	    cacheSize:3,
-	    height:200,
-	    width:200,
 	    visible:false
 	});
 	view.add(scrollVu);
@@ -233,7 +231,7 @@ function messageDetail_window(_messageData,_curMode,utm) {
 				if(response.Message.length > 1000){
 					view.height=Titanium.UI.SIZE ;
 				}else{
-					view.height=2000;
+					//view.height=2000;
 				}
 				
 				if(_messageData.HasAttachments){
@@ -310,6 +308,7 @@ function messageDetail_window(_messageData,_curMode,utm) {
 	}
 		
 	function callOutToGetAttachments(_messageData){		
+		utm.setActivityIndicator('Loading Attachment...');	
 		for(i=0;i < _messageData.Attachments.length;i++){					
 			getAttachmentsReq.open("GET",utm.serviceUrl+"Attachment/"+_messageData.Attachments[i].Id);	
 			getAttachmentsReq.setRequestHeader('Authorization-Token', utm.AuthToken);	
@@ -331,7 +330,7 @@ function messageDetail_window(_messageData,_curMode,utm) {
 		,onload: function()
 		{
 			var response = eval('('+this.responseText+')');
-				
+			utm.setActivityIndicator('');		
 			if(this.status ==200){
 				populateImageViews(response);
 			}
@@ -347,9 +346,11 @@ function messageDetail_window(_messageData,_curMode,utm) {
 		var imageSrc = _attachment.Attachment;	
 
 		try{
-				var singleImageView = Ti.UI.createImageView();
+			var singleImageView = Ti.UI.createImageView();
 			singleImageView.setImage(Ti.Utils.base64decode(imageSrc));
 			imageViews.push(singleImageView);
+			scrollVu.width = singleImageView.width;
+			scrollVu.height = singleImageView.height;
 			scrollVu.views=imageViews;	
 		}catch(e){
 			//alert('');	
