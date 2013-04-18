@@ -15,27 +15,27 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 	var twitterEnabledForUser = false;
 	utm.MyHortDetails = false;
 
-	var win = Ti.UI.createWindow({
+	if(utm.iPhone || utm.iPad){
+		var win = Ti.UI.createWindow({
 		layout : 'vertical',
 		backgroundColor : utm.backgroundColor,
 		barColor : utm.barColor
-	});
+		});
 
-
-	var scrollingView = Ti.UI.createScrollView({
+		var scrollingView = Ti.UI.createScrollView({
 		showVerticalScrollIndicator : true,
 		showHorizontalScrollIndicator : false
-	});
-	win.add(scrollingView);
-
-	var view = Ti.UI.createView({
-		height : 2000,
-		layout : 'vertical'
-	});
-
-	scrollingView.add(view);
+		});
 	
-	if(utm.iPhone || utm.iPad){
+		win.add(scrollingView);
+
+		var view = Ti.UI.createView({
+			height : 2000,
+			layout : 'vertical'
+		});
+
+		scrollingView.add(view);
+	
 		if(isOwner){
 			var buttons = [
 		    {title:'Members', enabled:false},
@@ -69,26 +69,65 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 	}
 	
 	if(utm.Android){
-		var spacer = Math.round(Ti.Platform.displayCaps.platformWidth*0.25);
-		var width = spacer-4;
-		var height = 36;
+		//create the base screen and hide the Android navbar
+		var win = Titanium.UI.createWindow({
+		    layout : 'vertical',
+		 	backgroundColor : utm.backgroundColor,
+		    navBarHidden:true
+		});
+ 
+ 		//create a navbar for Android
+		var my_navbar = Ti.UI.createLabel({
+		    height : 50,
+		    width : '100%',
+		    backgroundColor : utm.barColor,
+		    text:'MyHort Info',
+		    color : utm.backgroundColor,
+		    font:{fontSize:utm.androidTitleFontSize,fontWeight:utm.androidTitleFontWeight},
+		    textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+		    top:0
+		});
+		
+  		//add the navbar to the screen
+		win.add(my_navbar);
+
+		var scrollingView = Ti.UI.createScrollView({
+		showVerticalScrollIndicator : true,
+		showHorizontalScrollIndicator : false
+		});
+	
+		win.add(scrollingView);
+
+		var view = Ti.UI.createView({
+			height : 2000,
+			layout : 'vertical'
+		});
+
+		scrollingView.add(view);
+	
+		var spacer = Math.round(Ti.Platform.displayCaps.platformWidth*0.33);
+		var btnWidth = spacer-2;
+		var btnHeight = 34;
+		var leftPos = Math.round((Ti.Platform.displayCaps.platformWidth - btnWidth*3)*0.5)
 		 
 		// TAB BAR aka Button Bar for Android
 		var tabBar = Ti.UI.createView({
-		    width:Ti.Platform.displayCaps.platformWidth,
+		    width:'100%',
 		    height:40,
 		    left:0,
 		    bottom:0,
-		    backgroundColor:'#000'
+		    layout : 'horizontal'
 		});
 		view.add(tabBar);
 		// TAB 1
 		var tab1 = Ti.UI.createView({
-		    width:width,
-		    height:height,
-		    left:2,
-		    bottom:2,
+		    width:btnWidth,
+		    height:btnHeight,
+		    left:leftPos,
+		    top:2,
 		    backgroundColor:'#336699',
+		    borderColor: '#000000',
+		    borderWidth: 1,
 		    borderRadius:2
 		});
 		var tab1Label = Ti.UI.createLabel({
@@ -96,35 +135,44 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 		    color:'#FFF'
 		});
 		tab1.add(tab1Label);
-		view.add(tab1);
+		tabBar.add(tab1);
+		
 		// TAB 2
 		var tab2 = Ti.UI.createView({
-		    width:width,
-		    height:height,
-		    left:spacer,
-		    bottom:2,
-		    backgroundColor:'#000'
+		    width:btnWidth,
+		    height:btnHeight,
+		    top:2,
+		    backgroundColor:'#336699',
+		    borderColor: '#000000',
+		    borderWidth: 1		    
 		});
 		var tab2Label = Ti.UI.createLabel({
 		    text:'Invite',
-		    color:'#333'
+		    color:'#FFF'
 		});
 		tab2.add(tab2Label);
-		view.add(tab2);
+		tabBar.add(tab2);
+		
 		// TAB 3
 		var tab3 = Ti.UI.createView({
-		    width:width,
-		    height:height,
-		    left:(spacer*2),
-		    bottom:2,
-		    backgroundColor:'#000'
+		    width:btnWidth,
+		    height:btnHeight,
+		    top:2,
+		    backgroundColor:'#336699',
+		    borderColor: '#000000',
+		    borderWidth: 1,		    
+		    borderRadius:2
 		});
 		var tab3Label = Ti.UI.createLabel({
-		    text:'Tab 3',
-		    color:'#333'
+		    text:'Pending Invites',
+		    color:'#FFF'
 		});
 		tab3.add(tab3Label);
-		view.add(tab3);
+		tabBar.add(tab3);
+	
+		//add activityIndicator to view
+		view.add(utm.activityIndicator)
+	
 	}
 	
 
@@ -142,7 +190,7 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 	var myHortNamelbl = Ti.UI.createLabel({
 		text : 'MyHort ',
 		font : {
-			fontSize : 14,
+			fontSize : '14dp',
 			fontWeight : 'bold'
 		},
 		height : 'auto',
@@ -155,7 +203,7 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 		text : _myHortData.FriendlyName,
 		width : utm.SCREEN_WIDTH - 100,
 		font : {
-			fontSize : 14,
+			fontSize : '14dp',
 		},
 		height : 'auto',
 		top : 2,
@@ -173,12 +221,12 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 		width : '100%',
 		top : 3,
 		left : 8,
-		height : 50
+		//height : 50
 	});
 	var twitterLabel = Ti.UI.createLabel({
 		text : 'Twitter',
 		font : {
-			fontSize : 14,
+			fontSize : '14dp',
 			fontWeight : 'bold'
 		},
 		width : 80,
@@ -225,7 +273,7 @@ function myHortDetail_window(_myHortData,utm,isOwner) {
 	view.add(twitterGroup);
 
 	//----------Facebook--------------------
-	var faceBook = new InputField('FaceBook', 80, '', 210);
+	var faceBook = new InputField('Facebook', 80, '', 210);
 	view.add(faceBook);
 
 	//----------Mobile # --------------------
