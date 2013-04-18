@@ -59,7 +59,7 @@ var PreviewMessage_window = function(utm) {
 		tabBar.add(cameraButton);
 		
 		
-	}else if(utm.iPhone || utm.iPad){		
+	}else if(utm.iPhone){		
 		
 		cameraButton.width=40;
 		cameraButton.height=36;
@@ -80,7 +80,7 @@ var PreviewMessage_window = function(utm) {
 	var yourOrgMessageLabel = Ti.UI.createLabel({
 		text : L('send_your_original_message') + ':',
 		font : {
-			fontSize : 14,
+			fontSize : '14dp',
 			fontWeight : 'bold'
 		},
 		width : utm.SCREEN_WIDTH - 10,
@@ -92,7 +92,7 @@ var PreviewMessage_window = function(utm) {
 	var yourOrgMessageValue = Ti.UI.createTextArea({
 		value : '',
 		font : {
-			fontSize : 16
+			fontSize : '16dp'
 		},
 		color : utm.textFieldColor,
 		editable : false,
@@ -108,7 +108,7 @@ var PreviewMessage_window = function(utm) {
 		width : utm.SCREEN_WIDTH - 10,
 		top : 5,
 		font : {
-			fontSize : 14,
+			fontSize : '14dp',
 			fontWeight : 'bold'
 		},
 		height : 'auto',
@@ -119,7 +119,7 @@ var PreviewMessage_window = function(utm) {
 	var encryptedValue = Ti.UI.createTextArea({
 		text : '',
 		font : {
-			fontSize : 16
+			fontSize : '16dp'
 		},
 		color : utm.textFieldColor,
 		editable : false,
@@ -134,7 +134,7 @@ var PreviewMessage_window = function(utm) {
 	var customMessageLabel = Ti.UI.createLabel({
 		text : L('send_customize_message') + ':',
 		font : {
-			fontSize : 14,
+			fontSize : '14dp',
 			fontWeight : 'bold'
 		},
 		width : utm.SCREEN_WIDTH - 10,
@@ -150,7 +150,7 @@ var PreviewMessage_window = function(utm) {
 		borderRadius : 5,
 		color : utm.textFieldColor,
 		font : {
-			fontSize : 16
+			fontSize : '16dp'
 		},
 		textAlign : 'left',
 		top : 5,
@@ -210,15 +210,15 @@ var PreviewMessage_window = function(utm) {
 	//----------Delete On Read Switch--------------------
 	var deleteView = Ti.UI.createView({
 		layout : 'horizontal',
-		height : 30,
+		height : Ti.UI.SIZE,
 		width : utm.SCREEN_WIDTH 
 	});
 	win.add(deleteView);
 	
 	var deleteOnReadLabel = Ti.UI.createLabel({
-		text : L('send_delete_on_read'),
+		text : (L('send_delete_on_read') + " "),
 		font : {
-			fontSize : 14,
+			fontSize : '14dp',
 			fontWeight : 'bold'
 		},
 		top : 8,
@@ -239,6 +239,10 @@ var PreviewMessage_window = function(utm) {
 	//------------- Send Button ------------------
 	var sendButton = Ti.UI.createButton({
 		title : L('send_UTM_message_now'),
+		font : {
+			fontSize : '14dp',
+			fontWeight : 'bold'
+		},
 		top : 8
 	});
 	win.add(sendButton);

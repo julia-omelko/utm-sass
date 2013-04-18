@@ -74,7 +74,7 @@ function message_window(utm) {
 		var tabBar = Titanium.UI.createView ({
    			layout : 'horizontal',
    			width : '100%',
-   			height : 45
+   			height : 55
 		});
 		win.add(tabBar);
 		
@@ -82,7 +82,7 @@ function message_window(utm) {
 			title : 'Received',
 			top : 2,
 			Height : Titanium.UI.SIZE - 4,
-			font:{fontFamily:'Arial',fontWeight:'bold',fontSize:14}
+			font:{fontFamily:'Arial',fontSize:'14dp'}
 		});
 		tabBar.add(receivedButton);
 		
@@ -98,7 +98,7 @@ function message_window(utm) {
 			title : 'Sent',
 			top : 2,
 			Height : Titanium.UI.SIZE - 4,
-			font:{fontFamily:'Arial',fontWeight:'bold',fontSize:14}
+			font:{fontFamily:'Arial',fontSize:'14dp'}
 		});
 		tabBar.add(sentButton);
 		
@@ -282,7 +282,7 @@ function message_window(utm) {
 					row : clickName = 'row',
 					objName : 'row',
 					touchEnabled : true,
-					height : 55,
+					//height : 55,
 					hasChild : true,
 					messageData : response[i]
 				});
@@ -297,7 +297,7 @@ function message_window(utm) {
 					var unreadImage = Ti.UI.createImageView({
 						image : '/images/circle_blue.png',
 						width : 12,
-						height : 12,
+						//height : 12,
 						top : 20,
 						left : 2
 					});
@@ -308,7 +308,7 @@ function message_window(utm) {
 					backgroundColor : '#fff',
 					color : '#000',
 					font : {
-						fontSize : 14,
+						fontSize : '14dp',
 						fontWeight : 'bold'
 					},
 					objName : 'fromMessage',
@@ -317,7 +317,7 @@ function message_window(utm) {
 					top : 2,
 					left : 17,
 					width : utm.SCREEN_WIDTH - 100,
-					height : 15,
+					//height : 15,
 					ellipsize : true
 				});
 				hView.add(fromMessage);
@@ -326,14 +326,14 @@ function message_window(utm) {
 					backgroundColor : '#fff',
 					color : '#666',
 					font : {
-						fontSize : 14
+						fontSize : '14dp'
 					},
 					objName : 'utmMessage',
 					text : response[i].UtmText,
 					touchEnabled : true,
 					top : 30,
 					left : 15,
-					height : 16,
+					//height : 16,
 					width : '100%'
 				});
 				hView.add(utmMessage);
@@ -342,7 +342,7 @@ function message_window(utm) {
 					backgroundColor : '#fff',
 					color : '#0066ff',
 					font : {
-						fontSize : 10
+						fontSize : '10dp'
 					},
 					objName : 'timeLabel',
 					//text: String.formatDate(new Date(response[i].DateSent,'short')),

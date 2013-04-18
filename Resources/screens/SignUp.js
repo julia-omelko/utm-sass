@@ -83,7 +83,7 @@ function signUp_window(utm) {
 			
 			var response = eval('(' + this.responseText + ')');
 			utm.signUps = response;
-			utm.setActivityIndicator('');
+
 			if (this.status == 200) {
 				
 				if(this.responseData){
@@ -93,30 +93,15 @@ function signUp_window(utm) {
 					if(error.Status ==='Error'){
 						saveButton.enabled = true;
 						if(error.Message ==="DuplicateEmail"){
-
-							var dialog = Ti.UI.createAlertDialog({
-								cancel : 1,
-								buttonNames : [L('login'), L('cancel')],
-								message : 'Your email is already registered would you like to login now?',
-								title : 'Email Found' });
-								
-								dialog.addEventListener('click', function(e) {
-									if (e.index !== e.source.cancel) {
-										Ti.App.fireEvent('app:logout');
-									}
-								});
-							dialog.show();
-							
+							alert('This email is aready registered.');
 						}else{
 							alert(error.Message);	
 						}
-						
-					}else{
-						//Success
-						saveButton.enabled = false;
-						alert('Thank you for registering. Please check your email for a confirmation request with a link that will confirm your account. Once you click the link, your registration will be complete.'); 
-						utm.navController.close(utm.signupView);	
-					}				
+					}
+					//Success
+					saveButton.enabled = false;
+					alert('Thank you for registering. Please check your email for a confirmation request with a link that will confirm your account. Once you click the link, your registration will be complete.'); 
+					utm.navController.close(utm.signupView);					
 				}
 
 			} else if (this.status == 400) {
@@ -127,7 +112,7 @@ function signUp_window(utm) {
 				utm.recordError('Error')
 			}
 
-			
+			utm.setActivityIndicator('');
 		},
 		onerror : function(e) {
 			utm.setActivityIndicator('');

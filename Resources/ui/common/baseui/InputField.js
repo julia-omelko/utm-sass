@@ -9,7 +9,7 @@ function inputField(_label, _labelWidth,  _val, _valWidth, _keyboardType,_return
 			text: '*'	
 			,top:12
 			,left:2	
-			,font:{fontFamily:'Arial',fontWeight:'bold',fontSize:14}
+			,font:{fontFamily:'Arial',fontWeight:'bold',fontSize:'14dp'}
 			,width:5
 		});
 		hView.add(req);		
@@ -19,7 +19,7 @@ function inputField(_label, _labelWidth,  _val, _valWidth, _keyboardType,_return
 		text: _label	
 		,top:16
 		,left:8	
-		,font:{fontWeight:'bold',fontSize:14}
+		,font:{fontWeight:'bold',fontSize:'14dp'}
 		,width:_labelWidth
 	});
 	hView.add(lbl);
@@ -45,7 +45,7 @@ function inputField(_label, _labelWidth,  _val, _valWidth, _keyboardType,_return
 		, left:_labelWidth+8
 		, color:utm.textErrorColor 
 		, visible:false
-		,font:{fontWeight:'bold',fontSize:12}
+		,font:{fontWeight:'bold',fontSize:'12dp'}
 	});
 	hView.add(fldMessageLabel);
 	

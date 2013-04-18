@@ -10,7 +10,7 @@ var TheLandingScreen_view = function(utm) {
 		
 		var logoutBtn = Ti.UI.createButton({
 			title:L('logout'),
-			font:{fontFamily:'Arial',fontWeight:'bold',fontSize:14}
+			font:{fontFamily:'Arial',fontWeight:'bold',fontSize:'14dp'}
 		});
 		logoutBtn.addEventListener('click', function(){
 			utm.log("Back button pressed while on landing screen on ios. Firing app:logout");
@@ -59,7 +59,7 @@ var TheLandingScreen_view = function(utm) {
 		title:L('landing_view_messages'),
 		top:20,
 		width:200,
-		font:{fontFamily:'Arial',fontWeight:'bold',fontSize:14}
+		font:{fontFamily:'Arial',fontWeight:'bold',fontSize:'14dp'}
 	});
 	landingView.add(viewMessageBtn);
 	
@@ -67,7 +67,7 @@ var TheLandingScreen_view = function(utm) {
 		title:L('landing_send_messages'),
 		top:20,
 		width:200,
-		font:{fontFamily:'Arial',fontWeight:'bold',fontSize:14}
+		font:{fontFamily:'Arial',fontWeight:'bold',fontSize:'14dp'}
 	});
 	landingView.add(sendMessageBtn);	
 	
@@ -75,7 +75,7 @@ var TheLandingScreen_view = function(utm) {
 		title:'MyHorts',
 		top:20,
 		width:200,
-		font:{fontFamily:'Arial',fontWeight:'bold',fontSize:14}
+		font:{fontFamily:'Arial',fontWeight:'bold',fontSize:'14dp'}
 	});
 	landingView.add(myHortBtn);	
 	
@@ -83,7 +83,7 @@ var TheLandingScreen_view = function(utm) {
 		title:L('landing_my_account'),
 		top:20,
 		width:200,
-		font:{fontFamily:'Arial',fontWeight:'bold',fontSize:14}
+		font:{fontFamily:'Arial',fontWeight:'bold',fontSize:'14dp'}
 	});
 	landingView.add(myAccountBtn);	
 	

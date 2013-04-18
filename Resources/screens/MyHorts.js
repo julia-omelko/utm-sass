@@ -151,7 +151,7 @@ var MyHorts_window = function(utm) {
 				backgroundColor : '#fff',
 				color : '#000',
 				font : {
-					fontSize : 14,
+					fontSize : '14dp',
 					fontWeight : 'bold'
 				},
 				objName : 'myHortName',
@@ -160,7 +160,7 @@ var MyHorts_window = function(utm) {
 				//top : 5,
 				left : 27,
 				width : utm.SCREEN_WIDTH - 100,
-				height : 15,
+				//height : 15,
 				ellipsize : true
 			});
 			hView.add(myHortName);
