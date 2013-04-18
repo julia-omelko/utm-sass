@@ -171,6 +171,7 @@ function messageDetail_window(_messageData,_curMode,utm) {
 					utm.log("data returned:"+response);
 					var data = [];
 					utm.curUserCurMyHortHasTwitter = false;
+					utm.curUserCurMyHortHasFacebook = false;
 					
 					var selectedContacts=[];
 					
