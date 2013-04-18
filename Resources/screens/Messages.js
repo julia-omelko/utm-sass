@@ -282,7 +282,7 @@ function message_window(utm) {
 					row : clickName = 'row',
 					objName : 'row',
 					touchEnabled : true,
-					//height : 55,
+					height : utm.Android ? '':55,
 					hasChild : true,
 					messageData : response[i]
 				});
@@ -317,7 +317,7 @@ function message_window(utm) {
 					top : 2,
 					left : 17,
 					width : utm.SCREEN_WIDTH - 100,
-					//height : 15,
+					height : 15,
 					ellipsize : true
 				});
 				hView.add(fromMessage);
