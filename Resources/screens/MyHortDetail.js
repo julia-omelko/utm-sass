@@ -36,7 +36,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		win.add(scrollingView);
 
 		var view = Ti.UI.createView({
-			height : 2000,
+			height : utm.SCREEN_HEIGHT * 1.25,
 			layout : 'vertical'
 		});
 
@@ -123,7 +123,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		win.add(scrollingView);
 
 		var view = Ti.UI.createView({
-			height : 2000,
+			height : utm.SCREEN_HEIGHT * 1.25,
 			layout : 'vertical'
 		});
 
