@@ -1,6 +1,6 @@
 var ChooseMyHort_window =function(utm) {
 	
-	if(utm.iPhone){
+	if(utm.iPhone || utm.iPad){
 		var chooseMyHortView = Ti.UI.createWindow({
 		layout:'vertical'
 		, title:L('send_choose_myhort')
@@ -52,7 +52,7 @@ var ChooseMyHort_window =function(utm) {
 	function populateMyHortPicker(){	
 		var data = [];
 
-		if(utm.iPhone){
+		if(utm.iPhone || utm.iPad){
 			myHortPicker.columns = [];
 		}
 		

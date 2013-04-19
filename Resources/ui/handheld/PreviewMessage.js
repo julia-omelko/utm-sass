@@ -59,7 +59,7 @@ var PreviewMessage_window = function(utm) {
 		tabBar.add(cameraButton);
 		
 		
-	}else if(utm.iPhone){		
+	}else if(utm.iPhone || utm.iPad){		
 		
 		cameraButton.width=40;
 		cameraButton.height=36;
