@@ -25,13 +25,13 @@ function createMyHortWindow(_myHortData, utm, _isOwner) {
 	colHeader.add(nickNameLbl);
 	
 	var memberTypeLbl = Ti.UI.createLabel({
-		text : 'Member Type',
+		text : 'Visible',
 		font : {
 			fontWeight : 'bold',
 			fontSize : 16
 		},
 		color : utm.color_org,
-		left:15		
+		left:30		
 	})
 	colHeader.add(memberTypeLbl);
 	
@@ -42,7 +42,7 @@ function createMyHortWindow(_myHortData, utm, _isOwner) {
 			fontSize : 16
 		},
 		color : utm.color_org,
-		left:40
+		left:50
 	})
 	colHeader.add(acceptsLbl);
 
@@ -104,7 +104,7 @@ function createMyHortWindow(_myHortData, utm, _isOwner) {
 					backgroundColor : '#fff',
 					color : '#000',
 					objName : 'memberType',
-					text : myHortMembersData[i].MemberType,
+					text : myHortMembersData[i].MemberType ==='Invisible'?'Yes' : 'No',
 					touchEnabled : false,
 					left : 115,
 					height : 15,
@@ -114,7 +114,7 @@ function createMyHortWindow(_myHortData, utm, _isOwner) {
 	
 				var iconView = Ti.UI.createView({
 					layout:'horizontal'
-					,left:utm.SCREEN_WIDTH - 80			
+					,left:utm.SCREEN_WIDTH - 100			
 				});			
 				hView.add(iconView);
 				
@@ -149,6 +149,16 @@ function createMyHortWindow(_myHortData, utm, _isOwner) {
 						visible:myHortMembersData[i].HasTwitter
 				});
 				iconView.add(twitterIcon);
+				
+				var facebookIcon = Ti.UI.createImageView({
+						image :  '/images/facebook_black.png',
+						width : myHortMembersData[i].HasFaceBook?24:0,
+						height : 24,
+						right:myHortMembersData[i].HasFaceBook?3:0,
+						top:15,
+						visible:myHortMembersData[i].HasFaceBook
+				});
+				iconView.add(facebookIcon);
 	
 				row.add(hView);
 				tableData.push(row);
