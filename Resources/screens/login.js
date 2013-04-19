@@ -107,7 +107,7 @@ var TheLoginScreen_view = function(utm) {
 		
 	//Want to sign up?
 	//var signUpLabel = createLink(L('login_signup'), 'https://'+utm.envModePrefix +'youthisme.com/Account/Register')
-	var signUpLabel = Ti.UI.createLabel({
+	/*var signUpLabel = Ti.UI.createLabel({
 		 text:L('login_signup'),
 		 color: utm.textColor,		
 		 textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
@@ -120,7 +120,7 @@ var TheLoginScreen_view = function(utm) {
 	signUpLabel.addEventListener('click',function(){
 		Ti.App.fireEvent('app:signup');
 	})
-	
+	*/
 	//About UTM
 	var tosLabel = createLink(L('login_about'), 'http://'+utm.envModePrefix +'youthisme.com/Home/About')
 	loginView.add(tosLabel);
