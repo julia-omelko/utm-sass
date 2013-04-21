@@ -29,7 +29,7 @@ var analytics = new gaModule('UA-38943374-1');
 
 utm.twitterConsumerKey='8qiy2PJv3MpVyzuhfNXkOw';
 utm.twitterConsumerSecret ='Qq0rth4MHGB70nh20nSzov2zz6GbVxuVndCh2IxkRWI';
-utm.facebookAppId = '236751426467358';
+utm.facebookAppId = '494625050591800';
 
 var unlockWindow = null;
 
@@ -97,8 +97,8 @@ utm.setEnvModePrefix= function (env){
 		utm.serviceUrl = 'https://'+env +'.youthisme.com/api/v1/';
 		utm.webUrl = 'https://'+env +'.youthisme.com';
 	}else if(env === 'prod'){
-		utm.serviceUrl = 'https://youthisme.com/api/v1/';
-		utm.webUrl ='https://youthisme.com';
+		utm.serviceUrl = 'https://prod.youthisme.com/api/v1/';
+		utm.webUrl ='https://prod.youthisme.com';
 	}	
 	utm.log('env='+env);
 	utm.log('utm.seviceUrl='+utm.serviceUrl);
@@ -147,7 +147,7 @@ function appInit(){
 	if (Ti.Platform.model === 'Simulator' || Ti.Platform.model ===  'google_sdk') { 
 		utm.setEnvModePrefix("local");
 	}else{
-		utm.setEnvModePrefix("test");
+		utm.setEnvModePrefix("prod");
 	}	
 	
 	utm.loginView.setVersionLabel();
