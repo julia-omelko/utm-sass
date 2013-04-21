@@ -265,7 +265,7 @@ var TheLoginScreen_view = function(utm) {
 	{	
 		var dialog = Ti.UI.createAlertDialog({
 				cancel : 1,
-				buttonNames : ['Local','Dev', 'Test', L('cancel')],
+				buttonNames : ['Local','Dev', 'Test','Prod', L('cancel')],
 				title : 'Choose The Environment'
 			});
 			dialog.addEventListener('click', function(e) {
@@ -275,6 +275,8 @@ var TheLoginScreen_view = function(utm) {
 					utm.setEnvModePrefix("dev");
 				} else if (e.index === 2) {
 					utm.setEnvModePrefix("test");
+				}else if (e.index === 3) {
+					utm.setEnvModePrefix("prod");
 				}
 				//versionLabel.text=utm.appVersion + '  ('+utm.envModePrefix +' DB)';
 				
@@ -285,6 +287,11 @@ var TheLoginScreen_view = function(utm) {
 	loginView.setVersionLabel =function(){
 		//versionLabel.text=utm.appVersion + '  ('+utm.envModePrefix +' DB)';
 	}
+	
+	loginView.enableLoginButton =function(_enabled){
+		loginBtn.enabled=_enabled;
+	}
+	
 	
 	
 	fillInTestLogin();

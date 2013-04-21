@@ -7,7 +7,7 @@
     <property name="acs-oauth-key-development" type="string">D8emSitkv0UekXWKIETz3xQDg85kFk9g</property>
     <property name="acs-api-key-development" type="string">sInlDKJGeaPrtdf5L8c3xsCZh3F6I7BB</property>
     <deployment-targets>
-        <target device="mobileweb">true</target>
+        <target device="mobileweb">false</target>
         <target device="iphone">true</target>
         <target device="ipad">true</target>
         <target device="android">true</target>
@@ -15,12 +15,12 @@
     </deployment-targets>
     <sdk-version>3.0.0.GA</sdk-version>
     <id>com.utm</id>
-    <name>UTM_TI</name>
-    <version>0.42 Beta</version>
+    <name>UTM</name>
+    <version>1.0</version>
     <publisher>youthisme</publisher>
     <url>http://youthisme.com</url>
-    <description>Test</description>
-    <copyright>2013 by youthisme</copyright>
+    <description>YouThisMe™ (UTM) is an innovative new technology that provides privacy in digital communications and postings on social media. The messages are hidden in plain sight and only the intended recipient(s) can decode them.</description>
+    <copyright>2013 UThisMe, LLC</copyright>
     <icon>appicon.png</icon>
     <persistent-wifi>false</persistent-wifi>
     <prerendered-icon>false</prerendered-icon>
