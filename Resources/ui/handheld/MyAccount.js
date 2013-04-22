@@ -11,7 +11,7 @@ var MyAccount_window = function(utm) {
 		barColor : utm.barColor
 	});
 
-	var upgradeButton = Ti.UI.createButton({
+	/*var upgradeButton = Ti.UI.createButton({
 		title : 'Upgrade Me',
 		top : 20,
 		width : 200,	
@@ -21,7 +21,7 @@ var MyAccount_window = function(utm) {
 
 	upgradeButton.addEventListener('click', function() {
 		
-	});	
+	});	*/
 	
 	var setPinLockButton = Ti.UI.createButton({
 		title : 'Set Unlock Code',

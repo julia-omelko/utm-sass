@@ -102,6 +102,7 @@ utm.setEnvModePrefix= function (env){
 	}	
 	utm.log('env='+env);
 	utm.log('utm.seviceUrl='+utm.serviceUrl);
+	utm.loginView.setWebUrl(utm.webUrl );
 }
 
 appInit();

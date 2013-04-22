@@ -1,4 +1,7 @@
 var TheLoginScreen_view = function(utm) {
+	
+	var webUrl='';
+	
 	if(utm.iPhone || utm.iPad ){
 		var loginView = Ti.UI.createWindow({			
 			layout:'vertical',title:''
@@ -102,11 +105,11 @@ var TheLoginScreen_view = function(utm) {
 	}
 	
 	//Forgot Your Password?
-	var forgotPWLabel = createLink(L('login_forgot_password'), 'https://'+utm.envModePrefix +'youthisme.com/Account/PasswordReset')
+	var forgotPWLabel = createLink(L('login_forgot_password'), '/Account/PasswordReset')
 	loginView.add(forgotPWLabel);
 		
 	//Want to sign up?
-	//var signUpLabel = createLink(L('login_signup'), 'https://'+utm.envModePrefix +'youthisme.com/Account/Register')
+	//var signUpLabel = createLink(L('login_signup'), '/Account/Register')
 	/*var signUpLabel = Ti.UI.createLabel({
 		 text:L('login_signup'),
 		 color: utm.textColor,		
@@ -122,7 +125,7 @@ var TheLoginScreen_view = function(utm) {
 	})
 	*/
 	//About UTM
-	var tosLabel = createLink(L('login_about'), 'http://'+utm.envModePrefix +'youthisme.com/Home/About')
+	var tosLabel = createLink(L('login_about'), '/Home/WhoWeAre')
 	loginView.add(tosLabel);
 
 	//Version 0.12 Alpha	
@@ -236,7 +239,7 @@ var TheLoginScreen_view = function(utm) {
 		});
 		
 		newLinkButton.addEventListener('click', function(e) {
-	    Ti.Platform.openURL(url);
+	    Ti.Platform.openURL(webUrl +url);
 	});
 		
 		return newLinkButton;
@@ -292,6 +295,9 @@ var TheLoginScreen_view = function(utm) {
 		loginBtn.enabled=_enabled;
 	}
 	
+	loginView.setWebUrl = function(_webUrl){
+		webUrl=_webUrl;
+	}
 	
 	
 	fillInTestLogin();
