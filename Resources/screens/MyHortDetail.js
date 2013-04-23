@@ -509,6 +509,20 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		},
 		timeout : utm.netTimeout
 	});
+	
+	function updateOwnerMemberDetails(){
+
+		for (x=0;x< _myHortData.Members.length;x++){
+			if (_myHortData.Members[x].MemberType == 'Primary'){
+				_myHortData.Members[x].HasEmail = email.getValue() !='';
+				_myHortData.Members[x].HasMobile=mobile.getValue() !='';
+				_myHortData.Members[x].HasTwitter=twitterSwitch.getValue();
+				_myHortData.Members[x].HasFaceBook=facebookSwitch.getValue();
+				break;
+			}
+		}
+	}
+	
 
 	// ##################### Call out to Update myHort  #####################
 	var updateMyHortDetailReq = Ti.Network.createHTTPClient({
@@ -520,7 +534,9 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 				utm.setActivityIndicator('Update Complete');
 				Ti.App.fireEvent("app:showMyHortWindow", {});
 				utm.setActivityIndicator('');
-				//TODO handle errors better
+				updateOwnerMemberDetails();
+				//loadMyHortDetail();
+			
 			} else if (this.status == 400) {
 				utm.recordError('error')
 			} else {
