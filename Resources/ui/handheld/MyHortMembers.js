@@ -104,13 +104,19 @@ function createMyHortWindow(_myHortData, utm, _isOwner) {
 					backgroundColor : '#fff',
 					color : '#000',
 					objName : 'memberType',
-					text : myHortMembersData[i].MemberType ==='Invisible'?'Yes' : 'No',
 					touchEnabled : false,
 					left : 115,
 					height : 15,
 					ellipsize : false
 				});
 				hView.add(memberType);
+				
+				if(myHortMembersData[i].MemberType==='Invisible'){
+					memberType.text = 'No'
+				}else if(myHortMembersData[i].MemberType==='Secondary'){
+					memberType.text = 'Yes'
+				}// leave primary blank
+				
 	
 				var iconView = Ti.UI.createView({
 					layout:'horizontal'
