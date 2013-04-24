@@ -68,7 +68,7 @@ function CameraView(_win) {
 						resizeWidth = Math.round(event.media.width/resizeRatio);
 						resizeHeight = Math.round(event.media.height/resizeRatio);
 						
-						resizedImage = resizedImage.imageAsResized(resizeWidth, resizeHeight);
+						resizedImage = resizedImage.imageAsResized(event.media.width/3,event.media.height/3);
 						
 						displayRatio = (Math.max(event.media.width/imageBorder.getWidth(),event.media.height/imageBorder.getHeight()));
 						thumbWidth = Math.round(event.media.width/displayRatio);
