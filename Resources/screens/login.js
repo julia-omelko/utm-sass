@@ -94,11 +94,11 @@ var TheLoginScreen_view = function(utm) {
 		
 		if (Titanium.Network.networkType == Titanium.Network.NETWORK_NONE) {
 			utm.log('Check Connection');
-		  	setMessageArea('No Internet Connection Available- the UTM Application requires that you have a Internet Connection.');
+		  //	setMessageArea('No Internet Connection Available- the UTM Application requires that you have a Internet Connection.');
 		  	loginBtn.enabled=false;
 		} else {
 			loginBtn.enabled=true;
-		   	setMessageArea('');
+		//   	setMessageArea('');
 		}
 			
 	 	return Titanium.Network.online;

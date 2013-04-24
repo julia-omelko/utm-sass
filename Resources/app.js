@@ -152,7 +152,7 @@ function appInit(){
 	}	
 	
 	utm.loginView.setVersionLabel();
-	//utm.navController.open(utm.loginView);
+
 }
 
 
@@ -410,10 +410,26 @@ Ti.Network.addEventListener('change', function(e) {
 	utm.log('Network Status Changed:' + e.online);
 	utm.log('Network Status Changed:' + Titanium.Network.networkType);
 	utm.networkIsOnline = e.online;
+	
+	if( e.online){
+		utm.setActivityIndicator('');
+	}else{
+		utm.setActivityIndicator('No Internet Connection Available');// TODO come up with a way to display more text - UTM Application requires an Internet Connection');		
+	}
+		
 	Ti.App.fireEvent("app:networkChange", {
 		online : e.online
 	});
 });
+
+function checkNetworkOnInit(){
+	if ( !Titanium.Network.online ){
+		utm.setActivityIndicator('No Internet Connection Available');// TODO come up with a way to display more text - UTM Application requires an Internet Connection');		
+	}else{
+		utm.setActivityIndicator('');
+	}
+	
+}
 
 
 function closeAllScreens(){
@@ -543,7 +559,7 @@ if(utm.iPhone || utm.iPad ){
 	}
 }
 
-
+/*
 Ti.App.addEventListener('app:networkChange',
 	function () {
 
@@ -559,7 +575,7 @@ Ti.App.addEventListener('app:networkChange',
 	 	return Titanium.Network.online;
 	}
 
-);
+);*/
 
 Titanium.App.addEventListener('close', function(e){
 	analytics.stop();
@@ -575,3 +591,6 @@ utm.recordAnalytics = function (theEvent,theData){
 	//	category, action, label, value
 	analytics.trackEvent('Usage',theEvent,'Lbl1',theData );	
 }
+
+//After everything is loaded check if device is online.
+checkNetworkOnInit();	
