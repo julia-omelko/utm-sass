@@ -1,15 +1,44 @@
 function createMyHortWindow(_myHortData, utm, _isOwner) {
 
-	var win = Ti.UI.createWindow({
-		backgroundColor : utm.backgroundColor,
-		barColor : utm.barColor,
-		title:'Members',
-		layout : 'vertical'
-	});
+	if (utm.iPhone || utm.iPad) {
+		var win = Ti.UI.createWindow({
+			backgroundColor : utm.backgroundColor,
+			barColor : utm.barColor,
+			title:'Members',
+			layout : 'vertical'
+		});
+	}
+
+	if (utm.Android) {
+		//create the base screen and hide the Android navbar
+		var win = Titanium.UI.createWindow({
+			layout : 'vertical',
+			backgroundColor : utm.backgroundColor,
+			navBarHidden : true
+		});
+
+		//create a navbar for Android
+		var my_navbar = Ti.UI.createLabel({
+			height : 50,
+			width : '100%',
+			backgroundColor : utm.barColor,
+			text : 'Members',
+			color : utm.backgroundColor,
+			font : {
+				fontSize : utm.androidTitleFontSize,
+				fontWeight : utm.androidTitleFontWeight
+			},
+			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+			top : 0
+		});
+
+		//add the navbar to the screen
+		win.add(my_navbar);		
+	}
 	
 	var colHeader = Ti.UI.createView({
 		layout:'horizontal',
-		height:20,
+		height:'20dp',
 		top:5
 	});
 	win.add(colHeader);
@@ -18,7 +47,7 @@ function createMyHortWindow(_myHortData, utm, _isOwner) {
 		text : 'Nickname',
 		font : {
 			fontWeight : 'bold',
-			fontSize : 16
+			fontSize : '16dp'
 		},
 		color : utm.color_org
 	})
@@ -28,10 +57,10 @@ function createMyHortWindow(_myHortData, utm, _isOwner) {
 		text : 'Visible',
 		font : {
 			fontWeight : 'bold',
-			fontSize : 16
+			fontSize : '16dp'
 		},
 		color : utm.color_org,
-		left:30		
+		left:'30dp'		
 	})
 	colHeader.add(memberTypeLbl);
 	
@@ -39,10 +68,10 @@ function createMyHortWindow(_myHortData, utm, _isOwner) {
 		text : 'Accepts',
 		font : {
 			fontWeight : 'bold',
-			fontSize : 16
+			fontSize : '16dp'
 		},
 		color : utm.color_org,
-		left:50
+		left:'50dp'
 	})
 	colHeader.add(acceptsLbl);
 
@@ -70,7 +99,7 @@ function createMyHortWindow(_myHortData, utm, _isOwner) {
 					row : clickName = 'row',
 					objName : 'row',
 					touchEnabled : false,
-					height : 55,
+					//height : '55dp',
 					hasChild : false,
 					myHortMembersRowData : myHortMembersData[i]
 				});
@@ -85,7 +114,7 @@ function createMyHortWindow(_myHortData, utm, _isOwner) {
 					backgroundColor : '#fff',
 					color : '#000',
 					font : {
-						fontSize : 14,
+						fontSize : '14dp',
 						fontWeight : 'bold'
 					},
 					objName : 'myHortName',
@@ -93,8 +122,8 @@ function createMyHortWindow(_myHortData, utm, _isOwner) {
 					touchEnabled : false,
 					//top : 5,
 					left : 2,
-					width : 110,
-					height : 15,
+					width : '110dp',
+					height : '15dp',
 					ellipsize : false
 				});
 				hView.add(nickName);
@@ -105,8 +134,11 @@ function createMyHortWindow(_myHortData, utm, _isOwner) {
 					color : '#000',
 					objName : 'memberType',
 					touchEnabled : false,
-					left : 115,
-					height : 15,
+					left : '115dp',
+					height : '15dp',
+					font : {
+						fontSize : '14dp'
+					},
 					ellipsize : false
 				});
 				hView.add(memberType);
@@ -128,7 +160,7 @@ function createMyHortWindow(_myHortData, utm, _isOwner) {
 					var phoneIcon = Ti.UI.createImageView({
 							image :  '/images/phone_black.png',
 							width : myHortMembersData[i].HasMobile?14:0,
-							height : 24,
+							height : '24dp',
 							right:myHortMembersData[i].HasMobile?3:0,
 							top:15, 
 							visible:myHortMembersData[i].HasMobile
@@ -139,7 +171,7 @@ function createMyHortWindow(_myHortData, utm, _isOwner) {
 				var emailIcon = Ti.UI.createImageView({
 						image :  '/images/email_black.png',
 						width : myHortMembersData[i].HasEmail?24:0,
-						height : 16,
+						height : '16dp',
 						right:myHortMembersData[i].HasEmail?3:0,
 						top:15,
 						visible:myHortMembersData[i].HasEmail
@@ -149,7 +181,7 @@ function createMyHortWindow(_myHortData, utm, _isOwner) {
 				var twitterIcon = Ti.UI.createImageView({
 						image :  '/images/twitter_black.png',
 						width : myHortMembersData[i].HasTwitter?24:0,
-						height : 24,
+						height : '24dp',
 						right:myHortMembersData[i].HasTwitter?3:0,
 						top:15,
 						visible:myHortMembersData[i].HasTwitter
@@ -159,7 +191,7 @@ function createMyHortWindow(_myHortData, utm, _isOwner) {
 				var facebookIcon = Ti.UI.createImageView({
 						image :  '/images/facebook_black.png',
 						width : myHortMembersData[i].HasFaceBook?24:0,
-						height : 24,
+						height : '24dp',
 						right:myHortMembersData[i].HasFaceBook?3:0,
 						top:15,
 						visible:myHortMembersData[i].HasFaceBook

@@ -193,26 +193,11 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		});
 		tab3.add(tab3Label);
 		tabBar.add(tab3);
-
+		
 		//add activityIndicator to view
 		view.add(utm.activityIndicator)
 	}
 	
-	
-	function enableButtonBar(_enable) {
-		buttons[0].enabled = _enable;
-		if (isOwner) {
-			buttons[1].enabled = _enable;
-			buttons[2].enabled = _enable;
-		}
-		topButtonBar.labels = buttons;
-	}
-
-
-	view.add(topButtonBar);
-	
-	
-
 	//-----------------MyHort Name  ----------------------
 	var myHortNameGroup = Ti.UI.createView({
 		layout : 'horizontal',
@@ -258,7 +243,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		width : '100%',
 		top : 3,
 		left : 8,
-		height : 50
+		height : '50dp'
 	});
 	view.add(twitterGroup);
 	
@@ -268,7 +253,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 			fontSize : '14dp',
 			fontWeight : 'bold'
 		},
-		width : 80,
+		width : '80dp',
 		textAlign : 'left'
 	});
 	twitterGroup.add(twitterLabel);
@@ -317,7 +302,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		width : '100%',
 		top : 3,
 		left : 8,
-		height : 50,
+		height : '50dp',
 		visible : true
 	});
 	view.add(faceBookGroup);
@@ -325,10 +310,10 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 	var faceBookLabel = Ti.UI.createLabel({
 		text : 'Facebook',
 		font : {
-			fontSize : 14,
+			fontSize : '14dp',
 			fontWeight : 'bold'
 		},
-		width : 80,
+		width : '80dp',
 		textAlign : 'left'
 	});
 	faceBookGroup.add(faceBookLabel);
@@ -601,40 +586,26 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 	if (utm.Android) {
 		// Add event listeners for tabs
 		tab1.addEventListener('click', function() {
-			currTab.backgroundColor = '#000';
-			currTab.children[0].color = '#333';
-			this.backgroundColor = '#333';
-			this.children[0].color = '#FFF';
-			currTab = this;
 			//Members
 			utm.myHortMembersWindow = new MyHortMembersWindow(_myHortData, utm, isOwner);
 			utm.navController.open(utm.myHortMembersWindow);
 		});
 		tab2.addEventListener('click', function() {
-			currTab.backgroundColor = '#000';
-			currTab.children[0].color = '#333';
-			this.backgroundColor = '#333';
-			this.children[0].color = '#FFF';
-			currTab = this;
 			//Invite
-			utm.myHortMembersWindow = new MyHortMembersWindow(_myHortData, utm, isOwner);
-			utm.navController.open(utm.myHortMembersWindow);
+			if (isOwner){
+				utm.myHortInviteWindow = new MyHortInviteWindow(_myHortData, utm);
+				utm.navController.open(utm.myHortInviteWindow);
+			}
 		});
 		tab3.addEventListener('click', function() {
-			currTab.backgroundColor = '#000';
-			currTab.children[0].color = '#333';
-			this.backgroundColor = '#333';
-			this.children[0].color = '#FFF';
-			currTab = this;
 			//Show Pending
-			utm.myHortPendingWindow = new MyHortPendingWindow(_myHortData.MyHortId, utm);
-			utm.myHortPendingWindow.open({
-				modal : true,
-				modalTransitionStyle : Ti.UI.iPhone.MODAL_TRANSITION_STYLE_PARTIAL_CURL,
-				modalStyle : Ti.UI.iPhone.MODAL_PRESENTATION_FORMSHEET,
-				navBarHidden : true
-			});
-
+			if (isOwner){
+				utm.myHortPendingWindow = new MyHortPendingWindow(_myHortData.MyHortId, utm);
+				utm.myHortPendingWindow.open({
+					modal : true,
+					navBarHidden : true
+				});
+			}
 		});
 	}
 
