@@ -99,7 +99,7 @@ function createMyHortWindow(_myHortData, utm, _isOwner) {
 					row : clickName = 'row',
 					objName : 'row',
 					touchEnabled : false,
-					//height : '55dp',
+					height : '55dp',
 					hasChild : false,
 					myHortMembersRowData : myHortMembersData[i]
 				});
