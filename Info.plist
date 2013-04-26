@@ -12,6 +12,8 @@
 	<string>appicon.png</string>
 	<key>CFBundleIconFiles</key>
 	<array>
+		<string>icon@2.png</string>
+		<string>appicon-72.png</string>
 		<string>appicon.png</string>
 	</array>
 	<key>CFBundleIdentifier</key>
