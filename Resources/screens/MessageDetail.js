@@ -63,7 +63,7 @@ function messageDetail_window(_messageData,_curMode,utm) {
 	var toDate = Ti.UI.createLabel({
 		text:'',
 		width:utm.SCREEN_WIDTH-10,
-		font: {fontSize:14, fontWeight:'bold'},
+		font: {fontSize:'14dp', fontWeight:'bold'},
 		height:'auto',
 		top:2,
 		textAlign:'left'
@@ -74,14 +74,14 @@ function messageDetail_window(_messageData,_curMode,utm) {
 	var toLabel = Ti.UI.createLabel({
 		text:'',
 		width:utm.SCREEN_WIDTH-10,
-		font: {fontSize:14, fontWeight:'bold'},
+		font: {fontSize:'14dp', fontWeight:'bold'},
 		height:'auto',
 		top:2,
-		textAlign:'left'
+		textAlign:'left' 
 	});
 	view.add(toLabel);
 	
-	var grayLine1 = Ti.UI.createLabel({text:' ',backgroundColor:'gray',width:'100%',	height:.5,top:2});
+	var grayLine1 = Ti.UI.createLabel({text:' ',backgroundColor:'gray',width:'100%',height:.5,top:2});
 	view.add(grayLine1);
 	
 	
@@ -89,7 +89,7 @@ function messageDetail_window(_messageData,_curMode,utm) {
 	var utmMessageLabel = Ti.UI.createLabel({
 		text:'UTM Message:',
 		width:utm.SCREEN_WIDTH-10,
-		font: {fontSize:14, fontWeight:'bold'},
+		font: {fontSize:'14dp', fontWeight:'bold'},
 		top:4,
 		textAlign:'left'
 	});
@@ -99,7 +99,7 @@ function messageDetail_window(_messageData,_curMode,utm) {
 	var utmMessageValue = Ti.UI.createLabel({
 		text:'',
 		width:utm.SCREEN_WIDTH-10,
-		font: {fontSize:16},
+		font: {fontSize:'16dp'},
 		top:2,
 		height:'auto',
 		textAlign:'left'
@@ -113,7 +113,7 @@ function messageDetail_window(_messageData,_curMode,utm) {
 	var realMessageLabel = Ti.UI.createLabel({
 		text:'Real Message:',
 		width:utm.SCREEN_WIDTH-10,
-		font: {fontSize:14, fontWeight:'bold'},
+		font: {fontSize:'14dp', fontWeight:'bold'},
 		top:3,
 		height:Titanium.UI.SIZE ,
 		textAlign:'left'
@@ -124,7 +124,7 @@ function messageDetail_window(_messageData,_curMode,utm) {
 	var realMessageValue = Ti.UI.createLabel({
 		value:'',
 		width:utm.SCREEN_WIDTH-10,
-		font: {fontSize:16},
+		font: {fontSize:'16dp'},
 		color:utm.textFieldColor,
 		top:2,
 		height:Titanium.UI.SIZE ,
@@ -145,7 +145,7 @@ function messageDetail_window(_messageData,_curMode,utm) {
 	});
 	view.add(replyButton);
 	
-	var bottomSpacerView = Ti.UI.createView({height:10});
+	var bottomSpacerView = Ti.UI.createView({height:'10dp'});
 	view.add(bottomSpacerView)
 	
 	var scrollVu = Ti.UI.createScrollableView({	  

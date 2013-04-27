@@ -282,13 +282,13 @@ function message_window(utm) {
 					row : clickName = 'row',
 					objName : 'row',
 					touchEnabled : true,
-					height : utm.Android ? '':55,
+					height : utm.Android ? '55dp':55,
 					hasChild : true,
 					messageData : response[i]
 				});
 
 				var hView = Ti.UI.createView({
-					layout : 'composite',
+					layout : 'composite', 
 					backgroundColor : '#fff',
 					objName : 'hView'
 				});
@@ -317,7 +317,7 @@ function message_window(utm) {
 					top : 2,
 					left : 17,
 					width : utm.SCREEN_WIDTH - 100,
-					height : 15,
+					height : utm.Android ? '15dp':15,
 					ellipsize : true
 				});
 				hView.add(fromMessage);
