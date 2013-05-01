@@ -66,6 +66,7 @@ function messageDetail_window(_messageData,_curMode,utm) {
 		font: {fontSize:'14dp', fontWeight:'bold'},
 		height:'auto',
 		top:2,
+		color : '#000',
 		textAlign:'left'
 	});
 	view.add(toDate);
@@ -77,11 +78,12 @@ function messageDetail_window(_messageData,_curMode,utm) {
 		font: {fontSize:'14dp', fontWeight:'bold'},
 		height:'auto',
 		top:2,
+		color : '#000',
 		textAlign:'left' 
 	});
 	view.add(toLabel);
 	
-	var grayLine1 = Ti.UI.createLabel({text:' ',backgroundColor:'gray',width:'100%',height:.5,top:2});
+	var grayLine1 = Ti.UI.createLabel({text:' ',backgroundColor:'gray',width:'100%',height:'.5dp',top:2});
 	view.add(grayLine1);
 	
 	
@@ -91,6 +93,7 @@ function messageDetail_window(_messageData,_curMode,utm) {
 		width:utm.SCREEN_WIDTH-10,
 		font: {fontSize:'14dp', fontWeight:'bold'},
 		top:4,
+		color : '#000',
 		textAlign:'left'
 	});
 	view.add(utmMessageLabel);
@@ -102,11 +105,12 @@ function messageDetail_window(_messageData,_curMode,utm) {
 		font: {fontSize:'16dp'},
 		top:2,
 		height:'auto',
+		color : '#000',
 		textAlign:'left'
 	});
 	view.add(utmMessageValue);
 	
-	var grayLine2 = Ti.UI.createLabel({text:' ',backgroundColor:'gray',width:'100%',	height:.5,top:2});
+	var grayLine2 = Ti.UI.createLabel({text:' ',backgroundColor:'gray',width:'100%',	height:'.5dp',top:2});
 	view.add(grayLine2);
 	
 	//-----------------Real Message Label  ----------------------
@@ -116,6 +120,7 @@ function messageDetail_window(_messageData,_curMode,utm) {
 		font: {fontSize:'14dp', fontWeight:'bold'},
 		top:3,
 		height:Titanium.UI.SIZE ,
+		color : '#000',
 		textAlign:'left'
 	});
 	view.add(realMessageLabel);
@@ -252,10 +257,10 @@ function messageDetail_window(_messageData,_curMode,utm) {
 				}
 				
 				if(_curMode=='recieved'){
-					toLabel.text='From:'+_messageData.FromUserName;
+					toLabel.text='From: '+_messageData.FromUserName;
 					replyButton.visible=true;
 				}else{
-					toLabel.text='To:'+_messageData.ToHeader;
+					toLabel.text='To: '+_messageData.ToHeader;
 					replyButton.visible=false;
 				}
 					

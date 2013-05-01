@@ -333,7 +333,7 @@ function message_window(utm) {
 					touchEnabled : true,
 					top : 30,
 					left : 15,
-					//height : 16,
+					height : utm.Android ? '20dp':'',
 					width : '100%'
 				});
 				hView.add(utmMessage);
