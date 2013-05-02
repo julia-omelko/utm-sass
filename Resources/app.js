@@ -24,8 +24,8 @@ utm.SCREEN_WIDTH = (pWidth > pHeight) ? pHeight : pWidth;
 utm.SCREEN_HEIGHT = (pWidth > pHeight) ? pWidth : pHeight;
 utm.enableSendMessageButton=false;
 utm.appPauseTime=0;
-var gaModule = require('Ti.Google.Analytics');
-var analytics = new gaModule('UA-38943374-1');
+//var gaModule = require('Ti.Google.Analytics');
+//var analytics = new gaModule('UA-38943374-1');
 
 utm.twitterConsumerKey='8qiy2PJv3MpVyzuhfNXkOw';
 utm.twitterConsumerSecret ='Qq0rth4MHGB70nh20nSzov2zz6GbVxuVndCh2IxkRWI';
@@ -143,7 +143,7 @@ utm.myHortView = new utm.MyHortView(utm);
 
 function appInit(){	
 	
-	analytics.start(10,true);
+//	analytics.start(10,true);
 	
 	if (Ti.Platform.model === 'Simulator' || Ti.Platform.model ===  'google_sdk') { 
 		utm.setEnvModePrefix("local");
@@ -168,7 +168,7 @@ function handleLoginSuccess(event) {
 	utm.User = event.userData;
 	utm.AuthToken = event.userData.UserProfile.AuthToken;
 	
-	analytics.trackPageview('/login');
+	//analytics.trackPageview('/login');
 	
 	utm.User.MyHorts = event.userData.MyHorts;
 	if(utm.User.MyHorts.length ===0 ){
@@ -578,7 +578,7 @@ Ti.App.addEventListener('app:networkChange',
 );*/
 
 Titanium.App.addEventListener('close', function(e){
-	analytics.stop();
+	//analytics.stop();
 });
 
 
@@ -589,7 +589,7 @@ utm.recordError = function (message) {
 
 utm.recordAnalytics = function (theEvent,theData){
 	//	category, action, label, value
-	analytics.trackEvent('Usage',theEvent,'Lbl1',theData );	
+	//TODO Replace Google analytics.trackEvent('Usage',theEvent,'Lbl1',theData );	
 }
 
 //After everything is loaded check if device is online.
