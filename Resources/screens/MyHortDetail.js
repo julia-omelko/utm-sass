@@ -372,14 +372,27 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		enabled : true
 	});
 	saveButton.addEventListener('click', function() {
-		utm.log('saveButton fired');
-		updateMyHortData();
+		if(checkAtLeastOneTypeOfMessageSet()){
+			updateMyHortData();
+		}
 	});
 	view.add(saveButton);
 
 	function authTwitter() {
 		twitter.authorize();
 	}
+	
+	function checkAtLeastOneTypeOfMessageSet(){
+		
+		if(email.getValue() != '') return true;
+		if(mobile.getValue() != '') return true;
+		if(facebookSwitch.getValue()) return true;
+		if(twitterSwitch.getValue()) return true; 
+				
+		alert('You must choose at least one of the message type to send to contacts in this MyHort');		
+		return false;	
+	}
+	
 
 	function updateMyHortData() {
 		saveButton.enabled = false;
@@ -387,6 +400,8 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 
 		utm.curMyHortDetails.Email = email.getValue();
 		utm.curMyHortDetails.Mobile = mobile.getValue();
+	
+		
 
 		//TODO Handle Twitter diff myHortDetails.PrimaryUser.TwitterToken=;
 
