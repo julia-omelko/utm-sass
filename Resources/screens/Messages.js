@@ -278,7 +278,7 @@ function message_window(utm) {
 
 			for (var i = 0; i < response.length; i++) {
 				var row = Ti.UI.createTableViewRow({
-					className : 'row',
+					//className : 'row',
 					row : clickName = 'row',
 					objName : 'row',
 					touchEnabled : true,
@@ -333,7 +333,7 @@ function message_window(utm) {
 					touchEnabled : true,
 					top : 30,
 					left : 15,
-					height : utm.Android ? '20dp':'',
+					height : utm.Android ? '20dp':'20',
 					width : '100%'
 				});
 				hView.add(utmMessage);
@@ -380,153 +380,154 @@ function message_window(utm) {
 	}	
 
 	// #############################  Scroll Refresh Start #############################
-
-	var border = Ti.UI.createView({
-		backgroundColor : "#576c89",
-		height : 2,
-		bottom : 0
-	});
-
-	var tableHeader = Ti.UI.createView({
-		backgroundColor : "#e2e7ed",
-		width : 320,
-		height : 60
-	});
-
-	tableHeader.add(border);
-
-	var arrow = Ti.UI.createView({
-		backgroundImage : "/images/whiteArrow.png",
-		width : 23,
-		height : 60,
-		bottom : 10,
-		left : 20
-	});
-
-	var statusLabel = Ti.UI.createLabel({
-		text : "Pull to reload",
-		left : 55,
-		width : 200,
-		bottom : 30,
-		height : "auto",
-		color : "#576c89",
-		textAlign : "center",
-		font : {
-			fontSize : 13,
-			fontWeight : "bold"
-		},
-		shadowColor : "#999",
-		shadowOffset : {
-			x : 0,
-			y : 1
-		}
-	});
-
-	var lastUpdatedLabel = Ti.UI.createLabel({
-		text : "Last Updated: " + formatDate(),
-		left : 55,
-		width : 200,
-		bottom : 15,
-		height : "auto",
-		color : "#576c89",
-		textAlign : "center",
-		font : {
-			fontSize : 12
-		},
-		shadowColor : "#999",
-		shadowOffset : {
-			x : 0,
-			y : 1
-		}
-	});
-
-	var actInd = Titanium.UI.createActivityIndicator({
-		left : 20,
-		bottom : 13,
-		width : 30,
-		height : 30
-	});
-
-	tableHeader.add(arrow);
-	tableHeader.add(statusLabel);
-	tableHeader.add(lastUpdatedLabel);
-	tableHeader.add(actInd);
-
-	tableView.headerPullView = tableHeader;
-
-	var pulling = false;
-	var reloading = false;
-
-	function beginReloading() {
-		// just mock out the reload
-		setTimeout(endReloading, 500);
-	}
-
-	function endReloading() {		
-		var data='';
-		//call to get the data
-		getMessages(curMode, true);
-
-		lastRow += 10;
-
-		// when done reset
-		tableView.setContentInsets({
-			top : 0
-		}, {
-			animated : true
+	if(! utm.Android){ 
+		var border = Ti.UI.createView({
+			backgroundColor : "#576c89",
+			height : 2,
+			bottom : 0
 		});
-		reloading = false;
-		lastUpdatedLabel.text = "Last Updated: " + formatDate();
-		statusLabel.text = "Pull down to refresh...";
-		actInd.hide();
-		arrow.show();
-	}
-
-
-	tableView.addEventListener('scroll', function(e) {
-		var offset = e.contentOffset.y;
-		if (offset <= -65.0 && !pulling && !reloading) {
-			var t = Ti.UI.create2DMatrix();
-			t = t.rotate(-180);
-			pulling = true;
-			arrow.animate({
-				transform : t,
-				duration : 180
-			});
-			statusLabel.text = "Release to refresh...";
-		} else if (pulling && (offset > -65.0 && offset < 0) && !reloading) {
-			pulling = false;
-			var t = Ti.UI.create2DMatrix();
-			arrow.animate({
-				transform : t,
-				duration : 180
-			});
-			statusLabel.text = "Pull down to refresh...";
+	
+		var tableHeader = Ti.UI.createView({
+			backgroundColor : "#e2e7ed",
+			width : 320,
+			height : 60
+		});
+	
+		tableHeader.add(border);
+	
+		var arrow = Ti.UI.createView({
+			backgroundImage : "/images/whiteArrow.png",
+			width : 23,
+			height : 60,
+			bottom : 10,
+			left : 20
+		});
+	
+		var statusLabel = Ti.UI.createLabel({
+			text : "Pull to reload",
+			left : 55,
+			width : 200,
+			bottom : 30,
+			height : "auto",
+			color : "#576c89",
+			textAlign : "center",
+			font : {
+				fontSize : 13,
+				fontWeight : "bold"
+			},
+			shadowColor : "#999",
+			shadowOffset : {
+				x : 0,
+				y : 1
+			}
+		});
+	
+		var lastUpdatedLabel = Ti.UI.createLabel({
+			text : "Last Updated: " + formatDate(),
+			left : 55,
+			width : 200,
+			bottom : 15,
+			height : "auto",
+			color : "#576c89",
+			textAlign : "center",
+			font : {
+				fontSize : 12
+			},
+			shadowColor : "#999",
+			shadowOffset : {
+				x : 0,
+				y : 1
+			}
+		});
+	
+		var actInd = Titanium.UI.createActivityIndicator({
+			left : 20,
+			bottom : 13,
+			width : 30,
+			height : 30
+		});
+	
+		tableHeader.add(arrow);
+		tableHeader.add(statusLabel);
+		tableHeader.add(lastUpdatedLabel);
+		tableHeader.add(actInd);
+	
+		tableView.headerPullView = tableHeader;
+	
+		var pulling = false;
+		var reloading = false;
+	
+		function beginReloading() {
+			// just mock out the reload
+			setTimeout(endReloading, 500);
 		}
-	});
-
-	var event1 = 'dragEnd';
-	if (Ti.version >= '3.0.0') {
-		event1 = 'dragend';
-	}
-
-	tableView.addEventListener(event1, function(e) {
-		if (pulling && !reloading) {
-			reloading = true;
-			pulling = false;
-			arrow.hide();
-			actInd.show();
-			statusLabel.text = "Reloading...";
+	
+		function endReloading() {		
+			var data='';
+			//call to get the data
+			getMessages(curMode, true);
+	
+			lastRow += 10;
+	
+			// when done reset
 			tableView.setContentInsets({
-				top : 60
+				top : 0
 			}, {
 				animated : true
 			});
-			arrow.transform = Ti.UI.create2DMatrix();
-			beginReloading();
+			reloading = false;
+			lastUpdatedLabel.text = "Last Updated: " + formatDate();
+			statusLabel.text = "Pull down to refresh...";
+			actInd.hide();
+			arrow.show();
 		}
-	});
+
+
+
+		tableView.addEventListener('scroll', function(e) {	
+			var offset = e.contentOffset.y;
+			if (offset <= -65.0 && !pulling && !reloading) {
+				var t = Ti.UI.create2DMatrix();
+				t = t.rotate(-180);
+				pulling = true;
+				arrow.animate({
+					transform : t,
+					duration : 180
+				});
+				statusLabel.text = "Release to refresh...";
+			} else if (pulling && (offset > -65.0 && offset < 0) && !reloading) {
+				pulling = false;
+				var t = Ti.UI.create2DMatrix();
+				arrow.animate({
+					transform : t,
+					duration : 180
+				});
+				statusLabel.text = "Pull down to refresh...";
+			}
+		});
 	
+		var event1 = 'dragEnd';
+		if (Ti.version >= '3.0.0') {
+			event1 = 'dragend';
+		}
+	
+		tableView.addEventListener(event1, function(e) {
+			if (pulling && !reloading) {
+				reloading = true;
+				pulling = false;
+				arrow.hide();
+				actInd.show();
+				statusLabel.text = "Reloading...";
+				tableView.setContentInsets({
+					top : 60
+				}, {
+					animated : true
+				});
+				arrow.transform = Ti.UI.create2DMatrix();
+				beginReloading();
+			}
+		});
+	}
 	
 	Number.prototype.pad = function (len) {
  	   return (new Array(len+1).join("0") + this).slice(-len);
