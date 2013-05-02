@@ -245,7 +245,7 @@ function messageDetail_window(_messageData,_curMode,utm) {
 				}
 				
 				//Now that we have date set all the values
-				toDate.text = 'Sent On: '+moment(_messageData.DateSent).fromNow();
+				toDate.text = 'Sent: '+moment(_messageData.DateSent).fromNow();
 				utmMessageValue.text=_messageData.UtmText;	
 				realMessageValue.text = response.Message;
 				
