@@ -77,6 +77,11 @@ function inputField(_label, _labelWidth,  _val, _valWidth, _keyboardType,_return
 		fld.addEventListener('blur', function(e){
 		    var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;   
 		 	
+		 	if(fld.value.length===0){
+		 			hView.setMessage('');
+		 		return;
+		 	}
+		 	
 		   if(reg.test(fld.value) == true) {	
 		      //  fld.borderColor ='transparent';
 		      	hView.setMessage('');
