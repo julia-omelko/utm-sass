@@ -306,6 +306,18 @@ var PreviewMessage_window = function(utm) {
 		expandCustomUtmMessageEdit(false);
 
 		sendButton.enabled = false;
+		
+		var theImage = camera.getImage();
+			
+		if(theImage){				
+			//var sendImageSrc = Ti.Utils.base64encode(theImage);
+			var sendImageSrc = Ti.Utils.base64encode(theImage);
+			attachments = [{ Attachment: sendImageSrc.toString(),MimeType:theImage.mimeType,WasVirusScanned:true  }];
+		}else{
+			attachments=null;
+		}
+		
+		
 		if (replyMode) {
 			//Reply to a message
 			var params = {
@@ -318,7 +330,8 @@ var PreviewMessage_window = function(utm) {
 				FromUserId : utm.User.UserProfile.UserId,
 				ToUserId : messageData.FromUserId,
 				CopiedUsers : [messageData.FromUserId],
-				ParrentMessageId : messageData.Id
+				ParrentMessageId : messageData.Id,
+				Attachments : attachments
 			};
 
 		} else {
@@ -329,15 +342,7 @@ var PreviewMessage_window = function(utm) {
 				utm.log('Preparing to send message to ' + utm.sentToContactList[v].userId);
 			}
 			
-			var theImage = camera.getImage();
 			
-			if(theImage){				
-				//var sendImageSrc = Ti.Utils.base64encode(theImage);
-				var sendImageSrc = Ti.Utils.base64encode(theImage);
-				attachments = [{ Attachment: sendImageSrc.toString(),MimeType:theImage.mimeType,WasVirusScanned:true  }];
-			}else{
-				attachments=null;
-			}
 
 			var params = {
 				MyHortId : utm.targetMyHortID,
