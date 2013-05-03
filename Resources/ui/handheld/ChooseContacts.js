@@ -39,7 +39,7 @@ var ChooseContacts_window = function(utm) {
 		chooseContactsView.add(utm.activityIndicator)
 	}
 	
-	var topView = Ti.UI.createView({top:4,layout:'horizontal', width:'100%', height : Titanium.UI.SIZE});
+	var topView = Ti.UI.createView({top:4,layout:'horizontal', width:'100%', height : utm.Android ? '35dp':Titanium.UI.SIZE}); 
 	var mainView = Ti.UI.createView({layout:'vertical', width:'100%', height : '75%'});
 
 	chooseContactsView.add(topView);
@@ -47,10 +47,12 @@ var ChooseContacts_window = function(utm) {
 
 	var chooseAllLabel = Ti.UI.createLabel({
 		text : '[Choose All]',
+		top : 4,
 		right : 4,
 		width : '100%',
 		height : '30dp',
 		font: { fontSize:'18dp' },
+		color : '#000',
 		textAlign : 'right'
 	});
 	topView.add(chooseAllLabel);

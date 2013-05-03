@@ -85,6 +85,7 @@ var PreviewMessage_window = function(utm) {
 		},
 		width : utm.SCREEN_WIDTH - 10,
 		top : 2,
+		color : '#000',
 		textAlign : 'left'
 	});
 	win.add(yourOrgMessageLabel);
@@ -137,6 +138,7 @@ var PreviewMessage_window = function(utm) {
 			fontSize : '14dp',
 			fontWeight : 'bold'
 		},
+		color : '#000',
 		width : utm.SCREEN_WIDTH - 10,
 		top : 5,
 		height : 'auto',
@@ -221,6 +223,7 @@ var PreviewMessage_window = function(utm) {
 			fontSize : '14dp',
 			fontWeight : 'bold'
 		},
+		color : '#000',
 		top : 8,
 		left:5,
 		textAlign : 'left'

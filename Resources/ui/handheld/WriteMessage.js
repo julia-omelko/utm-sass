@@ -51,6 +51,7 @@ var WriteMessage_window =function(utm) {
 		width:'auto',
 		font: { fontSize:'20dp' },
 		//height:30,
+		color : '#000',
 		textAlign:'left'
 	});
 	scrollableView.add(toLabel);
@@ -60,6 +61,7 @@ var WriteMessage_window =function(utm) {
 		width:'auto',
 		font: { fontSize:'20dp' },
 		height:'auto',
+		color : '#000',
 		textAlign:'left'
 	});
 	scrollableView.add(yourMessageLabel);
