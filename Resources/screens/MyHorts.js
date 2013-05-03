@@ -23,7 +23,7 @@ var MyHorts_window = function(utm) {
 		var my_navbar = Ti.UI.createLabel({
 		    height : 50,
 		    width : '100%',
-		    backgroundColor : utm.barColor,
+		    backgroundColor : utm.androidBarColor,
 		    text:'MyHorts',
 		    color : utm.backgroundColor,
 		    font:{fontSize:utm.androidTitleFontSize,fontWeight:utm.androidTitleFontWeight},

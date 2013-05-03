@@ -59,7 +59,7 @@ function message_window(utm) {
 		var my_navbar = Ti.UI.createLabel({
 		    height : 50,
 		    width : '100%',
-		    backgroundColor : utm.barColor,
+		    backgroundColor : utm.androidBarColor,
 		    text:'Messages',
 		    color : utm.backgroundColor,
 		    font:{fontSize:utm.androidTitleFontSize,fontWeight:utm.androidTitleFontWeight},
