@@ -21,7 +21,7 @@ function createMyHortWindow(_myHortData, utm, _isOwner) {
 		var my_navbar = Ti.UI.createLabel({
 			height : 50,
 			width : '100%',
-			backgroundColor : utm.barColor,
+			backgroundColor : utm.androidBarColor,
 			text : 'Members',
 			color : utm.backgroundColor,
 			font : {

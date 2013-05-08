@@ -6,6 +6,7 @@ utm.envModePrefix = "";
 utm.validatesSecureCertificate=false;
 utm.color_org = '#F66F00';
 utm.barColor= '#F66F00';
+utm.androidBarColor = '#CD8C52';
 utm.backgroundColor='#fff';
 utm.textColor='#000';
 utm.textFieldColor='#336699';

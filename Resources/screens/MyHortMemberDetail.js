@@ -5,7 +5,7 @@ function myHortDetail_window(_myHortMember, utm) {
 	var win = Ti.UI.createWindow({
 		layout : 'vertical',
 		backgroundColor : utm.backgroundColor,
-		barColor : utm.barColor,
+		barColor : utm.Android ? utm.androidBarColor : utm.barColor,
 		title : 'Member Info'
 	});
 

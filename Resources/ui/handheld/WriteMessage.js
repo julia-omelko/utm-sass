@@ -24,7 +24,7 @@ var WriteMessage_window =function(utm) {
 		var my_navbar = Ti.UI.createLabel({
 		    height : 50,
 		    width : '100%',
-		    backgroundColor : utm.barColor,
+		    backgroundColor : utm.androidBarColor,
 		    text:'Write Message',
 		    color : utm.backgroundColor,
 		    font:{fontSize:utm.androidTitleFontSize,fontWeight:utm.androidTitleFontWeight},
@@ -51,6 +51,7 @@ var WriteMessage_window =function(utm) {
 		width:'auto',
 		font: { fontSize:'20dp' },
 		//height:30,
+		color : '#000',
 		textAlign:'left'
 	});
 	scrollableView.add(toLabel);
@@ -60,6 +61,7 @@ var WriteMessage_window =function(utm) {
 		width:'auto',
 		font: { fontSize:'20dp' },
 		height:'auto',
+		color : '#000',
 		textAlign:'left'
 	});
 	scrollableView.add(yourMessageLabel);

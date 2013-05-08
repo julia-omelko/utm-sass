@@ -7,7 +7,7 @@ function signUp_window(utm) {
 	var win = Ti.UI.createWindow({
 		layout : 'vertical',
 		backgroundColor : utm.backgroundColor,
-		barColor : utm.barColor,
+		barColor : utm.Android ? utm.androidBarColor : utm.barColor,
 		title : 'Sign Up',
 		backButtonTitle:'Cancel'
 	});

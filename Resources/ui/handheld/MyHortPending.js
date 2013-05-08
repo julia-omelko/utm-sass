@@ -11,7 +11,7 @@ function createMyHortWindow(myHortId,utm) {
 		text : 'Your Pending Invitations',
 		top : 60,
 		font:{fontWeight:'bold',fontSize:16},
-		color:utm.color_org 
+		color: utm.Android ? utm.androidBarColor : utm.color_org 
 	})
 	myHortPendingWindow.add(titleLbl);
 
