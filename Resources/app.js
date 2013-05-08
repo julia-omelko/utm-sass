@@ -578,6 +578,20 @@ Ti.App.addEventListener('app:networkChange',
 
 );*/
 
+function getDateTimeFormat(dateSent){
+	var sent =  moment(dateSent);
+	var hours = sent.fromNow();
+	var now = moment();
+
+	diff = now.diff(sent, 'days') // 1
+			
+	if(diff > 0){
+		return sent.format("M/D/YY");
+	}else{
+		return  formattedDateSent = sent.fromNow();
+	}
+}
+
 Titanium.App.addEventListener('close', function(e){
 	//analytics.stop();
 });

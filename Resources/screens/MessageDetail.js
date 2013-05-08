@@ -187,6 +187,31 @@ function messageDetail_window(_messageData,_curMode,utm) {
 				    });	
 				    
 				    	Ti.App.fireEvent("app:showWriteMessageView", {mode:'reply', messageData: _messageData});
+				
+				/*  ATD We dont have the data here for the cur user's MyHort if has Twitter/Facebook
+					for(i=0; i< utm.User.MyHorts.length; i++ ){
+						var mh = utm.User.MyHorts[i];
+						if(mh.MyHortId= response[0].MyHortId){
+							
+							for (x=0; x < mh.Members.length; x++){
+								
+								var curMember = mh.Member[x];
+								
+									if (response[i].HasTwitter) {
+										utm.curUserCurMyHortHasTwitter = true;
+									}
+									if (response[i].HasFaceBook) {
+										utm.curUserCurMyHortHasFacebook = true;
+									}	
+							}							
+							
+							break;
+						}
+					}
+					*/
+					
+					
+				    	
 					
 				/*	for (var i=0;i<response.length;i++)
 					{
@@ -245,7 +270,7 @@ function messageDetail_window(_messageData,_curMode,utm) {
 				}
 				
 				//Now that we have date set all the values
-				toDate.text = 'Sent: '+moment(_messageData.DateSent).fromNow();
+				toDate.text = 'Sent: '+getDateTimeFormat(_messageData.DateSent);
 				utmMessageValue.text=_messageData.UtmText;	
 				realMessageValue.text = response.Message;
 				

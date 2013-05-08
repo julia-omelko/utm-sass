@@ -347,7 +347,7 @@ function message_window(utm) {
 					objName : 'timeLabel',
 					//text: String.formatDate(new Date(response[i].DateSent,'short')),
 
-					text : moment(response[i].DateSent).fromNow(),
+					text : getDateTimeFormat(response[i].DateSent), // moment(response[i].DateSent).fromNow(),
 					//text: easyFormat(new Date(response[i].DateSent)),//response[i].DateSent,
 					touchEnabled : true,
 					top : 2,
@@ -371,6 +371,8 @@ function message_window(utm) {
 		}
 
 	};
+	
+
 	
 	//RE #260 - Mobile Ti App: ver 0.28 Beta: Latency, can briefly see messages from previously logged in user
 	Ti.App.addEventListener('app:loginSuccess', handleLoginSuccess);
