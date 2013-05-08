@@ -41,7 +41,7 @@ var MyHorts_window = function(utm) {
 	
 	var createButton = Ti.UI.createButton({
 		title : 'Create a New MyHort',
-		//top : 10
+		top :5
 	});
 	myHortsWindow.add(createButton);
 
@@ -183,6 +183,13 @@ var MyHorts_window = function(utm) {
 
 	tableView.addEventListener('delete', function(e) {
 		var s = e.section;
+		
+		if(!e.rowData.myHortData.IsOwner){
+			populateTable(utm.User.MyHorts);
+			alert('You can only delete MyHorts that you own.');
+			return;
+		}
+		
 		confirmDeleteMyHort(e.rowData.myHortData.MyHortId, false)
 	});
 
@@ -223,6 +230,7 @@ var MyHorts_window = function(utm) {
 			//loadMyHorts();
 		},
 		onerror : function() {
+			utm.setActivityIndicator('');
 			utm.log('error');
 		}
 	});
