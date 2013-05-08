@@ -30,7 +30,7 @@
 	<string name="send_preview_your_message">Preview Your Message...</string>
 	<string name="send_your_original_message">Your Original Message</string>
 	<string name="send_preview_how_encrypted">Preview of how your message is encrypted</string>
-	<string name="send_customize_message">Customize the UTM Message</string>
+	<string name="send_utm_message">UTM Message</string>
 	<string name="send_UTM_message_now">Send Message Now</string>
 	<string name="send_our_message_was_sent">Your Message was Sent</string>
 	<string name="ok_button">OK</string>
