@@ -131,44 +131,68 @@ var PreviewMessage_window = function(utm) {
 	});
 	//win.add(encryptedValue);
 
-	//------------- Customize Your Message ------------------
-	var customMessageLabel = Ti.UI.createLabel({
-		text : L('send_customize_message') + ':',
+	//------------- UTM Message ------------------
+	var utmMessageGroup = Ti.UI.createView({
+		layout : 'horizontal',
+		width : '100%',
+		top : 3,
+		height : '35dp',
+		visible : true
+	});
+	win.add(utmMessageGroup);
+	
+	var utmMessageLabel = Ti.UI.createLabel({
+		text : L('send_utm_message') + ':',
 		font : {
 			fontSize : '14dp',
 			fontWeight : 'bold'
 		},
 		color : '#000',
-		width : utm.SCREEN_WIDTH - 10,
+		left:5,
 		top : 5,
 		height : 'auto',
 		textAlign : 'left'
 	});
-	win.add(customMessageLabel);
+	utmMessageGroup.add(utmMessageLabel);
+	
+	var regenUtm = Ti.UI.createButton({
+		image:'/images/refresh.gif',
+		width: '30dp',
+		height:'30dp',
+		borderColor: null,
+		borderWidth:0,
+		borderRadius:5,
+		style:Ti.UI.iPhone.SystemButtonStyle.PLAIN
+	});
+	utmMessageGroup.add(regenUtm);
+	
+	regenUtm.addEventListener('click', function(){	
+		regenUtm.enabled=false;
+		var parm = new Object();
+		parm.messageText=yourOrgMessageValue.value;
+		getMessagePreview(parm);
+	});
 
 	var customUtmMessage = Ti.UI.createTextArea({
-		borderWidth : 2,
-		borderColor : '#bbb',
-		borderRadius : 5,
 		color : utm.textFieldColor,
 		font : {
 			fontSize : '16dp'
 		},
 		textAlign : 'left',
-		top : 5,
+		editable:false,	
 		width : utm.SCREEN_WIDTH - 10,
 		height : '20%',  //utm.SCREEN_HEIGHT-(utm.SCREEN_HEIGHT/1.2)
 	});
 	//todo get the screen width so we can make this wider if possible
 	win.add(customUtmMessage);
 
-	customUtmMessage.addEventListener('click', function() {//fold up to give more room to edit
-		expandCustomUtmMessageEdit(true);
-	});
+	//customUtmMessage.addEventListener('click', function() {//fold up to give more room to edit
+	//	expandCustomUtmMessageEdit(true);
+	//});
 
-	customUtmMessage.addEventListener('blur', function() {//unfold text area to give more room to edit
-		expandCustomUtmMessageEdit(false);
-	});
+	//customUtmMessage.addEventListener('blur', function() {//unfold text area to give more room to edit
+	//	expandCustomUtmMessageEdit(false);
+	//});
 
 	function expandCustomUtmMessageEdit(expandIt) {
 		if (expandIt) {
@@ -306,7 +330,7 @@ var PreviewMessage_window = function(utm) {
 
 	function sendMessages(messageType) {
 		var copiedToUsers = [];
-		expandCustomUtmMessageEdit(false);
+		//expandCustomUtmMessageEdit(false);
 
 		sendButton.enabled = false;
 		
@@ -384,6 +408,7 @@ var PreviewMessage_window = function(utm) {
 		onload : function() {
 			var response = eval('(' + this.responseText + ')');
 			sendButton.enabled = true;
+			regenUtm.enabled=true;
 			utm.log('PreviewMessages Service Returned');
 			if (this.status == 200) {
 				customUtmMessage.value = response.UtmText;
@@ -397,6 +422,7 @@ var PreviewMessage_window = function(utm) {
 		},
 		onerror : function(e) {
 			sendButton.enabled = true;
+			regenUtm.enabled=true;
 			utm.handleError(e, this.status, this.responseText);
 		},
 		timeout : utm.netTimeout
