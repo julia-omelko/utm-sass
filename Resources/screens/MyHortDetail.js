@@ -362,6 +362,37 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		}
 	});
 
+
+	//----------Sign UTM Messaged--------------------
+	var signMessagesGroup = Ti.UI.createView({
+		layout : 'horizontal',
+		width : '100%',
+		top : 3,
+		left : 8,
+		height : '50dp',
+		visible : true
+	});
+	view.add(signMessagesGroup);
+
+	var signMessagesLabel = Ti.UI.createLabel({
+		text : 'Sign Messages',
+		font : {
+			fontSize : '14dp',
+			fontWeight : 'bold'
+		},
+		width : '80dp',
+		textAlign : 'left'
+	});
+	signMessagesGroup.add(signMessagesLabel);
+
+	var signMessagesSwitch = Ti.UI.createSwitch({
+		value : false,
+		enabled : true
+	});
+	signMessagesGroup.add(signMessagesSwitch);
+
+	
+
 	//----------Mobile # --------------------
 	var mobile = new InputField('Mobile', 80, '', 210, Ti.UI.KEYBOARD_DECIMAL_PAD);
 	view.add(mobile);
@@ -401,6 +432,8 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		utm.curMyHortDetails.Email = email.getValue();
 		utm.curMyHortDetails.Mobile = mobile.getValue();
 	
+	    utm.curMyHortDetails.AddNicknameToUtms = signMessagesSwitch.getValue(); 	
+
 		
 
 		//TODO Handle Twitter diff myHortDetails.PrimaryUser.TwitterToken=;
@@ -488,6 +521,14 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 					facebookSwitch.setValue(false);
 					facebookEnabledForUser = false;
 				}
+								
+				if (utm.myHortDetails.IsOwner) {
+					signMessagesSwitch.setValue(utm.myHortDetails.PrimaryUser.AddNicknameToUtms);
+
+				} else {
+					signMessagesSwitch.setValue(utm.myHortDetails.MyInformation.AddNicknameToUtms);
+				}			
+				
 
 				enableButtonBar(true);
 				//TODO handle errors better
