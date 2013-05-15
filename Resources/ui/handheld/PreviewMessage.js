@@ -360,6 +360,7 @@ var PreviewMessage_window = function(utm) {
 				ParrentMessageId : messageData.Id,
 				Attachments : attachments
 			};
+			 utm.User.UserProfile.MessagesRemaining =utm.User.UserProfile.MessagesRemaining -1;
 
 		} else {
 
@@ -367,6 +368,7 @@ var PreviewMessage_window = function(utm) {
 			for ( v = 0; v < utm.sentToContactList.length; v++) {
 				copiedToUsers.push(utm.sentToContactList[v].userId);
 				utm.log('Preparing to send message to ' + utm.sentToContactList[v].userId);
+				utm.User.UserProfile.MessagesRemaining =utm.User.UserProfile.MessagesRemaining -1;
 			}
 			
 			
@@ -464,6 +466,8 @@ var PreviewMessage_window = function(utm) {
 				//Error:UserId: 1007 cannot accept Email messages
 				utm.setActivityIndicator('');
 				utm.recordError(response.Message + ' ExceptionMessag:' + response.ExceptionMessage);
+				sendButton.enabled = true;
+				alert('An error occured while sending your message - one of the message services is down or not available.  Please try again.');
 			}
 
 		},
