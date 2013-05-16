@@ -58,23 +58,43 @@ var TheLandingScreen_view = function(utm) {
 	var viewMessageBtn = Ti.UI.createButton({
 		title:L('landing_view_messages'),
 		top:20,
+		bottom:20,
 		width:200,
+		height:'50dp',
 		font:{fontFamily:'Arial',fontWeight:'bold',fontSize:'14dp'}
 	});
 	landingView.add(viewMessageBtn);
 	
+	
 	var sendMessageBtn = Ti.UI.createButton({
 		title:L('landing_send_messages'),
-		top:20,
 		width:200,
+		height:'50dp',
 		font:{fontFamily:'Arial',fontWeight:'bold',fontSize:'14dp'}
 	});
 	landingView.add(sendMessageBtn);	
+	
+	
+	landingView.allowSendMessage = function(){		
+		if(utm.User.MyHorts.length==1){
+			Ti.App.fireEvent("app:myHortChoosen", {myHortId:utm.User.MyHorts[0].MyHortId, direct:true});	//Direct tells us we need to setBackButtonTitle()
+		}else{
+			Ti.App.fireEvent("app:showChooseMyHortWindow", {});
+		}		
+	}
+	
+	sendMessageBtn.addEventListener('click',function(e)
+	{																					//NOTE cant pass function only the string
+		Ti.App.fireEvent("app:getSubscriptionInfo", {callBack:'utm.landingView.allowSendMessage'});  //call back IF the user is allowed to send messages	
+	});		
+	
+	
 	
 	var myHortBtn = Ti.UI.createButton({
 		title:'MyHorts',
 		top:20,
 		width:200,
+		height:'50dp',
 		font:{fontFamily:'Arial',fontWeight:'bold',fontSize:'14dp'}
 	});
 	landingView.add(myHortBtn);	
@@ -83,6 +103,7 @@ var TheLandingScreen_view = function(utm) {
 		title:L('landing_my_account'),
 		top:20,
 		width:200,
+		height:'50dp',
 		font:{fontFamily:'Arial',fontWeight:'bold',fontSize:'14dp'}
 	});
 	landingView.add(myAccountBtn);	
@@ -92,15 +113,6 @@ var TheLandingScreen_view = function(utm) {
 		Ti.App.fireEvent("app:showMessages", {});
 	});
 	
-	sendMessageBtn.addEventListener('click',function(e)
-	{	
-		
-		if(utm.User.MyHorts.length==1){
-			Ti.App.fireEvent("app:myHortChoosen", {myHortId:utm.User.MyHorts[0].MyHortId, direct:true});	//Direct tells us we need to setBackButtonTitle()
-		}else{
-			Ti.App.fireEvent("app:showChooseMyHortWindow", {});
-		}
-	});
 	
 	myHortBtn.addEventListener('click',function(e)
 	{	
@@ -112,9 +124,6 @@ var TheLandingScreen_view = function(utm) {
 		Ti.App.fireEvent("app:showMyAccountWindow", {});
 	});
 	
-	landingView.setEnableSendMessageButton=function(enableIt){
-		sendMessageBtn.enabled=enableIt;
-	}	
 
 	return landingView;
 };

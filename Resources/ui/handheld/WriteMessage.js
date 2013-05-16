@@ -50,7 +50,7 @@ var WriteMessage_window =function(utm) {
 		text:utm.sentToContactListString,
 		width:'auto',
 		font: { fontSize:'20dp' },
-		//height:30,
+		height:'30dp',
 		color : '#000',
 		textAlign:'left'
 	});

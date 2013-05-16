@@ -138,18 +138,14 @@ function messageDetail_window(_messageData,_curMode,utm) {
 	view.add(realMessageValue);
 	
 	//-----------------Reply To Button ----------------------
-	var replyButton = Ti.UI.createButton({title:'Reply', visible:false});
+	var replyButton = Ti.UI.createButton({title:'Reply', visible:true});
 	replyButton.addEventListener('click', function()
-	{	utm.log('replyButton fired');
-	
-		getReplyToUserData(_messageData.FromUserId);
-	
-	  //	Ti.App.fireEvent("app:showWriteMessageView", {mode:'reply', messageData: _messageData});
-		//utm.containerWindow.leftNavButton = utm.emptyView;
-		
-	});
+	{																						//NOTE can't pass function only the string
+		Ti.App.fireEvent("app:getSubscriptionInfo", {callBack:'utm.messageDetailWindow.getReplyToUserData', fromUserId:_messageData.FromUserId});  //call back IF the user is allowed to send messages	
+	});	
+
 	view.add(replyButton);
-	
+		
 	var bottomSpacerView = Ti.UI.createView({height:'10dp'});
 	view.add(bottomSpacerView)
 	
@@ -163,7 +159,7 @@ function messageDetail_window(_messageData,_curMode,utm) {
 
 // ##################### Call out to get Reply To User Data #####################
 
-	function getReplyToUserData(replyingToUserId) {
+	win.getReplyToUserData = function(replyingToUserId) {
 
 		var getMembersReq = Ti.Network.createHTTPClient({
 		     validatesSecureCertificate:utm.validatesSecureCertificate 
@@ -267,7 +263,7 @@ function messageDetail_window(_messageData,_curMode,utm) {
 				
 				if(_messageData.HasAttachments){
 					callOutToGetAttachments(_messageData);
-				}
+				}	
 				
 				//Now that we have date set all the values
 				toDate.text = 'Sent: '+getDateTimeFormat(_messageData.DateSent);
@@ -283,7 +279,6 @@ function messageDetail_window(_messageData,_curMode,utm) {
 				
 				if(_curMode=='recieved'){
 					toLabel.text='From: '+_messageData.FromUserName;
-					replyButton.visible=true;
 				}else{
 					toLabel.text='To: '+_messageData.ToHeader;
 					replyButton.visible=false;
@@ -388,7 +383,6 @@ function messageDetail_window(_messageData,_curMode,utm) {
 			//could fail but nothing we can do with it
 		}
 	}
-
 	
 	return win;
 };

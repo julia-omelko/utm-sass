@@ -239,8 +239,8 @@ var TheLoginScreen_view = function(utm) {
 		});
 		
 		newLinkButton.addEventListener('click', function(e) {
-	    Ti.Platform.openURL(webUrl +url);
-	});
+		    Ti.Platform.openURL(webUrl +url);
+		});
 		
 		return newLinkButton;
 	}

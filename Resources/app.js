@@ -90,8 +90,15 @@ utm.navController.open(utm.loginView );
 utm.setEnvModePrefix= function (env){
 	utm.envModePrefix =env;
 	if (env==='local') { 
+		
+		//Local Developer ID if you have .Net projects local
 		//utm.serviceUrl = 'http://192.168.244.194/api/v1/';
 		//utm.webUrl ='http://192.168.244.194'; 
+		
+		
+		//utm.webUrl ='http://209.240.110.5'; 	//NEW PROD
+		//utm.serviceUrl = 'https://209.240.110.5/api/v1/';	
+		
 		utm.serviceUrl = 'https://dev.youthisme.com/api/v1/';
 		utm.webUrl = 'https://dev.youthisme.com';
 	}else if(env==='dev' || env === 'test'){
@@ -192,8 +199,6 @@ function handleLoginSuccess(event) {
 
 Ti.App.addEventListener('app:showLandingView', showLandingView);
 function showLandingView() {		
-	utm.landingView.setEnableSendMessageButton(utm.enableSendMessageButton);
-	//utm.navController.closeAllWindows();
 	utm.navController.open(utm.landingView);
 }
 
@@ -319,15 +324,28 @@ function showLoginView() {
 		utm.loggedIn=false;
 	}	
 	utm.User =null;
-	closeAllScreens();
+	closeAllScreens(false);
 	utm.navController.open(utm.loginView);	
+}
+
+function isAllowedSendMessage(){	
+	if(!utm.User) return;
+	
+
+
+	
+	if( utm.User.UserProfile.MessagesRemaining > 0){
+		return true;
+	}else{
+		return false;
+	}
 }
 
 function showLoginScreenLockView() {	
 	//TODO figure out how to NOT have to close all the windows to open the login window
 	//Maybe a model popup 100% x 100%
 	utm.loggedIn = false
-	closeAllScreens();
+	closeAllScreens(false);
 	utm.navController.open(utm.loginView);	
 }
 
@@ -398,6 +416,61 @@ function callLogoutService(){
 	
 }
 
+Ti.App.addEventListener('app:getSubscriptionInfo', function (e){
+
+	utm.subscriptionInfoReq = Ti.Network.createHTTPClient({
+		validatesSecureCertificate:utm.validatesSecureCertificate, 
+		timeout:utm.netTimeout,
+		onload : function() {
+			var response = eval('('+this.responseText+')');
+	
+			if (this.status == 200) {		
+				
+				utm.User.UserProfile.MessagesRemaining=response.MessagesRemaining;
+				utm.User.UserProfile.SubscriptionEnds	=response.SubscriptionEnds;
+						
+				var now = new Date();		
+				var subDate = utm.User.UserProfile.SubscriptionEnds.substring(0,	10);
+				subDate=subDate.replace(/-/g, '/');
+				subDate = new Date(subDate);
+						
+				if(utm.User.UserProfile.MessagesRemaining < 1  || subDate < now){ 
+					showSubscriptionInstructions();				
+				}else{					
+					//Subscription is ok so fire the callback to allow send or reply to continue
+					fn = eval(e.callBack);
+					if(e.fromUserId){
+						fn.call(null,e.fromUserId);						
+					}else{
+						fn.call();
+					}	
+				}			
+			}else{
+				utm.recordError("Status="+this.status + "   Message:"+this.responseText);
+			}
+		},
+		onerror : function(e) {		
+			utm.recordError("Status="+this.status + "   Message:"+this.responseText);
+		}
+		,timeout:utm.netTimeout
+	});
+	
+	utm.subscriptionInfoReq.open("GET", utm.serviceUrl + "SubscriptionInfo");
+	utm.subscriptionInfoReq.setRequestHeader('Authorization-Token', utm.AuthToken);
+	utm.subscriptionInfoReq.send();
+});
+
+function showSubscriptionInstructions(){
+	
+	if(! utm.subscribeInfoView){		
+		utm.SubscribeInfoView = require('/ui/handheld/SubscribeInfo');
+		utm.subscribeInfoView = new utm.SubscribeInfoView(utm);
+	}
+
+	utm.navController.open(utm.subscribeInfoView);
+	utm.subscribeInfoView.updateMessage();
+}
+
 utm.setActivityIndicator =function (_message) {
 	if (_message != '') {
 		utm.activityIndicator.show();
@@ -433,9 +506,10 @@ function checkNetworkOnInit(){
 }
 
 
-function closeAllScreens(){
+function closeAllScreens(leaveLanding){
 	//Close any open window in the opposite order opened - on slow devices you can sometime see them close
-	if(utm.landingView != undefined){utm.navController.close(utm.landingView,{animated:false});	}
+	if(!leaveLanding)
+		if(utm.landingView != undefined){utm.navController.close(utm.landingView,{animated:false});	}
 	
 	if(utm.MessageDetailWindow !=undefined ){utm.navController.close(utm.messageDetailWindow,{animated:false});}
 	if(utm.messageWindow  !=undefined ){utm.navController.close(utm.messageWindow ,{animated:false}); }	
@@ -456,6 +530,7 @@ function closeAllScreens(){
 	if(utm.myHortPendingWindow != undefined){utm.navController.close(utm.myHortPendingWindow,{animated:false});}
 	
 	if(utm.signupView != undefined){utm.navController.close(utm.signupView,{animated:false});	}
+	if(utm.subscribeInfoView != undefined){utm.navController.close(utm.subscribeInfoView,{animated:false});	}	
 }
 
 utm.handleError = function (e,status,responseText) {	
@@ -463,7 +538,7 @@ utm.handleError = function (e,status,responseText) {
 	var err = JSON.parse(responseText);
 	if(status ==403){
 		alert('Your session is no longer valid, you need to log back in.');		
-		closeAllScreens();	
+		closeAllScreens(false);	
 		showLoginView();	
 	}else if(err  != 'undefined' & err !=null ){
 		alert(err.Message);	
