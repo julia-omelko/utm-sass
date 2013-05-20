@@ -26,25 +26,25 @@ function signUp_window(utm) {
 	scrollingView.add(view);
 
 	//-----------------User Name  ----------------------
-	var userName = new InputField('User Name', 80, '', 210, Ti.UI.KEYBOARD_DEFAULT,'',true);
+	var userName = new InputField(utm,'User Name', 80, '', 210, Ti.UI.KEYBOARD_DEFAULT,'',true);
 	view.add(userName);
 
 	//-----------------Password  ----------------------
-	var password = new InputField('Password', 80, '', 210, Ti.UI.KEYBOARD_DEFAULT,'',true,'password');
+	var password = new InputField(utm,'Password', 80, '', 210, Ti.UI.KEYBOARD_DEFAULT,'',true,'password');
 	view.add(password);
 	//password.setValue('testtest1');
 
 	//-----------------Confirm  ----------------------
-	var confirm = new InputField('Confirm Password', 80, '', 210, Ti.UI.KEYBOARD_DEFAULT,'',true, 'password');
+	var confirm = new InputField(utm,'Confirm Password', 80, '', 210, Ti.UI.KEYBOARD_DEFAULT,'',true, 'password');
 	view.add(confirm);
 	//confirm.setValue('testtest1');
 
 	//----------Mobile # --------------------
-	var mobile = new InputField('Mobile Number', 80, '', 210, Ti.UI.KEYBOARD_DECIMAL_PAD,'',true);
+	var mobile = new InputField(utm,'Mobile Number', 80, '', 210, Ti.UI.KEYBOARD_DECIMAL_PAD,'',true);
 	view.add(mobile);
 
 	//----------Email--------------------
-	var email = new InputField('Email', 80, '', 210, Ti.UI.KEYBOARD_EMAIL,'',true);
+	var email = new InputField(utm,'Email', 80, '', 210, Ti.UI.KEYBOARD_EMAIL,'',true);
 	view.add(email);
 
 

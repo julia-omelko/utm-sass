@@ -11,6 +11,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		site : 'Twitter', // <-- this example is for Twitter. I'll expand this to other sites in the future.
 		consumerKey : utm.twitterConsumerKey, // <--- you'll want to replace this
 		consumerSecret : utm.twitterConsumerSecret // <--- and this with your own keys!
+		,utmSpace:utm
 	});
 
 	var twitterEnabledForUser = false;
@@ -234,7 +235,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 	myHortNameGroup.add(myHortName);
 
 	//----------Email--------------------
-	var email = new InputField('Email', 80, '', 210, Ti.UI.KEYBOARD_EMAIL);
+	var email = new InputField(utm,'Email', 80, '', 210, Ti.UI.KEYBOARD_EMAIL);
 	view.add(email);
 
 	//----------Twitter On off Switch--------------------
@@ -394,7 +395,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 	
 
 	//----------Mobile # --------------------
-	var mobile = new InputField('Mobile', 80, '', 210, Ti.UI.KEYBOARD_DECIMAL_PAD);
+	var mobile = new InputField(utm,'Mobile', 80, '', 210, Ti.UI.KEYBOARD_DECIMAL_PAD);
 	view.add(mobile);
 
 	var saveButton = Ti.UI.createButton({
@@ -494,11 +495,13 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 
 				if (utm.myHortDetails.IsOwner) {
 					utm.curMyHortDetails = utm.myHortDetails.PrimaryUser;
-					topButtonBar.visable = true;
+					if (utm.iPhone || utm.iPad) 
+						topButtonBar.visable = true;
 
 				} else {
 					utm.curMyHortDetails = utm.myHortDetails.MyInformation;
-					topButtonBar.visable = false;
+					if (utm.iPhone || utm.iPad) 
+						topButtonBar.visable = false;
 				}
 
 				//Now that we have date set all the values
@@ -537,7 +540,8 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 			} else {
 				utm.recordError('Error')
 			}
-			topButtonBar.enabled = true;
+			if (utm.iPhone || utm.iPad) 
+				topButtonBar.enabled = true;
 			utm.setActivityIndicator('');
 		},
 		onerror : function(e) {

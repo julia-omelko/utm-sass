@@ -1,16 +1,16 @@
-function inputField(_label, _labelWidth,  _val, _valWidth, _keyboardType,_returnKeyType,_required,_fldType){
+function inputField(utm,_label, _labelWidth,  _val, _valWidth, _keyboardType,_returnKeyType,_required,_fldType){
 
 	var hView = Ti.UI.createView({
-		height:50
+		height:'50dp'
 		});
 	
 	if(_required){
 		var req = Ti.UI.createLabel({
 			text: '*'	
-			,top:12
-			,left:2	
+			,top:'12dp'
+			,left:'2dp'	
 			,font:{fontFamily:'Arial',fontWeight:'bold',fontSize:'14dp'}
-			,width:5
+			,width:'5dp'
 		});
 		hView.add(req);		
 	}
@@ -29,11 +29,11 @@ function inputField(_label, _labelWidth,  _val, _valWidth, _keyboardType,_return
 		color:utm.textFieldColor,	
 		passwordMask:_fldType === 'password'?true:false,	
 		width:_valWidth,
-		height:40,
+		height:'40dp',
      	autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
 		autocorrect: false,
-		keyboardType: _keyboardType ?_keyboardType:'',
-		returnKeyType:_returnKeyType ? _returnKeyType:'',
+		keyboardType: _keyboardType ?_keyboardType: Ti.UI.KEYBOARD_DEFAULT,
+		returnKeyType:_returnKeyType ? _returnKeyType:Ti.UI.KEYBOARD_DEFAULT,
 		borderStyle:Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
 		borderRadius :5
 	});

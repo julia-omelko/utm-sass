@@ -806,7 +806,7 @@ try {
  */
 
 // create an OAuthAdapter instance
-var OAuthAdapter = function (pConsumerSecret, pConsumerKey, pSignatureMethod) {
+var OAuthAdapter = function (pConsumerSecret, pConsumerKey, pSignatureMethod,utm) {
 
     Ti.API.info('*********************************************');
     Ti.API.info('If you like the OAuth Adapter, consider donating at');
@@ -1234,8 +1234,10 @@ exports.create = function (settings) {
 //TODO  ATD need a function to call and get tokens per service.
 
     var site = (settings.site || 'twitter').toLowerCase();
+    
+    var utm = settings.utmSpace;
 
-    var adapter = new OAuthAdapter(settings.consumerSecret, settings.consumerKey, 'HMAC-SHA1');
+    var adapter = new OAuthAdapter(settings.consumerSecret, settings.consumerKey, 'HMAC-SHA1', utm);
     adapter.loadAccessToken(site);
 
     var urls = supportedSites[site];
