@@ -133,7 +133,6 @@ var PreviewMessage_window = function(utm) {
 
 	//------------- UTM Message ------------------
 	var utmMessageGroup = Ti.UI.createView({
-		layout : 'horizontal',
 		width : '100%',
 		top : 3,
 		height : '35dp',
@@ -162,16 +161,34 @@ var PreviewMessage_window = function(utm) {
 		borderColor: null,
 		borderWidth:0,
 		borderRadius:5,
+		right:65,
 		style:Ti.UI.iPhone.SystemButtonStyle.PLAIN
 	});
 	utmMessageGroup.add(regenUtm);
 	
-	regenUtm.addEventListener('click', function(){	
+	var refreshLabel = Ti.UI.createLabel({
+		text : 'Refresh',
+		font : {
+			fontSize : '14dp',
+			fontWeight : 'bold'
+		},
+		color : '#000',
+		right:5,
+		top : 5,
+		height : 'auto',
+		textAlign : 'right'
+	});
+	utmMessageGroup.add(refreshLabel);
+	
+	utmMessageGroup.addEventListener('click', triggerRefresh);
+	
+	function triggerRefresh(){
 		regenUtm.enabled=false;
 		var parm = new Object();
 		parm.messageText=yourOrgMessageValue.value;
 		getMessagePreview(parm);
-	});
+	}
+	
 
 	var customUtmMessage = Ti.UI.createTextArea({
 		color : utm.textFieldColor,
