@@ -27,7 +27,8 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		var win = Ti.UI.createWindow({
 			layout : 'vertical',
 			backgroundColor : utm.backgroundColor,
-			barColor : utm.barColor
+			barColor : utm.barColor,
+			title:  _myHortData.FriendlyName
 		});
 
 		var scrollingView = Ti.UI.createScrollView({
@@ -95,7 +96,8 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		var win = Titanium.UI.createWindow({
 			layout : 'vertical',
 			backgroundColor : utm.backgroundColor,
-			navBarHidden : true
+			navBarHidden : true,
+			title:  _myHortData.FriendlyName
 		});
 
 		//create a navbar for Android
@@ -103,7 +105,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 			height : 50,
 			width : '100%',
 			backgroundColor : utm.androidBarColor,
-			text : 'MyHort Info',
+			text :  _myHortData.FriendlyName,
 			color : utm.backgroundColor,
 			font : {
 				fontSize : utm.androidTitleFontSize,
@@ -200,7 +202,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 	}
 	
 	//-----------------MyHort Name  ----------------------
-	var myHortNameGroup = Ti.UI.createView({
+	/*var myHortNameGroup = Ti.UI.createView({
 		layout : 'horizontal',
 		width : '100%',
 		top : 3,
@@ -233,7 +235,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		textAlign : 'left'
 	});
 	myHortNameGroup.add(myHortName);
-
+*/
 	//----------Email--------------------
 	var email = new InputField(utm,'Email', 80, '', 210, Ti.UI.KEYBOARD_EMAIL);
 	view.add(email);

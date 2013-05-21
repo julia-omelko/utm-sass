@@ -177,7 +177,7 @@ var MyHorts_window = function(utm) {
 		var myHortData = e.rowData.myHortData;
 		utm.MyHortDetailWindow = require('screens/MyHortDetail');
 		utm.myHortDetailWindow = new utm.MyHortDetailWindow(myHortData,utm,myHortData.IsOwner);
-		utm.myHortDetailWindow.title = 'MyHort Info';
+		utm.myHortDetailWindow.title = myHortData.FriendlyName;
 		utm.navController.open(utm.myHortDetailWindow);
 	});
 
