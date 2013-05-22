@@ -1,48 +1,72 @@
 var MyAccount_window = function(utm) {
 	
-	var SetPinWindow = require('/ui/handheld/SetPin');
-	
-
-	var myAccountWindow = Titanium.UI.createWindow({
-		layout : 'vertical',
-		title : 'My Account',
-		backButtonTitle : L('button_back'),
-		backgroundColor : utm.backgroundColor,
-		barColor : utm.barColor
-	});
-
-	/*var upgradeButton = Ti.UI.createButton({
-		title : 'Upgrade Me',
-		top : 20,
-		width : 200,	
-		enabled : false
-	});
-	myAccountWindow.add(upgradeButton);
-
-	upgradeButton.addEventListener('click', function() {
+	if(utm.iPhone || utm.iPad ){
+		var SetPinWindow = require('/ui/handheld/SetPin');
 		
-	});	*/
+		var myAccountWindow = Titanium.UI.createWindow({
+			layout : 'vertical',
+			title : 'My Account',
+			backButtonTitle : L('button_back'),
+			backgroundColor : utm.backgroundColor,
+			barColor : utm.barColor
+		});
 	
-	var setPinLockButton = Ti.UI.createButton({
-		title : 'Set Unlock Code',
-		top : 20,
-		width : 200,	
-		enabled : true
-	});
-	myAccountWindow.add(setPinLockButton);
-
-	setPinLockButton.addEventListener('click', function() {
-		utm.setPinWindow = new SetPinWindow(utm);		
-		utm.navController.open(utm.setPinWindow);		
-	});
+		/*var upgradeButton = Ti.UI.createButton({
+			title : 'Upgrade Me',
+			top : 20,
+			width : 200,	
+			enabled : false
+		});
+		myAccountWindow.add(upgradeButton);
 	
-
+		upgradeButton.addEventListener('click', function() {
+			
+		});	*/
+		
+		var setPinLockButton = Ti.UI.createButton({
+			title : 'Set Unlock Code',
+			top : 20,
+			width : 200,	
+			enabled : true
+		});
+		myAccountWindow.add(setPinLockButton);
+	
+		setPinLockButton.addEventListener('click', function() {
+			utm.setPinWindow = new SetPinWindow(utm);		
+			utm.navController.open(utm.setPinWindow);		
+		});
+	}else	if(utm.Android){
+		
+		//create the base screen and hid the Android navbar
+		var myAccountWindow = Titanium.UI.createWindow({
+		    layout : 'vertical',
+		 	backgroundColor : utm.backgroundColor,
+		    navBarHidden:true
+		});
+		
+ 		//create a navbar for Android
+		var my_navbar = Ti.UI.createLabel({
+		    height : 50,
+		    width : '100%',
+		    backgroundColor : utm.androidBarColor,
+		    text:'My Account',
+		    color : utm.backgroundColor,
+		    font:{fontSize:utm.androidTitleFontSize,fontWeight:utm.androidTitleFontWeight},
+		    textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+		    top:0
+		});
+ 
+ 		//add the navbar to the screen
+		myAccountWindow.add(my_navbar);	
+	}
+	
 	var forgetMeButton = Ti.UI.createButton({
 		title : L('forget_me'),
 		top : 20,
 		width : 200,	
 		enabled : true
 	});
+	
 	myAccountWindow.add(forgetMeButton);
 
 	forgetMeButton.addEventListener('click', function() {
