@@ -15,14 +15,40 @@ function inviteMyHortWindow(myHortInfo, utm) {
 	if (Titanium.Platform.name == 'iPhone OS') {
 		needsAuth = isiOS6Plus();
 	}
+	
+	if(utm.iPhone || utm.iPad ){	
 
-	var myHortInviteWindow = Ti.UI.createWindow({
-		backgroundColor:utm.backgroundColor
-		,barColor:utm.barColor,
-		layout : 'vertical',
-		backButtonTitle:'MyHort Info'
-	});
+		var myHortInviteWindow = Ti.UI.createWindow({
+			backgroundColor:utm.backgroundColor
+			,barColor:utm.barColor,
+			layout : 'vertical',
+			backButtonTitle:'MyHort Info'
+		});
 
+	}else	if(utm.Android){
+		
+		//create the base screen and hid the Android navbar
+		var myHortInviteWindow = Titanium.UI.createWindow({
+		    layout : 'vertical',
+		 	backgroundColor : utm.backgroundColor,
+		    navBarHidden:true
+		});
+		
+		//create a navbar for Android
+		var my_navbar = Ti.UI.createLabel({
+		    height : 50,
+		    width : '100%',
+		    backgroundColor : utm.androidBarColor,
+		    color : utm.backgroundColor,
+		    text:'',
+		    top:0
+		});
+ 
+ 		//add the navbar to the screen
+		myHortInviteWindow.add(my_navbar);
+	}
+	
+	
 	var scrollingView = Ti.UI.createScrollView({
 		showVerticalScrollIndicator : true,
 		showHorizontalScrollIndicator : false
@@ -43,7 +69,7 @@ function inviteMyHortWindow(myHortInfo, utm) {
 		height : 60,
 		font : {
 			fontWeight : 'bold',
-			fontSize : 16
+			fontSize : '16dp'
 		}
 	});
 	view.add(titleLbl);
@@ -52,9 +78,10 @@ function inviteMyHortWindow(myHortInfo, utm) {
 		text : 'Invite message for e-mail',
 		top : 10,
 		left : 5,
+		color:utm.textColor,
 		font : {
 			fontWeight : 'bold',
-			fontSize : 14
+			fontSize : '14dp'			
 		}
 	});
 	view.add(inviteMessageLabel);
@@ -66,7 +93,7 @@ function inviteMyHortWindow(myHortInfo, utm) {
 		color : utm.textFieldColor,
 		textAlign : 'left',
 		top : 5,
-		font: {fontSize:16},
+		font: {fontSize:'16dp'},
 		height : 'auto',
 		width : utm.SCREEN_WIDTH - 10,
 		height : utm.SCREEN_HEIGHT - (utm.SCREEN_HEIGHT / 1.2),
@@ -84,9 +111,10 @@ function inviteMyHortWindow(myHortInfo, utm) {
 	var emailLabel = Ti.UI.createLabel({
 		text : 'Email address to send invites to',
 		top : 25,
+		color:utm.textColor,
 		font : {
 			fontWeight : 'bold',
-			fontSize : 14
+			fontSize : '14dp'
 		}
 	});
 	emailBox.add(emailLabel);
@@ -169,11 +197,12 @@ function inviteMyHortWindow(myHortInfo, utm) {
 	});
 	var typeLabel = Ti.UI.createLabel({
 		text : 'Invisible to Others',
+		color:utm.textColor,
 		font : {
 			fontWeight : 'bold',
-			fontSize : 14
+			fontSize : '14dp'
 		},
-		width : 150
+		width : '150dp'
 	});
 	typeBox.add(typeLabel);
 
