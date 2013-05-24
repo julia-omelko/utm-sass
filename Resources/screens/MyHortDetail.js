@@ -399,7 +399,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 	});
 	signMessagesGroup.add(signMessagesSwitch);
 
-
+if(utm.envModePrefix==='dev' || utm.envModePrefix==='local'  ){
 //----------Pre/Post Key Word # --------------------
 	var keyWordPreGroup = Ti.UI.createView({
 		layout : 'horizontal',
@@ -478,7 +478,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 	})
 	keyWordPostGroup.add(keyWordPost);
 	keyWordPost.addEventListener('change', function(){ keyWordPre.value='' })
-	
+}
 	/*
 	var preButton = Ti.UI.createButton({
 		title : 'Key Word Before Message',
@@ -576,14 +576,15 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		if (utm.myHortDetails.IsOwner) {
 			utm.myHortDetails.PrimaryUser = utm.curMyHortDetails;
 			utm.myHortDetails.MyInformation = '';
-			
-			if(keyWordPre.value !=''){
-				utm.myHortDetails.myHort.Prefix=keyWordPre.value;
-				utm.myHortDetails.myHort.Postfix='';
-			}
-			if(keyWordPost.value  !=''){
-				utm.myHortDetails.myHort.Postfix=keyWordPost.value;
-				utm.myHortDetails.myHort.Prefix='';
+			if(utm.envModePrefix==='dev' || utm.envModePrefix==='local'  ){
+				if(keyWordPre.value !=''){
+					utm.myHortDetails.myHort.Prefix=keyWordPre.value;
+					utm.myHortDetails.myHort.Postfix='';
+				}
+				if(keyWordPost.value  !=''){
+					utm.myHortDetails.myHort.Postfix=keyWordPost.value;
+					utm.myHortDetails.myHort.Prefix='';
+				}
 			}
 			
 		} else {
@@ -647,13 +648,13 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 				} else {
 					signMessagesSwitch.setValue(utm.myHortDetails.MyInformation.AddNicknameToUtms);
 				}			
-				
-				if(utm.myHortDetails.myHort.Prefix && utm.myHortDetails.myHort.Prefix !=''){
-					keyWordPre.value = utm.myHortDetails.myHort.Prefix;
-				}else{
-					keyWordPost.value = utm.myHortDetails.myHort.Postfix;
+				if(utm.envModePrefix==='dev' || utm.envModePrefix==='local'  ){
+					if(utm.myHortDetails.myHort.Prefix && utm.myHortDetails.myHort.Prefix !=''){
+						keyWordPre.value = utm.myHortDetails.myHort.Prefix;
+					}else{
+						keyWordPost.value = utm.myHortDetails.myHort.Postfix;
+					}
 				}
-				
 				enableButtonBar(true);
 
 			} else if (this.status == 400) {
