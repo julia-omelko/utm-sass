@@ -239,6 +239,12 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 	//----------Email--------------------
 	var email = new InputField(utm,'Email', 80, '', 210, Ti.UI.KEYBOARD_EMAIL);
 	view.add(email);
+	
+		
+	//----------Mobile # --------------------
+	var mobile = new InputField(utm,'Mobile', 80, '', 210, Ti.UI.KEYBOARD_DECIMAL_PAD);
+	view.add(mobile);
+
 
 	//----------Twitter On off Switch--------------------
 	var twitterGroup = Ti.UI.createView({
@@ -364,8 +370,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 			// alert("Canceled");
 		}
 	});
-
-
+	
 	//----------Sign UTM Messaged--------------------
 	var signMessagesGroup = Ti.UI.createView({
 		layout : 'horizontal',
@@ -394,12 +399,112 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 	});
 	signMessagesGroup.add(signMessagesSwitch);
 
+
+//----------Pre/Post Key Word # --------------------
+	var keyWordPreGroup = Ti.UI.createView({
+		layout : 'horizontal',
+		width : '100%',
+		top : 3,
+		left : 8,
+		height : '60dp',
+		visible : true
+	});
+	view.add(keyWordPreGroup);
 	
+	var keyWordPreLabel = Ti.UI.createLabel({
+		text : 'Key Word Before Message',
+		font : {
+			fontSize : '14dp',
+			fontWeight : 'bold'
+		},
+		width : '80dp',
+		textAlign : 'left'
+	});
+	keyWordPreGroup.add(keyWordPreLabel);
+	
+	var keyWordPre = Ti.UI.createTextField({
+		maxLength:16,
+		width:'220dp',
+		left:keyWordPreLabel+8,
+		color:utm.textFieldColor,	
+		height:'40dp',
+		borderStyle:Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
+		borderRadius :5
+	})
+	keyWordPreGroup.add(keyWordPre);
+	
+	keyWordPre.addEventListener('change', function(){ keyWordPost.value='' })
+	
+	var orLabel = Ti.UI.createLabel({
+		text : ' - OR - ',
+		font : {
+			fontSize : '14dp',
+			fontWeight : 'bold'
+		},
+		width : '80dp',
+		textAlign : 'left'
+	});
+	view.add(orLabel);
+	
+	var keyWordPostGroup = Ti.UI.createView({
+		layout : 'horizontal',
+		width : '100%',
+		top : 3,
+		left : 8,
+		height : '60dp',
+		visible : true
+	});
+	view.add(keyWordPostGroup);
+	
+	var keyWordPostLabel = Ti.UI.createLabel({
+		text : 'Key Word After Message',
+		font : {
+			fontSize : '14dp',
+			fontWeight : 'bold'
+		},
+		width : '80dp',
+		textAlign : 'left'
+	});
+	keyWordPostGroup.add(keyWordPostLabel);
+	
+	var keyWordPost = Ti.UI.createTextField({
+		maxLength:16,
+		width:'220dp',
+		left:keyWordPostLabel+8,
+		color:utm.textFieldColor,	
+		height:'40dp',
+		borderStyle:Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
+		borderRadius :5
+	})
+	keyWordPostGroup.add(keyWordPost);
+	keyWordPost.addEventListener('change', function(){ keyWordPre.value='' })
+	
+	/*
+	var preButton = Ti.UI.createButton({
+		title : 'Key Word Before Message',
+		left: '80dp',
+		enabled : true
+	});
+	view.add(preButton);
+	
+	var orLabel = Ti.UI.createLabel({
+		text : ' - OR - ',
+		font : {
+			fontSize : '14dp',
 
-	//----------Mobile # --------------------
-	var mobile = new InputField(utm,'Mobile', 80, '', 210, Ti.UI.KEYBOARD_DECIMAL_PAD);
-	view.add(mobile);
+		},
+		width : '80dp',
+		textAlign : 'left'
+	});
+	view.add(orLabel);
 
+	var postButton = Ti.UI.createButton({
+		title : 'Key Word After Message',
+		width: '80dp',
+		enabled : true
+	});
+	view.add(postButton);
+	*/
 	var saveButton = Ti.UI.createButton({
 		title : 'Save',
 		top : 3,
@@ -411,6 +516,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		}
 	});
 	view.add(saveButton);
+	
 
 	function authTwitter() {
 		twitter.authorize();
@@ -437,7 +543,6 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 	
 	    utm.curMyHortDetails.AddNicknameToUtms = signMessagesSwitch.getValue(); 	
 
-		
 
 		//TODO Handle Twitter diff myHortDetails.PrimaryUser.TwitterToken=;
 
@@ -471,7 +576,16 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		if (utm.myHortDetails.IsOwner) {
 			utm.myHortDetails.PrimaryUser = utm.curMyHortDetails;
 			utm.myHortDetails.MyInformation = '';
-
+			
+			if(keyWordPre.value !=''){
+				utm.myHortDetails.myHort.Prefix=keyWordPre.value;
+				utm.myHortDetails.myHort.Postfix='';
+			}
+			if(keyWordPost.value  !=''){
+				utm.myHortDetails.myHort.Postfix=keyWordPost.value;
+				utm.myHortDetails.myHort.Prefix='';
+			}
+			
 		} else {
 			utm.myHortDetails.MyInformation = utm.curMyHortDetails;
 			utm.myHortDetails.PrimaryUser = '';
@@ -534,9 +648,14 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 					signMessagesSwitch.setValue(utm.myHortDetails.MyInformation.AddNicknameToUtms);
 				}			
 				
-
+				if(utm.myHortDetails.myHort.Prefix && utm.myHortDetails.myHort.Prefix !=''){
+					keyWordPre.value = utm.myHortDetails.myHort.Prefix;
+				}else{
+					keyWordPost.value = utm.myHortDetails.myHort.Postfix;
+				}
+				
 				enableButtonBar(true);
-				//TODO handle errors better
+
 			} else if (this.status == 400) {
 				utm.recordError('Error')
 			} else {
