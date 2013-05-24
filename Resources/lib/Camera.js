@@ -60,6 +60,7 @@ function CameraView(_win) {
 				return;
 			} else if (e.index === 0){
 				Titanium.Media.showCamera({
+					saveToPhotoGallery:false,
 					mediaTypes:[Ti.Media.MEDIA_TYPE_PHOTO],  //, Ti.Media.MEDIA_TYPE_VIDEO this will need work to get video working
 					success:function(event) {
 						resizedImage = event.media;
