@@ -21,6 +21,7 @@ function inputField(utm,_label, _labelWidth,  _val, _valWidth, _keyboardType,_re
 		,left:8	
 		,font:{fontWeight:'bold',fontSize:'14dp'}
 		,width:_labelWidth
+		,color : '#000'
 	});
 	hView.add(lbl);
 	
