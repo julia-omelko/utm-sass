@@ -96,7 +96,6 @@ function createMyHortWindow(myHortId,utm) {
 				//top : 5,
 				left : '2dp',
 				width : '200dp',
-				//height : '15dp',
 				ellipsize : false
 			});
 			hView.add(pendingEmail);
@@ -113,7 +112,6 @@ function createMyHortWindow(myHortId,utm) {
 				font:{
 					fontSize : '16dp'
 				},
-				//height : '16dp',
 				ellipsize : false
 			});
 			hView.add(memberType);
