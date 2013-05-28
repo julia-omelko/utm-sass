@@ -10,7 +10,7 @@ function createMyHortWindow(myHortId,utm) {
 	var titleLbl = Ti.UI.createLabel({
 		text : 'Your Pending Invitations',
 		top : 60,
-		font:{fontWeight:'bold',fontSize:16},
+		font:{fontWeight:'bold',fontSize:'16dp'},
 		color: utm.Android ? utm.androidBarColor : utm.color_org 
 	})
 	myHortPendingWindow.add(titleLbl);
@@ -72,7 +72,7 @@ function createMyHortWindow(myHortId,utm) {
 				row : clickName = 'row',
 				objName : 'row',
 				touchEnabled : false,
-				height : 55,
+				height : '55dp',
 				hasChild : false,
 				myHortPendingData : myHortPendingData[i]
 			});
@@ -87,16 +87,16 @@ function createMyHortWindow(myHortId,utm) {
 				backgroundColor : '#fff',
 				color : '#000',
 				font : {
-					fontSize : 14,
+					fontSize : '14dp',
 					fontWeight : 'bold'
 				},
 				objName : 'myHortName',
 				text : myHortPendingData[i].EmailAddress,
 				touchEnabled : false,
 				//top : 5,
-				left : 2,
-				width : 200,
-				height : 15,
+				left : '2dp',
+				width : '200dp',
+				//height : '15dp',
 				ellipsize : false
 			});
 			hView.add(pendingEmail);
@@ -108,9 +108,12 @@ function createMyHortWindow(myHortId,utm) {
 				objName : 'memberType',
 				text : myHortPendingData[i].MemberType,
 				touchEnabled : false,
-				top : 5,
-				left : 205,
-				height : 15,
+				top : '5dp',
+				left : '205dp',
+				font:{
+					fontSize : '16dp'
+				},
+				//height : '16dp',
 				ellipsize : false
 			});
 			hView.add(memberType);
@@ -118,9 +121,13 @@ function createMyHortWindow(myHortId,utm) {
 			//IsValid
 			if (!myHortPendingData[i].IsValid) {
 				var expiredLbl = Ti.UI.createLabel({
+					color : '#000',
 					text : 'Expired',
-					bottom : 5,
-					left : 205
+					top : '30dp',
+					font:{
+						fontSize : '16dp'
+					},
+					left : '205dp'
 				})
 				hView.add(expiredLbl);
 			}
