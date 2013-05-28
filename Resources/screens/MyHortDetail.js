@@ -402,89 +402,10 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 	});
 	signMessagesGroup.add(signMessagesSwitch);
 
-	// ##################### Call out to get myHort detail #####################
-	var getMyHortDetailReq = Ti.Network.createHTTPClient({
-		validatesSecureCertificate : utm.validatesSecureCertificate,
-		onload : function() {
-
-			win.visible = true;
-			var response = eval('(' + this.responseText + ')');
-			utm.myHortDetails = response;
-
-			if (this.status == 200) {
-
-				if (utm.myHortDetails.IsOwner) {
-					utm.curMyHortDetails = utm.myHortDetails.PrimaryUser;
-					if (utm.iPhone || utm.iPad) 
-						topButtonBar.visable = true;
-
-				} else {
-					utm.curMyHortDetails = utm.myHortDetails.MyInformation;
-					if (utm.iPhone || utm.iPad) 
-						topButtonBar.visable = false;
-				}
-
-				//Now that we have date set all the values
-				email.setValue(utm.curMyHortDetails.Email);
-				mobile.setValue(utm.curMyHortDetails.Mobile);
-				//	faceBook.setValue(utm.curMyHortDetails.FaceBook);
-
-				if (utm.curMyHortDetails.TwitterToken != '' & utm.curMyHortDetails.TwitterToken != null) {
-					twitterSwitch.setValue(true);
-					twitterEnabledForUser = true;
-				} else {
-					twitterSwitch.setValue(false);
-					twitterEnabledForUser = false;
-				}
-
-				if (utm.curMyHortDetails.FaceBook != '' & utm.curMyHortDetails.FaceBook != null) {
-					facebookSwitch.setValue(true);
-					facebookEnabledForUser = true;
-				} else {
-					facebookSwitch.setValue(false);
-					facebookEnabledForUser = false;
-				}
-								
-				if (utm.myHortDetails.IsOwner) {
-					signMessagesSwitch.setValue(utm.myHortDetails.PrimaryUser.AddNicknameToUtms);
-
-				} else {
-					signMessagesSwitch.setValue(utm.myHortDetails.MyInformation.AddNicknameToUtms);
-				}			
-				if(utm.envModePrefix==='dev' || utm.envModePrefix==='local'  ){
-					if(utm.myHortDetails.myHort.Prefix && utm.myHortDetails.myHort.Prefix !=''){
-						keyWordPre.value = utm.myHortDetails.myHort.Prefix;
-					}else{
-						keyWordPost.value = utm.myHortDetails.myHort.Postfix;
-					}
-				}
-				enableButtonBar(true);
-
-			} else if (this.status == 400) {
-				utm.recordError('Error')
-			} else {
-				utm.recordError('Error')
-			}
-			if (utm.iPhone || utm.iPad) 
-				topButtonBar.enabled = true;
-			utm.setActivityIndicator('');
-		},
-		onerror : function(e) {
-			utm.setActivityIndicator('');
-			if (this.status != undefined && this.status === 404) {
-				alert('The myHort you are looking for does not exist.');
-			} else {
-				utm.handleError(e, this.status, this.responseText);
-			}
-		},
-		timeout : utm.netTimeout
-	});
-
-
 //----------Pre/Post Key Word # --------------------
 // Business rule is that only owner of MyHort can  set a prefix or postfix
 // Keep isOwner check after environment check is removed
-if(utm.myHortDetails.IsOwner & (utm.envModePrefix==='dev' || utm.envModePrefix==='local'  )){
+if(isOwner & (utm.envModePrefix==='dev' || utm.envModePrefix==='local'  )){
 
 	var keyWordPreGroup = Ti.UI.createView({
 		layout : 'horizontal',
@@ -687,6 +608,84 @@ if(utm.myHortDetails.IsOwner & (utm.envModePrefix==='dev' || utm.envModePrefix==
 		updateMyHortDetailReq.send(JSON.stringify(utm.myHortDetails));
 	}
 
+	// ##################### Call out to get myHort detail #####################
+	var getMyHortDetailReq = Ti.Network.createHTTPClient({
+		validatesSecureCertificate : utm.validatesSecureCertificate,
+		onload : function() {
+
+			win.visible = true;
+			var response = eval('(' + this.responseText + ')');
+			utm.myHortDetails = response;
+
+			if (this.status == 200) {
+
+				if (utm.myHortDetails.IsOwner) {
+					utm.curMyHortDetails = utm.myHortDetails.PrimaryUser;
+					if (utm.iPhone || utm.iPad) 
+						topButtonBar.visable = true;
+
+				} else {
+					utm.curMyHortDetails = utm.myHortDetails.MyInformation;
+					if (utm.iPhone || utm.iPad) 
+						topButtonBar.visable = false;
+				}
+
+				//Now that we have date set all the values
+				email.setValue(utm.curMyHortDetails.Email);
+				mobile.setValue(utm.curMyHortDetails.Mobile);
+				//	faceBook.setValue(utm.curMyHortDetails.FaceBook);
+
+				if (utm.curMyHortDetails.TwitterToken != '' & utm.curMyHortDetails.TwitterToken != null) {
+					twitterSwitch.setValue(true);
+					twitterEnabledForUser = true;
+				} else {
+					twitterSwitch.setValue(false);
+					twitterEnabledForUser = false;
+				}
+
+				if (utm.curMyHortDetails.FaceBook != '' & utm.curMyHortDetails.FaceBook != null) {
+					facebookSwitch.setValue(true);
+					facebookEnabledForUser = true;
+				} else {
+					facebookSwitch.setValue(false);
+					facebookEnabledForUser = false;
+				}
+								
+				if (utm.myHortDetails.IsOwner) {
+					signMessagesSwitch.setValue(utm.myHortDetails.PrimaryUser.AddNicknameToUtms);
+
+				} else {
+					signMessagesSwitch.setValue(utm.myHortDetails.MyInformation.AddNicknameToUtms);
+				}			
+				if(utm.envModePrefix==='dev' || utm.envModePrefix==='local'  ){
+					if(utm.myHortDetails.myHort.Prefix && utm.myHortDetails.myHort.Prefix !=''){
+						keyWordPre.value = utm.myHortDetails.myHort.Prefix;
+					}else{
+						keyWordPost.value = utm.myHortDetails.myHort.Postfix;
+					}
+				}
+				enableButtonBar(true);
+
+			} else if (this.status == 400) {
+				utm.recordError('Error')
+			} else {
+				utm.recordError('Error')
+			}
+			if (utm.iPhone || utm.iPad) 
+				topButtonBar.enabled = true;
+			utm.setActivityIndicator('');
+		},
+		onerror : function(e) {
+			utm.setActivityIndicator('');
+			if (this.status != undefined && this.status === 404) {
+				alert('The myHort you are looking for does not exist.');
+			} else {
+				utm.handleError(e, this.status, this.responseText);
+			}
+		},
+		timeout : utm.netTimeout
+	});
+	
 	function updateOwnerMemberDetails(){
 
 		for (x=0;x< _myHortData.Members.length;x++){
