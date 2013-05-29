@@ -657,7 +657,7 @@ if(isOwner & (utm.envModePrefix==='dev' || utm.envModePrefix==='local'  )){
 				} else {
 					signMessagesSwitch.setValue(utm.myHortDetails.MyInformation.AddNicknameToUtms);
 				}			
-				if(utm.envModePrefix==='dev' || utm.envModePrefix==='local'  ){
+				if(isOwner && (utm.envModePrefix==='dev' || utm.envModePrefix==='local' ) ){
 					if(utm.myHortDetails.myHort.Prefix && utm.myHortDetails.myHort.Prefix !=''){
 						keyWordPre.value = utm.myHortDetails.myHort.Prefix;
 					}else{
