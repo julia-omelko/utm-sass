@@ -65,7 +65,7 @@ function createMyHortWindow(_myHortData, utm, _isOwner) {
 	colHeader.add(memberTypeLbl);
 	
 	var acceptsLbl = Ti.UI.createLabel({
-		text : 'Posts To',
+		text : 'Methods',
 		font : {
 			fontWeight : 'bold',
 			fontSize : '16dp'
