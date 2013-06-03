@@ -50,7 +50,7 @@ var subscribe_window = function(utm) {
 	win.updateMessage = function(){
 		message='';
 		if(utm.User.UserProfile.MessagesRemaining <1){
-			message= 'Your have no more messages available \n';
+			message= 'You have no more messages available \n';
 		}
 		
 		var now = new Date();		
