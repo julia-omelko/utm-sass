@@ -179,6 +179,7 @@ var ChooseContacts_window = function(utm) {
 						row.add(l);
 
 						if (utm.User.UserProfile.UserId === response[i].UserId) {
+							utm.curUserCurMyHortNickName = response[i].NickName;
 							if (response[i].HasTwitter) {
 								utm.curUserCurMyHortHasTwitter = true;
 							}
