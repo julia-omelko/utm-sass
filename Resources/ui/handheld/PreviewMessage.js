@@ -15,6 +15,8 @@ var PreviewMessage_window = function(utm) {
 	var messageData = false;
 	var postImage='';
 	var attachments=null;
+	var signMessagesSwitchEventListnerAdded = false;
+	var signMessagesSwitchWasOnButTurnedff = 'none';
 	
 	var cameraButton= Ti.UI.createButton({
 			backgroundImage:'/images/camera-ip.png'		
@@ -250,6 +252,35 @@ var PreviewMessage_window = function(utm) {
 
 	var sendSms = false;
 
+//----------Sign UTM Messaged--------------------
+	var signMessagesGroup = Ti.UI.createView({
+		layout : 'horizontal',
+		width : '100%',
+		top : 3,
+		left : 8,
+		height : '50dp',
+		visible : true
+	});
+	win.add(signMessagesGroup);
+
+	var signMessagesLabel = Ti.UI.createLabel({
+		text : 'Sign Message',
+		font : {
+			fontSize : '14dp',
+			fontWeight : 'bold'
+		},
+		color : '#000',
+		width : '185dp',
+		textAlign : 'left'
+	});
+	signMessagesGroup.add(signMessagesLabel);
+
+	var signMessagesSwitch = Ti.UI.createSwitch({
+		value : false,
+		enabled : true
+	});
+	signMessagesGroup.add(signMessagesSwitch);
+
 	//----------Delete On Read Switch--------------------
 	var deleteView = Ti.UI.createView({
 		layout : 'horizontal',
@@ -308,8 +339,6 @@ var PreviewMessage_window = function(utm) {
 
 
 	win.add(camera);
-	
-
 
 	sendButton.addEventListener('click', function() {
 		var messageType = getMessageSendTypes();
@@ -430,6 +459,43 @@ var PreviewMessage_window = function(utm) {
 			regenUtm.enabled=true;
 			utm.log('PreviewMessages Service Returned');
 			if (this.status == 200) {
+				
+				if(signMessagesSwitchWasOnButTurnedff !=='none'){
+					if(signMessagesSwitchWasOnButTurnedff){
+						//Strip off Signature now
+						response.UtmText= response.UtmText.replace('\n\r-'+utm.curUserCurMyHortNickName, "");
+					}else{
+						response.UtmText = response.UtmText+ '\n\r-'+utm.curUserCurMyHortNickName;
+					}
+				}
+				
+				if (endsWith(response.UtmText , '\n\r-'+utm.curUserCurMyHortNickName)){
+					signMessagesSwitch.value=true;
+				}else{
+					signMessagesSwitch.value=false;
+				}
+				
+				if(!signMessagesSwitchEventListnerAdded){
+					signMessagesSwitch.addEventListener('change', function(){
+						//Handle the turn on an off of signature
+						if(signMessagesSwitch.value){
+							signMessagesSwitchWasOnButTurnedff=false;
+							if(! endsWith(customUtmMessage.value , '\n\r-'+ utm.curUserCurMyHortNickName)){
+								//Turned on and not found so Add Signature of nickname
+								customUtmMessage.value = customUtmMessage.value+ '\n\r-'+utm.curUserCurMyHortNickName;
+							}
+						}else{
+							signMessagesSwitchWasOnButTurnedff=true;
+							if(endsWith(customUtmMessage.value , '\n\r-'+utm.curUserCurMyHortNickName)){
+								//Turned off so remove signature
+								customUtmMessage.value = customUtmMessage.value.replace('\n\r-'+utm.curUserCurMyHortNickName, "");
+							}
+						}
+						
+					})
+					signMessagesSwitchEventListnerAdded=true;
+				}
+				
 				customUtmMessage.value = response.UtmText;
 				yourOrgMessageValue.value = response.PlainText;
 				curRjCrypt = response.RjCrypt;
@@ -664,6 +730,15 @@ var PreviewMessage_window = function(utm) {
 
 	win.setMessageData = function(_messageData) {
 		messageData = _messageData;
+	}
+	
+
+	function endsWith(str, suffix) {
+		
+		var foundSuffix = str.lastIndexOf(suffix);
+		if(foundSuffix == -1) return false;
+		var x= foundSuffix = str.length - suffix.length;
+	    return  foundSuffix = str.length - suffix.length;
 	}
 	
 	return win;
