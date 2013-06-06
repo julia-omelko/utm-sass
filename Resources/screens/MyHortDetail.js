@@ -405,7 +405,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 //----------Pre/Post Key Word # --------------------
 // Business rule is that only owner of MyHort can  set a prefix or postfix
 // Keep isOwner check after environment check is removed
-if(isOwner & (utm.envModePrefix==='dev' || utm.envModePrefix==='local'  )){
+if(isOwner){
 
 	var keyWordPreGroup = Ti.UI.createView({
 		layout : 'horizontal',
@@ -585,15 +585,14 @@ if(isOwner & (utm.envModePrefix==='dev' || utm.envModePrefix==='local'  )){
 		if (utm.myHortDetails.IsOwner) {
 			utm.myHortDetails.PrimaryUser = utm.curMyHortDetails;
 			utm.myHortDetails.MyInformation = '';
-			if(utm.envModePrefix==='dev' || utm.envModePrefix==='local'  ){
-				if(keyWordPre.value !=''){
-					utm.myHortDetails.myHort.Prefix=keyWordPre.value;
-					utm.myHortDetails.myHort.Postfix='';
-				}
-				if(keyWordPost.value  !=''){
-					utm.myHortDetails.myHort.Postfix=keyWordPost.value;
-					utm.myHortDetails.myHort.Prefix='';
-				}
+
+			if(keyWordPre.value !=''){
+				utm.myHortDetails.myHort.Prefix=keyWordPre.value;
+				utm.myHortDetails.myHort.Postfix='';
+			}
+			if(keyWordPost.value  !=''){
+				utm.myHortDetails.myHort.Postfix=keyWordPost.value;
+				utm.myHortDetails.myHort.Prefix='';
 			}
 			
 		} else {
@@ -657,7 +656,7 @@ if(isOwner & (utm.envModePrefix==='dev' || utm.envModePrefix==='local'  )){
 				} else {
 					signMessagesSwitch.setValue(utm.myHortDetails.MyInformation.AddNicknameToUtms);
 				}			
-				if(isOwner && (utm.envModePrefix==='dev' || utm.envModePrefix==='local' ) ){
+				if(isOwner){
 					if(utm.myHortDetails.myHort.Prefix && utm.myHortDetails.myHort.Prefix !=''){
 						keyWordPre.value = utm.myHortDetails.myHort.Prefix;
 					}else{

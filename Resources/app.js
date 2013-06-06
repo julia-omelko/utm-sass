@@ -147,7 +147,8 @@ utm.previewMessageView = new utm.PreviewMessageView(utm);
 utm.MyHortView = require('screens/MyHorts');
 utm.myHortView = new utm.MyHortView(utm);
 
-
+utm.SplashView = require('screens/Splash');
+utm.splashView = new utm.SplashView(utm);
 
 function appInit(){	
 	
@@ -562,7 +563,7 @@ Ti.App.addEventListener('app:signup', function(){
 	utm.navController.open(utm.signupView);
 });
 
-Ti.App.addEventListener("pause", function(e){
+Ti.App.addEventListener("paused", function(e){
 	utm.log('-------  APP Paused ------');
 	appPauseTime= new Date();
 	utm.log('-------  APP Paused appPauseTime='+appPauseTime.valueOf());
@@ -571,6 +572,9 @@ Ti.App.addEventListener("pause", function(e){
 //IF the app is left for more then one minute force login
 Ti.App.addEventListener("resumed", function(e){
 	utm.log('-------  APP resumed ------');
+	
+	if(utm.splashView !=undefined ){utm.navController.close(utm.splashView,{animated:false});}
+	
 	
 	if(!utm.loggedIn) return;
 
@@ -634,7 +638,10 @@ if(utm.iPhone || utm.iPad ){
 		
 	}
 }
-
+//RE #391 - Stop Screenshot when App Looses Focus - put up the splach screen
+Ti.App.addEventListener('pause', function(e){
+	utm.navController.open(utm.splashView );
+});
 /*
 Ti.App.addEventListener('app:networkChange',
 	function () {
