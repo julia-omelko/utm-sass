@@ -3,7 +3,7 @@ var utm = {};
 utm.loggedIn = false;
 utm.isInPinLock=false;
 utm.envModePrefix = "";
-utm.validatesSecureCertificate=false;
+utm.validatesSecureCertificate=true;
 utm.color_org = '#F66F00';
 utm.barColor= '#F66F00';
 utm.androidBarColor = '#CD8C52';
@@ -156,8 +156,10 @@ function appInit(){
 	
 	if (Ti.Platform.model === 'Simulator' || Ti.Platform.model ===  'google_sdk') { 
 		utm.setEnvModePrefix("local");
+		utm.validatesSecureCertificate=false;
 	}else{
 		utm.setEnvModePrefix("prod");
+		utm.validatesSecureCertificate=true;
 	}	
 	
 	utm.loginView.setVersionLabel();
@@ -571,11 +573,11 @@ Ti.App.addEventListener("paused", function(e){
 
 //IF the app is left for more then one minute force login
 Ti.App.addEventListener("resumed", function(e){
-	utm.log('-------  APP resumed ------');
 	
-	if(utm.splashView !=undefined ){utm.navController.close(utm.splashView,{animated:false});}
-	
-	
+	//RE #391 - Stop Screenshot when App Looses Focus - close the splash screen
+	utm.log(' **********************  -------  APP resumed ------ **********************    ');
+	utm.splashView.close();	
+
 	if(!utm.loggedIn) return;
 
 	var curDate = new Date();
@@ -638,10 +640,13 @@ if(utm.iPhone || utm.iPad ){
 		
 	}
 }
-//RE #391 - Stop Screenshot when App Looses Focus - put up the splach screen
+//RE #391 - Stop Screenshot when App Looses Focus - put up the splash screen
 Ti.App.addEventListener('pause', function(e){
-	utm.navController.open(utm.splashView );
+	utm.splashView.open();
+	//Note: Splash is closed in resumed event
 });
+
+
 /*
 Ti.App.addEventListener('app:networkChange',
 	function () {

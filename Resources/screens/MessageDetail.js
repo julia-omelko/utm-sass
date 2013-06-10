@@ -173,6 +173,7 @@ function messageDetail_window(_messageData,_curMode,utm) {
 					var data = [];
 					utm.curUserCurMyHortHasTwitter = false;
 					utm.curUserCurMyHortHasFacebook = false;
+					utm.curUserCurMyHortNickName  = _messageData.ToHeader;
 					
 					var selectedContacts=[];
 					
@@ -181,6 +182,8 @@ function messageDetail_window(_messageData,_curMode,utm) {
 					Ti.App.fireEvent("app:contactsChoosen", {
 				        sentToContactList: selectedContacts
 				    });	
+					
+					
 				    
 				    	Ti.App.fireEvent("app:showWriteMessageView", {mode:'reply', messageData: _messageData});
 				
