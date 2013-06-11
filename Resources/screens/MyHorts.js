@@ -256,6 +256,11 @@ var MyHorts_window = function(utm) {
 	Ti.App.addEventListener('app:loadMyHorts', function() {
 		loadMyHorts();
 	});
+	
+	//Added to clear out the myhort list in case someone re-logs in as another user
+	Ti.App.addEventListener('app:loginSuccess', function(){
+		tableView.setData([]);		
+	});
 
 	return myHortsWindow;
 
