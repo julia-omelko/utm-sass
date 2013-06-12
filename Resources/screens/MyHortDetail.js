@@ -285,16 +285,16 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 
 			var dialog = Ti.UI.createAlertDialog({
 				cancel : 1,
-				buttonNames : ['For this MyHort?', 'For ALL MyHorts?', L('cancel')],
-				message : 'You can Deauthorize the YouThisMe application for this MyHort only or for ALL your MyHorts that your a member of. ',
-				title : 'Deactivate Options'
+				buttonNames : ['Deauthorize',  L('cancel')],
+				message : 'You are about to Deauthorize the YouThisMe application for this MyHort ',
+				title : 'Confirm Deauthorize'
 			});
 			dialog.addEventListener('click', function(e) {
 				if (e.index === 0) {
 					utm.TwitterToken = '';
 					utm.TwitterTokenSecret = '';
-				} else if (e.index === 1) {
-					twitter.deauthorize();
+				/*} else if (e.index === 1) {
+					twitter.deauthorize();*/
 				} else if (e.index === 2) {
 					Ti.API.info('The cancel button was clicked');
 				}
@@ -343,17 +343,18 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		} else {
 			var dialog = Ti.UI.createAlertDialog({
 				cancel : 1,
-				buttonNames : ['For this MyHort?', 'For ALL MyHorts?', L('cancel')],
-				message : 'You can Deauthorize the YouThisMe application for this MyHort only or for ALL your MyHorts that your a member of. ',
-				title : 'Deactivate Options'
+				buttonNames : ['Deauthorize', L('cancel')],
+				message : 'You are about Deauthorize the YouThisMe application for this MyHort ',
+				title : 'Deauthorize Options'
 			});
 			dialog.addEventListener('click', function(e) {
 				if (e.index === 0) {
 					Ti.Facebook.logout();
 					//Ti.Facebook.setForceDialogAuth(false);
-				} else if (e.index === 1) {
+				/*} else if (e.index === 1) {
 					Ti.Facebook.logout();
 					//Ti.Facebook.setForceDialogAuth(false);
+					*/
 				} else if (e.index === 2) {
 					Ti.API.info('The cancel button was clicked');
 				}
