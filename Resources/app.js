@@ -176,6 +176,11 @@ function handleLoginSuccess(event) {
 	//Ti.App.removeEventListener('app:loginSuccess', handleLoginSuccess);
 //utm.User.userProfile.
 	utm.loggedIn = true;
+	
+			
+	if(utm.User)
+		utm.User.MyHorts =[];
+
 	utm.User = event.userData;
 	utm.AuthToken = event.userData.UserProfile.AuthToken;
 	
