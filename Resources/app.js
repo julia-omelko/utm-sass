@@ -28,8 +28,9 @@ utm.appPauseTime=0;
 //var gaModule = require('Ti.Google.Analytics');
 //var analytics = new gaModule('UA-38943374-1');
 
-utm.twitterConsumerKey='8qiy2PJv3MpVyzuhfNXkOw';
-utm.twitterConsumerSecret ='Qq0rth4MHGB70nh20nSzov2zz6GbVxuVndCh2IxkRWI';
+//These are set when the app:loginSuccess Event is handled
+utm.twitterConsumerKey = ""; //'8qiy2PJv3MpVyzuhfNXkOw';
+utm.twitterConsumerSecret = ""; //'Qq0rth4MHGB70nh20nSzov2zz6GbVxuVndCh2IxkRWI';
 utm.facebookAppId = '494625050591800';
 
 var unlockWindow = null;
@@ -183,6 +184,8 @@ function handleLoginSuccess(event) {
 
 	utm.User = event.userData;
 	utm.AuthToken = event.userData.UserProfile.AuthToken;
+	utm.twitterConsumerKey = event.userData.TwitterInfo.TwitterConsumerKey;
+	utm.twitterConsumerSecret = event.userData.TwitterInfo.TwitterConsumerSecret;
 	
 	//analytics.trackPageview('/login');
 	
