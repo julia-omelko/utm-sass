@@ -3,7 +3,7 @@ var utm = {};
 utm.loggedIn = false;
 utm.isInPinLock=false;
 utm.envModePrefix = "";
-utm.validatesSecureCertificate=false;
+utm.validatesSecureCertificate=true;
 utm.color_org = '#F66F00';
 utm.barColor= '#F66F00';
 utm.androidBarColor = '#CD8C52';
@@ -147,7 +147,8 @@ utm.previewMessageView = new utm.PreviewMessageView(utm);
 utm.MyHortView = require('screens/MyHorts');
 utm.myHortView = new utm.MyHortView(utm);
 
-
+utm.SplashView = require('screens/Splash');
+utm.splashView = new utm.SplashView(utm);
 
 function appInit(){	
 	
@@ -155,8 +156,10 @@ function appInit(){
 	
 	if (Ti.Platform.model === 'Simulator' || Ti.Platform.model ===  'google_sdk') { 
 		utm.setEnvModePrefix("local");
+		utm.validatesSecureCertificate=false;
 	}else{
 		utm.setEnvModePrefix("prod");
+		utm.validatesSecureCertificate=true;
 	}	
 	
 	utm.loginView.setVersionLabel();
@@ -173,6 +176,11 @@ function handleLoginSuccess(event) {
 	//Ti.App.removeEventListener('app:loginSuccess', handleLoginSuccess);
 //utm.User.userProfile.
 	utm.loggedIn = true;
+	
+			
+	if(utm.User)
+		utm.User.MyHorts =[];
+
 	utm.User = event.userData;
 	utm.AuthToken = event.userData.UserProfile.AuthToken;
 	
@@ -562,7 +570,7 @@ Ti.App.addEventListener('app:signup', function(){
 	utm.navController.open(utm.signupView);
 });
 
-Ti.App.addEventListener("pause", function(e){
+Ti.App.addEventListener("paused", function(e){
 	utm.log('-------  APP Paused ------');
 	appPauseTime= new Date();
 	utm.log('-------  APP Paused appPauseTime='+appPauseTime.valueOf());
@@ -570,8 +578,11 @@ Ti.App.addEventListener("pause", function(e){
 
 //IF the app is left for more then one minute force login
 Ti.App.addEventListener("resumed", function(e){
-	utm.log('-------  APP resumed ------');
 	
+	//RE #391 - Stop Screenshot when App Looses Focus - close the splash screen
+	utm.log(' **********************  -------  APP resumed ------ **********************    ');
+	utm.splashView.close();	
+
 	if(!utm.loggedIn) return;
 
 	var curDate = new Date();
@@ -634,6 +645,12 @@ if(utm.iPhone || utm.iPad ){
 		
 	}
 }
+//RE #391 - Stop Screenshot when App Looses Focus - put up the splash screen
+Ti.App.addEventListener('pause', function(e){
+	utm.splashView.open();
+	//Note: Splash is closed in resumed event
+});
+
 
 /*
 Ti.App.addEventListener('app:networkChange',
