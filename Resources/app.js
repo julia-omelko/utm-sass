@@ -539,6 +539,10 @@ function closeAllScreens(leaveLanding){
 	
 	if(utm.signupView != undefined){utm.navController.close(utm.signupView,{animated:false});	}
 	if(utm.subscribeInfoView != undefined){utm.navController.close(utm.subscribeInfoView,{animated:false});	}	
+	
+	if(utm.splashView != undefined){	utm.splashView.close()}		
+	
+	
 }
 
 utm.handleError = function (e,status,responseText) {	
@@ -546,7 +550,7 @@ utm.handleError = function (e,status,responseText) {
 	var err = JSON.parse(responseText);
 	if(status ==403){
 		alert('Your session is no longer valid, you need to log back in.');		
-		closeAllScreens(false);	
+	//	closeAllScreens(false);	
 		showLoginView();	
 	}else if(err  != 'undefined' & err !=null ){
 		alert(err.Message);	
