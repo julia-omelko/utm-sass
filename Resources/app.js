@@ -335,9 +335,22 @@ function showLoginView() {
 		utm.loggedIn=false;
 	}	
 	utm.User =null;
+		
 	closeAllScreens(false);
-	utm.navController.open(utm.loginView);	
+	//utm.navController.open(utm.loginView);	
+	//#421 - Ti App - Screen Blank on force login
+	//Due to internal IOS issue causing NavController is closing a proxy. Delaying this close call 
+	// we now have a 1 second timer that is used to bring the login screen to front/open
+	// else the screen goes blank 
+	setTimer(1, 'delayShowLoginView');
+	
 }
+
+Ti.App.addEventListener("delayShowLoginView", function() {
+	utm.navController.open(utm.loginView);	
+});
+
+
 
 function isAllowedSendMessage(){	
 	if(!utm.User) return;
@@ -457,11 +470,12 @@ Ti.App.addEventListener('app:getSubscriptionInfo', function (e){
 					}	
 				}			
 			}else{
-				utm.recordError("Status="+this.status + "   Message:"+this.responseText);
+				utm.handleError(e, this.status, this.responseText);
+				//utm.recordError("Status="+this.status + "   Message:"+this.responseText);
 			}
 		},
 		onerror : function(e) {		
-			utm.recordError("Status="+this.status + "   Message:"+this.responseText);
+			utm.handleError(e, this.status, this.responseText);
 		}
 		,timeout:utm.netTimeout
 	});
@@ -543,7 +557,10 @@ function closeAllScreens(leaveLanding){
 	if(utm.signupView != undefined){utm.navController.close(utm.signupView,{animated:false});	}
 	if(utm.subscribeInfoView != undefined){utm.navController.close(utm.subscribeInfoView,{animated:false});	}	
 	
-	if(utm.splashView != undefined){	utm.splashView.close()}		
+	if(utm.splashView != undefined){	utm.splashView.close(),{animated:false}}		
+	
+	//#421 - Ti App - Screen Blank on force login  - added loginView to help fix this issue
+	if(utm.loginView != undefined){	utm.loginView.close(),{animated:false}}		
 	
 	
 }
@@ -705,6 +722,19 @@ utm.recordAnalytics = function (theEvent,theData){
 	//	category, action, label, value
 	//TODO Replace Google analytics.trackEvent('Usage',theEvent,'Lbl1',theData );	
 }
+
+function setTimer(timetowait,context) {
+	mt=0;
+	mtimer = setInterval(function() {
+	    	mt++;
+	    if(mt==timetowait) {
+			clearInterval(mtimer);
+	 		Ti.App.fireEvent(context);
+		}
+	 
+	},1000);
+};
+
 
 //After everything is loaded check if device is online.
 checkNetworkOnInit();	
