@@ -2,12 +2,37 @@ function myHortDetail_window(_myHortMember, utm) {
 
 	var CheckBoxField = require('ui/common/baseui/CheckBox');
 
-	var win = Ti.UI.createWindow({
-		layout : 'vertical',
-		backgroundColor : utm.backgroundColor,
-		barColor : utm.Android ? utm.androidBarColor : utm.barColor,
-		title : 'Member Info'
-	});
+	if(utm.iPhone || utm.iPad ){
+		var win = Ti.UI.createWindow({
+			layout : 'vertical',
+			backgroundColor : utm.backgroundColor,
+			barColor : utm.barColor,
+			title : 'Member Info'
+		});
+	}else	if(utm.Android){
+		
+		//create the base screen and hid the Android navbar
+		var win = Titanium.UI.createWindow({
+		    layout : 'vertical',
+		 	backgroundColor : utm.backgroundColor,
+		    navBarHidden:true
+		});
+		
+		//create a navbar for Android
+		var my_navbar = Ti.UI.createLabel({
+		    height : 50,
+		    width : '100%',
+		    backgroundColor : utm.androidBarColor,
+		    color : utm.backgroundColor,
+		    text:'Member Info',
+		    font:{fontSize:utm.androidTitleFontSize,fontWeight:utm.androidTitleFontWeight},
+		    textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+		    top:0
+		});
+ 
+ 		//add the navbar to the screen
+		win.add(my_navbar);
+	}		
 
 	var scrollingView = Ti.UI.createScrollView({
 		showVerticalScrollIndicator : true,
@@ -16,7 +41,7 @@ function myHortDetail_window(_myHortMember, utm) {
 	win.add(scrollingView);
 
 	var view = Ti.UI.createView({
-		height : 2000,
+		height : '2000dp',
 		layout : 'vertical'
 	});
 
@@ -25,21 +50,22 @@ function myHortDetail_window(_myHortMember, utm) {
 	//-----------------NickName  ----------------------
 	var nickNameView = Ti.UI.createView({
 		layout : 'horizontal',
-		height : 30,
-		left : 5,
-		top : 10
+		height : '30dp',
+		left : '5dp',
+		top : '10dp'
 	});
 	view.add(nickNameView);
 
 	var nickNamelbl = Ti.UI.createLabel({
 		text : 'Nickname ',
 		font : {
-			fontSize : 14,
+			fontSize : '14dp',
 			fontWeight : 'bold'
 		},
 		height : 'auto',
-		top : 2,
-		textAlign : 'left'
+		top : '2dp',
+		textAlign : 'left',
+		color : '#000'
 	});
 	nickNameView.add(nickNamelbl);
 
@@ -47,8 +73,8 @@ function myHortDetail_window(_myHortMember, utm) {
 		value : _myHortMember.NickName,
 		color : utm.textFieldColor,
 		width : utm.SCREEN_WIDTH - 20,
-		left : 10,
-		height : 40,
+		left : '10dp',
+		height : '40dp',
 		borderStyle : Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
 		borderRadius : 5
 	});
@@ -57,18 +83,19 @@ function myHortDetail_window(_myHortMember, utm) {
 	//############ Choose Type ################
 	var typeBox = Ti.UI.createView({
 		layout : 'horizontal',
-		height : 30,
-		left : 5,
-		top : 30,
+		height : '30dp',
+		left : '5dp',
+		top : '30dp',
 		visible: 	_myHortMember.MemberType == 'Primary'?false:true		
 	});
 	var typeLabel = Ti.UI.createLabel({
 		text : 'Invisible to Others',
 		font : {
 			fontWeight : 'bold',
-			fontSize : 14
+			fontSize : '14dp'
 		},
-		width : 150
+		color : '#000',
+		width : '150dp'
 	});
 	typeBox.add(typeLabel);
 
@@ -80,7 +107,7 @@ function myHortDetail_window(_myHortMember, utm) {
 	//############ Save Button ################
 	var saveButton = Ti.UI.createButton({
 		title : 'Save',
-		top : 30,
+		top : '30dp',
 		enabled : true
 	});
 	saveButton.addEventListener('click', function() {
