@@ -103,7 +103,7 @@ var MyAccount_window = function(utm) {
 			Ti.App.fireEvent("app:logout", {});
 		},
 		onerror : function(e) {
-			Ti.App.fireEvent("app:logout", {});
+			//Ti.App.fireEvent("app:logout", {});
 			utm.handleError(e, this.status, this.responseText);
 		},
 		timeout : utm.netTimeout
