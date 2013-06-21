@@ -369,8 +369,9 @@ function showLoginScreenLockView() {
 	//TODO figure out how to NOT have to close all the windows to open the login window
 	//Maybe a model popup 100% x 100%
 	utm.loggedIn = false
-	closeAllScreens(false);
-	utm.navController.open(utm.loginView);	
+	//closeAllScreens(false);
+	//utm.navController.open(utm.loginView);	
+	showLoginView();
 }
 
 //Left Nav Buttons

@@ -38,6 +38,8 @@
 	<string name="edit">Editar</string>
 	<string name="cancel">Cancelar</string> 
 	<string name="help">Help</string>
+	<string name="regenUTM">Nuevo mensaje UTM</string>
+	<string name="smsNote">NOTA: Pueden aplicar tarifas de mensajes de texto estándar de otros cargos del proveedor</string>
 	
 	
 	

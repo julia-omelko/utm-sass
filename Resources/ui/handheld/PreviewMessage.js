@@ -95,12 +95,12 @@ var PreviewMessage_window = function(utm) {
 	var yourOrgMessageValue = Ti.UI.createTextArea({
 		value : '',
 		font : {
-			fontSize : '16dp'
+			fontSize : '14dp'
 		},
 		color : utm.textFieldColor,
 		editable : false,
 		width : utm.SCREEN_WIDTH - 10,
-		height : '20%', //utm.SCREEN_HEIGHT-(utm.SCREEN_HEIGHT/1.2)
+		height : '16%', //utm.SCREEN_HEIGHT-(utm.SCREEN_HEIGHT/1.2)
 		textAlign : 'left'
 	});
 	win.add(yourOrgMessageValue);
@@ -109,7 +109,7 @@ var PreviewMessage_window = function(utm) {
 	var encryptedLabel = Ti.UI.createLabel({
 		text : L('send_preview_how_encrypted') + ':',
 		width : utm.SCREEN_WIDTH - 10,
-		top : 5,
+		top : 2,
 		font : {
 			fontSize : '14dp',
 			fontWeight : 'bold'
@@ -122,7 +122,7 @@ var PreviewMessage_window = function(utm) {
 	var encryptedValue = Ti.UI.createTextArea({
 		text : '',
 		font : {
-			fontSize : '16dp'
+			fontSize : '14dp'
 		},
 		color : utm.textFieldColor,
 		editable : false,
@@ -136,7 +136,7 @@ var PreviewMessage_window = function(utm) {
 	//------------- UTM Message ------------------
 	var utmMessageGroup = Ti.UI.createView({
 		width : '100%',
-		top : 3,
+		top : 2,
 		height : '35dp',
 		visible : true
 	});
@@ -150,7 +150,7 @@ var PreviewMessage_window = function(utm) {
 		},
 		color : '#000',
 		left:5,
-		top : 5,
+		top : 2,
 		height : 'auto',
 		textAlign : 'left'
 	});
@@ -176,7 +176,7 @@ var PreviewMessage_window = function(utm) {
 		},
 		color : '#000',
 		right:5,
-		top : 5,
+		top : 2,
 		height : 'auto',
 		textAlign : 'right'
 	});
@@ -195,12 +195,12 @@ var PreviewMessage_window = function(utm) {
 	var customUtmMessage = Ti.UI.createTextArea({
 		color : utm.textFieldColor,
 		font : {
-			fontSize : '16dp'
+			fontSize : '14dp'
 		},
 		textAlign : 'left',
 		editable:false,	
 		width : utm.SCREEN_WIDTH - 10,
-		height : '20%',  //utm.SCREEN_HEIGHT-(utm.SCREEN_HEIGHT/1.2)
+		height : '18%',  //utm.SCREEN_HEIGHT-(utm.SCREEN_HEIGHT/1.2)
 	});
 	//todo get the screen width so we can make this wider if possible
 	win.add(customUtmMessage);
@@ -256,7 +256,7 @@ var PreviewMessage_window = function(utm) {
 	var signMessagesGroup = Ti.UI.createView({
 		layout : 'horizontal',
 		width : '100%',
-		top : 3,
+		top : 2,
 		left : 8,
 		height : '50dp',
 		visible : true
@@ -296,7 +296,7 @@ var PreviewMessage_window = function(utm) {
 			fontWeight : 'bold'
 		},
 		color : '#000',
-		top : 8,
+		top : 4,
 		left:5,
 		textAlign : 'left'
 	});
@@ -310,7 +310,20 @@ var PreviewMessage_window = function(utm) {
 	deleteOnReadSwitch.addEventListener('change', function(e) {
 		deleteOnRead = e.value;
 	});
-
+	
+	//------------- SMS Note ------------------
+	var smsNoteLabel = Ti.UI.createLabel({
+		text : (L('smsNote') + " "),
+		font : {
+			fontSize : '12dp'
+		},
+		color : '#000',
+		top : 4,
+		left:5,
+		textAlign : 'left'
+	});
+	win.add(smsNoteLabel);
+	
 	//------------- Send Button ------------------
 	var sendButton = Ti.UI.createButton({
 		title : L('send_UTM_message_now'),
@@ -318,7 +331,7 @@ var PreviewMessage_window = function(utm) {
 			fontSize : '14dp',
 			fontWeight : 'bold'
 		},
-		top : 8
+		top : 6
 	});
 	win.add(sendButton);
 	
