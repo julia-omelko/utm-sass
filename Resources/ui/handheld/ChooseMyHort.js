@@ -35,16 +35,22 @@ var ChooseMyHort_window =function(utm) {
 	}
 	
 	var myHortPicker = Ti.UI.createPicker({
-		selectionIndicator:true		
+		selectionIndicator:true,
+		useSpinner:true
+		//width:Ti.UI.FILL  //This statement pushes picker to left side of Android screen. 
+							//Documentation indicates width should be set on createPickerRow. 
+	
 	});
 	
 	// turn on the selection indicator (off by default)
 	//myHortPicker.selectionIndicator = true;	
 	//myHortPicker.setSelectedRow(0,-1,false);
-	var tmpData=[];
-	tmpData[0]=Ti.UI.createPickerRow({title:'',custom_item:0});
-	myHortPicker.add(tmpData);
-	myHortPicker.width=Ti.UI.FILL;
+	
+	//The folowing code block creates an unwanted empty row in picker in Android and does not set width to screen width in Android
+	//var tmpData=[];
+	//tmpData[0]=Ti.UI.createPickerRow({title:'',custom_item:0});  
+	//myHortPicker.add(tmpData);
+	//myHortPicker.width=Ti.UI.FILL;
 		
 	chooseMyHortView.add(myHortPicker);
 
@@ -58,7 +64,7 @@ var ChooseMyHort_window =function(utm) {
 		
 		var intOption = 0, intOptionLen = utm.User.MyHorts.length;
 		for (intOption = 0; intOption < intOptionLen; intOption = intOption + 1) {
-			data[intOption]=Ti.UI.createPickerRow({title:utm.User.MyHorts[intOption].FriendlyName,custom_item:utm.User.MyHorts[intOption].MyHortId});
+			data[intOption]=Ti.UI.createPickerRow({title:utm.User.MyHorts[intOption].FriendlyName,custom_item:utm.User.MyHorts[intOption].MyHortId,width:Ti.UI.FILL});
 		}
 
 		myHortPicker.add(data);
