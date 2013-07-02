@@ -210,10 +210,8 @@ function createMyHortWindow(_myHortData, utm, _isOwner) {
 	if(_isOwner){
 		//Add Click to Details for drilldown
 		tableView.addEventListener('click', function(e) {
-			if(utm.memberDetailsWindow ==undefined){
-				utm.MemberDetailsWindow = require('screens/MyHortMemberDetail');
-				utm.memberDetailsWindow = new utm.MemberDetailsWindow(e.rowData.myHortMembersRowData,utm);
-			}
+			utm.MemberDetailsWindow = require('screens/MyHortMemberDetail');
+			utm.memberDetailsWindow = new utm.MemberDetailsWindow(e.rowData.myHortMembersRowData,utm);
 			utm.navController.open(utm.memberDetailsWindow);
 		});
 	}
