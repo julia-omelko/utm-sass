@@ -293,6 +293,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 				if (e.index === 0) {
 					utm.TwitterToken = '';
 					utm.TwitterTokenSecret = '';
+					twitter.deauthorize();
 				/*} else if (e.index === 1) {
 					twitter.deauthorize();*/
 				} else if (e.index === 2) {
