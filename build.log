@@ -1,0 +1,15 @@
+Logfile initialized
+ers/Jason/Documents/Development/Titanium_Studio_Workspace/twc-utm/build.log
+[DEBUG] /Users/Jason/Library/Application Support/Titanium/mobilesdk/osx/3.0.0.GA/android/builder.py emulator UTM /Users/Jason/Documents/Development/android-sdk /Users/Jason/Documents/Development/Titanium_Studio_Workspace/twc-utm com.utm 2 WVGA854
+[INFO] logfile = /Users/Jason/Documents/Development/Titanium_Studio_Workspace/twc-utm/build.log
+[DEBUG] /Users/Jason/Library/Application Support/Titanium/mobilesdk/osx/3.0.0.GA/android/builder.py simulator UTM /Users/Jason/Documents/Development/android-sdk /Users/Jason/Documents/Development/Titanium_Studio_Workspace/twc-utm com.utm 2 WVGA854
+[INFO] Building UTM for Android ... one moment
+[INFO] Titanium SDK version: 3.0.0 (12/12/12 18:49 a5894b3)
+[DEBUG] Waiting for device to be ready ...
+[TRACE] adb devices returned 0 devices/emulators
+[TRACE] adb devices returned 0 devices/emulators
+[TRACE] adb devices returned 0 devices/emulators
+[TRACE] adb devices returned 0 devices/emulators
+[TRACE] adb devices returned 0 devices/emulators
+[TRACE] adb devices returned 0 devices/emulators
+[ERROR] Timed out waiting for emulator to be ready, you may need to close the emulator and try again

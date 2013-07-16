@@ -226,6 +226,21 @@ var SetPin_window = function(utm) {
 	clearButton.addEventListener('click', function(e) {
 		keychain.deletePasswordForService('utm', 'lockscreen');
 		currentPin=null;
+	
+		var alert = Titanium.UI.createAlertDialog({
+	        title : 'Alert',
+	        message : 'Unlock Code has been cleared!',
+	        buttonNames : ['Ok']
+	    });
+ 
+		alert.addEventListener('click', function(e) {
+	        if(e.index == 0) {
+	            utm.navController.close(utm.setPinWindow)
+	        }
+	    });
+	    
+	    alert.show();
+
 	});
 	
 	if( currentPin != null)
