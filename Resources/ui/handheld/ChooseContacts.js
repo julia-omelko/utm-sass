@@ -38,32 +38,32 @@ var ChooseContacts_window = function(utm) {
 		//add activityIndicator to window
 		chooseContactsView.add(utm.activityIndicator)
 	}
-	
-	var topView = Ti.UI.createView({top:4,layout:'horizontal', width:'100%', height : utm.Android ? '35dp':Titanium.UI.SIZE}); 
-	var mainView = Ti.UI.createView({layout:'vertical', width:'100%', height : '75%'});
+	 
+	var mainView = Ti.UI.createView({layout:'vertical', width:'100%', height:'80%'});
+	var bottomView = Ti.UI.createView({layout:'vertical', width:'100%', height:'20%'});
 
-	chooseContactsView.add(topView);
 	chooseContactsView.add(mainView);
+	chooseContactsView.add(bottomView);
 
-	var chooseAllLabel = Ti.UI.createLabel({
-		text : '[Choose All]',
-		top : 4,
-		right : 4,
-		width : '100%',
-		height : '30dp',
-		font: { fontSize:'18dp' },
-		color : '#000',
-		textAlign : 'right'
+	var chooseAllButton = Ti.UI.createButton({
+		title : 'Choose All',
+		enabled : false,
+		top:2,
+		bottom:2,
+		right:2,
+		height:'30dp'
 	});
-	topView.add(chooseAllLabel);
-	chooseAllLabel.addEventListener('click', function(e) {
+	mainView.add(chooseAllButton);
+
+	chooseAllButton.addEventListener('click', function() {
 		checkAll(!allChecked);
 	});
+
 
 	// create table view
 	var tableview = Titanium.UI.createTableView({
 		style : Titanium.UI.iPhone.TableViewStyle.GROUPED,
-		height : '100%'
+		height : '80%'
 	});
 	mainView.add(tableview);
 
@@ -108,9 +108,17 @@ var ChooseContacts_window = function(utm) {
 	var writeMessageButton = Ti.UI.createButton({
 		title : L('send_write_your_message'),
 		enabled : false,
-		top:10
+		top:5
 	});
-	chooseContactsView.add(writeMessageButton);
+	bottomView.add(writeMessageButton);
+	
+	var helpLabel= Ti.UI.createLabel({
+		text:'Choose at least one Recipient'
+		,font : {
+			fontSize : '12dp'
+			}
+		});
+	bottomView.add(helpLabel);
 
 	writeMessageButton.addEventListener('click', function() {
 		selectedContacts = [];
@@ -136,9 +144,10 @@ var ChooseContacts_window = function(utm) {
 	Ti.App.addEventListener('app:getContacts', function() {
 		//************* get Contacts*************
 		tableview.data = [];
-		chooseAllLabel.text = '[Choose All]';
+		chooseAllButton.title = 'Choose All';
 		allChecked = false;
 		writeMessageButton.enabled=false;
+		chooseAllButton.enabled=false;
 		//Clear out the list
 		utm.setActivityIndicator('Getting your MyHort Contacts...');
 		utm.log('call server and get contact list for myHortId:' + utm.targetMyHortID);
@@ -156,7 +165,7 @@ var ChooseContacts_window = function(utm) {
 					var data = [];
 					utm.curUserCurMyHortHasTwitter = false;
 					utm.curUserCurMyHortHasFacebook = false;
-					
+					chooseAllButton.enabled=true;
 
 					for (var i = 0; i < response.length; i++) {
 						var row = Ti.UI.createTableViewRow({
@@ -238,10 +247,10 @@ var ChooseContacts_window = function(utm) {
 		allChecked = !allChecked;
 
 		if (_allChecked) {
-			chooseAllLabel.text = '[Unchoose All]';
+			chooseAllButton.title = 'Unchoose All';
 			writeMessageButton.enabled=true;
 		} else {
-			chooseAllLabel.text = '[Choose All]';
+			chooseAllButton.title = 'Choose All';
 			writeMessageButton.enabled=false;
 		}
 	}

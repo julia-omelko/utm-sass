@@ -468,6 +468,7 @@ var PreviewMessage_window = function(utm) {
 		validatesSecureCertificate : utm.validatesSecureCertificate,
 		onload : function() {
 			var response = eval('(' + this.responseText + ')');
+			utm.setActivityIndicator('');
 			sendButton.enabled = true;
 			regenUtm.enabled=true;
 			utm.log('PreviewMessages Service Returned');
@@ -519,6 +520,7 @@ var PreviewMessage_window = function(utm) {
 
 		},
 		onerror : function(e) {
+			utm.setActivityIndicator('');
 			sendButton.enabled = true;
 			regenUtm.enabled=true;
 			utm.handleError(e, this.status, this.responseText);
@@ -591,6 +593,7 @@ var PreviewMessage_window = function(utm) {
 		}
 		getMessagesPreviewReq.open("POST", utm.serviceUrl + "EncryptMessage");
 		getMessagesPreviewReq.setRequestHeader('Authorization-Token', utm.AuthToken);
+		utm.setActivityIndicator('Loading...');
 		getMessagesPreviewReq.send(params);
 	}
 
