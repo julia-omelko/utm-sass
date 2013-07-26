@@ -56,16 +56,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 				enabled : false
 			}];
 		} else {
-			var buttons = [{
-				title : 'Members',
-				enabled : false
-			}, {
-				title : 'Invite',
-				enabled : false
-			}, {
-				title : 'Pending Invites',
-				enabled : false
-			}];
+			var buttons = [];
 		}
 
 		//-----------------Top Buttons  ----------------------
@@ -79,8 +70,9 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		});
 
 		function enableButtonBar(_enable) {
-			buttons[0].enabled = _enable;
+			
 			if (isOwner) {
+				buttons[0].enabled = _enable;
 				buttons[1].enabled = _enable;
 				buttons[2].enabled = _enable;
 			}
@@ -613,7 +605,7 @@ if(isOwner){
 	var getMyHortDetailReq = Ti.Network.createHTTPClient({
 		validatesSecureCertificate : utm.validatesSecureCertificate,
 		onload : function() {
-
+			utm.setActivityIndicator('');
 			win.visible = true;
 			var response = eval('(' + this.responseText + ')');
 			utm.myHortDetails = response;
@@ -747,7 +739,6 @@ if(isOwner){
 		getMyHortDetailReq.open("GET", utm.serviceUrl + "MyHort/GetMyHortDetails?myHortId=" + _myHortData.MyHortId);
 		getMyHortDetailReq.setRequestHeader('Authorization-Token', utm.AuthToken);
 		getMyHortDetailReq.send();
-		utm.setActivityIndicator('');
 	}
 
 	if (utm.iPhone || utm.iPad) {

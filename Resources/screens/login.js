@@ -132,7 +132,7 @@ var TheLoginScreen_view = function(utm) {
 	var versionLabel = Ti.UI.createLabel({
 		  color: utm.textColor,	
 		  font: { fontSize:'14dp' },
-		  //text: utm.appVersion + " " + '  ('+utm.envModePrefix +' DB)',
+		  text: utm.appVersion,
 		  textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
 		  top: 10,
 		  width: 220, 
@@ -281,14 +281,14 @@ var TheLoginScreen_view = function(utm) {
 				}else if (e.index === 3) {
 					utm.setEnvModePrefix("prod");
 				}
-				//versionLabel.text=utm.appVersion + '  ('+utm.envModePrefix +' DB)';
+				versionLabel.text=utm.appVersion ;//+ '  ('+utm.envModePrefix +' DB)';
 				
 			});
 			dialog.show();
 	});
 	
 	loginView.setVersionLabel =function(){
-		//versionLabel.text=utm.appVersion + '  ('+utm.envModePrefix +' DB)';
+		versionLabel.text=utm.appVersion;// + '  ('+utm.envModePrefix +' DB)';
 	}
 	
 	loginView.enableLoginButton =function(_enabled){
