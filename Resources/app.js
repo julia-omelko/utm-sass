@@ -705,7 +705,14 @@ function getDateTimeFormat(dateSent){
 	if(diff > 0){
 		return sent.format("M/D/YY");
 	}else{
-		return  formattedDateSent = sent.fromNow();
+		var sToSubtract = 0;
+		
+		if(now.milliseconds() << sent.milliseconds())
+		{
+			var sToSubtract = 30;
+		}
+		
+		return  formattedDateSent = sent.subtract('seconds', sToSubtract).fromNow();
 	}
 }
 
