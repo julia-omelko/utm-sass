@@ -75,10 +75,14 @@ var TheLoginScreen_view = function(utm) {
 		autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
 		autocorrect: false,
 		keyboardType:Ti.UI.KEYBOARD_DEFAULT,
-		returnKeyType:Ti.UI.RETURNKEY_DEFAULT,
+		returnKeyType:Ti.UI.RETURNKEY_GO,
 		borderStyle:Ti.UI.INPUT_BORDERSTYLE_ROUNDED
 	});
 	loginView.add(password);
+	
+	password.addEventListener('return', function () {
+		loginBtn.fireEvent('click');  
+	})
 	
 	var loginBtn = Ti.UI.createButton({
 		title:L('login'),

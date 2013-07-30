@@ -138,6 +138,8 @@ var MyHorts_window = function(utm) {
 				objName : 'hView'
 			});
 			
+			Ti.API.info(myHortData[i].isOwner);
+			
 			var icon = Ti.UI.createImageView({
 					image : myHortData[i].IsOwner ? '/images/ownerIcon.png' : '/images/memberIcon.png',
 					width : 20,
