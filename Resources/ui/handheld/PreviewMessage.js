@@ -393,10 +393,31 @@ var PreviewMessage_window = function(utm) {
 
 		sendButton.enabled = false;
 		
-		var theImage = camera.getImage();
+		var theImage = camera.getImage();		
 			
 		if(theImage){				
-			//var sendImageSrc = Ti.Utils.base64encode(theImage);
+			//640x960
+			//Resize the imgage
+			Ti.API.info("OldImage: " + theImage.width + "x" + theImage.height);
+			
+			var newWidth = 0, newHeight = 0, orientation = 'portrait';
+			
+			if (theImage.width > theImage.height) {
+				orientation = 'landscape';
+			} 
+			
+			Ti.API.info(orientation);
+						
+			var resizeView = Titanium.UI.createImageView({
+            	image: theImage,
+            	width: orientation === 'portrait' ? 640 : 960,
+            	height: orientation === 'portrait' ? 960 : 640
+        	});
+			
+			theImage = resizeView.toImage();
+			
+			Ti.API.info("NewImage: " + theImage.width + "x" + theImage.height);
+			
 			var sendImageSrc = Ti.Utils.base64encode(theImage);
 			attachments = [{ Attachment: sendImageSrc.toString(),MimeType:theImage.mimeType,WasVirusScanned:true  }];
 		}else{
