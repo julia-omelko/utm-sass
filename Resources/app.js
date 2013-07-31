@@ -293,7 +293,7 @@ function showPreview(e) {
 }
 
 Ti.App.addEventListener('app:showMessagesAfterSend', showMessagesAfterSend);
-function showMessagesAfterSend() {
+function showMessagesAfterSend(e) {
 	utm.log('showMessagesAfterSend() fired');
 	
 	if(utm.MessageDetailWindow !=undefined ){
@@ -322,9 +322,12 @@ function showMessagesAfterSend() {
 		utm.navController.close(utm.previewMessageView,{animated:false});
 	}
 	
+	if(e.replyMode != undefined && e.replyMode){
+		showMessageWindow();
+	}else{
+		showLandingView();	
+	}
 	
-	
-	showLandingView();
 }
 
 Ti.App.addEventListener('app:logout', showLoginView);

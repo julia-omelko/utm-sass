@@ -478,7 +478,7 @@ var PreviewMessage_window = function(utm) {
 		Titanium.Analytics.featureEvent('user.sent_message');
 		
 		if(attachments !=null){
-			Ti.App.fireEvent("app:showMessagesAfterSend", {});
+			Ti.App.fireEvent("app:showMessagesAfterSend",  {'replyMode':replyMode});
 			resetScreen();
 			utm.setActivityIndicator('');
 		}
@@ -558,7 +558,7 @@ var PreviewMessage_window = function(utm) {
 				utm.log('Send Successful');
 				
 				if(attachments==null){
-					Ti.App.fireEvent("app:showMessagesAfterSend", {});
+					Ti.App.fireEvent("app:showMessagesAfterSend", {'replyMode':replyMode});
 					resetScreen();
 				}else{
 					attachments=null;
@@ -575,7 +575,7 @@ var PreviewMessage_window = function(utm) {
 				 }).show();
 				 */
 				if(attachments==null){
-					Ti.App.fireEvent("app:showMessagesAfterSend", {});
+					Ti.App.fireEvent("app:showMessagesAfterSend", {'replyMode':replyMode});
 					resetScreen();
 				}else{
 					attachments=null;
