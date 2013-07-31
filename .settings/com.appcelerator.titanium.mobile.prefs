@@ -1,0 +1,10 @@
+eclipse.preferences.version=1
+iosLaunchConfigurationAttributes/ATTR_MINIFY=true
+iosLaunchConfigurationAttributes/ATTR_PROJECT_NAME=twc-utm
+iosLaunchConfigurationAttributes/appid=com.utm
+iosLaunchConfigurationAttributes/certificate=UThisMe, LLC
+iosLaunchConfigurationAttributes/distribute_path=/Users/Jason/Documents/Development/Titanium_Studio_Workspace/twc-utm/build/iphone/deploy
+iosLaunchConfigurationAttributes/keychain=
+iosLaunchConfigurationAttributes/output_format=ipa
+iosLaunchConfigurationAttributes/sdk_version=6.1
+iosLaunchConfigurationAttributes/uuid=5E94BA5F-6797-4091-B78C-683025CB7792
