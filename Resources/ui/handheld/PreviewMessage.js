@@ -478,12 +478,21 @@ var PreviewMessage_window = function(utm) {
 		Titanium.Analytics.featureEvent('user.sent_message');
 		
 		if(attachments !=null){
-			Ti.App.fireEvent("app:showMessagesAfterSend",  {'replyMode':replyMode});
+			afterMessageSent();
 			resetScreen();
 			utm.setActivityIndicator('');
 		}
 		
 	}
+	
+	function afterMessageSent(){
+		if(replyMode){
+			Ti.App.fireEvent("app:showMessagesAfterReply");
+		}else{
+			Ti.App.fireEvent("app:showMessagesAfterSend");
+		}		
+	}
+	
 
 	var getMessagesPreviewReq = Ti.Network.createHTTPClient({
 		validatesSecureCertificate : utm.validatesSecureCertificate,
@@ -558,7 +567,7 @@ var PreviewMessage_window = function(utm) {
 				utm.log('Send Successful');
 				
 				if(attachments==null){
-					Ti.App.fireEvent("app:showMessagesAfterSend", {'replyMode':replyMode});
+					afterMessageSent();
 					resetScreen();
 				}else{
 					attachments=null;
@@ -575,7 +584,7 @@ var PreviewMessage_window = function(utm) {
 				 }).show();
 				 */
 				if(attachments==null){
-					Ti.App.fireEvent("app:showMessagesAfterSend", {'replyMode':replyMode});
+					afterMessageSent();
 					resetScreen();
 				}else{
 					attachments=null;
