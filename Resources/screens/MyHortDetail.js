@@ -687,6 +687,8 @@ if(isOwner){
 				_myHortData.Members[x].HasMobile=mobile.getValue() !='';
 				_myHortData.Members[x].HasTwitter=twitterSwitch.getValue();
 				_myHortData.Members[x].HasFaceBook=facebookSwitch.getValue();
+				_myHortData.Members[x].myHort.Prefix = keyWordPre.value;
+				_myHortData.Members[x].myHort.Postfix = keyWordPost.value;
 				break;
 			}
 		}
