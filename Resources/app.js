@@ -293,7 +293,7 @@ function showPreview(e) {
 }
 
 Ti.App.addEventListener('app:showMessagesAfterSend', showMessagesAfterSend);
-function showMessagesAfterSend(e) {
+function showMessagesAfterSend() {
 	utm.log('showMessagesAfterSend() fired');
 	
 	if(utm.MessageDetailWindow !=undefined ){
@@ -322,13 +322,31 @@ function showMessagesAfterSend(e) {
 		utm.navController.close(utm.previewMessageView,{animated:false});
 	}
 	
-	if(e.replyMode != undefined && e.replyMode){
-		showMessageWindow();
-	}else{
-		showLandingView();	
-	}
-	
+	showLandingView();			
 }
+
+Ti.App.addEventListener('app:showMessagesAfterReply', showMessagesAfterReply);
+function showMessagesAfterReply() {
+	utm.log('showMessagesAfterReply() fired');
+	
+	if(utm.MessageDetailWindow !=undefined ){
+		utm.navController.close(utm.messageDetailWindow,{animated:false}); 
+	}
+			
+	if(utm.writeMessageView !=undefined){
+		utm.writeMessageView.restForm();
+		utm.navController.close(utm.writeMessageView,{animated:false});
+	}	
+	
+	if(utm.previewMessageView != undefined){
+		utm.navController.close(utm.previewMessageView,{animated:false});
+	}
+
+}
+
+
+
+
 
 Ti.App.addEventListener('app:logout', showLoginView);
 function showLoginView() {
