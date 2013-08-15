@@ -590,24 +590,29 @@ function closeAllScreens(leaveLanding){
 utm.handleError = function (e,status,responseText) {	
 	utm.setActivityIndicator('');
 	var err = JSON.parse(responseText);
-	if(status ==403){
-		alert('Your session is no longer valid, you need to log back in.');		
+	var message = 'Error Unknown';
+	
+	if (status == 403) {
+		message = 'Your session is no longer valid - please log back in.';		
 	//	closeAllScreens(false);	
 		showLoginView();	
-	}else if(err  != 'undefined' & err !=null ){
-		alert(err.Message);	
- 	}else if(e.error != 'undefined' & e.error.indexOf('timed out') > 0){
+	} else if (err  != 'undefined' & err !=null ) {
+		message = err.Message;	
+ 	} else if (e.error != 'undefined' & e.error.indexOf('timed out') > 0) {
  		//"Error Domain=ASIHTTPRequestErrorDomain Code=2 "The request timed out" UserInfo=0xb2b10e0 {NSLocalizedDescription=The request timed out}"
-		alert('Your connection may be slow - please retry.');	
- 	}else{
- 		if(e.error != undefined){
- 			alert('Error:' + e.error);
- 		}else if (err.Message != undefined){
- 			alert('Error:' + err.Message);
- 		}else{
- 			alert('Error Unknown');	
+		message = 'Your connection may be slow - please retry.';	
+ 	} else {
+ 		if (e.error != undefined || err.Message != undefined) {
+ 			message = 'Error:';
+ 			message += e.error != undefined ? e.error : err.Message;
+ 		
+			if ( message.indexOf("ASIHTTPRequestErrorDomain Code=1") !== 0 ) {
+				message = "Your network has had an error - please try again.";	
+			}
  		}
- 	}         
+ 	}
+ 	
+ 	alert(message);         
 }
 
 Ti.App.addEventListener('app:signup', function(){
