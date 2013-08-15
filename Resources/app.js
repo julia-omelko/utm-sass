@@ -570,11 +570,16 @@ function closeAllScreens(leaveLanding){
 	if(utm.myAccountWindow != undefined){	utm.navController.close(utm.myAccountWindow,{animated:false});}	
 	if(utm.myHortView != undefined){utm.navController.close(utm.myHortView,{animated:false});}
 	if(utm.myHortDetailWindow != undefined){utm.navController.close(utm.myHortDetailWindow,{animated:false});}
-	if(utm.MemberDetailsWindow != undefined){utm.navController.close(utm.MemberDetailsWindow,{animated:false});}
-	
-	if(utm.myHortInviteWindow != undefined){utm.navController.close(utm.myHortInviteWindow,{animated:false});}
-	if(utm.myHortMembersWindow != undefined){utm.navController.close(utm.myHortMembersWindow,{animated:false});}
-	if(utm.myHortPendingWindow != undefined){utm.navController.close(utm.myHortPendingWindow,{animated:false});}
+	//RE ##421 - Ti App - Screen Blank on force login - some odd reason on close an error occures only in trace window only in DeBug mode
+	//close( ? "Invalid type passed to function. expected": TiWindowProxy, was: KrollCallback
+	//Added Try Catch fixes this issue
+	try{
+		if(utm.MemberDetailsWindow != undefined){utm.navController.close(utm.MemberDetailsWindow,{animated:false});}
+
+		if(utm.myHortInviteWindow != undefined){utm.navController.close(utm.myHortInviteWindow,{animated:false});}
+		if(utm.myHortMembersWindow != undefined){utm.navController.close(utm.myHortMembersWindow,{animated:false});}
+		if(utm.myHortPendingWindow != undefined){utm.navController.close(utm.myHortPendingWindow,{animated:false});}
+	}catch(e) {}
 	
 	if(utm.signupView != undefined){utm.navController.close(utm.signupView,{animated:false});	}
 	if(utm.subscribeInfoView != undefined){utm.navController.close(utm.subscribeInfoView,{animated:false});	}	
