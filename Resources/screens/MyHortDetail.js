@@ -517,14 +517,65 @@ if(isOwner){
 		if(checkAtLeastOneTypeOfMessageSet()){
 			updateMyHortData();
 		}
+		
+		//Ti.API.info("utm.myHortDetails: " + JSON.stringify(utm.myHortDetails));
 	});
 	view.add(saveButton);
 	
-
+	var backButton = Ti.UI.createButton({title: 'MyHorts'});
+	win.leftNavButton = backButton;
+	
+	backButton.addEventListener('click', function()
+	{
+		if ( checkIfFormIsRidingDirty() ) {
+			var alert = Titanium.UI.createAlertDialog({ title: 'Unsaved Data', message: 'You have unsaved changes.  Are you sure you want to leave this page?', buttonNames: ['Yes', 'No']});
+			
+			alert.addEventListener('click', function(e) {
+				Titanium.API.info('e = ' + JSON.stringify(e));
+				
+				if ( e.index !== 1 ) {
+					utm.navController.close(utm.myHortDetailWindow);
+				} else {
+					
+				}
+				
+			});
+			
+			alert.show();
+		} else {
+			utm.navController.close(utm.myHortDetailWindow);
+		}
+	});
+	
+	function checkIfFormIsRidingDirty() {
+		
+		var currentDetails = utm.myHortDetails;
+		var twittified = currentDetails.PrimaryUser.TwitterToken.length === 0 ? 0 : 1;
+		var facebookified = currentDetails.PrimaryUser.FaceBook.length === 0 ? 0 : 1;
+		
+		 if (
+		 		(currentDetails.PrimaryUser.Email !== email.getValue()) ||
+		 		(currentDetails.PrimaryUser.Mobile !== mobile.getValue()) ||
+		 		(twittified != twitterSwitch.getValue()) ||
+		 		(facebookified != facebookSwitch.getValue()) ||
+		 		(currentDetails.PrimaryUser.AddNicknameToUtms !== signMessagesSwitch.getValue()) ||
+		 		(currentDetails.myHort.Prefix !== keyWordPre.value) ||
+		 		(currentDetails.myHort.Postfix !== keyWordPost.value)
+		 	)
+		 	{
+		 		return true;
+		 		Ti.API.info("Form is dirt-ay!");
+	 		} 
+		 	else {
+		 		return false;
+		 		Ti.API.info("Form is clean!");
+		 	}
+		}
+		
 	function authTwitter() {
 		twitter.authorize();
 	}
-	
+		
 	function checkAtLeastOneTypeOfMessageSet(){
 		
 		if(email.getValue() != '') return true;
@@ -580,14 +631,17 @@ if(isOwner){
 			utm.myHortDetails.PrimaryUser = utm.curMyHortDetails;
 			utm.myHortDetails.MyInformation = '';
 
-			if(keyWordPre.value !=''){
-				utm.myHortDetails.myHort.Prefix=keyWordPre.value;
-				utm.myHortDetails.myHort.Postfix='';
-			}
-			if(keyWordPost.value  !=''){
-				utm.myHortDetails.myHort.Postfix=keyWordPost.value;
-				utm.myHortDetails.myHort.Prefix='';
-			}
+			utm.myHortDetails.myHort.Prefix=keyWordPre.value;
+			utm.myHortDetails.myHort.Postfix=keyWordPost.value;
+
+			// if(keyWordPre.value !=''){
+				// utm.myHortDetails.myHort.Prefix=keyWordPre.value;
+				// utm.myHortDetails.myHort.Postfix='';
+			// }
+			// if(keyWordPost.value  !=''){
+				// utm.myHortDetails.myHort.Postfix=keyWordPost.value;
+				// utm.myHortDetails.myHort.Prefix='';
+			// }
 			
 		} else {
 			utm.myHortDetails.MyInformation = utm.curMyHortDetails;
@@ -651,6 +705,7 @@ if(isOwner){
 					signMessagesSwitch.setValue(utm.myHortDetails.MyInformation.AddNicknameToUtms);
 				}			
 				if(isOwner){
+					
 					if(utm.myHortDetails.myHort.Prefix && utm.myHortDetails.myHort.Prefix !=''){
 						keyWordPre.value = utm.myHortDetails.myHort.Prefix;
 					}else{
@@ -682,9 +737,11 @@ if(isOwner){
 	function updateOwnerMemberDetails(){
 
 		for (x=0;x< _myHortData.Members.length;x++){
+			var space = 'a';
+			
 			if (_myHortData.Members[x].MemberType == 'Primary'){
 				_myHortData.Members[x].HasEmail = email.getValue() !='';
-				_myHortData.Members[x].HasMobile=mobile.getValue() !='';
+				_myHortData.Members[x].HasMobile= mobile.getValue() !='';
 				_myHortData.Members[x].HasTwitter=twitterSwitch.getValue();
 				_myHortData.Members[x].HasFaceBook=facebookSwitch.getValue();
 				_myHortData.Members[x].myHort.Prefix = keyWordPre.value;
@@ -694,11 +751,13 @@ if(isOwner){
 		}
 	}
 	
-
 	// ##################### Call out to Update myHort  #####################
 	var updateMyHortDetailReq = Ti.Network.createHTTPClient({
 		validatesSecureCertificate : utm.validatesSecureCertificate,
 		onload : function() {
+			
+			saveButton.enabled = true;
+			utm.setActivityIndicator('');
 
 			var json = this.responseData;
 			if (this.status == 200) {
@@ -713,8 +772,7 @@ if(isOwner){
 			} else {
 				utm.recordError(utm.myHortDetails.MyHort)
 			}
-			saveButton.enabled = true;
-			utm.setActivityIndicator('');
+
 		},
 		onerror : function(e) {
 			utm.setActivityIndicator('');
@@ -735,7 +793,7 @@ if(isOwner){
 	win.addEventListener("open", function() {
 		loadMyHortDetail();
 	});
-
+	
 	function loadMyHortDetail() {
 		utm.setActivityIndicator('Getting your MyHort Details...');
 		getMyHortDetailReq.open("GET", utm.serviceUrl + "MyHort/GetMyHortDetails?myHortId=" + _myHortData.MyHortId);

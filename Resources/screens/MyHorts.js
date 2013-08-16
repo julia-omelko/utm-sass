@@ -181,6 +181,7 @@ var MyHorts_window = function(utm) {
 		utm.myHortDetailWindow = new utm.MyHortDetailWindow(myHortData,utm,myHortData.IsOwner);
 		utm.myHortDetailWindow.title = myHortData.FriendlyName;
 		utm.navController.open(utm.myHortDetailWindow);
+
 	});
 
 	tableView.addEventListener('delete', function(e) {
