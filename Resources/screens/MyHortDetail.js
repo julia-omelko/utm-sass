@@ -193,6 +193,49 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		view.add(utm.activityIndicator)
 	}
 	
+	var backButton = Ti.UI.createButton({title: 'MyHorts2'});
+	
+	backButton.addEventListener('click', function()
+	{
+		var dirty = checkIfFormIsDirty();
+		alert (dirty);
+// 		
+		// if ( dirty ) {
+			// var alert = Titanium.UI.createAlertDialog({ title: 'Unsaved Data', message: 'You have unsaved changes.  Are you sure you want to leave this page?', buttonNames: ['Yes', 'No']});
+// 			
+			// alert.addEventListener('click', function(e) {
+// 				
+				// if ( e.index != 1 ) {
+					// utm.navController.close(utm.myHortDetailWindow);
+				// } 
+// 				
+			// });
+// 			
+			// alert.show();
+		// } else {
+			// utm.navController.close(utm.myHortDetailWindow);
+		// }
+	});
+	win.leftNavButton = backButton;
+	
+	function checkIfFormIsDirty() {
+		
+		var currentDetails = utm.myHortDetails;
+		var twittified = currentDetails.PrimaryUser.TwitterToken.length === 0 ? 0 : 1;
+		var facebookified = currentDetails.PrimaryUser.FaceBook.length === 0 ? 0 : 1;
+		
+		if (
+		 		(currentDetails.PrimaryUser.Email !== email.getValue()) ||
+		 		(currentDetails.PrimaryUser.Mobile !== mobile.getValue()) ||
+		 		(twittified != twitterSwitch.getValue()) ||
+		 		(facebookified != facebookSwitch.getValue()) ||
+		 		(currentDetails.PrimaryUser.AddNicknameToUtms !== signMessagesSwitch.getValue()) ||
+		 		(currentDetails.myHort.Prefix !== keyWordPre.value) ||
+		 		(currentDetails.myHort.Postfix !== keyWordPost.value)
+		 ) { return true; } 
+		else { return false; }
+	}
+	
 	//-----------------MyHort Name  ----------------------
 	/*var myHortNameGroup = Ti.UI.createView({
 		layout : 'horizontal',
@@ -517,61 +560,9 @@ if(isOwner){
 		if(checkAtLeastOneTypeOfMessageSet()){
 			updateMyHortData();
 		}
-		
-		//Ti.API.info("utm.myHortDetails: " + JSON.stringify(utm.myHortDetails));
 	});
 	view.add(saveButton);
-	
-	var backButton = Ti.UI.createButton({title: 'MyHorts'});
-	win.leftNavButton = backButton;
-	
-	backButton.addEventListener('click', function()
-	{
-		if ( checkIfFormIsRidingDirty() ) {
-			var alert = Titanium.UI.createAlertDialog({ title: 'Unsaved Data', message: 'You have unsaved changes.  Are you sure you want to leave this page?', buttonNames: ['Yes', 'No']});
 			
-			alert.addEventListener('click', function(e) {
-				Titanium.API.info('e = ' + JSON.stringify(e));
-				
-				if ( e.index !== 1 ) {
-					utm.navController.close(utm.myHortDetailWindow);
-				} else {
-					
-				}
-				
-			});
-			
-			alert.show();
-		} else {
-			utm.navController.close(utm.myHortDetailWindow);
-		}
-	});
-	
-	function checkIfFormIsRidingDirty() {
-		
-		var currentDetails = utm.myHortDetails;
-		var twittified = currentDetails.PrimaryUser.TwitterToken.length === 0 ? 0 : 1;
-		var facebookified = currentDetails.PrimaryUser.FaceBook.length === 0 ? 0 : 1;
-		
-		 if (
-		 		(currentDetails.PrimaryUser.Email !== email.getValue()) ||
-		 		(currentDetails.PrimaryUser.Mobile !== mobile.getValue()) ||
-		 		(twittified != twitterSwitch.getValue()) ||
-		 		(facebookified != facebookSwitch.getValue()) ||
-		 		(currentDetails.PrimaryUser.AddNicknameToUtms !== signMessagesSwitch.getValue()) ||
-		 		(currentDetails.myHort.Prefix !== keyWordPre.value) ||
-		 		(currentDetails.myHort.Postfix !== keyWordPost.value)
-		 	)
-		 	{
-		 		return true;
-		 		Ti.API.info("Form is dirt-ay!");
-	 		} 
-		 	else {
-		 		return false;
-		 		Ti.API.info("Form is clean!");
-		 	}
-		}
-		
 	function authTwitter() {
 		twitter.authorize();
 	}
