@@ -48,6 +48,7 @@ function createMyHortWindow(utm) {
 	var buttonView = Ti.UI.createView({
 		layout:'horizontal'
 		,width:'100%'
+		,top:'10dp'
 	});
 	myHortWindow.add(buttonView);
 	
