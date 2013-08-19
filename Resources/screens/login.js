@@ -61,23 +61,32 @@ var TheLoginScreen_view = function(utm) {
 		keyboardType:Ti.UI.KEYBOARD_DEFAULT,
 		returnKeyType:Ti.UI.RETURNKEY_DEFAULT,
 		borderStyle:Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
-		top:utm.Android ? 30 : 5
+		top:utm.Android ? 30 : 5,
+		_hasFocus: false
 	});
+	
+	username.addEventListener('focus', function() { username._hasFocus = true; });
+	username.addEventListener('blur', function() { username._hasFocus = false; });
+	
 	loginView.add(username);
 	
 	var password = Ti.UI.createTextField({
 		color:utm.textFieldColor,
 		top:utm.Android ? 40 : 20,
 		width:300,
-
 		hintText:L('label_password'),
 		passwordMask:true,
 		autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
 		autocorrect: false,
 		keyboardType:Ti.UI.KEYBOARD_DEFAULT,
 		returnKeyType:Ti.UI.RETURNKEY_GO,
-		borderStyle:Ti.UI.INPUT_BORDERSTYLE_ROUNDED
+		borderStyle:Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
+		_hasFocus: false
 	});
+	
+	password.addEventListener('focus', function() { password._hasFocus = true; });
+	password.addEventListener('blur', function() { password._hasFocus = false; });
+	
 	loginView.add(password);
 	
 	password.addEventListener('return', function () {
@@ -308,6 +317,20 @@ var TheLoginScreen_view = function(utm) {
 	
 	check_network();
 	
+	loginView.addEventListener('click', function(e) { 
+		var element = e.source.toString();
+		
+		if ( element == "[object TiUIWindow]" || element == "[object TiUIImageView]" ) {
+			if ( username._hasFocus ) {
+				username.blur();
+			}
+			
+			if ( password._hasFocus ) {
+				password.blur();
+			}
+		}
+		
+	});
 
 	return loginView;
 };

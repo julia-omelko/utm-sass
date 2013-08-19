@@ -36,8 +36,18 @@ function inputField(utm,_label, _labelWidth,  _val, _valWidth, _keyboardType,_re
 		keyboardType: _keyboardType ?_keyboardType: Ti.UI.KEYBOARD_DEFAULT,
 		returnKeyType:_returnKeyType ? _returnKeyType:Ti.UI.KEYBOARD_DEFAULT,
 		borderStyle:Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
-		borderRadius :5
+		borderRadius :5,
+		_hasFocus: false
 	});
+	
+	fld.addEventListener('focus', function() {
+		fld._hasFocus = true;
+	})
+	
+	fld.addEventListener('blur', function() {
+		fld._hasFocus = false;
+	});
+	
 	hView.add(fld);
 	
 	var fldMessageLabel = Ti.UI.createLabel({
