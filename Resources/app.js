@@ -107,7 +107,7 @@ utm.setEnvModePrefix= function (env){
 		utm.webUrl = 'https://'+env +'.youthisme.com';
 	}else if(env === 'prod'){
 		utm.serviceUrl = 'https://prod.youthisme.com/api/v1/';
-		utm.webUrl ='https://prod.youthisme.com';
+		utm.webUrl ='https://www.youthisme.com';
 	}	
 	utm.log('env='+env);
 	utm.log('utm.seviceUrl='+utm.serviceUrl);
