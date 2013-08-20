@@ -21,9 +21,15 @@ var NavigationController = function() {
     };
 
     self.close = function(windowToClose) {
-        if(self.navGroup) {
-            self.navGroup.close(windowToClose);
-        }
+        
+        var thisWindow = windowToClose.toString();
+        
+		if( thisWindow == "[object TiUIWindow]" ) {      
+	        if(self.navGroup) {
+	            
+	            self.navGroup.close(windowToClose);
+	        }
+       }
     };
 
     return self;

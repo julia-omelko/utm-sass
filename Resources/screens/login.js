@@ -332,6 +332,8 @@ var TheLoginScreen_view = function(utm) {
 		
 	});
 
+	loginView.backButtonTitle = '';
+
 	return loginView;
 };
 module.exports = TheLoginScreen_view;

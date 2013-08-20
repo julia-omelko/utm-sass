@@ -197,7 +197,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 	
 	backButton.addEventListener('click', function()
 	{
-		var dirty = checkIfFormIsDirty();
+		var dirty = isOwner ? checkIfFormIsDirty() : false;
 		
 		if ( dirty ) {
 			var alert = Titanium.UI.createAlertDialog({ title: 'Unsaved Data', message: 'You have unsaved changes.  Are you sure you want to leave this page?', buttonNames: ['Yes', 'No']});
@@ -217,22 +217,34 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 	
 	win.leftNavButton = backButton;
 	
-	function checkIfFormIsDirty() {
+	function checkIfFormIsDirty( owner ) {
 		
 		var currentDetails = utm.myHortDetails;
 		var twittified = !isEmpty(currentDetails.PrimaryUser.TwitterToken);
-		var facebookified = currentDetails.PrimaryUser.FaceBook.length === 0 ?  0 : 1;
+		var facebookified = !isEmpty(currentDetails.PrimaryUser.FaceBook); //.length === 0 ?  0 : 1;
+		var result = false
 		
 		if (
 	 		(currentDetails.PrimaryUser.Email !== email.getValue()) ||
 	 		(currentDetails.PrimaryUser.Mobile !== mobile.getValue()) ||
 	 		(twittified != twitterSwitch.getValue()) ||
 	 		(facebookified != facebookSwitch.getValue()) ||
-	 		(currentDetails.PrimaryUser.AddNicknameToUtms !== signMessagesSwitch.getValue()) ||
-	 		(currentDetails.myHort.Prefix !== keyWordPre.value) ||
-	 		(currentDetails.myHort.Postfix !== keyWordPost.value)
-		 ) { return true; } 
-		else { return false; }
+	 		(currentDetails.PrimaryUser.AddNicknameToUtms !== signMessagesSwitch.getValue()) 
+		 ) { result = true; } 
+		else { result = false; }
+		
+		if( owner ) {
+			if ( (currentDetails.myHort.Prefix !== keyWordPre.value) ||
+	 			 (currentDetails.myHort.Postfix !== keyWordPost.value) ) {
+	 				result = true;	
+	 		} 
+ 			else {
+	 			result = false;		
+	 		}
+		}
+		
+		return result;
+		
 	}
 	
 	function isEmpty(value){
@@ -729,17 +741,22 @@ if(isOwner){
 	
 	function updateOwnerMemberDetails(){
 
+		//Ti.API.info(_myHortData);
+
 		for (x=0;x< _myHortData.Members.length;x++){
 			
 			if (_myHortData.Members[x].MemberType == 'Primary'){
 				_myHortData.Members[x].HasEmail = email.getValue() !='';
-				_myHortData.Members[x].HasMobile= mobile.getValue() !='';
-				_myHortData.Members[x].HasTwitter=twitterSwitch.getValue();
-				_myHortData.Members[x].HasFaceBook=facebookSwitch.getValue();
-				_myHortData.Members[x].myHort.Prefix = keyWordPre.value;
-				_myHortData.Members[x].myHort.Postfix = keyWordPost.value;
+				_myHortData.Members[x].HasMobile = mobile.getValue() !='';
+				_myHortData.Members[x].HasTwitter = twitterSwitch.getValue();
+				_myHortData.Members[x].HasFaceBook = facebookSwitch.getValue();
 				break;
 			}
+		}
+		
+		if( isOwner ) {
+			_myHortData.Prefix = keyWordPre.value;
+			_myHortData.Postfix = keyWordPost.value;
 		}
 	}
 	
