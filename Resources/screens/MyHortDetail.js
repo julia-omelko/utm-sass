@@ -4,6 +4,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 	var MyHortMembersWindow = require('ui/handheld/MyHortMembers');
 	var MyHortPendingWindow = require('ui/handheld/MyHortPending');
 	var MyHortInviteWindow = require('ui/handheld/MyHortInvite');
+	var Facebook = require('facebook');
 	var social = require("lib/social");
 	utm.facebookToken = '';
 
@@ -17,8 +18,8 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 	var twitterEnabledForUser = false;
 	var facebookEnabledForUser = false;
 
-	Titanium.Facebook.appid = utm.facebookAppId;
-	Titanium.Facebook.permissions = ['publish_stream', 'read_stream'];
+	Facebook.appid = utm.facebookAppId;
+	Facebook.permissions = ['publish_stream', 'read_stream'];
 
 	utm.MyHortDetails = false;
 
@@ -60,11 +61,11 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		}
 
 		//-----------------Top Buttons  ----------------------
-		var topButtonBar = Titanium.UI.createButtonBar({
+		var topButtonBar = Ti.UI.createButtonBar({
 			labels : buttons,
 			top : 3,
 			backgroundColor : '#336699',
-			style : Titanium.UI.iPhone.SystemButtonStyle.BAR//,
+			style : Ti.UI.iPhone.SystemButtonStyle.BAR//,
 			//height : isOwner? 40: 0,
 			//visible :isOwner
 		});
@@ -85,7 +86,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 	//#################### Android Tab Bar #################### 
 	if (utm.Android) {
 		//create the base screen and hide the Android navbar
-		var win = Titanium.UI.createWindow({
+		var win = Ti.UI.createWindow({
 			layout : 'vertical',
 			backgroundColor : utm.backgroundColor,
 			navBarHidden : true,
@@ -200,7 +201,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		var dirty = isOwner ? checkIfFormIsDirty() : false;
 		
 		if ( dirty ) {
-			var alert = Titanium.UI.createAlertDialog({ title: 'Unsaved Data', message: 'You have unsaved changes.  Are you sure you want to leave this page?', buttonNames: ['Yes', 'No']});
+			var alert = Ti.UI.createAlertDialog({ title: 'Unsaved Data', message: 'You have unsaved changes.  Are you sure you want to leave this page?', buttonNames: ['Yes', 'No']});
 			
 			alert.addEventListener('click', function(e) {
 				
@@ -387,8 +388,8 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 
 	facebookSwitch.addEventListener('change', function(e) {
 		if (e.value) {
-			Ti.Facebook.setForceDialogAuth(true);
-			Ti.Facebook.authorize();
+			Facebook.setForceDialogAuth(true);
+			Facebook.authorize();
 			facebookEnabledForUser = true;
 		} else {
 			var dialog = Ti.UI.createAlertDialog({
@@ -399,11 +400,11 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 			});
 			dialog.addEventListener('click', function(e) {
 				if (e.index === 0) {
-					Ti.Facebook.logout();
-					//Ti.Facebook.setForceDialogAuth(false);
+					Facebook.logout();
+					//Facebook.setForceDialogAuth(false);
 				/*} else if (e.index === 1) {
-					Ti.Facebook.logout();
-					//Ti.Facebook.setForceDialogAuth(false);
+					Facebook.logout();
+					//Facebook.setForceDialogAuth(false);
 					*/
 				} else if (e.index === 2) {
 					Ti.API.info('The cancel button was clicked');
@@ -413,9 +414,9 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		}
 	});
 
-	Ti.Facebook.addEventListener('login', function(e) {
+	Facebook.addEventListener('login', function(e) {
 		if (e.success) {
-			utm.facebookToken = Ti.Facebook.getAccessToken();
+			utm.facebookToken = Facebook.getAccessToken();
 		} else if (e.error) {
 			utm.facebookToken == '';
 			alert(e.error);
@@ -627,7 +628,7 @@ if(isOwner){
 		}
 
 		if (facebookSwitch.getValue()) {
-			utm.curMyHortDetails.FaceBook = Ti.Facebook.getAccessToken();
+			utm.curMyHortDetails.FaceBook = Facebook.getAccessToken();
 		} else {
 			utm.curMyHortDetails.FaceBook = '';
 		}
@@ -863,10 +864,10 @@ if(isOwner){
 	}
 
 	function authFacebook() {
-		Titanium.Facebook.forceDialogAuth = false;
+		Facebook.forceDialogAuth = false;
 
-		Titanium.Facebook.addEventListener('login', updateLoginStatus);
-		Titanium.Facebook.addEventListener('logout', updateLoginStatus);
+		Facebook.addEventListener('login', updateLoginStatus);
+		Facebook.addEventListener('logout', updateLoginStatus);
 
 	}
 
