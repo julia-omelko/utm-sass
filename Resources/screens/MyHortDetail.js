@@ -4,6 +4,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 	var MyHortMembersWindow = require('ui/handheld/MyHortMembers');
 	var MyHortPendingWindow = require('ui/handheld/MyHortPending');
 	var MyHortInviteWindow = require('ui/handheld/MyHortInvite');
+	var Facebook = require('facebook');
 	var social = require("lib/social");
 	utm.facebookToken = '';
 
@@ -17,8 +18,8 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 	var twitterEnabledForUser = false;
 	var facebookEnabledForUser = false;
 
-	Titanium.Facebook.appid = utm.facebookAppId;
-	Titanium.Facebook.permissions = ['publish_stream', 'read_stream'];
+	Facebook.appid = utm.facebookAppId;
+	Facebook.permissions = ['publish_stream', 'read_stream'];
 
 	utm.MyHortDetails = false;
 
@@ -127,7 +128,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		var spacer = Math.round(Ti.Platform.displayCaps.platformWidth * 0.33);
 		var btnWidth = spacer - 2;
 		var btnHeight = 39;
-		var leftPos = Math.round((Ti.Platform.displayCaps.platformWidth - btnWidth * 3) * 0.5)
+		var leftPos = Math.round((Ti.Platform.displayCaps.platformWidth - btnWidth * 3) * 0.5);
 
 		// TAB BAR aka Button Bar for Android
 		var tabBar = Ti.UI.createView({
@@ -190,7 +191,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		tabBar.add(tab3);
 		
 		//add activityIndicator to view
-		view.add(utm.activityIndicator)
+		view.add(utm.activityIndicator);
 	}
 	
 	var backButton = Ti.UI.createButton({title: 'MyHorts'});
@@ -222,7 +223,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		var currentDetails = utm.myHortDetails;
 		var twittified = !isEmpty(currentDetails.PrimaryUser.TwitterToken);
 		var facebookified = !isEmpty(currentDetails.PrimaryUser.FaceBook); //.length === 0 ?  0 : 1;
-		var result = false
+		var result = false;
 		
 		if (
 	 		(currentDetails.PrimaryUser.Email !== email.getValue()) ||
@@ -387,8 +388,8 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 
 	facebookSwitch.addEventListener('change', function(e) {
 		if (e.value) {
-			Ti.Facebook.setForceDialogAuth(true);
-			Ti.Facebook.authorize();
+			Facebook.setForceDialogAuth(true);
+			Facebook.authorize();
 			facebookEnabledForUser = true;
 		} else {
 			var dialog = Ti.UI.createAlertDialog({
@@ -399,11 +400,11 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 			});
 			dialog.addEventListener('click', function(e) {
 				if (e.index === 0) {
-					Ti.Facebook.logout();
-					//Ti.Facebook.setForceDialogAuth(false);
+					Facebook.logout();
+					//Facebook.setForceDialogAuth(false);
 				/*} else if (e.index === 1) {
-					Ti.Facebook.logout();
-					//Ti.Facebook.setForceDialogAuth(false);
+					Facebook.logout();
+					//Facebook.setForceDialogAuth(false);
 					*/
 				} else if (e.index === 2) {
 					Ti.API.info('The cancel button was clicked');
@@ -413,9 +414,9 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		}
 	});
 
-	Ti.Facebook.addEventListener('login', function(e) {
+	Facebook.addEventListener('login', function(e) {
 		if (e.success) {
-			utm.facebookToken = Ti.Facebook.getAccessToken();
+			utm.facebookToken = Facebook.getAccessToken();
 		} else if (e.error) {
 			utm.facebookToken == '';
 			alert(e.error);
@@ -488,10 +489,10 @@ if(isOwner){
 		height:'40dp',
 		borderStyle:Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
 		borderRadius :5
-	})
+	});
 	keyWordPreGroup.add(keyWordPre);
 	
-	keyWordPre.addEventListener('change', function(){ keyWordPost.value='' })
+	keyWordPre.addEventListener('change', function(){ keyWordPost.value='' });
 	
 	var orLabel = Ti.UI.createLabel({
 		text : ' - OR - ',
@@ -535,9 +536,9 @@ if(isOwner){
 		height:'40dp',
 		borderStyle:Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
 		borderRadius :5
-	})
+	});
 	keyWordPostGroup.add(keyWordPost);
-	keyWordPost.addEventListener('change', function(){ keyWordPre.value='' })
+	keyWordPost.addEventListener('change', function(){ keyWordPre.value='' });
 }
 	/*
 	var preButton = Ti.UI.createButton({
@@ -627,7 +628,7 @@ if(isOwner){
 		}
 
 		if (facebookSwitch.getValue()) {
-			utm.curMyHortDetails.FaceBook = Ti.Facebook.getAccessToken();
+			utm.curMyHortDetails.FaceBook = Facebook.getAccessToken();
 		} else {
 			utm.curMyHortDetails.FaceBook = '';
 		}
@@ -720,9 +721,9 @@ if(isOwner){
 				enableButtonBar(true);
 
 			} else if (this.status == 400) {
-				utm.recordError('Error')
+				utm.recordError('Error');
 			} else {
-				utm.recordError('Error')
+				utm.recordError('Error');
 			}
 			if (utm.iPhone || utm.iPad) 
 				topButtonBar.enabled = true;
@@ -777,9 +778,9 @@ if(isOwner){
 				//loadMyHortDetail();
 			
 			} else if (this.status == 400) {
-				utm.recordError('error')
+				utm.recordError('error');
 			} else {
-				utm.recordError(utm.myHortDetails.MyHort)
+				utm.recordError(utm.myHortDetails.MyHort);
 			}
 
 		},
