@@ -17,11 +17,8 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 	var twitterEnabledForUser = false;
 	var facebookEnabledForUser = false;
 
-	//Titanium.Facebook.appid = utm.facebookAppId;
-	//Titanium.Facebook.permissions = ['publish_stream', 'read_stream'];
-	var fb = require('facebook');
-	fb.appid = utm.facebookAppId;
-	fb.permissions = ['publish_stream', 'read_stream'];
+	Titanium.Facebook.appid = utm.facebookAppId;
+	Titanium.Facebook.permissions = ['publish_stream', 'read_stream'];
 
 	utm.MyHortDetails = false;
 
@@ -390,8 +387,8 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 
 	facebookSwitch.addEventListener('change', function(e) {
 		if (e.value) {
-			//fb.ForceDialogAuth(true);
-			fb.authorize();
+			Ti.Facebook.setForceDialogAuth(true);
+			Ti.Facebook.authorize();
 			facebookEnabledForUser = true;
 		} else {
 			var dialog = Ti.UI.createAlertDialog({
@@ -402,8 +399,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 			});
 			dialog.addEventListener('click', function(e) {
 				if (e.index === 0) {
-					//Ti.Facebook.logout();
-					fb.logout();
+					Ti.Facebook.logout();
 					//Ti.Facebook.setForceDialogAuth(false);
 				/*} else if (e.index === 1) {
 					Ti.Facebook.logout();
@@ -417,9 +413,9 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		}
 	});
 
-	fb.addEventListener('login', function(e) {
+	Ti.Facebook.addEventListener('login', function(e) {
 		if (e.success) {
-			utm.facebookToken = fb.getAccessToken();
+			utm.facebookToken = Ti.Facebook.getAccessToken();
 		} else if (e.error) {
 			utm.facebookToken == '';
 			alert(e.error);
@@ -631,7 +627,7 @@ if(isOwner){
 		}
 
 		if (facebookSwitch.getValue()) {
-			utm.curMyHortDetails.FaceBook = fb.getAccessToken();
+			utm.curMyHortDetails.FaceBook = Ti.Facebook.getAccessToken();
 		} else {
 			utm.curMyHortDetails.FaceBook = '';
 		}
@@ -866,14 +862,13 @@ if(isOwner){
 		});
 	}
 
-/* This function is not being called from anywhere...
 	function authFacebook() {
 		Titanium.Facebook.forceDialogAuth = false;
 
 		Titanium.Facebook.addEventListener('login', updateLoginStatus);
 		Titanium.Facebook.addEventListener('logout', updateLoginStatus);
 
-} */
+	}
 
 	return win;
 };
