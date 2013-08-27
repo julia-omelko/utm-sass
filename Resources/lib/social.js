@@ -808,11 +808,6 @@ try {
 // create an OAuthAdapter instance
 var OAuthAdapter = function (pConsumerSecret, pConsumerKey, pSignatureMethod,utm) {
 
-    Ti.API.info('*********************************************');
-    Ti.API.info('If you like the OAuth Adapter, consider donating at');
-    Ti.API.info('https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=T5HUU4J5EQTJU&lc=IT&item_name=OAuth%20Adapter&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted');
-    Ti.API.info('*********************************************');
-
     // will hold the consumer secret and consumer key as provided by the caller
     var consumerSecret = pConsumerSecret;
     var consumerKey = pConsumerKey;
