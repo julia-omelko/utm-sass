@@ -6,6 +6,7 @@
     <property name="acs-oauth-secret-development" type="string">llJKCFisyfrs20z5SnKct56cep0vaWVH</property>
     <property name="acs-oauth-key-development" type="string">D8emSitkv0UekXWKIETz3xQDg85kFk9g</property>
     <property name="acs-api-key-development" type="string">sInlDKJGeaPrtdf5L8c3xsCZh3F6I7BB</property>
+    <property name="ti.facebook.appid">494625050591800</property>
     <deployment-targets>
         <target device="tizen">false</target>
         <target device="mobileweb">false</target>
@@ -14,7 +15,7 @@
         <target device="android">true</target>
         <target device="blackberry">false</target>
     </deployment-targets>
-    <sdk-version>3.0.0.GA</sdk-version>
+    <sdk-version>3.1.1.GA</sdk-version>
     <id>com.utm</id>
     <name>UTM</name>
     <version>1.18</version>
@@ -56,5 +57,7 @@
         <module platform="commonjs" version="2.3.0">ti.cloud</module>
         <module platform="iphone">com.qbset.unlockscreen</module>
         <module platform="iphone">com.0x82.key.chain</module>
+        <module platform="android">facebook</module>
+    	<module platform="iphone">facebook</module>
     </modules>
 </ti:app>
