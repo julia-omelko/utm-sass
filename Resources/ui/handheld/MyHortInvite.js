@@ -103,7 +103,7 @@ function inviteMyHortWindow(myHortInfo, utm) {
 
 	var emailBox = Ti.UI.createView({
 		layout : 'horizontal',
-		height : 50,
+		height : '50dp',
 		left : 5
 	});
 	view.add(emailBox);
@@ -123,12 +123,12 @@ function inviteMyHortWindow(myHortInfo, utm) {
 	var chooseButton = Ti.UI.createButton({
 		//title : 'Choose',
 		backgroundImage : '/images/iosContacts.jpeg',
-		width : 43,
-		height : 43,
+		width : '43dp',
+		height : '43dp',
 		enabled : true,
 		top : 5,
 		left : 10
-	})
+	});
 	emailBox.add(chooseButton);
 
 	//utm.log(Ti.Contacts)
@@ -172,8 +172,8 @@ function inviteMyHortWindow(myHortInfo, utm) {
 		top : 5,
 		height : 'auto',
 		width : utm.SCREEN_WIDTH - 10,
-		height : 50,
-		font: {fontSize:16},
+		height : '50dp',
+		font: {fontSize:'16dp'},
 		keyboardType:Ti.UI.KEYBOARD_EMAIL,
 		autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
 		autocorrect: false
@@ -191,7 +191,7 @@ function inviteMyHortWindow(myHortInfo, utm) {
 	//############ Choose Type ################
 	var typeBox = Ti.UI.createView({
 		layout : 'horizontal',
-		height : 30,
+		height : '30dp',
 		left : 5,
 		top : 10
 	});
@@ -206,9 +206,21 @@ function inviteMyHortWindow(myHortInfo, utm) {
 	});
 	typeBox.add(typeLabel);
 
-	var typeCheckBox = new CheckBoxField(true);
+	if(utm.iPhone || utm.iPad){
+		var typeCheckBox = new CheckBoxField(true);
+	};
+	
+	if(utm.Android){
+		var typeCheckBox = Ti.UI.createSwitch({
+	  	style: Ti.UI.Android.SWITCH_STYLE_CHECKBOX,
+	  	value:true,
+	  	width: '40dp'
+		});
+	};
+	
 	typeBox.add(typeCheckBox);
 	view.add(typeBox);
+	
 
 	//############ Buttons ################
 	var buttonView = Ti.UI.createView({
@@ -222,12 +234,12 @@ function inviteMyHortWindow(myHortInfo, utm) {
 	var inviteButton = Ti.UI.createButton({
 		title : 'Send',
 		enabled : false
-	})
+	});
 	buttonView.add(inviteButton);
 
 	inviteButton.addEventListener('click', function() {
 		inviteMyHort();
-	})
+	});
 	var closeButton = Ti.UI.createButton({
 		title : L('cancel'),
 		left : 10
@@ -251,12 +263,26 @@ function inviteMyHortWindow(myHortInfo, utm) {
 		inviteMyHortReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");
 		inviteMyHortReq.setRequestHeader('Authorization-Token', utm.AuthToken);
 
+		if(utm.iPhone || utm.iPad){
+			if(typeCheckBox.isChecked())
+				var memberType = 'Invisible';
+			else 
+				var memberType = 'Secondary';
+		}
+
+		if(utm.Android){
+			if(typeCheckBox.value)
+				var memberType = 'Invisible';
+			else 
+				var memberType = 'Secondary';
+		}
+			
 		var myHortInviteModel = {
 			MyHortInfo : myHortInfo,
 			UsersToInvite : emailsField.value,
 			InviteMessage : inviteMessageField.value,
 			FromNickName : primaryMemberNickName,
-			MemberType : typeCheckBox.isChecked() ? 'Invisible' : 'Secondary',
+			MemberType : memberType,
 			InviteCode : 'autogen'
 		};
 
@@ -331,7 +357,7 @@ function inviteMyHortWindow(myHortInfo, utm) {
 			//}
 		}
 
-	}
+	};
 	function isiOS6Plus() {
 		// add iphone specific tests
 		if (Titanium.Platform.name == 'iPhone OS') {
