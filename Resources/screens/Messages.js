@@ -74,16 +74,32 @@ function message_window(utm) {
 		var tabBar = Titanium.UI.createView ({
    			layout : 'horizontal',
    			width : '100%',
-   			height : 55
+   			height : 55,
+ 			left : 0,
+			bottom : 0  			
 		});
 		win.add(tabBar);
 		
-		var receivedButton = Ti.UI.createButton({
-			title : 'Received',
+		var spacer = Math.round(Ti.Platform.displayCaps.platformWidth * 0.5);
+		var btnWidth = spacer - 30;
+		var leftPos = Math.round((Ti.Platform.displayCaps.platformWidth - btnWidth * 2) * 0.5);		
+		
+		var receivedButton = Ti.UI.createView({
 			top : 2,
-			Height : Titanium.UI.SIZE - 4,
+			width : btnWidth,
+			height : 50,
+			left : leftPos,
+			backgroundColor : '#336699',
+			borderColor : '#000000',
+			borderWidth : 1,
+			borderRadius : 2
+		});
+		var receivedButtonLabel = Ti.UI.createLabel({
+			text : 'Received',
+			color : '#FFF',
 			font:{fontFamily:'Arial',fontSize:'14dp'}
 		});
+		receivedButton.add(receivedButtonLabel);		
 		tabBar.add(receivedButton);
 		
 		receivedButton.addEventListener('click',function(e)
@@ -91,15 +107,26 @@ function message_window(utm) {
 			tableView.editing = false;
 			tableView.setData([]);
 			curMode = "recieved";
+			receivedButton.backgroundColor = '#336699';
+			sentButton.backgroundColor = '#6699CC';
 			getMessages('recieved');			
 		});
 		
-		var sentButton = Ti.UI.createButton({
-			title : 'Sent',
+		var sentButton = Ti.UI.createView({
 			top : 2,
-			Height : Titanium.UI.SIZE - 4,
+			height : 50,
+			width : btnWidth,
+			backgroundColor : '#6699CC',
+			borderColor : '#000000',
+			borderWidth : 1,
+			borderRadius : 2
+		});
+		var sentButtonLabel = Ti.UI.createLabel({
+			text : 'Sent',
+			color : '#FFF',
 			font:{fontFamily:'Arial',fontSize:'14dp'}
 		});
+		sentButton.add(sentButtonLabel);		
 		tabBar.add(sentButton);
 		
 		sentButton.addEventListener('click',function(e)
@@ -107,11 +134,13 @@ function message_window(utm) {
 			tableView.editing = false;
 			tableView.setData([]);
 			curMode = "sent";
+			receivedButton.backgroundColor = '#6699CC';
+			sentButton.backgroundColor = '#336699';			
 			getMessages('sent');
 		});			
 		
 		//add activityIndicator to window
-		win.add(utm.activityIndicator)
+		win.add(utm.activityIndicator);
 	}
 		
 
