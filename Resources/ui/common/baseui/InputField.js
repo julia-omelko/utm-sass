@@ -1,24 +1,30 @@
-function inputField(utm,_label, _labelWidth,  _val, _valWidth, _keyboardType,_returnKeyType,_required,_fldType){
+function inputField(utm,_label, _labelWidth,  _val, _valWidth, _keyboardType,_returnKeyType,_required,_fldType,_maxLenth){
 
-	var hView = Ti.UI.createView({
-		height:'50dp'
-		});
+	var mainView = Ti.UI.createView({
+		layout:'vertical',
+		height:'50dp',
+		left:5	
+	});
 	
-	if(_required){
-		var req = Ti.UI.createLabel({
-			text: '*'	
-			,top:'12dp'
-			,left:'2dp'	
-			,font:{fontFamily:'Arial',fontWeight:'bold',fontSize:'14dp'}
-			,width:'5dp'
-		});
-		hView.add(req);		
-	}
+	var hView = Ti.UI.createView({
+		height:'50dp',
+		layout:'horizontal'
+	});
+	mainView.add(hView);
+	
+	var req = Ti.UI.createLabel({
+		text: _required ? '*' :' '	
+		,top:'12dp'	
+		,font:{fontFamily:'Arial',fontWeight:'bold',fontSize:'14dp'}
+		,width:'5dp'
+	});
+	hView.add(req);		
+	
 	
 	var lbl = Ti.UI.createLabel({
 		text: _label	
 		,top:16
-		,left:8	
+		,left:2	
 		,font:{fontWeight:'bold',fontSize:'14dp'}
 		,width:_labelWidth
 		,color : '#000'
@@ -26,7 +32,6 @@ function inputField(utm,_label, _labelWidth,  _val, _valWidth, _keyboardType,_re
 	hView.add(lbl);
 	
 	var fld = Ti.UI.createTextField({
-		left:_labelWidth+8,
 		color:utm.textFieldColor,	
 		passwordMask:_fldType === 'password'?true:false,	
 		width:_valWidth,
@@ -37,7 +42,8 @@ function inputField(utm,_label, _labelWidth,  _val, _valWidth, _keyboardType,_re
 		returnKeyType:_returnKeyType ? _returnKeyType:Ti.UI.KEYBOARD_DEFAULT,
 		borderStyle:Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
 		borderRadius :5,
-		_hasFocus: false
+		_hasFocus: false,
+		maxLength:_maxLenth
 	});
 	
 	fld.addEventListener('focus', function() {
@@ -50,38 +56,49 @@ function inputField(utm,_label, _labelWidth,  _val, _valWidth, _keyboardType,_re
 	
 	hView.add(fld);
 	
+	var messageView = Ti.UI.createView({
+		height:'0dp',
+		layout:'horizontal',
+		width:'100%',
+		right:'10dp'
+		
+	});
+	mainView.add(messageView);
+	
 	var fldMessageLabel = Ti.UI.createLabel({
 		height:0
-		, top:55
-		, left:_labelWidth+8
+		, width:'100%'
+		, left:lbl.x + lbl.width
 		, color:utm.textErrorColor 
 		, visible:false
+		,textAlign: Ti.UI.TEXT_ALIGNMENT_RIGHT
 		,font:{fontWeight:'bold',fontSize:'12dp'}
 	});
-	hView.add(fldMessageLabel);
+	messageView.add(fldMessageLabel);
 	
 	
-	hView.setValue = function(val){
+	mainView.setValue = function(val){
 		fld.value=val;
 	}
-	hView.getValue = function(val){
+	mainView.getValue = function(val){
 		return fld.value;
 	}
 	
-	hView.setMessage=function(val){
+	mainView.setMessage=function(val){
 		if(val!=''){
-			hView.height=70;
-			fldMessageLabel.height=15;
+			mainView.height='70dp';
+			fldMessageLabel.height='15dp';
 			fldMessageLabel.visible=true;
 			fldMessageLabel.text=val;
 		//	fld.borderColor ='#EF8181';
 		}else{
-			hView.height=50;
-			fldMessageLabel.height=0;
+			mainView.height='50dp';
+			fldMessageLabel.height='0dp';
 			fldMessageLabel.visible=false;
 			fldMessageLabel.text='';
 		//	fld.borderColor ='transparent';
 		}
+		messageView.height=fldMessageLabel.height;
 	}
 	
 	if(_keyboardType === Ti.UI.KEYBOARD_EMAIL){
@@ -89,25 +106,25 @@ function inputField(utm,_label, _labelWidth,  _val, _valWidth, _keyboardType,_re
 		    var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;   
 		 	
 		 	if(fld.value.length===0){
-		 			hView.setMessage('');
+		 			mainView.setMessage('');
 		 		return;
 		 	}
 		 	
 		   if(reg.test(fld.value) == true) {	
 		      //  fld.borderColor ='transparent';
-		      	hView.setMessage('');
+		      	mainView.setMessage('');
 		    } else {
 		       // fld.borderColor ='#EF8181';
-		         hView.setMessage('Invalid Email Address Format');
+		         mainView.setMessage('Invalid Email Address Format');
 
 		    }		
 		});
 	}
 	
-	hView.addEventListenerEvent = function(eventType,callBack){
+	mainView.addEventListenerEvent = function(eventType,callBack){
 		fld.addEventListener(eventType,callBack);
 	}
 	
-	return hView;
+	return mainView;
 }
 module.exports = inputField;

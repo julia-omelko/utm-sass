@@ -2,17 +2,17 @@ function checkBox(_isChecked){
 	var isChecked=false;
 	var self = Ti.UI.createView({
         backgroundColor:'white', 
-        width:22,
-        height:22
+        width:utm.Android?33:22,
+        height:utm.Android?33:22
     });
  
     var check_box = Ti.UI.createView({
         backgroundImage:'/images/checkbox.png',
-        width:20,
-        height:20
+        width:utm.Android?33:22,
+        height:utm.Android?33:22
     });
  	self.add(check_box);
-    check_box.addEventListener('click',function(){
+    self.addEventListener('click',function(){
  		isChecked= !isChecked;
       	toggleCheck();
     });
