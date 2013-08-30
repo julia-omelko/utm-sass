@@ -34,7 +34,8 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 
 		var scrollingView = Ti.UI.createScrollView({
 			showVerticalScrollIndicator : true,
-			showHorizontalScrollIndicator : false
+			showHorizontalScrollIndicator : false,
+			 left:-5 
 		});
 		win.add(scrollingView);
 
@@ -143,7 +144,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		var tab1 = Ti.UI.createView({
 			width : btnWidth,
 			height : btnHeight,
-			left : leftPos,
+			left : 0,
 			top : 2,
 			backgroundColor : '#336699',
 			borderColor : '#000000',
@@ -218,12 +219,15 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 	
 	win.leftNavButton = backButton;
 	
-	function checkIfFormIsDirty( owner ) {
+	function checkIfFormIsDirty( ) {
 		
 		var currentDetails = utm.myHortDetails;
+		
+		if(currentDetails ==undefined) return;		
+		
 		var twittified = !isEmpty(currentDetails.PrimaryUser.TwitterToken);
 		var facebookified = !isEmpty(currentDetails.PrimaryUser.FaceBook); //.length === 0 ?  0 : 1;
-		var result = false;
+		var isDirty = false;
 		
 		if (
 	 		(currentDetails.PrimaryUser.Email !== email.getValue()) ||
@@ -231,69 +235,39 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 	 		(twittified != twitterSwitch.getValue()) ||
 	 		(facebookified != facebookSwitch.getValue()) ||
 	 		(currentDetails.PrimaryUser.AddNicknameToUtms !== signMessagesSwitch.getValue()) 
-		 ) { result = true; } 
-		else { result = false; }
+		 ) { 
+		 	isDirty = true; 
+		 } else {
+		 	 if( isOwner ) {
+				if ( (currentDetails.myHort.Prefix !== keyWordPre.value) || (currentDetails.myHort.Postfix !== keyWordPost.value) ) {
+		 			isDirty = true;	
+		 		} else {
+		 			isDirty = false;		
+		 		}
+			}
+		 }		
 		
-		if( owner ) {
-			if ( (currentDetails.myHort.Prefix !== keyWordPre.value) ||
-	 			 (currentDetails.myHort.Postfix !== keyWordPost.value) ) {
-	 				result = true;	
-	 		} 
- 			else {
-	 			result = false;		
-	 		}
-		}
+		//Enable / Disable save button
+		saveButton.enabled=isDirty;
 		
-		return result;
+		return isDirty;
 		
 	}
 	
 	function isEmpty(value){
   		return (value == null || value.length === 0);
 	}
-	//-----------------MyHort Name  ----------------------
-	/*var myHortNameGroup = Ti.UI.createView({
-		layout : 'horizontal',
-		width : '100%',
-		top : 3,
-		left : 3,
-		bottom : 3,
-		height : 50
-	});
-	view.add(myHortNameGroup);
 
-	var myHortNamelbl = Ti.UI.createLabel({
-		text : 'MyHort ',
-		font : {
-			fontSize : '14dp',
-			fontWeight : 'bold'
-		},
-		height : 'auto',
-		top : 2,
-		textAlign : 'left'
-	});
-	myHortNameGroup.add(myHortNamelbl);
-
-	var myHortName = Ti.UI.createLabel({
-		text : _myHortData.FriendlyName,
-		width : utm.SCREEN_WIDTH - 100,
-		font : {
-			fontSize : '14dp',
-		},
-		height : 'auto',
-		top : 2,
-		textAlign : 'left'
-	});
-	myHortNameGroup.add(myHortName);
-*/
 	//----------Email--------------------
 	var email = new InputField(utm,'Email', 80, '', '210dp', Ti.UI.KEYBOARD_EMAIL);
 	view.add(email);
+	email.addEventListener("change", checkIfFormIsDirty);
 	
 		
 	//----------Mobile # --------------------
 	var mobile = new InputField(utm,'Mobile', 80, '', '210dp', Ti.UI.KEYBOARD_DECIMAL_PAD);
 	view.add(mobile);
+	mobile.addEventListener("change", checkIfFormIsDirty);
 
 
 	//----------Twitter On off Switch--------------------
@@ -323,6 +297,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		enabled : true
 	});
 	twitterGroup.add(twitterSwitch);
+	
 
 	twitterSwitch.addEventListener('change', function(e) {
 		if (e.value) {
@@ -353,7 +328,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 			dialog.show();
 
 		}
-
+		checkIfFormIsDirty();
 	});
 
 
@@ -412,6 +387,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 			});
 			dialog.show();
 		}
+		checkIfFormIsDirty();
 	});
 
 	Facebook.addEventListener('login', function(e) {
@@ -453,6 +429,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		enabled : true
 	});
 	signMessagesGroup.add(signMessagesSwitch);
+	signMessagesSwitch.addEventListener("change", checkIfFormIsDirty);
 
 //----------Pre/Post Key Word # --------------------
 // Business rule is that only owner of MyHort can  set a prefix or postfix
@@ -492,7 +469,10 @@ if(isOwner){
 	});
 	keyWordPreGroup.add(keyWordPre);
 	
-	keyWordPre.addEventListener('change', function(){ keyWordPost.value='' });
+	keyWordPre.addEventListener('change', function(){ 
+		keyWordPost.value='';
+		checkIfFormIsDirty();		
+	});
 	
 	var orLabel = Ti.UI.createLabel({
 		text : ' - OR - ',
@@ -538,38 +518,16 @@ if(isOwner){
 		borderRadius :5
 	});
 	keyWordPostGroup.add(keyWordPost);
-	keyWordPost.addEventListener('change', function(){ keyWordPre.value='' });
+	keyWordPost.addEventListener('change', function(){ 
+		keyWordPre.value='';
+		checkIfFormIsDirty();
+	 });
 }
-	/*
-	var preButton = Ti.UI.createButton({
-		title : 'Key Word Before Message',
-		left: '80dp',
-		enabled : true
-	});
-	view.add(preButton);
-	
-	var orLabel = Ti.UI.createLabel({
-		text : ' - OR - ',
-		font : {
-			fontSize : '14dp',
 
-		},
-		width : '80dp',
-		textAlign : 'left'
-	});
-	view.add(orLabel);
-
-	var postButton = Ti.UI.createButton({
-		title : 'Key Word After Message',
-		width: '80dp',
-		enabled : true
-	});
-	view.add(postButton);
-	*/
 	var saveButton = Ti.UI.createButton({
 		title : 'Save',
 		top : 3,
-		enabled : true
+		enabled : false
 	});
 	saveButton.addEventListener('click', function() {
 		if(checkAtLeastOneTypeOfMessageSet()){
