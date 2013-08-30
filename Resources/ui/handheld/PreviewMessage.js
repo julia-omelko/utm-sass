@@ -55,7 +55,7 @@ var PreviewMessage_window = function(utm) {
 		});
 		win.add(tabBar);		
 		
-		cameraButton.width=40;
+		cameraButton.width='40dp';
 		cameraButton.Height = Titanium.UI.SIZE;
 			
 		tabBar.add(cameraButton);
@@ -157,15 +157,17 @@ var PreviewMessage_window = function(utm) {
 	utmMessageGroup.add(utmMessageLabel);
 	
 	var regenUtm = Ti.UI.createButton({
-		image:'/images/refresh.gif',
+		backgroundImage:'/images/refresh.gif',
 		width: '30dp',
 		height:'30dp',
 		borderColor: null,
 		borderWidth:0,
 		borderRadius:5,
-		right:65,
+		right:'65dp',
 		style:Ti.UI.iPhone.SystemButtonStyle.PLAIN
 	});
+
+	
 	utmMessageGroup.add(regenUtm);
 	
 	var refreshLabel = Ti.UI.createLabel({
@@ -297,7 +299,7 @@ var PreviewMessage_window = function(utm) {
 		},
 		color : '#000',
 		top : 4,
-		left:5,
+		left:8,
 		textAlign : 'left'
 	});
 	deleteView.add(deleteOnReadLabel);
@@ -536,7 +538,7 @@ var PreviewMessage_window = function(utm) {
 							}
 						}
 						
-					})
+					});
 					signMessagesSwitchEventListnerAdded=true;
 				}
 				
@@ -614,7 +616,7 @@ var PreviewMessage_window = function(utm) {
 			var params = {
 				MyHortId : messageData.MyHortId,
 				PlainText : msg.messageText
-			}
+			};
 		} else {
 			var params = {
 				MyHortId : utm.targetMyHortID,
@@ -772,11 +774,11 @@ var PreviewMessage_window = function(utm) {
 			replyMode = true;
 		else
 			replyMode = false;
-	}
+	};
 
 	win.setMessageData = function(_messageData) {
 		messageData = _messageData;
-	}
+	};
 	
 
 	function endsWith(str, suffix) {
@@ -789,5 +791,5 @@ var PreviewMessage_window = function(utm) {
 	
 	return win;
 
-}
+};
 module.exports = PreviewMessage_window;
