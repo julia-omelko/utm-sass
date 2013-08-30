@@ -1,39 +1,9 @@
 var TheLoginScreen_view = function(utm) {
 	
 	var webUrl='';
+	var Header = require('ui/common/Header');
 	
-	if(utm.iPhone || utm.iPad ){
-		var loginView = Ti.UI.createWindow({			
-			layout:'vertical',title:''
-			, backgroundColor:utm.backgroundColor
-			, barColor:utm.barColor
-		});
-	}
-	
-	if(utm.Android){
-		//create the base screen and hid the Android navbar
-		var loginView = Titanium.UI.createWindow({
-		    layout : 'vertical',
-		 	backgroundColor : utm.backgroundColor,
-		    navBarHidden:true
-		});
-		
-		//create a navbar for Android
-		var my_navbar = Ti.UI.createLabel({
-		    height : 50,
-		    width : '100%',
-		    backgroundColor : utm.androidBarColor,
-		    color : utm.backgroundColor,
-		    text:'',
-		    top:0
-		});
- 
- 		//add the navbar to the screen
-		loginView.add(my_navbar);
-		
-		//add activityIndicator to window
-		loginView.add(utm.activityIndicator)
-	}
+	var loginView = new Header(utm,'', '');
 	
 	var messageArea = Ti.UI.createLabel({
 	  color: utm.textColor,
@@ -122,8 +92,8 @@ var TheLoginScreen_view = function(utm) {
 	loginView.add(forgotPWLabel);
 		
 	//Want to sign up?
-	//var signUpLabel = createLink(L('login_signup'), '/Account/Register')
-	/*var signUpLabel = Ti.UI.createLabel({
+	var signUpLabel = createLink(L('login_signup'), '/Account/Register')
+	var signUpLabel = Ti.UI.createLabel({
 		 text:L('login_signup'),
 		 color: utm.textColor,		
 		 textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
@@ -136,7 +106,7 @@ var TheLoginScreen_view = function(utm) {
 	signUpLabel.addEventListener('click',function(){
 		Ti.App.fireEvent('app:signup');
 	})
-	*/
+	
 	//About UTM
 	var tosLabel = createLink(L('login_about'), '/Home/WhoWeAre')
 	loginView.add(tosLabel);
