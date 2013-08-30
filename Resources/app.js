@@ -156,7 +156,7 @@ function appInit(){
 //	analytics.start(10,true);
 	
 	if (Ti.Platform.model === 'Simulator' || Ti.Platform.model ===  'google_sdk') { 
-		utm.setEnvModePrefix("local");
+		utm.setEnvModePrefix("dev");
 		utm.validatesSecureCertificate=false;
 	}else{
 		utm.setEnvModePrefix("prod");
@@ -554,41 +554,47 @@ function checkNetworkOnInit(){
 
 
 function closeAllScreens(leaveLanding){
-	//Close any open window in the opposite order opened - on slow devices you can sometime see them close
-	if(!leaveLanding)
-		if(utm.landingView != undefined){utm.navController.close(utm.landingView,{animated:false});	}
 	
-	if(utm.MessageDetailWindow !=undefined ){utm.navController.close(utm.messageDetailWindow,{animated:false});}
-	if(utm.messageWindow  !=undefined ){utm.navController.close(utm.messageWindow ,{animated:false}); }	
 	
-	if(utm.chooseMyHortView !=undefined){utm.navController.close(utm.chooseMyHortView,{animated:false});}	
-	if(utm.chooseContactsView != undefined){utm.navController.close(utm.chooseContactsView,{animated:false});}
-	if(utm.writeMessageView !=undefined){utm.writeMessageView.restForm();utm.navController.close(utm.writeMessageView,{animated:false});}	
-	if(utm.previewMessageView != undefined){utm.navController.close(utm.previewMessageView,{animated:false});}	
-
-
-	if(utm.myAccountWindow != undefined){	utm.navController.close(utm.myAccountWindow,{animated:false});}	
-	if(utm.myHortView != undefined){utm.navController.close(utm.myHortView,{animated:false});}
-	if(utm.myHortDetailWindow != undefined){utm.navController.close(utm.myHortDetailWindow,{animated:false});}
-	//RE ##421 - Ti App - Screen Blank on force login - some odd reason on close an error occures only in trace window only in DeBug mode
-	//close( ? "Invalid type passed to function. expected": TiWindowProxy, was: KrollCallback
-	//Added Try Catch fixes this issue
 	try{
+		//Close any open window in the opposite order opened - on slow devices you can sometime see them close
+		if(!leaveLanding)
+			if(utm.landingView != undefined){utm.navController.close(utm.landingView,{animated:false});	}
+	
+		
+		if(utm.MessageDetailWindow !=undefined ){utm.navController.close(utm.messageDetailWindow,{animated:false});}
+	
+		
+		if(utm.messageWindow  !=undefined ){utm.navController.close(utm.messageWindow ,{animated:false}); }	
+		
+		if(utm.chooseMyHortView !=undefined){utm.navController.close(utm.chooseMyHortView,{animated:false});}	
+		if(utm.chooseContactsView != undefined){utm.navController.close(utm.chooseContactsView,{animated:false});}
+		if(utm.writeMessageView !=undefined){utm.writeMessageView.restForm();utm.navController.close(utm.writeMessageView,{animated:false});}	
+		if(utm.previewMessageView != undefined){utm.navController.close(utm.previewMessageView,{animated:false});}	
+	
+	
+		if(utm.myAccountWindow != undefined){	utm.navController.close(utm.myAccountWindow,{animated:false});}	
+		if(utm.myHortView != undefined){utm.navController.close(utm.myHortView,{animated:false});}
+		if(utm.myHortDetailWindow != undefined){utm.navController.close(utm.myHortDetailWindow,{animated:false});}
+		//RE ##421 - Ti App - Screen Blank on force login - some odd reason on close an error occures only in trace window only in DeBug mode
+		//close( ? "Invalid type passed to function. expected": TiWindowProxy, was: KrollCallback
+		//Added Try Catch fixes this issue
+		
 		if(utm.MemberDetailsWindow != undefined){utm.navController.close(utm.MemberDetailsWindow,{animated:false});}
 
 		if(utm.myHortInviteWindow != undefined){utm.navController.close(utm.myHortInviteWindow,{animated:false});}
 		if(utm.myHortMembersWindow != undefined){utm.navController.close(utm.myHortMembersWindow,{animated:false});}
 		if(utm.myHortPendingWindow != undefined){utm.navController.close(utm.myHortPendingWindow,{animated:false});}
+
+	
+		if(utm.signupView != undefined){utm.navController.close(utm.signupView,{animated:false});	}
+		if(utm.subscribeInfoView != undefined){utm.navController.close(utm.subscribeInfoView,{animated:false});	}	
+		
+		if(utm.splashView != undefined){	utm.splashView.close(),{animated:false}}		
+		
+		//#421 - Ti App - Screen Blank on force login  - added loginView to help fix this issue
+		if(utm.loginView != undefined){	utm.loginView.close(),{animated:false}}		
 	}catch(e) {}
-	
-	if(utm.signupView != undefined){utm.navController.close(utm.signupView,{animated:false});	}
-	if(utm.subscribeInfoView != undefined){utm.navController.close(utm.subscribeInfoView,{animated:false});	}	
-	
-	if(utm.splashView != undefined){	utm.splashView.close(),{animated:false}}		
-	
-	//#421 - Ti App - Screen Blank on force login  - added loginView to help fix this issue
-	if(utm.loginView != undefined){	utm.loginView.close(),{animated:false}}		
-	
 	
 }
 
