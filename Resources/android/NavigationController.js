@@ -7,7 +7,7 @@ var NavigationController = function(utm) {
         //windowToOpen.add(this.utm.activityIndicator);
 
         if(!self.rootWindow) {
-            windowToOpen.exitOnClose = true;
+            //windowToOpen.exitOnClose = true;
             self.rootWindow = windowToOpen;
         }
 
@@ -15,7 +15,14 @@ var NavigationController = function(utm) {
     };
 
     self.close = function(windowToClose) {
-        windowToClose.close();
+    		utm.log('CLOSE WINDOW  '+ windowToClose);
+    		
+    		if(windowToClose.toString() =='[object Window]'){
+    			windowToClose.close();	
+    		}else{
+    			utm.log('NO CLOSE WINDOW  '+ windowToClose);
+    		}
+        
     };
 
     return self;
