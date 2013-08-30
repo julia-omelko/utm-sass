@@ -1,5 +1,4 @@
 function inviteMyHortWindow(myHortInfo, utm) {
-	var InputField = require('ui/common/baseui/InputField');
 	var CheckBoxField = require('ui/common/baseui/CheckBox');
 	var needsAuth = false;
 	var supportsAuthAPI = (Ti.version >= '2.1.3');

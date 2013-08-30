@@ -1,6 +1,5 @@
 function createMyHortWindow(utm) {
-	var InputField = require('ui/common/baseui/InputField');
-	
+
 	var myHortWindow = Ti.UI.createWindow({
 		backgroundColor : '#fff',
 		layout : 'horizontal',
