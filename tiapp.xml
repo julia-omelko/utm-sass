@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><ti:app xmlns:ti="http://ti.appcelerator.org">
+<?xml version="1.0" encoding="UTF-8"?>
+<ti:app xmlns:ti="http://ti.appcelerator.org">
     <property name="acs-oauth-secret-production" type="string">XbPKERaMoJfff62gYF9kCfxO7t7DYIiv</property>
     <property name="acs-oauth-key-production" type="string">GgRLC2knR79k4Bmx8PaUKDZQRXQNdEKZ</property>
     <property name="acs-api-key-production" type="string">F80xpsGgm2Yyf2cPLtXumHzoeVi1j1bP</property>
@@ -17,7 +18,7 @@
     <sdk-version>3.1.2.GA</sdk-version>
     <id>com.utm</id>
     <name>UTM</name>
-    <version>1.19</version>
+    <version>1.20</version>
     <publisher>youthisme</publisher>
     <url>http://youthisme.com</url>
     <description>YouThisMe™ (UTM) is an innovative new technology that provides privacy in digital communications and postings on social media. The messages are hidden in plain sight and only the intended recipient(s) can decode them.</description>
