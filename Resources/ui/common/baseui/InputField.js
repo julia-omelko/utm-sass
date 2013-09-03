@@ -66,19 +66,29 @@ function inputField(utm,_label, _labelWidth,  _val, _valWidth, _keyboardType,_re
 	mainView.add(messageView);
 	
 	var fldMessageLabel = Ti.UI.createLabel({
-		height:0
-		, width:'100%'
-		, left:lbl.x + lbl.width
-		, color:utm.textErrorColor 
-		, visible:false
-		,textAlign: Ti.UI.TEXT_ALIGNMENT_RIGHT
-		,font:{fontWeight:'bold',fontSize:'12dp'}
+		height:0,
+		width:'100%',
+		left:lbl.x + lbl.width,
+		color:utm.textErrorColor, 
+		visible:false,
+		textAlign: Ti.UI.TEXT_ALIGNMENT_RIGHT,
+		font:{fontWeight:'bold',fontSize:'12dp'}
 	});
 	messageView.add(fldMessageLabel);
 	
+	mainView.hasFocus = function(val) {
+		return fld._hasFocus;
+	}
+	
+	mainView.setFocus = function(val) {
+		fld._hasFocus = val;
+		
+		if(val) { fld.focus(); }
+		else { fld.blur(); }
+	}
 	
 	mainView.setValue = function(val){
-		fld.value=val;
+		fld.value = val;
 	}
 	mainView.getValue = function(val){
 		return fld.value;

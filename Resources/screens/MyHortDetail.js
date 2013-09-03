@@ -22,7 +22,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 	Facebook.permissions = ['publish_stream', 'read_stream'];
 
 	utm.MyHortDetails = false;
-
+	
 	//####################   iOS Button Bar #################### 
 	if (utm.iPhone || utm.iPad) {
 		var win = Ti.UI.createWindow({
@@ -199,7 +199,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 	
 	backButton.addEventListener('click', function()
 	{
-		var dirty = isOwner ? checkIfFormIsDirty() : false;
+		var dirty = checkIfFormIsDirty();
 		
 		if ( dirty ) {
 			var alert = Titanium.UI.createAlertDialog({ title: 'Unsaved Data', message: 'You have unsaved changes.  Are you sure you want to leave this page?', buttonNames: ['Yes', 'No']});
@@ -221,34 +221,43 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 	
 	function checkIfFormIsDirty( ) {
 		
-		var currentDetails = utm.myHortDetails;
-		
-		if(currentDetails ==undefined) return;		
-		
-		var twittified = !isEmpty(currentDetails.PrimaryUser.TwitterToken);
-		var facebookified = !isEmpty(currentDetails.PrimaryUser.FaceBook); //.length === 0 ?  0 : 1;
 		var isDirty = false;
+		var currentDetails = utm.myHortDetails;
+		var data = {};
+		var formData = {};
 		
-		if (
-	 		(currentDetails.PrimaryUser.Email !== email.getValue()) ||
-	 		(currentDetails.PrimaryUser.Mobile !== mobile.getValue()) ||
-	 		(twittified != twitterSwitch.getValue()) ||
-	 		(facebookified != facebookSwitch.getValue()) ||
-	 		(currentDetails.PrimaryUser.AddNicknameToUtms !== signMessagesSwitch.getValue()) 
-		 ) { 
-		 	isDirty = true; 
-		 } else {
-		 	 if( isOwner ) {
-				if ( (currentDetails.myHort.Prefix !== keyWordPre.value) || (currentDetails.myHort.Postfix !== keyWordPost.value) ) {
-		 			isDirty = true;	
-		 		} else {
-		 			isDirty = false;		
-		 		}
-			}
-		 }		
+		if(currentDetails == undefined) return;	
 		
-		//Enable / Disable save button
-		saveButton.enabled=isDirty;
+		formData.twitter = twitterSwitch.getValue();
+		formData.facebook = facebookSwitch.getValue();
+		formData.email = email.getValue();
+		formData.mobile = mobile.getValue();
+		formData.signMessage = signMessagesSwitch.getValue();
+		
+		if( isOwner ) {
+			data.twitter = !isEmpty(currentDetails.PrimaryUser.TwitterToken);
+			data.facebook = !isEmpty(currentDetails.PrimaryUser.FaceBook);
+			data.email = currentDetails.PrimaryUser.Email;
+			data.mobile = currentDetails.PrimaryUser.Mobile;
+			data.signMessage = currentDetails.PrimaryUser.AddNicknameToUtms;
+			data.prefix = currentDetails.myHort.Prefix;
+			data.postfix = currentDetails.myHort.Postfix;
+			
+			formData.prefix = keyWordPre.value;
+			formData.postfix = keyWordPost.value;
+		}	
+		else {
+			data.twitter = !isEmpty(currentDetails.MyInformation.TwitterToken);
+			data.facebook = !isEmpty(currentDetails.MyInformation.FaceBook);
+			data.email = currentDetails.MyInformation.Email;
+			data.mobile = currentDetails.MyInformation.Mobile;
+			data.signMessage = currentDetails.MyInformation.AddNicknameToUtms;
+			
+		}
+		
+		if (JSON.stringify(data) !== JSON.stringify(formData)) { isDirty = true; }
+		
+		saveButton.enabled = isDirty;
 		
 		return isDirty;
 		
@@ -526,8 +535,7 @@ if(isOwner){
 
 	var saveButton = Ti.UI.createButton({
 		title : 'Save',
-		top : 3,
-		enabled : false
+		top : 3
 	});
 	saveButton.addEventListener('click', function() {
 		if(checkAtLeastOneTypeOfMessageSet()){
@@ -724,7 +732,7 @@ if(isOwner){
 		validatesSecureCertificate : utm.validatesSecureCertificate,
 		onload : function() {
 			
-			saveButton.enabled = true;
+			//saveButton.enabled = true;
 			utm.setActivityIndicator('');
 
 			var json = this.responseData;
@@ -752,7 +760,7 @@ if(isOwner){
 			} else {
 				utm.handleError(e, this.status, this.responseText);
 			}
-			saveButton.enabled = true;
+			//saveButton.enabled = true;
 			utm.setActivityIndicator('');
 		},
 		timeout : utm.netTimeout

@@ -1,9 +1,9 @@
 function passwordMeter() {
      // settings
 	var password_settings = {
-		minLength: 8,
+		minLength: 6,
 		maxLength: 25,
-		specialLength: 1,
+		specialLength: 0,
 		upperLength: 1,
 		numberLength: 1,
 		barWidth: 200,
@@ -16,23 +16,23 @@ function passwordMeter() {
 	}; 
 	
 	var meterMessageBox = Ti.UI.createView({
-        backgroundColor:'white',
-        height:0
+        backgroundColor: 'white',
+        height: 0
     });
     
     var valMessage = Ti.UI.createLabel({
     		font : {
-			fontSize : '11dp',
-			color:'black'
-		},height:0,
+			fontSize : '15dp',
+			color: 'black'
+		},height: 0,
 		color:'black',
-		left:5,
-		right:5
+		left: 5,
+		right: 5
     });
     meterMessageBox.add(valMessage);
 
 	//Public Function to call and trigger PW Meter Check Display
-    meterMessageBox.checkPW=function(passwordVal){
+    meterMessageBox.checkPW = function(passwordVal){
 
 		password_settings.metRequirement = false;
 		

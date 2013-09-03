@@ -3,9 +3,9 @@ function signUp_window(utm) {
 	var InputField = require('ui/common/baseui/InputField');
 	var CheckBoxField = require('ui/common/baseui/CheckBox');
 	var Header = require('ui/common/Header');
-	var PasswordMeter =require("/lib/PasswordStrengthMeter");
+	var PasswordMeter = require("/lib/PasswordStrengthMeter");
 	var isFormValid = false;
-	var isUserNameValid=false;
+	var isUserNameValid = false;
 	
 	var win = new Header(utm,'Sign Up', 'Cancel');
 
@@ -17,10 +17,10 @@ function signUp_window(utm) {
 	win.add(scrollingView);
 
 	var view = Ti.UI.createView({
-		top:10,
-		height : 600,
+		top: 10,
+		height: 600,
 		width:utm.SCREEN_WIDTH,
-		layout : 'vertical'
+		layout: 'vertical'
 	});
 
 	scrollingView.add(view);
@@ -41,25 +41,25 @@ function signUp_window(utm) {
 	view.add(pwMeter);
 	
 	var spacerView = Ti.UI.createView({
-		height:5
+		height: 5
 	});
 	view.add(spacerView);
 	//-----------------Confirm  ----------------------
 	var confirm = new InputField(utm,'Confirm Password', '40%', '', '50%', Ti.UI.KEYBOARD_DEFAULT,'',true, 'password');
-	confirm.left=5;
+	confirm.left = 5;
 	view.add(confirm);
 	if (Ti.Platform.model === 'Simulator'  || Ti.Platform.model ===  'google_sdk') { 
-		confirm.setValue('Testtest1!');
+		//confirm.setValue('Testtest1!');
 	}
 
 	//----------Email--------------------
 	var email = new InputField(utm,'Email', '40%', '', '50%', Ti.UI.KEYBOARD_EMAIL,'',true);
-	email.left=5;
+	email.left = 5;
 	view.add(email);
 
 	//----------Mobile # --------------------
 	var mobile = new InputField(utm,'Mobile Number', '40%', '', '50%', Ti.UI.KEYBOARD_DECIMAL_PAD,'',false,'',12);
-	mobile.left=5;
+	mobile.left = 5;
 	view.add(mobile);
 	//todo - handle international numbers some day....
 	
@@ -105,18 +105,30 @@ function signUp_window(utm) {
 	});
 	view.add(saveButton);
 	
+	view.addEventListener('click', function(e) { 
+		var element = e.source.toString();	
+		
+		if ( element == "[object TiUIView]" || element == "[object TiUILabel]" ) {
+			if(userName.hasFocus()) { userName.setFocus(false); }
+			if(password.hasFocus()) { password.setFocus(false); }
+			if(confirm.hasFocus()) { confirm.setFocus(false); }
+			if(email.hasFocus()) { email.setFocus(false); }
+			if(mobile.hasFocus()) { mobile.setFocus(false); }
+		}	
+	});
 	
+		
 	function register() {
 		saveButton.enabled = false;
 		utm.setActivityIndicator('Signup in progress...');
 		utm.curReg={};
-		utm.curReg.UserName=userName.getValue();
-		utm.curReg.Password=password.getValue();
-		utm.curReg.ConfirmPassword=confirm.getValue();
+		utm.curReg.UserName = userName.getValue();
+		utm.curReg.Password = password.getValue();
+		utm.curReg.ConfirmPassword = confirm.getValue();
 		utm.curReg.Email = email.getValue();
-		utm.curReg.Mobile = mobile.getValue()=="" ? null:mobile.getValue();
+		utm.curReg.Mobile = mobile.getValue() == "" ? null : mobile.getValue();
 		utm.curReg.AcceptTerms = true;
-		utm.curReg.RegistrationMethod=utm.Android?'android':'ios';
+		utm.curReg.RegistrationMethod= utm.Android ? 'android' : 'ios';
 		
 		utm.setActivityIndicator('Sign Up in Progress...');
 		getSignUpReq.open("POST", utm.serviceUrl + "Account/Create?returnUrl=/Account/Verify");
@@ -245,11 +257,11 @@ function signUp_window(utm) {
 			
 			if(response){
 				userName.setMessage('This user name is aready used');
-				saveButton.enabled=false;
-				isUserNameValid=false;
+				saveButton.enabled = false;
+				isUserNameValid = false;
 			}else{
 				userName.setMessage('');
-				isUserNameValid=true;
+				isUserNameValid = true;
 				validateForm();
 			}
 			
@@ -264,8 +276,7 @@ function signUp_window(utm) {
 		},
 		timeout : utm.netTimeout
 	});
-	
-	
+		
 	function validateForm(){
 		
 		if( isUserNameValid
@@ -275,12 +286,13 @@ function signUp_window(utm) {
 		 	&& rouCB.isChecked()
 		){
 			//Form is valid
-			saveButton.enabled=true;	
-			isFormValid=true;
-		}else{
+			saveButton.enabled = true;	
+			isFormValid = true;
+		}
+		else {
 			//Form is INValid
-			saveButton.enabled=false;	
-			isFormValid=false;
+			saveButton.enabled = false;	
+			isFormValid = false;
 		}		
 		// hard to deal with this one checkExistingUserName		
 		
@@ -297,7 +309,7 @@ function signUp_window(utm) {
 		if(_password!= _confirmPassword){
 			confirm.setMessage('Passwords do not match');			
 			return false;
-		}else{
+		} else {
 			confirm.setMessage('');			
 			return true;
 		}
@@ -322,13 +334,10 @@ function signUp_window(utm) {
 		}
 	}
 	
-
 	rouLabel.addEventListener('click', function(e) {
-	    Ti.Platform.openURL(utm.webUrl +'/Home/RulesOfUse');
+	    Ti.Platform.openURL(utm.webUrl + '/Home/RulesOfUse');
 	});
 		
-
-
 	return win;
 };
 
