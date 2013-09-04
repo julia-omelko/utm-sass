@@ -403,7 +403,8 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 			utm.facebookToken = Facebook.getAccessToken();
 		} else if (e.error) {
 			utm.facebookToken == '';
-			alert(e.error);
+			//alert(e.error);
+			utm.log(e.error);
 		} else if (e.cancelled) {
 			// alert("Canceled");
 		}
