@@ -260,7 +260,6 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		saveButton.enabled = isDirty;
 		
 		return isDirty;
-		
 	}
 	
 	function isEmpty(value){
@@ -535,7 +534,8 @@ if(isOwner){
 
 	var saveButton = Ti.UI.createButton({
 		title : 'Save',
-		top : 3
+		top : 3,
+		enabled: false
 	});
 	saveButton.addEventListener('click', function() {
 		if(checkAtLeastOneTypeOfMessageSet()){
