@@ -240,9 +240,9 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 			data.email = currentDetails.PrimaryUser.Email;
 			data.mobile = currentDetails.PrimaryUser.Mobile;
 			data.signMessage = currentDetails.PrimaryUser.AddNicknameToUtms;
-			data.prefix = currentDetails.myHort.Prefix;
-			data.postfix = currentDetails.myHort.Postfix;
-			
+			(currentDetails.myHort.Prefix == null) ? data.prefix = "" : data.prefix = currentDetails.myHort.Prefix;
+			(currentDetails.myHort.Postfix == null) ? data.postfix = "" : data.postfix = currentDetails.myHort.Postfix;
+
 			formData.prefix = keyWordPre.value;
 			formData.postfix = keyWordPost.value;
 		}	
