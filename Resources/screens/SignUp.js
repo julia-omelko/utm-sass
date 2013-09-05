@@ -203,21 +203,21 @@ function signUp_window(utm) {
 			if (this.status == 200) {
 				
 				if(this.responseData){
-					
-					var error = eval('(' + this.responseData + ')');
-					
-					if(error.Status ==='Error'){
+										
+					if(response.Status ==='Error'){
 						saveButton.enabled = true;
-						if(error.Message ==="DuplicateEmail"){
+						if(response.Message ==="DuplicateEmail"){
 							alert('This email is aready registered.');
 						}else{
-							alert(error.Message);	
+							alert(response.Message);	
 						}
 					}else{
 						//Success
 						saveButton.enabled = false;
 						alert('Thank you for registering. Please check your email for a confirmation request with a link that will confirm your account. Once you click the link, your registration will be complete.'); 
-						utm.navController.close(utm.signupView);			
+						if(utm.iPhone || utm.iPad ){
+							utm.navController.close(utm.signupView);
+						}			
 					}
 							
 				}
@@ -366,7 +366,7 @@ function signUp_window(utm) {
 		
 		if( ! confirmHaschanged) {
 			confirm.setMessage('');			
-			return false; //form is not valid
+			return false;
 		}
 		
 		if(_password!= _confirmPassword){
