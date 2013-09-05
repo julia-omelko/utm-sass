@@ -6,6 +6,7 @@ function signUp_window(utm) {
 	var PasswordMeter = require("/lib/PasswordStrengthMeter");
 	var isFormValid = false;
 	var isUserNameValid = false;
+	var confirmHaschanged=false;
 	
 	var win = new Header(utm,'Sign Up', 'Cancel');
 
@@ -34,7 +35,7 @@ function signUp_window(utm) {
 	var password = new InputField(utm,'Password', '40%', '', '50%', Ti.UI.KEYBOARD_DEFAULT,'',true,'password');
 	view.add(password);
 	if (Ti.Platform.model === 'Simulator'  || Ti.Platform.model ===  'google_sdk') { 
-		password.setValue('Testtest1!');
+		//password.setValue('Testtest1!');
 	}
 
 	var pwMeter = new PasswordMeter();
@@ -58,10 +59,64 @@ function signUp_window(utm) {
 	view.add(email);
 
 	//----------Mobile # --------------------
-	var mobile = new InputField(utm,'Mobile Number', '40%', '', '50%', Ti.UI.KEYBOARD_DECIMAL_PAD,'',false,'',12);
+	/*var mobile = new InputField(utm,'Mobile Number', '40%', '', '50%', Ti.UI.KEYBOARD_DECIMAL_PAD,Ti.UI.RETURNKEY_NEXT,false,'',12);
 	mobile.left = 5;
 	view.add(mobile);
 	//todo - handle international numbers some day....
+	*/
+	
+	var mobileView = Ti.UI.createView({
+		layout:'vertical',
+		height:'50dp',
+		left:5	
+	});
+	
+	var mobileHView = Ti.UI.createView({
+		height:'50dp',
+		layout:'horizontal'
+	});
+	mobileView.add(mobileHView);	
+	
+	var mobileLbl = Ti.UI.createLabel({
+		text: 'Mobile Number'	
+		,top:16
+		,left:'8dp'	
+		,font:{fontWeight:'bold',fontSize:'14dp'}
+		,width:'40%'
+		,color : '#000'
+	});
+	mobileHView.add(mobileLbl);
+	
+	var flexSpace = Titanium.UI.createButton({
+	    systemButton : Titanium.UI.iPhone.SystemButton.FLEXIBLE_SPACE
+	});
+
+	var btnDone = Titanium.UI.createButton({    
+	    title : 'Done',
+	    width : 67,
+	    height : 32
+	});
+	btnDone.addEventListener('click',function(e){
+	    mobile.blur();
+	});
+	
+	var mobile = Ti.UI.createTextField({
+		color:utm.textFieldColor,	
+		width:'50%',
+		height:'40dp',    
+		autocorrect: false,
+		keyboardType:  Ti.UI.KEYBOARD_DECIMAL_PAD,
+		returnKeyType:Ti.UI.RETURNKEY_DEFAULT,
+		borderStyle:Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
+		enableReturnKey: true,
+		borderRadius :5,
+		_hasFocus: false,
+		maxLength:12,
+		keyboardToolbar : [flexSpace,btnDone]
+	});
+	mobileHView.add(mobile);
+	view.add(mobileView);
+	
 	
 	//----------Accept ROU --------------------
 	var rouBox = Ti.UI.createView({
@@ -113,7 +168,8 @@ function signUp_window(utm) {
 			if(password.hasFocus()) { password.setFocus(false); }
 			if(confirm.hasFocus()) { confirm.setFocus(false); }
 			if(email.hasFocus()) { email.setFocus(false); }
-			if(mobile.hasFocus()) { mobile.setFocus(false); }
+		//	if(mobile.hasFocus()) { mobile.setFocus(false); }
+			mobile.blur();
 		}	
 	});
 	
@@ -126,7 +182,7 @@ function signUp_window(utm) {
 		utm.curReg.Password = password.getValue();
 		utm.curReg.ConfirmPassword = confirm.getValue();
 		utm.curReg.Email = email.getValue();
-		utm.curReg.Mobile = mobile.getValue() == "" ? null : mobile.getValue();
+		utm.curReg.Mobile = mobile.value == "" ? null : mobile.mobile;
 		utm.curReg.AcceptTerms = true;
 		utm.curReg.RegistrationMethod= utm.Android ? 'android' : 'ios';
 		
@@ -212,15 +268,16 @@ function signUp_window(utm) {
 		validateForm();
 	});
 	
-	confirm.addEventListenerEvent('change', function checkForm(){		
+	confirm.addEventListenerEvent('change', function checkForm(){	
+		confirmHaschanged=true;	
 		validateForm();
 	});
 	
-	mobile.addEventListenerEvent('blur', function checkForm(){		
+	mobile.addEventListener('blur', function checkForm(){		
 		validateForm();
 	});
 	
-	mobile.addEventListenerEvent('change', function checkForm(e){		
+	mobile.addEventListener('change', function checkForm(e){		
 		/*
 		 var mobileVal = mobile.getValue();
 		 var charv = mobileVal.charAt(mobileVal.length);
@@ -282,7 +339,7 @@ function signUp_window(utm) {
 		if( isUserNameValid
 			&& checkConfirmPassword(password.getValue(),confirm.getValue())
 		 	&& isValidEmail(email.getValue())
-		 	&& isValidPhone(mobile.getValue())
+		 	&& isValidPhone(mobile.value)
 		 	&& rouCB.isChecked()
 		){
 			//Form is valid
@@ -306,6 +363,12 @@ function signUp_window(utm) {
 	}
 	
 	function checkConfirmPassword(_password, _confirmPassword){
+		
+		if( ! confirmHaschanged) {
+			confirm.setMessage('');			
+			return false; //form is not valid
+		}
+		
 		if(_password!= _confirmPassword){
 			confirm.setMessage('Passwords do not match');			
 			return false;
