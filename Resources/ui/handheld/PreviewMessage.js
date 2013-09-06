@@ -100,6 +100,7 @@ var PreviewMessage_window = function(utm) {
 			fontWeight : 'bold'
 		},
 		width : utm.SCREEN_WIDTH - 10,
+		left:5,
 		top : 2,
 		color : '#000',
 		textAlign : 'left'
@@ -301,7 +302,8 @@ var PreviewMessage_window = function(utm) {
 	var deleteView = Ti.UI.createView({
 		layout : 'horizontal',
 		height : Ti.UI.SIZE,
-		width : utm.SCREEN_WIDTH 
+		width : utm.SCREEN_WIDTH ,
+	    left : 8
 	});
 	scrollView.add(deleteView);
 	
@@ -313,7 +315,6 @@ var PreviewMessage_window = function(utm) {
 		},
 		color : '#000',
 		top : 4,
-		left:8,
 		textAlign : 'left'
 	});
 	deleteView.add(deleteOnReadLabel);

@@ -67,10 +67,10 @@ var WriteMessage_window =function(utm) {
 	scrollableView.add(yourMessageLabel);
 	
 	var textArea = Ti.UI.createTextArea({
-	  borderWidth: 2,
+	  borderWidth: 2, 
 	  borderColor: '#bbb',
 	  borderRadius: 5,
-	  color:utm.textFieldColor,
+	  color:  utm.iPad ? 'black' :  utm.textFieldColor,
 	  font: {fontSize:'16dp'},
 	  hintText:L('send_start_your_message_here'),
 	  suppressReturn:false,
