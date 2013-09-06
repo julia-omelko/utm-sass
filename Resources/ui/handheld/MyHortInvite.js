@@ -3,63 +3,24 @@ function inviteMyHortWindow(myHortInfo, utm) {
 	var needsAuth = false;
 	var supportsAuthAPI = (Ti.version >= '2.1.3');
 	var primaryMemberNickName = '';
-
-	function init() {
-		var primaryMember = getPrimaryMember(myHortInfo.Members);
-		primaryMemberNickName = primaryMember.NickName;
-	}
-
-	init();
+	var primaryMember = getPrimaryMember(myHortInfo.Members);
+	var primaryMemberNickName = primaryMember.NickName;
 
 	if (Titanium.Platform.name == 'iPhone OS') {
 		needsAuth = isiOS6Plus();
 	}
 	
-	if(utm.iPhone || utm.iPad ){	
-
-		var myHortInviteWindow = Ti.UI.createWindow({
-			backgroundColor:utm.backgroundColor
-			,barColor:utm.barColor,
-			layout : 'vertical',
-			backButtonTitle:'MyHort Info'
-		});
-
-	}else	if(utm.Android){
-		
-		//create the base screen and hid the Android navbar
-		var myHortInviteWindow = Titanium.UI.createWindow({
-		    layout : 'vertical',
-		 	backgroundColor : utm.backgroundColor,
-		    navBarHidden:true
-		});
-		
-		//create a navbar for Android
-		var my_navbar = Ti.UI.createLabel({
-		    height : 50,
-		    width : '100%',
-		    backgroundColor : utm.androidBarColor,
-		    color : utm.backgroundColor,
-		    text:'',
-		    top:0
-		});
- 
- 		//add the navbar to the screen
-		myHortInviteWindow.add(my_navbar);
-	}
+	var Header = require('ui/common/Header');
+	var myHortInviteWindow = new Header(utm,'', 'MyHort Info');
 	
-	
-	var scrollingView = Ti.UI.createScrollView({
+	var view = Ti.UI.createScrollView({
 		showVerticalScrollIndicator : true,
-		showHorizontalScrollIndicator : false
+		showHorizontalScrollIndicator : false,
+		contentWidth:'100%',
+		contentHeight:'auto',
+		layout:'vertical'
 	});
-	myHortInviteWindow.add(scrollingView);
-
-	var view = Ti.UI.createView({
-		height :1500,
-		layout : 'vertical'
-	});
-
-	scrollingView.add(view);
+	myHortInviteWindow.add(view);
 
 	var titleLbl = Ti.UI.createLabel({
 		text : 'Invite users to ' + myHortInfo.FriendlyName + ' Group',
@@ -258,6 +219,21 @@ function inviteMyHortWindow(myHortInfo, utm) {
 		}
 		
 		utm.setActivityIndicator('Inviting New MyHort Members...');
+		
+		var inviteMyHortReq = Ti.Network.createHTTPClient({
+			validatesSecureCertificate : utm.validatesSecureCertificate,
+			onload : function() {
+				utm.setActivityIndicator('');
+				utm.navController.close(myHortInviteWindow);
+				inviteMyHortReq=null;
+			},
+			onerror : function(e) {
+				inviteButton.enabled=true;
+				utm.handleError(e, this.status, this.responseText);
+				inviteMyHortReq=null;
+			}
+		});
+		
 		inviteMyHortReq.open("POST", utm.serviceUrl + "MyHort/Invite");
 		inviteMyHortReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");
 		inviteMyHortReq.setRequestHeader('Authorization-Token', utm.AuthToken);
@@ -308,18 +284,6 @@ function inviteMyHortWindow(myHortInfo, utm) {
 			}
 		}
 	}
-
-	var inviteMyHortReq = Ti.Network.createHTTPClient({
-		validatesSecureCertificate : utm.validatesSecureCertificate,
-		onload : function() {
-			utm.setActivityIndicator('');
-			utm.navController.close(myHortInviteWindow);
-		},
-		onerror : function(e) {
-			inviteButton.enabled=true;
-			utm.handleError(e, this.status, this.responseText);
-		}
-	});
 
 	var requestPermission = function(e) {
 		var privs = Ti.Contacts.contactsAuthorization;
