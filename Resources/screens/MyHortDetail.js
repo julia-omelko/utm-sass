@@ -32,19 +32,14 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 			title:  _myHortData.FriendlyName
 		});
 
-		var scrollingView = Ti.UI.createScrollView({
+		var view = Ti.UI.createScrollView({
 			showVerticalScrollIndicator : true,
 			showHorizontalScrollIndicator : false,
-			 left:-5 
+			contentWidth:'100%',
+			contentHeight:'auto',
+			layout:'vertical'
 		});
-		win.add(scrollingView);
-
-		var view = Ti.UI.createView({
-			height : utm.SCREEN_HEIGHT * 1.25,
-			layout : 'vertical'
-		});
-
-		scrollingView.add(view);
+		win.add(view);
 
 		if (isOwner) {
 			var buttons = [{
