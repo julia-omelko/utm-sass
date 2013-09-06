@@ -14,8 +14,8 @@ function CameraView(_win) {
 		//height:CameraView.height*0.3,
 		height:36,
 		width:Ti.Platform.displayCaps.platformWidth-50,
-	//	borderColor:'black',
-	//	borderWidth:1,
+		borderColor:'black',
+		borderWidth:0,
 		backgroundColor:'#fff',
 		borderRadius: 5
 	});
@@ -69,7 +69,7 @@ function CameraView(_win) {
 						resizeWidth = Math.round(event.media.width/resizeRatio);
 						resizeHeight = Math.round(event.media.height/resizeRatio);
 						
-						resizedImage = resizedImage.imageAsResized(event.media.width/3,event.media.height/3);
+						//resizedImage = resizedImage.imageAsResized(event.media.width/3,event.media.height/3);
 						
 						displayRatio = (Math.max(event.media.width/imageBorder.getWidth(),event.media.height/imageBorder.getHeight()));
 						thumbWidth = Math.round(event.media.width/displayRatio);
@@ -99,7 +99,27 @@ function CameraView(_win) {
 				Ti.Media.openPhotoGallery({
 					
 					success:function(event) {
-						resizedImage = event.media.imageAsResized(event.media.width/3,event.media.height/3);
+						resizedImage = event.media;
+						
+						resizeRatio = (Math.max(event.media.width/3,event.media.height/3));
+						resizeWidth = Math.round(event.media.width/resizeRatio);
+						resizeHeight = Math.round(event.media.height/resizeRatio);
+						
+						displayRatio = (Math.max(event.media.width/imageBorder.getWidth(),event.media.height/imageBorder.getHeight()));
+						thumbWidth = Math.round(event.media.width/displayRatio);
+						thumbHeight = Math.round(event.media.height/displayRatio);
+						
+						
+						imageContainer.setVisible(false);
+						imageContainer.setWidth(thumbWidth);
+						imageContainer.setLeft((imageBorder.getWidth()-thumbWidth)/2);
+						imageContainer.setHeight(thumbHeight);
+						imageContainer.setTop((imageBorder.getHeight()-thumbHeight)/2);
+						imageContainer.setImage(event.media);
+						imageContainer.setVisible(true);
+						
+						
+						/*resizedImage = event.media.imageAsResized(event.media.width/3,event.media.height/3);
 				
 						displayRatio = (Math.max(event.media.width/imageBorder.getWidth(),event.media.height/imageBorder.getHeight()));
 						thumbWidth = Math.round(event.media.width/displayRatio);
@@ -111,7 +131,7 @@ function CameraView(_win) {
 						imageContainer.setHeight(thumbHeight);
 						imageContainer.setTop((imageBorder.getHeight()-thumbHeight)/2);
 						imageContainer.setImage(event.media.imageAsResized(thumbWidth,thumbHeight));
-						imageContainer.setVisible(true);
+						imageContainer.setVisible(true);*/
 					},
 		        	cancel:function(){
 						return;

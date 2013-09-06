@@ -80,7 +80,18 @@ var PreviewMessage_window = function(utm) {
 	cameraButton.addEventListener('click', function(){
 		camera.captureImage();		
 	});	
-
+	
+	var scrollView = Ti.UI.createScrollView({
+	  contentWidth: '100%',
+	  contentHeight: 'auto',
+	  showVerticalScrollIndicator: true,
+	  showHorizontalScrollIndicator: false,
+	  height: Ti.UI.FILL,
+	  width: '100%',
+	  layout:'vertical'
+	});
+	win.add(scrollView);
+	
 	//---------------Original Message --------------------
 	var yourOrgMessageLabel = Ti.UI.createLabel({
 		text : L('send_your_original_message') + ':',
@@ -93,7 +104,7 @@ var PreviewMessage_window = function(utm) {
 		color : '#000',
 		textAlign : 'left'
 	});
-	win.add(yourOrgMessageLabel);
+	scrollView.add(yourOrgMessageLabel);
 
 	var yourOrgMessageValue = Ti.UI.createTextArea({
 		value : '',
@@ -106,7 +117,7 @@ var PreviewMessage_window = function(utm) {
 		height : '16%', //utm.SCREEN_HEIGHT-(utm.SCREEN_HEIGHT/1.2)
 		textAlign : 'left'
 	});
-	win.add(yourOrgMessageValue);
+	scrollView.add(yourOrgMessageValue);
 
 	//------------ Preview of Encrypted (NOW HIDDEN)---------------------------
 	var encryptedLabel = Ti.UI.createLabel({
@@ -143,7 +154,7 @@ var PreviewMessage_window = function(utm) {
 		height : '35dp',
 		visible : true
 	});
-	win.add(utmMessageGroup);
+	scrollView.add(utmMessageGroup);
 	
 	var utmMessageLabel = Ti.UI.createLabel({
 		text : L('send_utm_message') + ':',
@@ -208,7 +219,7 @@ var PreviewMessage_window = function(utm) {
 		height : '18%',  //utm.SCREEN_HEIGHT-(utm.SCREEN_HEIGHT/1.2)
 	});
 	//todo get the screen width so we can make this wider if possible
-	win.add(customUtmMessage);
+	scrollView.add(customUtmMessage);
 
 	//customUtmMessage.addEventListener('click', function() {//fold up to give more room to edit
 	//	expandCustomUtmMessageEdit(true);
@@ -237,7 +248,7 @@ var PreviewMessage_window = function(utm) {
 		height : '50dp',
 		width : '200dp'
 	});
-	win.add(hView);
+	scrollView.add(hView);
 
 	var CheckButton = require('ui/common/checkButton');
 	var smsButton = new CheckButton('sms');
@@ -266,7 +277,7 @@ var PreviewMessage_window = function(utm) {
 		height : '50dp',
 		visible : true
 	});
-	win.add(signMessagesGroup);
+	scrollView.add(signMessagesGroup);
 
 	var signMessagesLabel = Ti.UI.createLabel({
 		text : 'Sign Message',
@@ -292,7 +303,7 @@ var PreviewMessage_window = function(utm) {
 		height : Ti.UI.SIZE,
 		width : utm.SCREEN_WIDTH 
 	});
-	win.add(deleteView);
+	scrollView.add(deleteView);
 	
 	var deleteOnReadLabel = Ti.UI.createLabel({
 		text : (L('send_delete_on_read') + " "),
@@ -327,7 +338,7 @@ var PreviewMessage_window = function(utm) {
 		left:5,
 		textAlign : 'left'
 	});
-	win.add(smsNoteLabel);
+	scrollView.add(smsNoteLabel);
 	
 	//------------- Send Button ------------------
 	var sendButton = Ti.UI.createButton({
@@ -338,7 +349,7 @@ var PreviewMessage_window = function(utm) {
 		},
 		top : 6
 	});
-	win.add(sendButton);
+	scrollView.add(sendButton);
 	
 	/*
 	var scrollingView = Ti.UI.createScrollView({
@@ -356,7 +367,7 @@ var PreviewMessage_window = function(utm) {
 */
 
 
-	win.add(camera);
+	scrollView.add(camera);
 
 	sendButton.addEventListener('click', function() {
 		var messageType = getMessageSendTypes();
@@ -413,22 +424,24 @@ var PreviewMessage_window = function(utm) {
 			
 			Ti.API.info(orientation);
 						
-			var resizeView = Titanium.UI.createImageView({
+			/*var resizeView = Titanium.UI.createImageView({
             	image: theImage,
             	width: orientation === 'portrait' ? 640 : 960,
             	height: orientation === 'portrait' ? 960 : 640
         	});
 			
-			theImage = resizeView.toImage();
+			theImage = resizeView.toImage();*/
 			
 			Ti.API.info("NewImage: " + theImage.width + "x" + theImage.height);
 			
+			//alert(theImage);
+			
 			var sendImageSrc = Ti.Utils.base64encode(theImage);
+			//attachments = [{ Attachment: theImage,MimeType:theImage.mimeType,WasVirusScanned:true  }];
 			attachments = [{ Attachment: sendImageSrc.toString(),MimeType:theImage.mimeType,WasVirusScanned:true  }];
 		}else{
 			attachments=null;
 		}
-		
 		
 		if (replyMode) {
 			//Reply to a message
@@ -474,7 +487,101 @@ var PreviewMessage_window = function(utm) {
 
 		utm.log(JSON.stringify(params));
 		utm.setActivityIndicator('Sending ...');
+		
+		sendMessage(params);
+		
+		
+		//sendMessageReq.open("POST", utm.serviceUrl + "SendMessage");
+		//sendMessageReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+		//sendMessageReq.setRequestHeader('Authorization-Token', utm.AuthToken);
+		//sendMessageReq.timeout = attachments != null ? 20000 : utm.netTimeout;
+		//sendMessageReq.send(JSON.stringify(params));
+		//NOTE: Had to add stringify here else Ti will escape the Array [] and no messages go out.
+		
+		Titanium.Analytics.featureEvent('user.sent_message');
+		
+		if(attachments !=null){
+			afterMessageSent();
+			resetScreen();
+			utm.setActivityIndicator('');
+		}
+		
+	}
+	
+	function afterMessageSent(){
+		if(replyMode){
+			Ti.App.fireEvent("app:showMessagesAfterReply");
+		}else{
+			Ti.App.fireEvent("app:showMessagesAfterSend");
+		}		
+	}
+	
 
+	var getMessagesPreviewReq = Ti.Network.createHTTPClient({
+		validatesSecureCertificate : utm.validatesSecureCertificate,
+		onload : function() {
+			var response = eval('(' + this.responseText + ')');
+			utm.setActivityIndicator('');
+			sendButton.enabled = true;
+			regenUtm.enabled=true;
+			utm.log('PreviewMessages Service Returned');
+			if (this.status == 200) {
+				
+				if(signMessagesSwitchWasOnButTurnedff !=='none'){
+					if(signMessagesSwitchWasOnButTurnedff){
+						//Strip off Signature now
+						response.UtmText= response.UtmText.replace('\n\r-'+utm.curUserCurMyHortNickName, "");
+					}else{
+						response.UtmText = response.UtmText+ '\n\r-'+utm.curUserCurMyHortNickName;
+					}
+				}
+				
+				if (endsWith(response.UtmText , '\n\r-'+utm.curUserCurMyHortNickName)){
+					signMessagesSwitch.value=true;
+				}else{
+					signMessagesSwitch.value=false;
+				}
+				
+				if(!signMessagesSwitchEventListnerAdded){
+					signMessagesSwitch.addEventListener('change', function(){
+						//Handle the turn on an off of signature
+						if(signMessagesSwitch.value){
+							signMessagesSwitchWasOnButTurnedff=false;
+							if(! endsWith(customUtmMessage.value , '\n\r-'+ utm.curUserCurMyHortNickName)){
+								//Turned on and not found so Add Signature of nickname
+								customUtmMessage.value = customUtmMessage.value+ '\n\r-'+utm.curUserCurMyHortNickName;
+							}
+						}else{
+							signMessagesSwitchWasOnButTurnedff=true;
+							if(endsWith(customUtmMessage.value , '\n\r-'+utm.curUserCurMyHortNickName)){
+								//Turned off so remove signature
+								customUtmMessage.value = customUtmMessage.value.replace('\n\r-'+utm.curUserCurMyHortNickName, "");
+							}
+						}
+						
+					});
+					signMessagesSwitchEventListnerAdded=true;
+				}
+				
+				customUtmMessage.value = response.UtmText;
+				yourOrgMessageValue.value = response.PlainText;
+				curRjCrypt = response.RjCrypt;
+				encryptedValue.value = curRjCrypt;
+			} else {
+				utm.recordError(response.Message + ' ExceptionMessag:' + response.ExceptionMessage);
+			}
+
+		},
+		onerror : function(e) {
+			utm.setActivityIndicator('');
+			sendButton.enabled = true;
+			regenUtm.enabled=true;
+			utm.handleError(e, this.status, this.responseText);
+		},
+		timeout : utm.netTimeout
+	});
+	
+	function sendMessage(params) {
 		var sendMessageReq = Ti.Network.createHTTPClient({
 			validatesSecureCertificate : utm.validatesSecureCertificate,
 			onload : function() {
@@ -514,46 +621,23 @@ var PreviewMessage_window = function(utm) {
 					sendButton.enabled = true;
 					alert('An error occured while sending your message - one of the message services is down or not available.  Please try again.');
 				}
-				sendMessageReq=null;
+				sendMessageReq = null;
+	
 			},
 			onerror : function(e) {
 				utm.setActivityIndicator('');
 				sendButton.enabled = true;
 				utm.handleError(e, this.status, this.responseText);
-				sendMessageReq=null
+				sendMessageReq = null;
 			},
 			timeout : 10000 //seams like send can take longer so override this timeout.
 		});
-		
-		
 		sendMessageReq.open("POST", utm.serviceUrl + "SendMessage");
 		sendMessageReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");
 		sendMessageReq.setRequestHeader('Authorization-Token', utm.AuthToken);
-		sendMessageReq.timeout = attachments != null ? 20000 : utm.netTimeout;
+		sendMessageReq.timeout = params.attachments != null ? 20000 : utm.netTimeout;
 		sendMessageReq.send(JSON.stringify(params));
-		//NOTE: Had to add stringify here else Ti will escape the Array [] and no messages go out.
-		Titanium.Analytics.featureEvent('user.sent_message');
-		
-		if(attachments !=null){
-			afterMessageSent();
-			resetScreen();
-			utm.setActivityIndicator('');
-		}
-		
-	}
-	
-	function afterMessageSent(){
-		if(replyMode){
-			Ti.App.fireEvent("app:showMessagesAfterReply");
-		}else{
-			Ti.App.fireEvent("app:showMessagesAfterSend");
-		}		
-	}
-	
-
-	
-
-	
+	};
 
 	Ti.App.addEventListener('app:getMessagePreview', getMessagePreview);
 	function getMessagePreview(msg) {
@@ -569,73 +653,6 @@ var PreviewMessage_window = function(utm) {
 				PlainText : msg.messageText
 			};
 		}
-		
-		var getMessagesPreviewReq = Ti.Network.createHTTPClient({
-			validatesSecureCertificate : utm.validatesSecureCertificate,
-			onload : function() {
-				var response = eval('(' + this.responseText + ')');
-				utm.setActivityIndicator('');
-				sendButton.enabled = true;
-				regenUtm.enabled=true;
-				utm.log('PreviewMessages Service Returned');
-				if (this.status == 200) {
-					
-					if(signMessagesSwitchWasOnButTurnedff !=='none'){
-						if(signMessagesSwitchWasOnButTurnedff){
-							//Strip off Signature now
-							response.UtmText= response.UtmText.replace('\n\r-'+utm.curUserCurMyHortNickName, "");
-						}else{
-							response.UtmText = response.UtmText+ '\n\r-'+utm.curUserCurMyHortNickName;
-						}
-					}
-					
-					if (endsWith(response.UtmText , '\n\r-'+utm.curUserCurMyHortNickName)){
-						signMessagesSwitch.value=true;
-					}else{
-						signMessagesSwitch.value=false;
-					}
-					
-					if(!signMessagesSwitchEventListnerAdded){
-						signMessagesSwitch.addEventListener('change', function(){
-							//Handle the turn on an off of signature
-							if(signMessagesSwitch.value){
-								signMessagesSwitchWasOnButTurnedff=false;
-								if(! endsWith(customUtmMessage.value , '\n\r-'+ utm.curUserCurMyHortNickName)){
-									//Turned on and not found so Add Signature of nickname
-									customUtmMessage.value = customUtmMessage.value+ '\n\r-'+utm.curUserCurMyHortNickName;
-								}
-							}else{
-								signMessagesSwitchWasOnButTurnedff=true;
-								if(endsWith(customUtmMessage.value , '\n\r-'+utm.curUserCurMyHortNickName)){
-									//Turned off so remove signature
-									customUtmMessage.value = customUtmMessage.value.replace('\n\r-'+utm.curUserCurMyHortNickName, "");
-								}
-							}
-							
-						});
-						signMessagesSwitchEventListnerAdded=true;
-					}
-					
-					customUtmMessage.value = response.UtmText;
-					yourOrgMessageValue.value = response.PlainText;
-					curRjCrypt = response.RjCrypt;
-					encryptedValue.value = curRjCrypt;
-				} else {
-					utm.recordError(response.Message + ' ExceptionMessag:' + response.ExceptionMessage);
-				}
-				getMessagesPreviewReq=null;
-			},
-			onerror : function(e) {
-				utm.setActivityIndicator('');
-				sendButton.enabled = true;
-				regenUtm.enabled=true;
-				utm.handleError(e, this.status, this.responseText);
-				getMessagesPreviewReq=null;
-			},
-			timeout : utm.netTimeout
-		});
-			
-		
 		getMessagesPreviewReq.open("POST", utm.serviceUrl + "EncryptMessage");
 		getMessagesPreviewReq.setRequestHeader('Authorization-Token', utm.AuthToken);
 		utm.setActivityIndicator('Loading...');
