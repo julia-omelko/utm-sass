@@ -16,14 +16,13 @@ var PreviewMessage_window = function(utm) {
 	var postImage='';
 	var attachments=null;
 	var signMessagesSwitchEventListnerAdded = false;
-	var signMessagesSwitchWasOnButTurnedff = 'none';
-	
-	var cameraButton= Ti.UI.createButton({
-			backgroundImage:'/images/camera-ip.png'		
-	});		
-	cameraButton.addEventListener('click', function(){
+	var signMessagesSwitchWasOnButTurnedff = 'none';	
+	var cameraButtonWidth ='40dp';
+	var cameraButtonHeight ='36dp';
+		
+/*	cameraButton.addEventListener('click', function(){
 		camera.captureImage();		
-	});	
+	});	*/
 	
 	if(utm.Android){
 		
@@ -35,36 +34,37 @@ var PreviewMessage_window = function(utm) {
 	    });	
 	
 		//create a navbar for Android
-		var my_navbar = Ti.UI.createLabel({
-		    height : 50,
+		var my_navbar = Ti.UI.createView({
+		    layout : 'horizontal',
+		    height : '44dp',
 		    width : '100%',
 		    backgroundColor : utm.androidBarColor,
 		    color : utm.backgroundColor,
-		    font:{fontSize:utm.androidTitleFontSize,fontWeight:utm.androidTitleFontWeight},
 		    top:0
 		});
 	 
 	 	//add the navbar to the screen
 		win.add(my_navbar);
 		
-		//create a view to contain Android tab buttons
-		var tabBar = Titanium.UI.createView ({
-			layout : 'horizontal',
-			width : '100%',
-			height : 45
+		var cameraButton= Ti.UI.createButton({
+			backgroundImage:'/images/camera-ip.png',
+			top :'4dp',
+			left : utm.SCREEN_WIDTH - 70,
+			height : cameraButtonHeight,
+			width : cameraButtonWidth
 		});
-		win.add(tabBar);		
 		
-		cameraButton.width='40dp';
-		cameraButton.Height = Titanium.UI.SIZE;
-			
-		tabBar.add(cameraButton);
-		
+		//add camera button to the navbar
+		my_navbar.add(cameraButton);
 		
 	}else if(utm.iPhone || utm.iPad){		
 		
-		cameraButton.width=40;
-		cameraButton.height=36;
+		var cameraButton= Ti.UI.createButton({
+			backgroundImage:'/images/camera-ip.png',
+			height : cameraButtonHeight,
+			width : cameraButtonWidth
+		});
+		
 		cameraButton.style = Ti.UI.iPhone.SystemButtonStyle.PLAIN;
 		
 		var win = Titanium.UI.createWindow({
@@ -77,7 +77,10 @@ var PreviewMessage_window = function(utm) {
 		});			
 	}
 	
-	
+	cameraButton.addEventListener('click', function(){
+		camera.captureImage();		
+	});	
+
 	//---------------Original Message --------------------
 	var yourOrgMessageLabel = Ti.UI.createLabel({
 		text : L('send_your_original_message') + ':',
@@ -231,8 +234,8 @@ var PreviewMessage_window = function(utm) {
 	//------------- Send Type Button Bar------------------
 	var hView = Ti.UI.createView({
 		layout : 'horizontal',
-		height : 50,
-		width : 200
+		height : '50dp',
+		width : '200dp'
 	});
 	win.add(hView);
 

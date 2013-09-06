@@ -5,7 +5,7 @@ var CheckButton = function(_name){
 	var isEnabled=true;
 		
 	var checkButton = Ti.UI.createButton({		
-			height:48, width:30, left:5,right:5,
+			height:'48dp', width:'30dp', left:5,right:5,
 			backgroundImage:'/images/'+name+'.png',		
 			backgroundDisabledImage:'/images/'+name+'_disabled.png'	
 		});		
@@ -27,8 +27,8 @@ var CheckButton = function(_name){
 			checkButton.backgroundImage = '/images/'+name+'.png';
 		}else{
 			checkButton.backgroundImage = '/images/'+name+'disabled.png';
-		}
-	}
+		};
+	};
 	
 	checkButton.setChecked= function(_checked){
 		//if(! isEnabled) return; //do nothing
@@ -37,16 +37,16 @@ var CheckButton = function(_name){
 			checkButton.backgroundImage = '/images/'+name+'.png';
 		}else{
 			checkButton.backgroundImage = '/images/'+name+'_selected.png';
-		}
-	}
+		};
+	};
 	
 	checkButton.isEnabled = function(){
 		return isEnabled;
-	}
+	};
 	checkButton.isChecked = function(){
 		return isChecked;
-	}
+	};
 		
 	return checkButton;
-}
+};
 module.exports = CheckButton;
