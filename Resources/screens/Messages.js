@@ -207,6 +207,27 @@ function message_window(utm) {
 
 	function callDeleteMessage(messageId, isSuperDelete) {
 		utm.log("About to delete message:" + messageId + '  isSuperDelete:' + isSuperDelete);
+		
+		var deleteMessagesReq = Ti.Network.createHTTPClient({
+			validatesSecureCertificate : utm.validatesSecureCertificate,
+			onload : function(e) {
+				utm.log('Message was deleted');
+	
+				/*var opts = {options: [L('ok_button')], title:L('messages_message_deleted')};
+				 var dialog = Ti.UI.createOptionDiautm.log(opts).show();
+				 dialog.addEventListener('click', function(e){
+				 getMessages(curMode);
+				 });*/
+				deleteMessagesReq=null;
+			},
+			onerror : function(e) {
+				utm.handleError(e, this.status, this.responseText);
+				deleteMessagesReq=null;
+			},
+			timeout : utm.netTimeout
+		});
+		
+		
 		deleteMessagesReq.open('delete', utm.serviceUrl + 'Messages/DeleteMessage/' + messageId + '?isSuperDelete=' + isSuperDelete);
 		deleteMessagesReq.setRequestHeader('Authorization-Token', utm.AuthToken);
 		deleteMessagesReq.send();
@@ -273,6 +294,122 @@ function message_window(utm) {
 		if (showProgress) {
 			utm.setActivityIndicator('Getting your messages...');
 		}
+		
+		
+		var getMessagesReq = Ti.Network.createHTTPClient({
+			validatesSecureCertificate : utm.validatesSecureCertificate,
+			
+			onload :function() {
+				var response = eval('('+this.responseText+')');
+				var tableData = [];
+				utm.setActivityIndicator('');
+				Titanium.Analytics.featureEvent('user.viewed_messages');
+				if (this.status == 200) {
+		
+					utm.log("message data returned " +  response.length + '  messages');
+		
+					for (var i = 0; i < response.length; i++) {
+						var row = Ti.UI.createTableViewRow({
+							//className : 'row',
+							row : clickName = 'row',
+							objName : 'row',
+							touchEnabled : true,
+							height : utm.Android ? '55dp':55,
+							hasChild : true,
+							messageData : response[i]
+						});
+		
+						var hView = Ti.UI.createView({
+							layout : 'composite', 
+							backgroundColor : '#fff',
+							objName : 'hView'
+						});
+		
+						if (!response[i].WasRead) {
+							var unreadImage = Ti.UI.createImageView({
+								image : '/images/circle_blue.png',
+								width : 12,
+								//height : 12,
+								top : 20,
+								left : 2
+							});
+							hView.add(unreadImage);
+						}
+		
+						var fromMessage = Ti.UI.createLabel({
+							backgroundColor : '#fff',
+							color : '#000',
+							font : {
+								fontSize : '14dp',
+								fontWeight : 'bold'
+							},
+							objName : 'fromMessage',
+							text : (curMode == 'sent' ? response[i].ToHeader : response[i].FromUserName),
+							touchEnabled : true,
+							top : 2,
+							left : 17,
+							width : utm.SCREEN_WIDTH - 100,
+							height : utm.Android ? '15dp':15,
+							ellipsize : true
+						});
+						hView.add(fromMessage);
+		
+						var utmMessage = Ti.UI.createLabel({
+							backgroundColor : '#fff',
+							color : '#666',
+							font : {
+								fontSize : '14dp'
+							},
+							objName : 'utmMessage',
+							text : response[i].UtmText,
+							touchEnabled : true,
+							top : 30,
+							left : 15,
+							height : utm.Android ? '20dp':'20',
+							width : '100%'
+						});
+						hView.add(utmMessage);
+		
+						var timeLabel = Ti.UI.createLabel({
+							backgroundColor : '#fff',
+							color : '#0066ff',
+							font : {
+								fontSize : '10dp'
+							},
+							objName : 'timeLabel',
+							//text: String.formatDate(new Date(response[i].DateSent,'short')),
+		
+							text : getDateTimeFormat(response[i].DateSent), // moment(response[i].DateSent).fromNow(),
+							//text: easyFormat(new Date(response[i].DateSent)),//response[i].DateSent,
+							touchEnabled : true,
+							top : 2,
+							right : 2,
+							width : 'auto'
+						});
+						hView.add(timeLabel);
+		
+						row.add(hView);
+						tableData.push(row);	
+					}
+		
+					tableView.setData(tableData);
+		
+				} else if (this.status == 400) {
+		
+					utm.recordError("Error:" + this.responseText);
+		
+				} else {
+					utm.recordError("error");
+				}
+				getMessagesReq=null;
+			}, 
+			
+			onerror : function(e) {
+				utm.handleError(e, this.status, this.responseText);
+				getMessagesReq=null;
+			},
+			timeout : utm.netTimeout
+		});
 
 		if (mode == 'recieved') {
 			getMessagesReq.open("GET", utm.serviceUrl + "ReceivedMessages?$orderby=DateSent desc");
@@ -288,118 +425,9 @@ function message_window(utm) {
 		//	}
 	}
 
-	var getMessagesReq = Ti.Network.createHTTPClient({
-		validatesSecureCertificate : utm.validatesSecureCertificate,
-		onerror : function(e) {
-			utm.handleError(e, this.status, this.responseText);
-		},
-		timeout : utm.netTimeout
-	});
+	
 
-	getMessagesReq.onload = function() {
-		var response = eval('('+this.responseText+')');
-		var tableData = [];
-		utm.setActivityIndicator('');
-		Titanium.Analytics.featureEvent('user.viewed_messages');
-		if (this.status == 200) {
-
-			utm.log("message data returned " +  response.length + '  messages');
-
-			for (var i = 0; i < response.length; i++) {
-				var row = Ti.UI.createTableViewRow({
-					//className : 'row',
-					row : clickName = 'row',
-					objName : 'row',
-					touchEnabled : true,
-					height : utm.Android ? '55dp':55,
-					hasChild : true,
-					messageData : response[i]
-				});
-
-				var hView = Ti.UI.createView({
-					layout : 'composite', 
-					backgroundColor : '#fff',
-					objName : 'hView'
-				});
-
-				if (!response[i].WasRead) {
-					var unreadImage = Ti.UI.createImageView({
-						image : '/images/circle_blue.png',
-						width : 12,
-						//height : 12,
-						top : 20,
-						left : 2
-					});
-					hView.add(unreadImage);
-				}
-
-				var fromMessage = Ti.UI.createLabel({
-					backgroundColor : '#fff',
-					color : '#000',
-					font : {
-						fontSize : '14dp',
-						fontWeight : 'bold'
-					},
-					objName : 'fromMessage',
-					text : (curMode == 'sent' ? response[i].ToHeader : response[i].FromUserName),
-					touchEnabled : true,
-					top : 2,
-					left : 17,
-					width : utm.SCREEN_WIDTH - 100,
-					height : utm.Android ? '15dp':15,
-					ellipsize : true
-				});
-				hView.add(fromMessage);
-
-				var utmMessage = Ti.UI.createLabel({
-					backgroundColor : '#fff',
-					color : '#666',
-					font : {
-						fontSize : '14dp'
-					},
-					objName : 'utmMessage',
-					text : response[i].UtmText,
-					touchEnabled : true,
-					top : 30,
-					left : 15,
-					height : utm.Android ? '20dp':'20',
-					width : '100%'
-				});
-				hView.add(utmMessage);
-
-				var timeLabel = Ti.UI.createLabel({
-					backgroundColor : '#fff',
-					color : '#0066ff',
-					font : {
-						fontSize : '10dp'
-					},
-					objName : 'timeLabel',
-					//text: String.formatDate(new Date(response[i].DateSent,'short')),
-
-					text : getDateTimeFormat(response[i].DateSent), // moment(response[i].DateSent).fromNow(),
-					//text: easyFormat(new Date(response[i].DateSent)),//response[i].DateSent,
-					touchEnabled : true,
-					top : 2,
-					right : 2,
-					width : 'auto'
-				});
-				hView.add(timeLabel);
-
-				row.add(hView);
-				tableData.push(row);	
-			}
-
-			tableView.setData(tableData);
-
-		} else if (this.status == 400) {
-
-			utm.recordError("Error:" + this.responseText);
-
-		} else {
-			utm.recordError("error");
-		}
-
-	};
+ 
 	
 
 	
@@ -582,23 +610,6 @@ function message_window(utm) {
 	}
 
 	// #############################  Scroll Refresh End #############################
-
-	var deleteMessagesReq = Ti.Network.createHTTPClient({
-		validatesSecureCertificate : utm.validatesSecureCertificate,
-		onload : function(e) {
-			utm.log('Message was deleted');
-
-			/*var opts = {options: [L('ok_button')], title:L('messages_message_deleted')};
-			 var dialog = Ti.UI.createOptionDiautm.log(opts).show();
-			 dialog.addEventListener('click', function(e){
-			 getMessages(curMode);
-			 });*/
-		},
-		onerror : function(e) {
-			utm.handleError(e, this.status, this.responseText);
-		},
-		timeout : utm.netTimeout
-	});
 	
 	win.addEventListener('blur', function() {
 		if(Ti.Platform.osname == 'iphone'){
