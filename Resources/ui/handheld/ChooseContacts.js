@@ -22,7 +22,7 @@ var ChooseContacts_window = function(utm) {
 
  		//create a navbar for Android
 		var my_navbar = Ti.UI.createLabel({
-		    height : 50,
+		    height : '44dp',
 		    width : '100%',
 		    backgroundColor : utm.androidBarColor,
 		    text : L('send_choose_contacts'),
@@ -36,7 +36,7 @@ var ChooseContacts_window = function(utm) {
 		chooseContactsView.add(my_navbar);
 		
 		//add activityIndicator to window
-		chooseContactsView.add(utm.activityIndicator)
+		chooseContactsView.add(utm.activityIndicator);
 	}
 	 
 	var mainView = Ti.UI.createView({layout:'vertical', width:'100%', height:'80%'});
@@ -51,7 +51,7 @@ var ChooseContacts_window = function(utm) {
 		top:2,
 		bottom:2,
 		right:2,
-		height:'30dp'
+		height:'35dp'
 	});
 	mainView.add(chooseAllButton);
 
@@ -236,7 +236,7 @@ var ChooseContacts_window = function(utm) {
 			}
 		}
 		writeMessageButton.enabled = false;
-	}
+	};
 	
 	function checkAll(_allChecked) {
 		var checkRows = tableview.data[0].rows;
@@ -256,6 +256,6 @@ var ChooseContacts_window = function(utm) {
 	}
 
 	return chooseContactsView;
-}
+};
 
 module.exports = ChooseContacts_window;
