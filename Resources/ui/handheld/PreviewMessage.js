@@ -89,6 +89,7 @@ var PreviewMessage_window = function(utm) {
 			fontWeight : 'bold'
 		},
 		width : utm.SCREEN_WIDTH - 10,
+		left:5,
 		top : 2,
 		color : '#000',
 		textAlign : 'left'
