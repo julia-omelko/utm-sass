@@ -238,7 +238,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 			data.twitter = !isEmpty(currentDetails.PrimaryUser.TwitterToken);
 			data.facebook = !isEmpty(currentDetails.PrimaryUser.FaceBook);
 			data.email = currentDetails.PrimaryUser.Email;
-			data.mobile = currentDetails.PrimaryUser.Mobile;
+			(currentDetails.PrimaryUser.Mobile == null) ? data.mobile = "" : data.mobile = currentDetails.PrimaryUser.Mobile;
 			data.signMessage = currentDetails.PrimaryUser.AddNicknameToUtms;
 			(currentDetails.myHort.Prefix == null) ? data.prefix = "" : data.prefix = currentDetails.myHort.Prefix;
 			(currentDetails.myHort.Postfix == null) ? data.postfix = "" : data.postfix = currentDetails.myHort.Postfix;
@@ -250,7 +250,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 			data.twitter = !isEmpty(currentDetails.MyInformation.TwitterToken);
 			data.facebook = !isEmpty(currentDetails.MyInformation.FaceBook);
 			data.email = currentDetails.MyInformation.Email;
-			data.mobile = currentDetails.MyInformation.Mobile;
+			(currentDetails.MyInformation.Mobile == null) ? data.mobile = "" : data.mobile = currentDetails.MyInformation.Mobile;
 			data.signMessage = currentDetails.MyInformation.AddNicknameToUtms;
 			
 		}
