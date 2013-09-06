@@ -123,60 +123,69 @@ var TheLoginScreen_view = function(utm) {
 		});
 	
 	loginView.add(versionLabel);
-		
-	var loginReq = Ti.Network.createHTTPClient({
-		validatesSecureCertificate:utm.validatesSecureCertificate 
-		,tlsVersion:Ti.Network.TLS_VERSION_1_2
-		,onload : function()
-		{
-
-			var response = eval('('+this.responseText+')');
-			utm.log('success');
-			utm.setActivityIndicator('');
-			//clear out the password
-			
-			utm.log('Login Service Returned');
-			if(this.status ==200){
-				//username.value('Login Successfull');
-				Ti.App.fireEvent("app:loginSuccess", {
-			        userData: response
-			    });		
-			    
-			    Titanium.Analytics.featureEvent('user.logged_in');
-			    password.value='';
-				username.value='';
+	
+	function sendLogin(params) {
+		var loginReq = Ti.Network.createHTTPClient({
+			validatesSecureCertificate:utm.validatesSecureCertificate 
+			,tlsVersion:Ti.Network.TLS_VERSION_1_2
+			,onload : function()
+			{
+	
+				var response = eval('('+this.responseText+')');
+				utm.log('success');
+				utm.setActivityIndicator('');
+				//clear out the password
 				
-			}else{
-				utm.log('Login Error');
-				messageArea.test="error";
-				setMessageArea("Error in Service");
+				utm.log('Login Service Returned');
+				if(this.status ==200){
+					//username.value('Login Successfull');
+					Ti.App.fireEvent("app:loginSuccess", {
+				        userData: response
+				    });		
+				    
+				    Titanium.Analytics.featureEvent('user.logged_in');
+				    password.value='';
+					username.value='';
+					
+				}else{
+					utm.log('Login Error');
+					messageArea.test="error";
+					setMessageArea("Error in Service");
+				}
+				loginReq = null;
+				
+			},
+			onerror:function(e){
+				//clear out the password   //FIXME  e.error   needs to be 
+				utm.setActivityIndicator('');
+				password.value='';
+				//username.value="";
+				utm.log('errro');
+				if(this.status==401){
+				  	utm.setActivityIndicator('');
+					
+					var err = JSON.parse(this.responseText);
+					alert(err.Message);
+					//TODO come up with error number system so we can internationalize errors
+					//setMessageArea(L("invalid_login"));
+					//Too many tries - Account is locked for 1 hour.
+					//Invalid UserName/Password
+					Titanium.Analytics.featureEvent('user.logged_in_invalid');
+				}else{
+				  	utm.handleError(e,this.status,this.responseText);
+				}
+				loginReq = null;
+	 	         	
 			}		
-			
-		},
-		onerror:function(e){
-			//clear out the password   //FIXME  e.error   needs to be 
-			utm.setActivityIndicator('');
-			password.value='';
-			//username.value="";
-			utm.log('errro');
-			if(this.status==401){
-			  	utm.setActivityIndicator('');
-				
-				var err = JSON.parse(this.responseText);
-				alert(err.Message);
-				//TODO come up with error number system so we can internationalize errors
-				//setMessageArea(L("invalid_login"));
-				//Too many tries - Account is locked for 1 hour.
-				//Invalid UserName/Password
-				Titanium.Analytics.featureEvent('user.logged_in_invalid');
-			}else{
-			  	utm.handleError(e,this.status,this.responseText);
+			,timeout:utm.netTimeout
 			}
- 	         	
-		}		
-		,timeout:utm.netTimeout
-		}
-	);
+		);
+		
+		loginReq.open("POST",utm.serviceUrl+"Login");	
+		loginReq.send(params);
+		
+		
+	};
 	
 	//check this - may hold memory listening for events at this level.
 	Ti.App.addEventListener('app:networkChange',check_network);
@@ -192,15 +201,15 @@ var TheLoginScreen_view = function(utm) {
 		if (username.value != '' && password.value != '')
 		{	
 			utm.log(username.value +' is logging in to UTM');
-			loginReq.open("POST",utm.serviceUrl+"Login");				
+			//loginReq.open("POST",utm.serviceUrl+"Login");				
 
 			var params = {
 				UserName: username.value,
 				Password: password.value,
 				RememberMe: true								
 			};
-			loginReq.send(params);
-			
+			//loginReq.send(params);
+			sendLogin(params);
 		}
 		else
 		{
