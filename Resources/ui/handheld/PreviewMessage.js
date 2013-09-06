@@ -474,6 +474,58 @@ var PreviewMessage_window = function(utm) {
 
 		utm.log(JSON.stringify(params));
 		utm.setActivityIndicator('Sending ...');
+
+		var sendMessageReq = Ti.Network.createHTTPClient({
+			validatesSecureCertificate : utm.validatesSecureCertificate,
+			onload : function() {
+				var response = eval('(' + this.responseText + ')');
+				utm.setActivityIndicator('');
+				if (this.status == 200 && response.Status == 'Success') {
+					utm.log('Send Successful');
+					
+					if(attachments==null){
+						afterMessageSent();
+						resetScreen();
+					}else{
+						attachments=null;
+					}
+					Titanium.Analytics.featureEvent('user.sent_message');
+	
+				} else if (this.status == 200 && response.Status == 'Warning') {
+					utm.log('Send Successful with warning:' + response.Message);
+					//todo decide if we show warning here or not
+					/*var dialog = Ti.UI.createAlertDialog({
+					 message: 'Warning: Not all recipents will recieve the messages based on the types you choose to send to.',
+					 ok: L('ok_button),
+					 title: 'Message Delivery Warning'
+					 }).show();
+					 */
+					if(attachments==null){
+						afterMessageSent();
+						resetScreen();
+					}else{
+						attachments=null;
+					}
+					Titanium.Analytics.featureEvent('user.sent_message');
+				} else {
+					//Error:UserId: 1007 cannot accept Email messages
+					utm.setActivityIndicator('');
+					utm.recordError(response.Message + ' ExceptionMessag:' + response.ExceptionMessage);
+					sendButton.enabled = true;
+					alert('An error occured while sending your message - one of the message services is down or not available.  Please try again.');
+				}
+				sendMessageReq=null;
+			},
+			onerror : function(e) {
+				utm.setActivityIndicator('');
+				sendButton.enabled = true;
+				utm.handleError(e, this.status, this.responseText);
+				sendMessageReq=null
+			},
+			timeout : 10000 //seams like send can take longer so override this timeout.
+		});
+		
+		
 		sendMessageReq.open("POST", utm.serviceUrl + "SendMessage");
 		sendMessageReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");
 		sendMessageReq.setRequestHeader('Authorization-Token', utm.AuthToken);
@@ -499,118 +551,9 @@ var PreviewMessage_window = function(utm) {
 	}
 	
 
-	var getMessagesPreviewReq = Ti.Network.createHTTPClient({
-		validatesSecureCertificate : utm.validatesSecureCertificate,
-		onload : function() {
-			var response = eval('(' + this.responseText + ')');
-			utm.setActivityIndicator('');
-			sendButton.enabled = true;
-			regenUtm.enabled=true;
-			utm.log('PreviewMessages Service Returned');
-			if (this.status == 200) {
-				
-				if(signMessagesSwitchWasOnButTurnedff !=='none'){
-					if(signMessagesSwitchWasOnButTurnedff){
-						//Strip off Signature now
-						response.UtmText= response.UtmText.replace('\n\r-'+utm.curUserCurMyHortNickName, "");
-					}else{
-						response.UtmText = response.UtmText+ '\n\r-'+utm.curUserCurMyHortNickName;
-					}
-				}
-				
-				if (endsWith(response.UtmText , '\n\r-'+utm.curUserCurMyHortNickName)){
-					signMessagesSwitch.value=true;
-				}else{
-					signMessagesSwitch.value=false;
-				}
-				
-				if(!signMessagesSwitchEventListnerAdded){
-					signMessagesSwitch.addEventListener('change', function(){
-						//Handle the turn on an off of signature
-						if(signMessagesSwitch.value){
-							signMessagesSwitchWasOnButTurnedff=false;
-							if(! endsWith(customUtmMessage.value , '\n\r-'+ utm.curUserCurMyHortNickName)){
-								//Turned on and not found so Add Signature of nickname
-								customUtmMessage.value = customUtmMessage.value+ '\n\r-'+utm.curUserCurMyHortNickName;
-							}
-						}else{
-							signMessagesSwitchWasOnButTurnedff=true;
-							if(endsWith(customUtmMessage.value , '\n\r-'+utm.curUserCurMyHortNickName)){
-								//Turned off so remove signature
-								customUtmMessage.value = customUtmMessage.value.replace('\n\r-'+utm.curUserCurMyHortNickName, "");
-							}
-						}
-						
-					});
-					signMessagesSwitchEventListnerAdded=true;
-				}
-				
-				customUtmMessage.value = response.UtmText;
-				yourOrgMessageValue.value = response.PlainText;
-				curRjCrypt = response.RjCrypt;
-				encryptedValue.value = curRjCrypt;
-			} else {
-				utm.recordError(response.Message + ' ExceptionMessag:' + response.ExceptionMessage);
-			}
+	
 
-		},
-		onerror : function(e) {
-			utm.setActivityIndicator('');
-			sendButton.enabled = true;
-			regenUtm.enabled=true;
-			utm.handleError(e, this.status, this.responseText);
-		},
-		timeout : utm.netTimeout
-	});
-
-	var sendMessageReq = Ti.Network.createHTTPClient({
-		validatesSecureCertificate : utm.validatesSecureCertificate,
-		onload : function() {
-			var response = eval('(' + this.responseText + ')');
-			utm.setActivityIndicator('');
-			if (this.status == 200 && response.Status == 'Success') {
-				utm.log('Send Successful');
-				
-				if(attachments==null){
-					afterMessageSent();
-					resetScreen();
-				}else{
-					attachments=null;
-				}
-				Titanium.Analytics.featureEvent('user.sent_message');
-
-			} else if (this.status == 200 && response.Status == 'Warning') {
-				utm.log('Send Successful with warning:' + response.Message);
-				//todo decide if we show warning here or not
-				/*var dialog = Ti.UI.createAlertDialog({
-				 message: 'Warning: Not all recipents will recieve the messages based on the types you choose to send to.',
-				 ok: L('ok_button),
-				 title: 'Message Delivery Warning'
-				 }).show();
-				 */
-				if(attachments==null){
-					afterMessageSent();
-					resetScreen();
-				}else{
-					attachments=null;
-				}
-				Titanium.Analytics.featureEvent('user.sent_message');
-			} else {
-				//Error:UserId: 1007 cannot accept Email messages
-				utm.setActivityIndicator('');
-				utm.recordError(response.Message + ' ExceptionMessag:' + response.ExceptionMessage);
-				sendButton.enabled = true;
-				alert('An error occured while sending your message - one of the message services is down or not available.  Please try again.');
-			}
-
-		},
-		onerror : function(e) {
-			utm.setActivityIndicator('');
-			sendButton.enabled = true;
-			utm.handleError(e, this.status, this.responseText);
-		},
-		timeout : 10000 //seams like send can take longer so override this timeout.
-	});
+	
 
 	Ti.App.addEventListener('app:getMessagePreview', getMessagePreview);
 	function getMessagePreview(msg) {
@@ -626,6 +569,73 @@ var PreviewMessage_window = function(utm) {
 				PlainText : msg.messageText
 			};
 		}
+		
+		var getMessagesPreviewReq = Ti.Network.createHTTPClient({
+			validatesSecureCertificate : utm.validatesSecureCertificate,
+			onload : function() {
+				var response = eval('(' + this.responseText + ')');
+				utm.setActivityIndicator('');
+				sendButton.enabled = true;
+				regenUtm.enabled=true;
+				utm.log('PreviewMessages Service Returned');
+				if (this.status == 200) {
+					
+					if(signMessagesSwitchWasOnButTurnedff !=='none'){
+						if(signMessagesSwitchWasOnButTurnedff){
+							//Strip off Signature now
+							response.UtmText= response.UtmText.replace('\n\r-'+utm.curUserCurMyHortNickName, "");
+						}else{
+							response.UtmText = response.UtmText+ '\n\r-'+utm.curUserCurMyHortNickName;
+						}
+					}
+					
+					if (endsWith(response.UtmText , '\n\r-'+utm.curUserCurMyHortNickName)){
+						signMessagesSwitch.value=true;
+					}else{
+						signMessagesSwitch.value=false;
+					}
+					
+					if(!signMessagesSwitchEventListnerAdded){
+						signMessagesSwitch.addEventListener('change', function(){
+							//Handle the turn on an off of signature
+							if(signMessagesSwitch.value){
+								signMessagesSwitchWasOnButTurnedff=false;
+								if(! endsWith(customUtmMessage.value , '\n\r-'+ utm.curUserCurMyHortNickName)){
+									//Turned on and not found so Add Signature of nickname
+									customUtmMessage.value = customUtmMessage.value+ '\n\r-'+utm.curUserCurMyHortNickName;
+								}
+							}else{
+								signMessagesSwitchWasOnButTurnedff=true;
+								if(endsWith(customUtmMessage.value , '\n\r-'+utm.curUserCurMyHortNickName)){
+									//Turned off so remove signature
+									customUtmMessage.value = customUtmMessage.value.replace('\n\r-'+utm.curUserCurMyHortNickName, "");
+								}
+							}
+							
+						});
+						signMessagesSwitchEventListnerAdded=true;
+					}
+					
+					customUtmMessage.value = response.UtmText;
+					yourOrgMessageValue.value = response.PlainText;
+					curRjCrypt = response.RjCrypt;
+					encryptedValue.value = curRjCrypt;
+				} else {
+					utm.recordError(response.Message + ' ExceptionMessag:' + response.ExceptionMessage);
+				}
+				getMessagesPreviewReq=null;
+			},
+			onerror : function(e) {
+				utm.setActivityIndicator('');
+				sendButton.enabled = true;
+				regenUtm.enabled=true;
+				utm.handleError(e, this.status, this.responseText);
+				getMessagesPreviewReq=null;
+			},
+			timeout : utm.netTimeout
+		});
+			
+		
 		getMessagesPreviewReq.open("POST", utm.serviceUrl + "EncryptMessage");
 		getMessagesPreviewReq.setRequestHeader('Authorization-Token', utm.AuthToken);
 		utm.setActivityIndicator('Loading...');
