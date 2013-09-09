@@ -312,6 +312,29 @@ var TheLoginScreen_view = function(utm) {
 	});
 
 	loginView.backButtonTitle = '';
+	
+	
+	loginView.addEventListener('android:back',function(){
+		
+		var closeDialog = Ti.UI.createAlertDialog({
+				cancel : 1,
+				buttonNames : ['Yes','No', L('cancel')],
+				title : 'Do you want to close the UTM Application?'
+			});
+			closeDialog.addEventListener('click', function(e) {
+				if (e.index === 0) {
+					//loginView.exitOnClose = true;
+					utm.navController.close(utm.loginView,{animated:false});			
+					var activity = Titanium.Android.currentActivity;
+        				activity.finish();
+				} else {
+					return false;
+				}
+				
+			});
+			closeDialog.show();
+	});
+	
 
 	return loginView;
 };
