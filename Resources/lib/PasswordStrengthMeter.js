@@ -167,8 +167,8 @@ function passwordMeter() {
 			meterMessageBox.height =0;
 			valMessage.height=0;
 		} else {
-			meterMessageBox.height='30dp';
-			valMessage.height='30dp';
+			meterMessageBox.height='40dp';
+			valMessage.height='40dp';
 		}
 		
 		return msg + ';' + pStrength;

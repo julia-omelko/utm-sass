@@ -337,10 +337,11 @@ function signUp_window(utm) {
 	function validateForm(){
 		
 		if( isUserNameValid
-			&& checkConfirmPassword(password.getValue(),confirm.getValue())
-		 	&& isValidEmail(email.getValue())
-		 	&& isValidPhone(mobile.value)
-		 	&& rouCB.isChecked()
+			& trimString(userName.getValue()) != ''
+			& checkConfirmPassword(password.getValue(),confirm.getValue())
+		 	& isValidEmail(email.getValue())
+		 	& isValidPhone(mobile.value)
+		 	& rouCB.isChecked()
 		){
 			//Form is valid
 			saveButton.enabled = true;	
@@ -400,6 +401,10 @@ function signUp_window(utm) {
 	rouLabel.addEventListener('click', function(e) {
 	    Ti.Platform.openURL(utm.webUrl + '/Home/RulesOfUse');
 	});
+	
+	function trimString(str) {
+        return str.replace(/^\s+|\s+$/g,"");
+	}
 		
 	return win;
 };
