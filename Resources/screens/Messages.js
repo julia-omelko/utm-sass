@@ -3,7 +3,8 @@ function message_window(utm) {
 	var moment = require('lib/moment');
 	var navGroup = false;
 	var curMode = 'recieved';
-
+	var refreshButtonWidth ='40dp';
+	var refreshButtonHeight ='36dp';
 	var lastRow = 4;
 	
 	if(utm.iPhone || utm.iPad ){
@@ -48,27 +49,39 @@ function message_window(utm) {
 	}	
 
 	if(utm.Android){
-		//create the base screen and hide the Android navbar
+				//create the base screen and hide the Android navbar
 		var win = Titanium.UI.createWindow({
 		    layout : 'vertical',
 		 	backgroundColor : utm.backgroundColor,
 		    navBarHidden:true
-	    });
-
- 		//create a navbar for Android
-		var my_navbar = Ti.UI.createLabel({
-		    height : 50,
+	    });	
+	
+		//create a navbar for Android
+		var my_navbar = Ti.UI.createView({
+		    layout : 'horizontal',
+		    height : '44dp',
 		    width : '100%',
 		    backgroundColor : utm.androidBarColor,
-		    text:'Messages',
 		    color : utm.backgroundColor,
-		    font:{fontSize:utm.androidTitleFontSize,fontWeight:utm.androidTitleFontWeight},
-		    textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
 		    top:0
 		});
- 
- 		//add the navbar to the screen
+	 
+	 	//add the navbar to the screen
 		win.add(my_navbar);
+		
+		var refreshButton= Ti.UI.createButton({
+			backgroundImage:'/images/refresh.gif',
+			top :'4dp',
+			left : utm.SCREEN_WIDTH - 70,
+			height : refreshButtonHeight,
+			width : refreshButtonWidth
+		});
+		
+		my_navbar.add(refreshButton);
+		
+		refreshButton.addEventListener('click',function(){
+			refreshMessages({showProgress:true});			
+		})
 		
 		//create a view to contain Android tab buttons
 		var tabBar = Titanium.UI.createView ({
