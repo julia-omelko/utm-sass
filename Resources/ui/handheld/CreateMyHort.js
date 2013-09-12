@@ -1,20 +1,15 @@
 function createMyHortWindow(utm) {
 
-	var myHortWindow = Ti.UI.createWindow({
-		backgroundColor : '#fff',
-		layout : 'horizontal',
-		left:5
-	});	
-	
-	var spacer = Ti.UI.createView({
-		height:'33%'
-	});
-	myHortWindow.add(spacer);
+	var Header = require('ui/common/Header');
+
+	var myHortWindow = new Header(utm, 'Create MyHort', L('button_back'));
+	myHortWindow.left='5dp';
 	
 	var fldView = Ti.UI.createView({
 		layout:'horizontal'
 		,width:'100%'
-		,height:Ti.UI.SIZE
+		,height:Ti.UI.SIZE,
+		top:utm.iPhone || utm.iPad?'33%':'30dp'
 	});
 	var nameLabel = Ti.UI.createLabel({
 		text:'MyHort Name '
