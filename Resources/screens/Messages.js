@@ -156,10 +156,11 @@ function message_window(utm) {
 			getMessages('sent');
 		});
 
-		//add activityIndicator to window
-		win.add(utm.activityIndicator);
+		
 	}
-
+	//add activityIndicator to window
+	win.add(utm.activityIndicator);
+	
 	var tableView = Titanium.UI.createTableView({
 		left : 2,
 		editable : true,
@@ -314,7 +315,7 @@ function message_window(utm) {
 			onload : function() {
 				var response = eval('(' + this.responseText + ')');
 				var tableData = [];
-				utm.setActivityIndicator('');
+				
 				Titanium.Analytics.featureEvent('user.viewed_messages');
 				if (this.status == 200) {
 
@@ -414,6 +415,7 @@ function message_window(utm) {
 					utm.recordError("error");
 				}
 				getMessagesReq = null;
+				utm.setActivityIndicator('');
 			},
 
 			onerror : function(e) {
