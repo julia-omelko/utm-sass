@@ -70,16 +70,15 @@ var WriteMessage_window =function(utm) {
 	  borderWidth: 2, 
 	  borderColor: '#bbb',
 	  borderRadius: 5,
-	  color:  utm.iPad ? 'black' :  utm.textFieldColor,
+	  color:  utm.textFieldColor,
 	  font: {fontSize:'16dp'},
 	  hintText:L('send_start_your_message_here'),
 	  suppressReturn:false,
 	  textAlign: 'left',
 	  top: 5,
-	  height:'auto',
-	  width: utm.SCREEN_WIDTH-10
-	  , height : utm.SCREEN_HEIGHT-(utm.SCREEN_HEIGHT/1.2)
-	}); //todo get the screen width so we can make this wider if possible
+	  width: '90%',
+	  height :  utm.iPad ? '60%' : 100
+	}); 
 	scrollableView.add(textArea);
 	
 	
