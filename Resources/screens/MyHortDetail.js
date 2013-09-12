@@ -531,6 +531,8 @@ if(isOwner){
 	var saveButton = Ti.UI.createButton({
 		title : 'Save',
 		top : 3,
+		height:'40dp',
+		width:'100dp',
 		enabled: false
 	});
 	saveButton.addEventListener('click', function() {
@@ -540,6 +542,61 @@ if(isOwner){
 	});
 	view.add(saveButton);
 			
+			
+	//----------Delete MyHort Button (Android Only)--------------------		
+	if (utm.Android) {
+		var deleteButton = Ti.UI.createButton({
+			title : 'Delete',
+			top : 20,
+			height:'40dp',
+			width:'100dp',
+			backgroundColor:'red',
+			enabled: true
+		});
+		
+		deleteButton.addEventListener('click', function() {
+
+			var dialog = Ti.UI.createAlertDialog({
+					cancel : 1,
+					buttonNames : ['Yes', L('cancel')],
+					message : 'Delete this MyHort will delete all your information in this MyHort - do you want to continue? ',
+					title : 'Confirm Delete',
+					myHortId : _myHortData.MyHortId
+				});
+				dialog.addEventListener('click', function(e) {
+					if (e.index === 0) {
+						deleteMyHort(e.source.myHortId);
+					} 
+				});
+				dialog.show();
+		});
+		view.add(deleteButton);		
+	}
+	
+	function deleteMyHort(myHortId) {
+		utm.log('Deleting MyHort ' + myHortId);
+		utm.setActivityIndicator('Deleting...');
+		var deleteMyHortDetailReq = Ti.Network.createHTTPClient({
+			validatesSecureCertificate : utm.validatesSecureCertificate,
+			onload : function() {
+				utm.setActivityIndicator('');
+				deleteMyHortDetailReq=null;
+				updateMyHortData();
+				utm.navController.close(utm.myHortDetailWindow,{animated:false});
+			},
+			onerror : function() {
+				utm.setActivityIndicator('');
+				deleteMyHortDetailReq=null;
+			}
+		});
+		
+		deleteMyHortDetailReq.open("GET", utm.serviceUrl + "MyHort/DeleteUsersMyHort?myhortId=" + myHortId);
+		deleteMyHortDetailReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+		deleteMyHortDetailReq.setRequestHeader('Authorization-Token', utm.AuthToken);
+		deleteMyHortDetailReq.send();
+	}
+
+				
 	function authTwitter() {
 		twitter.authorize();
 	}
