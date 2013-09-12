@@ -1,22 +1,14 @@
 function createMyHortWindow(myHortId,utm) {
 
-	var myHortPendingWindow = Ti.UI.createWindow({
-		backgroundColor : '#fff',
-		layout : 'vertical',
-		left : 5,
-		right : 5
-	});
+	var Header = require('ui/common/Header');
 
-	var titleLbl = Ti.UI.createLabel({
-		text : 'Your Pending Invitations',
-		top : 60,
-		font:{fontWeight:'bold',fontSize:'16dp'},
-		color: utm.Android ? utm.androidBarColor : utm.color_org 
-	})
-	myHortPendingWindow.add(titleLbl);
+	var myHortPendingWindow = new Header(utm, 'Your Pending Invitations', L('button_back'));
+	myHortPendingWindow.left='5dp';
+	myHortPendingWindow.right='5dp';
+	
 
 	var tableView = Titanium.UI.createTableView({
-		top : 10,
+		top:utm.iPhone || utm.iPad?'20%':'10dp',
 		height : '60%'
 	});
 	myHortPendingWindow.add(tableView);
@@ -41,27 +33,32 @@ function createMyHortWindow(myHortId,utm) {
 	});
 
 	function loadPending() {
+		
+		var getMyHortsPending = Ti.Network.createHTTPClient({
+			validatesSecureCertificate : utm.validatesSecureCertificate,
+			onload : function(e) {
+				var response = eval('('+this.responseText+')');
+				utm.setActivityIndicator('');
+				Titanium.Analytics.featureEvent('user.viewed_myHortPending');
+				if (this.status == 200) {
+					utm.log("MyHort data returned " + response.length + '  pending returned');
+					populateTable(response);
+				}
+				getMyHortsPending=null;
+			},
+			onerror : function(e) {
+				utm.handleError(e, this.status, this.responseText);
+				getMyHortsPending=null;
+			},
+			timeout : utm.netTimeout
+		});
+		
 		getMyHortsPending.open("GET", utm.serviceUrl + "MyHort/Pending?myHortId=" + myHortId + '&orderby=EmailAddress');
 		getMyHortsPending.setRequestHeader('Authorization-Token', utm.AuthToken);
 		getMyHortsPending.send();
 	}
 
-	var getMyHortsPending = Ti.Network.createHTTPClient({
-		validatesSecureCertificate : utm.validatesSecureCertificate,
-		onerror : function(e) {
-			utm.handleError(e, this.status, this.responseText);
-		},
-		onload : function(e) {
-			var response = eval('('+this.responseText+')');
-			utm.setActivityIndicator('');
-			Titanium.Analytics.featureEvent('user.viewed_myHortPending');
-			if (this.status == 200) {
-				utm.log("MyHort data returned " + response.length + '  pending returned');
-				populateTable(response);
-			}
-		},
-		timeout : utm.netTimeout
-	});
+	
 
 	function populateTable(myHortPendingData) {
 		tableView.setData([]);
