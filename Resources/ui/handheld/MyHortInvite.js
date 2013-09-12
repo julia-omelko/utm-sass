@@ -116,7 +116,57 @@ function inviteMyHortWindow(myHortInfo, utm) {
 				inviteButton.enabled = true;
 			}
 		};
-		Titanium.Contacts.showContacts(parms);
+		
+		if(utm.iPhone || utm.iPad ){
+				Titanium.Contacts.showContacts(parms);
+		}else{
+			Titanium.Contacts.showContacts({
+		        selectedPerson: function(e) {
+		        	
+		        		if(e.person.email == undefined) {
+		        			alert('Problem getting contacts.');
+		        			return;
+		        		}
+		        	
+		            var emails = e.person.email;
+
+	            		var emailChoices =[];
+					var emailTypes = ['home', 'work', 'other'];
+					
+					for (var emailIndex = 0, emailLen = emailTypes.length; emailIndex < emailLen; emailIndex++) {
+					    if (e.person.email[emailTypes[emailIndex]] != undefined && e.person.email[emailTypes[emailIndex]].length > 0) {
+					        emailChoices.push( e.person.email[emailTypes[emailIndex]][0]);
+					    }                       
+					}
+                		
+                		if(emailChoices.length==0){
+                			alert('No emails found for selected contact.');
+                			return;
+                		}
+                
+	            		var optionsDialogOpts = {
+					    options:emailChoices,
+					    destructive:1,
+					    cancel:2,
+					    title:'Please select an email!'
+					};
+					 
+					var dialog = Titanium.UI.createOptionDialog(optionsDialogOpts);						 
+					dialog.show();
+					 
+					// DIALOG EVENT CLICK
+					dialog.addEventListener('click',function(e){
+						if(emailsField.value===''){
+							emailsField.value =  emailChoices[e.index];
+						}else{
+							emailsField.value = emailsField.value + ',' + emailChoices[e.index];
+						}
+					});
+	            }
+
+	        });
+		}
+	
 	};
 	var addressBookDisallowed = function() {
 		alert('Address book access is not allowed');
