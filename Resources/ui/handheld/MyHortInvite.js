@@ -11,7 +11,7 @@ function inviteMyHortWindow(myHortInfo, utm) {
 	}
 	
 	var Header = require('ui/common/Header');
-	var myHortInviteWindow = new Header(utm,'', 'MyHort Info');
+	var myHortInviteWindow = new Header(utm,'Invite', 'MyHort Info');
 	
 	var view = Ti.UI.createScrollView({
 		showVerticalScrollIndicator : true,
