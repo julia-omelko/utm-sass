@@ -1,4 +1,4 @@
-function passwordMeter(utm,_title,_backButtonTitle) {
+function HeaderWindow(utm,_title,_backButtonTitle) {
 
 	if(utm.iPhone || utm.iPad ){
 		var titleView = Ti.UI.createWindow({			
@@ -32,12 +32,10 @@ function passwordMeter(utm,_title,_backButtonTitle) {
  
  		//add the navbar to the screen
 		titleView.add(my_navbar);
-		
-		//add activityIndicator to window
-		titleView.add(utm.activityIndicator)
 	}
-
-
+	//add activityIndicator to window
+	titleView.add(utm.activityIndicator);
+	
 	return titleView;
 } 
- module.exports=passwordMeter;	
+ module.exports=HeaderWindow;	
