@@ -67,6 +67,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		});
 
 		function enableButtonBar(_enable) {
+			if(buttons == undefined) return;
 			
 			if (isOwner) {
 				buttons[0].enabled = _enable;
