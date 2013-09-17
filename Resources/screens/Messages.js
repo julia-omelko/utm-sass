@@ -181,19 +181,20 @@ function message_window(utm) {
 		utm.navController.open(utm.messageDetailWindow);
 	}
 
-	//Add Swipe event to delete messages
-	/*tableView.addEventListener('swipe', function(eventObject){
-
-	deleteMessage(eventObject.row.messageData.Id,false);
-	});*/
-
+	if(utm.Android){
+		//Add Swipe event to delete messages
+		tableView.addEventListener('swipe', function(eventObject){
+			deleteMessage(eventObject.row.messageData.Id,row);
+		});
+	}
+	
 	// add delete event listener
 	tableView.addEventListener('delete', function(e) {
 		var s = e.section;
-		deleteMessage(e.rowData.messageData.Id, false)
+		deleteMessage(e.rowData.messageData.Id, e.row);
 	});
 
-	function deleteMessage(messageId) {
+	function deleteMessage(messageId, theRow) {
 
 		if (curMode == 'sent') {
 
@@ -207,8 +208,10 @@ function message_window(utm) {
 			dialog.addEventListener('click', function(e) {
 				if (e.index === 0) {
 					callDeleteMessage(messageId, false);
+					tableView.deleteRow(theRow);
 				} else if (e.index === 1) {
 					callDeleteMessage(messageId, true);
+					tableView.deleteRow(theRow);
 				} else if (e.index === 2) {
 					Ti.API.info('The cancel button was clicked');
 				}
@@ -216,7 +219,29 @@ function message_window(utm) {
 			dialog.show();
 
 		} else {
-			callDeleteMessage(messageId, false);
+			if(utm.Android){
+				
+				var dialog = Ti.UI.createAlertDialog({
+					cancel : 1,
+					buttonNames : ['Yes',  L('cancel')],
+					message : 'Do you want to Delete this message? ',
+					title : 'Delete Confirmation',
+					messageId : messageId
+				});
+				dialog.addEventListener('click', function(e) {
+					if (e.index === 0) {
+						callDeleteMessage(messageId, true);
+						tableView.deleteRow(theRow);
+					}
+				});
+				dialog.show();
+				
+				
+			}else{
+				callDeleteMessage(messageId, false);
+				tableView.deleteRow(theRow);
+			}
+			
 		}
 
 	}
@@ -229,11 +254,6 @@ function message_window(utm) {
 			onload : function(e) {
 				utm.log('Message was deleted');
 
-				/*var opts = {options: [L('ok_button')], title:L('messages_message_deleted')};
-				 var dialog = Ti.UI.createOptionDiautm.log(opts).show();
-				 dialog.addEventListener('click', function(e){
-				 getMessages(curMode);
-				 });*/
 				deleteMessagesReq = null;
 			},
 			onerror : function(e) {
