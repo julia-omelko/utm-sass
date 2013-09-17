@@ -15,9 +15,8 @@ var TheLoginScreen_view = function(utm) {
 		
 	var utmLogo = Ti.UI.createImageView({
 		image:'/images/ytm_Narrow.png',
-		width:275,
-		height:71,
-		top:20,
+		width:'275dp',
+		height:'71dp',
 		bottom:utm.Android ? 50 : 0
 	});
 	loginView.add(utmLogo);
