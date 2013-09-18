@@ -1,7 +1,7 @@
 var PreviewMessage_window = function(utm) {
 
 	var Camera =require("/lib/Camera");
-	var camera = new Camera();
+	var camera=null;
 	var curUtmText = '';
 	var curRjCrypt = '';
 
@@ -78,8 +78,18 @@ var PreviewMessage_window = function(utm) {
 	}
 	
 	cameraButton.addEventListener('click', function(){
+		camera = getCamera();
+		scrollView.add(camera);
 		camera.captureImage();		
 	});	
+	
+	
+	function getCamera(){
+		if(camera ==null){
+			camera = new Camera();
+		}
+		return camera;
+	}
 	
 	var scrollView = Ti.UI.createScrollView({
 	  contentWidth: '100%',
@@ -368,7 +378,7 @@ var PreviewMessage_window = function(utm) {
 */
 
 
-	scrollView.add(camera);
+
 
 	sendButton.addEventListener('click', function() {
 		var messageType = getMessageSendTypes();
@@ -409,37 +419,31 @@ var PreviewMessage_window = function(utm) {
 		//expandCustomUtmMessageEdit(false);
 
 		sendButton.enabled = false;
-		
+		camera = getCamera();
 		var theImage = camera.getImage();		
 			
 		if(theImage){				
-			//640x960
-			//Resize the imgage
-			Ti.API.info("OldImage: " + theImage.width + "x" + theImage.height);
 			
-			var newWidth = 0, newHeight = 0, orientation = 'portrait';
+			try{
+				
+			//	theImage = theImage.imageAsResized(theImage.width/6,theImage.height/6);	
+				
+				//NOTE IF the image is not resized down enough it will crash on base64encode
+				var sendImageSrc = Ti.Utils.base64encode(theImage);
+				attachments = [{ Attachment: sendImageSrc.toString(),MimeType:theImage.mimeType,WasVirusScanned:true  }];	
+
+			}catch(err){
+				camera = null;
+				if(utm.Android){
+					alert("An error occured handling the photo-Some Android phones can't support attaching photos direct form the camera - try attaching an image from a Album.");
+				}else{
+					alert('An error occured handling the photo');
+				}
+				sendButton.enabled = true;
+				return;
+			}
 			
-			if (theImage.width > theImage.height) {
-				orientation = 'landscape';
-			} 
 			
-			Ti.API.info(orientation);
-						
-			/*var resizeView = Titanium.UI.createImageView({
-            	image: theImage,
-            	width: orientation === 'portrait' ? 640 : 960,
-            	height: orientation === 'portrait' ? 960 : 640
-        	});
-			
-			theImage = resizeView.toImage();*/
-			
-			Ti.API.info("NewImage: " + theImage.width + "x" + theImage.height);
-			
-			//alert(theImage);
-			
-			var sendImageSrc = Ti.Utils.base64encode(theImage);
-			//attachments = [{ Attachment: theImage,MimeType:theImage.mimeType,WasVirusScanned:true  }];
-			attachments = [{ Attachment: sendImageSrc.toString(),MimeType:theImage.mimeType,WasVirusScanned:true  }];
 		}else{
 			attachments=null;
 		}
@@ -526,6 +530,7 @@ var PreviewMessage_window = function(utm) {
 			onload : function() {
 				var response = eval('(' + this.responseText + ')');
 				utm.setActivityIndicator('');
+				camera = null;
 				if (this.status == 200 && response.Status == 'Success') {
 					utm.log('Send Successful');
 					
@@ -565,6 +570,7 @@ var PreviewMessage_window = function(utm) {
 			},
 			onerror : function(e) {
 				utm.setActivityIndicator('');
+				camera = null;
 				sendButton.enabled = true;
 				utm.handleError(e, this.status, this.responseText);
 				sendMessageReq = null;
@@ -677,7 +683,11 @@ var PreviewMessage_window = function(utm) {
 		facebookButton.setChecked(false);
 		sendButton.enabled = true;
 		theImage=null;
-		camera.reset();
+		if(camera !=null){
+			camera.reset();	
+		}
+		
+		camera = null;
 	}
 
 
