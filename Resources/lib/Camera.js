@@ -25,7 +25,8 @@ function CameraView(_win) {
 		left:(imageBorder.width-36)/2,
 		top:2,//(imageBorder.height-130)/2,
 		height:imageBorder.getHeight(),
-		width:imageBorder.getWidth()
+		width:imageBorder.getWidth(),
+		visible:false
 	//	image:'/images/camera-ip.png'
 	});
 	imageBorder.add(imageContainer);
