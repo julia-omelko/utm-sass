@@ -184,7 +184,7 @@ function message_window(utm) {
 	if(utm.Android){
 		//Add Swipe event to delete messages
 		tableView.addEventListener('swipe', function(eventObject){
-			deleteMessage(eventObject.row.messageData.Id,row);
+			deleteMessage(eventObject.row.messageData.Id,eventObject.row);
 		});
 	}
 	
@@ -283,7 +283,7 @@ function message_window(utm) {
 	});
 
 	var cancel = Titanium.UI.createButton({
-		title : L('cancel'),
+		title : L('done'),
 		style : Titanium.UI.iPhone.SystemButtonStyle.DONE
 	});
 	cancel.addEventListener('click', function() {

@@ -34,9 +34,11 @@ function messageDetail_window(_messageData,_curMode,utm) {
  		//add the navbar to the screen
 		win.add(my_navbar);
 		
-		//add activityIndicator to window
-		win.add(utm.activityIndicator)		
+	
 	}
+	
+			//add activityIndicator to window
+		win.add(utm.activityIndicator)		
 	
 	// set scroll context differently for platform
 	if(utm.Android){
@@ -235,10 +237,12 @@ function messageDetail_window(_messageData,_curMode,utm) {
 				}else{
 					utm.log("error");				
 				}		
+				getMembersReq=null;
 		     },
 		     // function called when an error occurs, including a timeout
 		     onerror : function(e) {		        
 		        	utm.handleError(e,this.status,this.responseText); 
+		        	getMembersReq=null;
 		     }
 		     ,timeout:utm.netTimeout
 		});	
@@ -252,7 +256,7 @@ function messageDetail_window(_messageData,_curMode,utm) {
 	var getMessageDetailReq = Ti.Network.createHTTPClient({
 		validatesSecureCertificate:utm.validatesSecureCertificate 
 		,onload: function()
-		{	utm.setActivityIndicator('');
+		{	
 			win.visible=true;
 			var response = eval('('+this.responseText+')');
 			
@@ -292,7 +296,8 @@ function messageDetail_window(_messageData,_curMode,utm) {
 				utm.recordError(response.Message)
 			}else{
 				utm.recordError(response.Message)
-			}		
+			}	
+			utm.setActivityIndicator('');	
 		},		
 		onerror:function(e){	
 			utm.setActivityIndicator('');	
@@ -338,10 +343,33 @@ function messageDetail_window(_messageData,_curMode,utm) {
 		
 	function callOutToGetAttachments(_messageData){		
 		utm.setActivityIndicator('Loading Attachment...');	
-		for(i=0;i < _messageData.Attachments.length;i++){					
+		for(i=0;i < _messageData.Attachments.length;i++){		
+			
+			
+			var getAttachmentsReq = Ti.Network.createHTTPClient({
+				validatesSecureCertificate:utm.validatesSecureCertificate 
+				,onload: function()
+				{
+					var response = eval('('+this.responseText+')');
+					
+					if(this.status ==200){
+						populateImageViews(response);
+					}
+					getAttachmentsReq=null;
+					utm.setActivityIndicator('');		
+				},		
+				onerror:function(e){
+					utm.handleError(e,this.status,this.responseText); 		
+					getAttachmentsReq=null;	
+				}
+				,timeout:utm.netTimeout
+			});	
+			
+						
 			getAttachmentsReq.open("GET",utm.serviceUrl+"Attachment/"+_messageData.Attachments[i].Id);	
 			getAttachmentsReq.setRequestHeader('Authorization-Token', utm.AuthToken);	
 			getAttachmentsReq.send();				
+			
 		}		
 		
 		if( _messageData.Attachments.length ==1){
@@ -354,22 +382,6 @@ function messageDetail_window(_messageData,_curMode,utm) {
 		}
 	}
 	
-	var getAttachmentsReq = Ti.Network.createHTTPClient({
-		validatesSecureCertificate:utm.validatesSecureCertificate 
-		,onload: function()
-		{
-			var response = eval('('+this.responseText+')');
-			utm.setActivityIndicator('');		
-			if(this.status ==200){
-				populateImageViews(response);
-			}
-			
-		},		
-		onerror:function(e){
-			utm.handleError(e,this.status,this.responseText); 			
-		}
-		,timeout:utm.netTimeout
-	});	
 
 	function populateImageViews(_attachment){
 		var imageSrc = _attachment.Attachment;	
@@ -386,6 +398,7 @@ function messageDetail_window(_messageData,_curMode,utm) {
 			//could fail but nothing we can do with it
 		}
 	}
+
 	
 	return win;
 };
