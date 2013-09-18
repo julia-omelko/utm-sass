@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ti:app xmlns:ti="http://ti.appcelerator.org">
+<?xml version="1.0" encoding="UTF-8"?><ti:app xmlns:ti="http://ti.appcelerator.org">
     <property name="acs-oauth-secret-production" type="string">XbPKERaMoJfff62gYF9kCfxO7t7DYIiv</property>
     <property name="acs-oauth-key-production" type="string">GgRLC2knR79k4Bmx8PaUKDZQRXQNdEKZ</property>
     <property name="acs-api-key-production" type="string">F80xpsGgm2Yyf2cPLtXumHzoeVi1j1bP</property>
@@ -47,28 +46,16 @@
     <android xmlns:android="http://schemas.android.com/apk/res/android">
         <manifest>
             <application>
-                <activity
-                    android:configChanges="keyboardHidden|orientation"
-                    android:label="UTM" android:name=".UtmActivity"
-                    android:screenOrientation="portrait" android:theme="@style/Theme.Titanium">
+                <activity android:configChanges="keyboardHidden|orientation" android:label="UTM" android:name=".UtmActivity" android:screenOrientation="portrait" android:theme="@style/Theme.Titanium">
                     <intent-filter>
                         <action android:name="android.intent.action.MAIN"/>
                         <category android:name="android.intent.category.LAUNCHER"/>
                     </intent-filter>
                 </activity>
-                <activity
-                    android:configChanges="keyboardHidden|orientation"
-                    android:name="ti.modules.titanium.media.TiCameraActivity"
-                    android:screenOrientation="portrait" android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"/>
-                <activity
-                    android:configChanges="keyboardHidden|orientation"
-                    android:name="org.appcelerator.titanium.TiActivity" android:screenOrientation="portrait"/>
-                <activity
-                    android:configChanges="keyboardHidden|orientation"
-                    android:name="org.appcelerator.titanium.TiTranslucentActivity"
-                    android:screenOrientation="portrait" android:theme="@android:style/Theme.Translucent"/>
-                <activity
-                    android:name="ti.modules.titanium.ui.android.TiPreferencesActivity" android:screenOrientation="portrait"/>
+                <activity android:configChanges="keyboardHidden|orientation" android:name="ti.modules.titanium.media.TiCameraActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"/>
+                <activity android:configChanges="keyboardHidden|orientation" android:name="org.appcelerator.titanium.TiActivity" android:screenOrientation="portrait"/>
+                <activity android:configChanges="keyboardHidden|orientation" android:name="org.appcelerator.titanium.TiTranslucentActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.Translucent"/>
+                <activity android:name="ti.modules.titanium.ui.android.TiPreferencesActivity" android:screenOrientation="portrait"/>
                 <uses-permission android:name="android.permission.CAMERA"/>
                 <uses-permission android:name="android.permission.READ_CONTACTS"/>
                 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
