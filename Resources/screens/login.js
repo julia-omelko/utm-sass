@@ -17,7 +17,7 @@ var TheLoginScreen_view = function(utm) {
 		image:'/images/ytm_Narrow.png',
 		width:275,
 		height:71,
-		top:20,
+		top:10,
 		bottom:utm.Android ? 50 : 0
 	});
 	loginView.add(utmLogo);
@@ -42,7 +42,7 @@ var TheLoginScreen_view = function(utm) {
 	
 	var password = Ti.UI.createTextField({
 		color:utm.textFieldColor,
-		top:utm.Android ? 40 : 20,
+		top:utm.Android ? 40 : 15,
 		width:300,
 		hintText:L('label_password'),
 		passwordMask:true,
@@ -65,7 +65,7 @@ var TheLoginScreen_view = function(utm) {
 	
 	var loginBtn = Ti.UI.createButton({
 		title:L('login'),
-		top:utm.Android ? 40 : 20,
+		top:utm.Android ? 40 : 15,
 		width:100,
 		borderRadius:1,
 		font:{fontFamily:'Arial',fontWeight:'bold',fontSize:'14dp'}
@@ -97,7 +97,7 @@ var TheLoginScreen_view = function(utm) {
 		 text:L('login_signup'),
 		 color: utm.textColor,		
 		 textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
-		 top: 20,
+		 top: 15,
 		 width:'auto',
 		 font: { fontSize:'20dp' }
 		 //height: 20
