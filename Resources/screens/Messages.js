@@ -175,6 +175,7 @@ function message_window(utm) {
 	});
 
 	function showMessageDetail(_messageData) {
+		utm.MessageDetailWindow=null;
 		utm.MessageDetailWindow = require('screens/MessageDetail');
 		utm.messageDetailWindow = new utm.MessageDetailWindow(_messageData, curMode, utm);
 		utm.messageDetailWindow.title = 'Message';
