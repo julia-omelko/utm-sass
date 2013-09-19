@@ -48,7 +48,8 @@ var WriteMessage_window =function(utm) {
 	
 	var toLabel = Ti.UI.createLabel({
 		text:utm.sentToContactListString,
-		width:'auto',
+		width:Ti.UI.SIZE,
+		wordWrap:false,
 		font: { fontSize:'20dp' },
 		height:'30dp',
 		color : '#000',

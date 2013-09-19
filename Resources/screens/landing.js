@@ -49,8 +49,8 @@ var TheLandingScreen_view = function(utm) {
 	
 	var utmLogo = Ti.UI.createImageView({
 		image:'/images/ytm_Narrow.png',
-		width:275,
-		height:71,
+		width:'275dp',
+		height:'71dp',
 		top:20
 	});
 	landingView.add(utmLogo);	
