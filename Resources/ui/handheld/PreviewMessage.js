@@ -19,6 +19,8 @@ var PreviewMessage_window = function(utm) {
 	var signMessagesSwitchWasOnButTurnedff = 'none';	
 	var cameraButtonWidth ='40dp';
 	var cameraButtonHeight ='36dp';
+	var inputFieldHight = utm.android ? '50dp':'16%';
+	
 		
 /*	cameraButton.addEventListener('click', function(){
 		camera.captureImage();		
@@ -125,38 +127,12 @@ var PreviewMessage_window = function(utm) {
 		color : utm.textFieldColor,
 		editable : false,
 		width : utm.SCREEN_WIDTH - 10,
-		height : '16%', //utm.SCREEN_HEIGHT-(utm.SCREEN_HEIGHT/1.2)
+		height :inputFieldHight,
 		textAlign : 'left'
 	});
 	scrollView.add(yourOrgMessageValue);
 
-	//------------ Preview of Encrypted (NOW HIDDEN)---------------------------
-	var encryptedLabel = Ti.UI.createLabel({
-		text : L('send_preview_how_encrypted') + ':',
-		width : utm.SCREEN_WIDTH - 10,
-		top : 2,
-		font : {
-			fontSize : '14dp',
-			fontWeight : 'bold'
-		},
-		height : 'auto',
-		textAlign : 'left',
-		visible : false //HIDEN
-	});
-	//win.add(encryptedLabel);
-	var encryptedValue = Ti.UI.createTextArea({
-		text : '',
-		font : {
-			fontSize : '14dp'
-		},
-		color : utm.textFieldColor,
-		editable : false,
-		width : utm.SCREEN_WIDTH - 10,
-		height : '20%', //utm.SCREEN_HEIGHT-(utm.SCREEN_HEIGHT/1.2)
-		textAlign : 'left',
-		visible : false //HIDEN
-	});
-	//win.add(encryptedValue);
+	
 
 	//------------- UTM Message ------------------
 	var utmMessageGroup = Ti.UI.createView({
@@ -227,7 +203,7 @@ var PreviewMessage_window = function(utm) {
 		textAlign : 'left',
 		editable:false,	
 		width : utm.SCREEN_WIDTH - 10,
-		height : '18%',  //utm.SCREEN_HEIGHT-(utm.SCREEN_HEIGHT/1.2)
+		height : inputFieldHight
 	});
 	//todo get the screen width so we can make this wider if possible
 	scrollView.add(customUtmMessage);
@@ -648,7 +624,7 @@ var PreviewMessage_window = function(utm) {
 					customUtmMessage.value = response.UtmText;
 					yourOrgMessageValue.value = response.PlainText;
 					curRjCrypt = response.RjCrypt;
-					encryptedValue.value = curRjCrypt;
+					
 				} else {
 					utm.recordError(response.Message + ' ExceptionMessag:' + response.ExceptionMessage);
 				}
@@ -673,7 +649,6 @@ var PreviewMessage_window = function(utm) {
 
 	function resetScreen() {
 		yourOrgMessageValue.value = '';
-		encryptedValue.value = '';
 		customUtmMessage.value = '';
 
 		//reset the buttons
