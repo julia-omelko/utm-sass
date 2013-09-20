@@ -68,14 +68,23 @@ function CameraView(_win) {
 					saveToPhotoGallery:false,//NOTE this is important to be set to FALSE
 					mediaTypes:[Ti.Media.MEDIA_TYPE_PHOTO],  //, Ti.Media.MEDIA_TYPE_VIDEO this will need work to get video working
 					success:function(event) {
-						
-						resizedImage = event.media.imageAsResized(event.media.width/3,event.media.height/3);	
+						if(utm.Android){
+							resizedImage = event.media.imageAsResized(event.media.width/6,event.media.height/6);
+						}else{
+							resizedImage = event.media.imageAsResized(event.media.width/3,event.media.height/3);
+						}	
 						
 						resizeRatio = (Math.max(event.media.width/3,event.media.height/3));
 						resizeWidth = Math.round(event.media.width/resizeRatio);
 						resizeHeight = Math.round(event.media.height/resizeRatio);
 						
-						imageForPreview = event.media.imageAsResized(event.media.width/2,event.media.height/2);
+						//imageForPreview = event.media.imageAsResized(event.media.width/2,event.media.height/2);
+						
+						if(utm.Android){
+							imageForPreview = event.media.imageAsResized(event.media.width/6,event.media.height/6);
+						}else{
+							imageForPreview = event.media.imageAsResized(event.media.width/2,event.media.height/2);
+						}	
 
 						displayRatio = (Math.max(imageForPreview.width/imageBorder.getWidth(),imageForPreview.height/imageBorder.getHeight()));
 						thumbWidth = Math.round(imageForPreview.width/displayRatio);
