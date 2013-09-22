@@ -185,7 +185,9 @@ function message_window(utm) {
 	if(utm.Android){
 		//Add Swipe event to delete messages
 		tableView.addEventListener('swipe', function(eventObject){
-			deleteMessage(eventObject.row.messageData.Id,eventObject.row);
+			if(eventObject.direction == 'right'){
+				deleteMessage(eventObject.row.messageData.Id,eventObject.row);
+			}	
 		});
 	}
 	
@@ -348,7 +350,7 @@ function message_window(utm) {
 							row : clickName = 'row',
 							objName : 'row',
 							touchEnabled : true,
-							height : utm.Android ? '55dp' : 55,
+							height : utm.Android ? '60dp' : 55,
 							hasChild : true,
 							messageData : response[i]
 						});
@@ -383,7 +385,7 @@ function message_window(utm) {
 							top : 2,
 							left : 17,
 							width : utm.SCREEN_WIDTH - 100,
-							height : utm.Android ? '15dp' : 15,
+							height : utm.Android ? '18dp' : 15,
 							ellipsize : true
 						});
 						hView.add(fromMessage);
@@ -397,7 +399,7 @@ function message_window(utm) {
 							objName : 'utmMessage',
 							text : response[i].UtmText,
 							touchEnabled : true,
-							top : 30,
+							top : 35,
 							left : 15,
 							height : utm.Android ? '20dp' : '20',
 							width : '100%'
