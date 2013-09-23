@@ -42,7 +42,6 @@ var MyHorts_window = function(utm) {
 	myHortsWindow.add(tableView);
 
 	myHortsWindow.addEventListener("focus", function() {
-		utm.setActivityIndicator('Getting your MyHorts...');
 		loadMyHorts();
 	});
 
@@ -70,6 +69,7 @@ var MyHorts_window = function(utm) {
 	function loadMyHorts() {
 		getMyHortsReq.open("GET", utm.serviceUrl + "MyHort?$orderby=FriendlyName");
 		getMyHortsReq.setRequestHeader('Authorization-Token', utm.AuthToken);
+		utm.setActivityIndicator('Getting your MyHorts...');
 		getMyHortsReq.send();
 	}
 
@@ -235,6 +235,12 @@ var MyHorts_window = function(utm) {
 	//Added to clear out the myhort list in case someone re-logs in as another user
 	Ti.App.addEventListener('app:loginSuccess', function() {
 		tableView.setData([]);
+	});
+	
+	//setTimeout(function() { myHortsWindow.show() }, 200);
+	
+	myHortsWindow.addEventListener("blur", function() {
+		utm.setActivityIndicator('');
 	});
 
 	return myHortsWindow;

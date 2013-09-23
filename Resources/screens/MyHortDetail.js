@@ -891,6 +891,11 @@ if(isOwner){
 
 	}
 
+	win.addEventListener("blur", function() {
+		utm.setActivityIndicator('');
+	});
+
+
 	return win;
 };
 
