@@ -646,6 +646,10 @@ function message_window(utm) {
 		tableView.editing = false;
 	});
 
+	win.addEventListener("blur", function() {
+		utm.setActivityIndicator('');
+	});
+
 	return win;
 };
 

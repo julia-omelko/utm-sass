@@ -365,6 +365,9 @@ function messageDetail_window(_messageData,_curMode,utm) {
 		}
 	}
 
+	win.addEventListener("blur", function() {
+		utm.setActivityIndicator('');
+	});
 
 	return win;
 };
