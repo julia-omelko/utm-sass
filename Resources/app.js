@@ -11,20 +11,21 @@ utm.backgroundColor='#fff';
 utm.textColor='#000';
 utm.textFieldColor='#336699';
 utm.textErrorColor='#800000';
-utm.androidTitleFontSize=25
-utm.androidTitleFontWeight='bold'
-utm.androidLabelFontSize=25
-utm.appVersion = 'Version:'+Ti.App.version;
-utm.netTimeout=18000;
-utm.screenLockTime=5000;
+utm.androidTitleFontSize = 25;
+utm.androidTitleFontWeight = 'bold';
+utm.androidLabelFontSize = 25;
+utm.appVersion = 'Version:' + Ti.App.version;
+utm.netTimeout = 18000;
+utm.screenLockTime = 5000;
 utm.sentToContactListString = '';
 utm.networkIsOnline = false;
 var pWidth = Ti.Platform.displayCaps.platformWidth;
 var pHeight = Ti.Platform.displayCaps.platformHeight;
 utm.SCREEN_WIDTH = (pWidth > pHeight) ? pHeight : pWidth;
 utm.SCREEN_HEIGHT = (pWidth > pHeight) ? pWidth : pHeight;
-utm.enableSendMessageButton=false;
-utm.appPauseTime=0;
+utm.showSplashScreenOnPause = true;
+utm.enableSendMessageButton = false;
+utm.appPauseTime = 0;
 //var gaModule = require('Ti.Google.Analytics');
 //var analytics = new gaModule('UA-38943374-1');
 
@@ -32,6 +33,9 @@ utm.appPauseTime=0;
 utm.twitterConsumerKey = ""; //'8qiy2PJv3MpVyzuhfNXkOw';
 utm.twitterConsumerSecret = ""; //'Qq0rth4MHGB70nh20nSzov2zz6GbVxuVndCh2IxkRWI';
 utm.facebookAppId = '494625050591800';
+
+//this will need to be coming from the database in the future
+utm.products = ['com.youthisme.20for99', 'com.youthisme.500for1999'];
 
 var unlockWindow = null;
 
@@ -52,14 +56,14 @@ if(utm.iPhone || utm.iPad ){
 	var keychain = require("com.0x82.key.chain");
 }
 
-utm.log=function (message) {
+utm.log = function (message) {
 	Ti.API.info(message);
-}
+};
 
 Ti.UI.setBackgroundColor('#fff');
 
 //Note 2 diff controllers based on platform folders
-var NavigationController = require('NavigationController')
+var NavigationController = require('NavigationController');
 //MainWindow = require('/screens/MainWindow').MainWindow;
 utm.navController = new NavigationController(utm);
 
@@ -88,9 +92,9 @@ utm.Login = require('screens/login');
 utm.loginView = new utm.Login(utm);
 utm.navController.open(utm.loginView );
 
-utm.setEnvModePrefix= function (env){
-	utm.envModePrefix =env;
-	if (env==='local') { 
+utm.setEnvModePrefix = function (env){
+	utm.envModePrefix = env;
+	if (env === 'local') { 
 		
 		//Local Developer ID if you have .Net projects local
 		//utm.serviceUrl = 'http://192.168.244.194/api/v1/';
@@ -112,7 +116,7 @@ utm.setEnvModePrefix= function (env){
 	utm.log('env='+env);
 	utm.log('utm.seviceUrl='+utm.serviceUrl);
 	utm.loginView.setWebUrl(utm.webUrl );
-}
+};
 
 appInit();
 
@@ -242,7 +246,7 @@ function showMyHortWindow() {
 Ti.App.addEventListener('app:myHortChoosen', setMyHort);
 function setMyHort(e) {
 	utm.log('setMyHort() fired myHortId=' + e.myHortId);
-	utm.targetMyHortID = e.myHortId
+	utm.targetMyHortID = e.myHortId;
 	utm.navController.open(utm.chooseContactsView);
 	if(e.direct) utm.chooseContactsView.setBackButtonTitle(L('back')); 
 
@@ -271,7 +275,7 @@ function setContactsChoosen(e) {
 Ti.App.addEventListener('app:showWriteMessageView', showWriteMessageView);
 function showWriteMessageView(e) {
 	utm.log('showWriteMessageView() fired' );
-	utm.writeMessageView.setMode(e.mode)
+	utm.writeMessageView.setMode(e.mode);
 	utm.writeMessageView.setMessageData(e.messageData);
 	
 	//originalMessageId:_messageData.Id, replyTo:_messageData.FromUserId
@@ -283,10 +287,10 @@ function showPreview(e) {
 	utm.log('showPreview() fired message=' + e.messageText);
 	utm.originalTextMessage = e.messageText;
 	
-	utm.previewMessageView.setMode(e.mode)
+	utm.previewMessageView.setMode(e.mode);
 	utm.previewMessageView.setMessageData(e.messageData);
 	
-	utm.navController.open(utm.previewMessageView)
+	utm.navController.open(utm.previewMessageView);
 	Ti.App.fireEvent('app:getMessagePreview', {
 		messageText : e.messageText
 	});
@@ -389,7 +393,7 @@ function isAllowedSendMessage(){
 function showLoginScreenLockView() {	
 	//TODO figure out how to NOT have to close all the windows to open the login window
 	//Maybe a model popup 100% x 100%
-	utm.loggedIn = false
+	utm.loggedIn = false;
 	//closeAllScreens(false);
 	//utm.navController.open(utm.loginView);	
 	showLoginView();
@@ -432,8 +436,6 @@ utm.backToChooseContactsScreenButton.addEventListener('click', function() {
 //Used to remove the leftNavButton
 utm.emptyView = Ti.UI.createView({});
 
-
-
 utm.logoutReq = Ti.Network.createHTTPClient({
 	validatesSecureCertificate:utm.validatesSecureCertificate 
 	,timeout:utm.netTimeout,
@@ -472,8 +474,8 @@ Ti.App.addEventListener('app:getSubscriptionInfo', function (e){
 	
 			if (this.status == 200) {		
 				
-				utm.User.UserProfile.MessagesRemaining=response.MessagesRemaining;
-				utm.User.UserProfile.SubscriptionEnds	=response.SubscriptionEnds;
+				utm.User.UserProfile.MessagesRemaining = response.MessagesRemaining;
+				utm.User.UserProfile.SubscriptionEnds = response.SubscriptionEnds;
 						
 				var now = new Date();		
 				var subDate = utm.User.UserProfile.SubscriptionEnds.substring(0,	10);
@@ -518,14 +520,14 @@ function showSubscriptionInstructions(){
 	utm.subscribeInfoView.updateMessage();
 }
 
-utm.setActivityIndicator =function (_message) {
+utm.setActivityIndicator = function (_message) {
 	if (_message != '') {
 		utm.activityIndicator.show();
 	} else {
 		utm.activityIndicator.hide();
 	}
 	utm.activityIndicator.setMessage(_message);
-}
+};
 
 Ti.Network.addEventListener('change', function(e) {
 	utm.log('Network Status Changed:' + e.online);
@@ -624,7 +626,7 @@ utm.handleError = function (e,status,responseText) {
  	}
  	
  	alert(message);         
-}
+};
 
 Ti.App.addEventListener('app:signup', function(){
 	utm.SignupView = require('screens/SignUp');
@@ -633,42 +635,45 @@ Ti.App.addEventListener('app:signup', function(){
 });
 
 Ti.App.addEventListener("paused", function(e){
+	Ti.API.info(e);
 	utm.log('-------  APP Paused ------');
-	appPauseTime= new Date();
-	utm.log('-------  APP Paused appPauseTime='+appPauseTime.valueOf());
+	utm.appPauseTime = new Date();
+	utm.log('-------  APP Paused appPauseTime=' + appPauseTime.valueOf());
 });
 
 //IF the app is left for more then one minute force login
 Ti.App.addEventListener("resumed", function(e){
 	
-	//RE #391 - Stop Screenshot when App Looses Focus - close the splash screen
-	utm.log(' **********************  -------  APP resumed ------ **********************    ');
-	utm.splashView.close();	
-
-	if(!utm.loggedIn) return;
-
-	var curDate = new Date();
-	var curMil =curDate.valueOf() ;
-	var pauseMil = appPauseTime.valueOf();
-	var diff = curMil-pauseMil;
+	if(!utm.showSplashScreenOnPause) {
+		//RE #391 - Stop Screenshot when App Looses Focus - close the splash screen
+		utm.log(' **********************  -------  APP resumed ------ **********************    ');
+		utm.splashView.close();	
 	
-	if( diff  > utm.screenLockTime){
-			utm.log('-------  APP resumed  FORCE LOGIN');
-			
-			if(utm.iPhone || utm.iPad ){
-				var pass = keychain.getPasswordForService('utm', 'lockscreen');
-				if(pass == null){
+		if(!utm.loggedIn) return;
+	
+		var curDate = new Date();
+		var curMil = curDate.valueOf() ;
+		var pauseMil = utm.appPauseTime.valueOf() ? utm.appPauseTime.valueOf() : 0;
+		var diff = curMil - pauseMil;
+		
+		if( pauseMil != 0 && diff  > utm.screenLockTime){
+				utm.log('-------  APP resumed  FORCE LOGIN');
+				
+				if(utm.iPhone || utm.iPad ){
+					var pass = keychain.getPasswordForService('utm', 'lockscreen');
+					if(pass == null){
+						showLoginScreenLockView();
+					}else{
+						showPinLockScreen(pass);		
+					}
+					
+				}else if(utm.Android){
 					showLoginScreenLockView();
-				}else{
-					showPinLockScreen(pass);		
 				}
-				
-			}else if(utm.Android){
-				showLoginScreenLockView();
-			}
-				
-	}else{
+					
+		}else{
 			utm.log('-------  APP resumed  NO FORCE LOGIN');
+		}
 	}	
 });
 
@@ -709,7 +714,9 @@ if(utm.iPhone || utm.iPad ){
 }
 //RE #391 - Stop Screenshot when App Looses Focus - put up the splash screen
 Ti.App.addEventListener('pause', function(e){
-	utm.splashView.open();
+	if(utm.showSplashScreenOnPause) {
+		utm.splashView.open();
+	}
 	//Note: Splash is closed in resumed event
 });
 
@@ -737,7 +744,7 @@ function getDateTimeFormat(dateSent){
 	var hours = sent.fromNow();
 	var now = moment();
 
-	diff = now.diff(sent, 'days') // 1
+	diff = now.diff(sent, 'days'); // 1
 			
 	if(diff > 0){
 		return sent.format("M/D/YY");
@@ -760,13 +767,13 @@ Titanium.App.addEventListener('close', function(e){
 
 utm.recordError = function (message) {
 	utm.log('Error:' + message);
-}
+};
 
 
 utm.recordAnalytics = function (theEvent,theData){
 	//	category, action, label, value
 	//TODO Replace Google analytics.trackEvent('Usage',theEvent,'Lbl1',theData );	
-}
+};
 
 function setTimer(timetowait,context) {
 	mt=0;

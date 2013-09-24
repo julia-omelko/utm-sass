@@ -11,6 +11,9 @@
 	<string name="login_about">Acerca de usted esto me</string>
 	<string name="login_privacy">Intimidad</string>	
 	<string name="forget_me">Me Olvides</string>
+	<string name="buy_messages">Compre Mensajes</string>
+	<string name="unlock_code">Desbloquear Número</string>
+	<string name="account_info">Información de la cuenta</string>
 
 	<string name="landing_view_messages">Ver mensajes de</string>
 	<string name="landing_send_messages">Enviar un mensaje</string>	

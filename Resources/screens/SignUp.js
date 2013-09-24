@@ -224,10 +224,10 @@ function signUp_window(utm) {
 
 			} else if (this.status == 400) {
 				saveButton.enabled = true;
-				utm.recordError('Error')
+				utm.recordError('Error');
 			} else {
 				saveButton.enabled = true;
-				utm.recordError('Error')
+				utm.recordError('Error');
 			}
 
 			utm.setActivityIndicator('');

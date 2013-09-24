@@ -11,11 +11,10 @@ var MyHorts_window = function(utm) {
 
 	if (utm.iPhone || utm.iPad) {
 		myHortsWindow.setRightNavButton(deleteButton);
-	}
-
+	};
 
 	//add activityIndicator to window
-	myHortsWindow.add(utm.activityIndicator)
+	myHortsWindow.add(utm.activityIndicator);
 
 	var createButton = Ti.UI.createButton({
 		title : 'Create a New MyHort',

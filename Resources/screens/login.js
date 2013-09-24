@@ -61,7 +61,7 @@ var TheLoginScreen_view = function(utm) {
 	
 	password.addEventListener('return', function () {
 		loginBtn.fireEvent('click');  
-	})
+	});
 	
 	var loginBtn = Ti.UI.createButton({
 		title:L('login'),
@@ -88,11 +88,11 @@ var TheLoginScreen_view = function(utm) {
 	}
 	
 	//Forgot Your Password?
-	var forgotPWLabel = createLink(L('login_forgot_password'), '/Account/PasswordReset')
+	var forgotPWLabel = createLink(L('login_forgot_password'), '/Account/PasswordReset');
 	loginView.add(forgotPWLabel);
 		
 	//Want to sign up?
-	var signUpLabel = createLink(L('login_signup'), '/Account/Register')
+	var signUpLabel = createLink(L('login_signup'), '/Account/Register');
 	var signUpLabel = Ti.UI.createLabel({
 		 text:L('login_signup'),
 		 color: utm.textColor,		
@@ -101,14 +101,15 @@ var TheLoginScreen_view = function(utm) {
 		 width:'auto',
 		 font: { fontSize:'20dp' }
 		 //height: 20
-	}) 
+	});
+	 
 	loginView.add(signUpLabel);
 	signUpLabel.addEventListener('click',function(){
 		Ti.App.fireEvent('app:signup');
-	})
+	});
 	
 	//About UTM
-	var tosLabel = createLink(L('login_about'), '/Home/WhoWeAre')
+	var tosLabel = createLink(L('login_about'), '/Home/WhoWeAre');
 	loginView.add(tosLabel);
 
 	//Version 0.12 Alpha	
