@@ -188,7 +188,8 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		tabBar.add(tab3);
 		
 		//add activityIndicator to view
-		view.add(utm.activityIndicator);
+		if (utm.iPhone || utm.iPad)
+			view.add(utm.activityIndicator);
 	}
 	
 	var backButton = Ti.UI.createButton({title: 'MyHorts'});
@@ -576,17 +577,17 @@ if(isOwner){
 	
 	function deleteMyHort(myHortId) {
 		utm.log('Deleting MyHort ' + myHortId);
-		utm.setActivityIndicator('Deleting...');
+		utm.setActivityIndicator(view , 'Deleting...');
 		var deleteMyHortDetailReq = Ti.Network.createHTTPClient({
 			validatesSecureCertificate : utm.validatesSecureCertificate,
 			onload : function() {
-				utm.setActivityIndicator('');
+				utm.setActivityIndicator(view , '');
 				deleteMyHortDetailReq=null;
 				updateMyHortData();
 				utm.navController.close(utm.myHortDetailWindow,{animated:false});
 			},
 			onerror : function() {
-				utm.setActivityIndicator('');
+				utm.setActivityIndicator(view , '');
 				deleteMyHortDetailReq=null;
 			}
 		});
@@ -616,7 +617,7 @@ if(isOwner){
 
 	function updateMyHortData() {
 		saveButton.enabled = false;
-		utm.setActivityIndicator('Update MyHort...');
+		utm.setActivityIndicator(view , 'Update MyHort...');
 
 		utm.curMyHortDetails.Email = email.getValue();
 		utm.curMyHortDetails.Mobile = mobile.getValue();
@@ -685,7 +686,7 @@ if(isOwner){
 	var getMyHortDetailReq = Ti.Network.createHTTPClient({
 		validatesSecureCertificate : utm.validatesSecureCertificate,
 		onload : function() {
-			utm.setActivityIndicator('');
+			utm.setActivityIndicator(view , '');
 			win.visible = true;
 			var response = eval('(' + this.responseText + ')');
 			utm.myHortDetails = response;
@@ -747,10 +748,10 @@ if(isOwner){
 			}
 			if (utm.iPhone || utm.iPad) 
 				topButtonBar.enabled = true;
-			utm.setActivityIndicator('');
+			utm.setActivityIndicator(view , '');
 		},
 		onerror : function(e) {
-			utm.setActivityIndicator('');
+			utm.setActivityIndicator(view , '');
 			if (this.status != undefined && this.status === 404) {
 				alert('The myHort you are looking for does not exist.');
 			} else {
@@ -787,13 +788,13 @@ if(isOwner){
 		onload : function() {
 			
 			//saveButton.enabled = true;
-			utm.setActivityIndicator('');
+			utm.setActivityIndicator(view , '');
 
 			var json = this.responseData;
 			if (this.status == 200) {
-				utm.setActivityIndicator('Update Complete');
+				utm.setActivityIndicator(view , 'Update Complete');
 				Ti.App.fireEvent("app:showMyHortWindow", {});
-				utm.setActivityIndicator('');
+				utm.setActivityIndicator(view , '');
 				updateOwnerMemberDetails();
 				//loadMyHortDetail();
 			
@@ -805,7 +806,7 @@ if(isOwner){
 
 		},
 		onerror : function(e) {
-			utm.setActivityIndicator('');
+			utm.setActivityIndicator(view , '');
 			if (this.status != undefined && this.status === 404) {
 				alert('MyHort Update Failed');
 				Ti.App.fireEvent('app:refreshMyHorts', {
@@ -815,7 +816,7 @@ if(isOwner){
 				utm.handleError(e, this.status, this.responseText);
 			}
 			//saveButton.enabled = true;
-			utm.setActivityIndicator('');
+			utm.setActivityIndicator(view , '');
 		},
 		timeout : utm.netTimeout
 	});
@@ -825,7 +826,7 @@ if(isOwner){
 	});
 	
 	function loadMyHortDetail() {
-		utm.setActivityIndicator('Getting your MyHort Details...');
+		utm.setActivityIndicator(view , 'Getting your MyHort Details...');
 		getMyHortDetailReq.open("GET", utm.serviceUrl + "MyHort/GetMyHortDetails?myHortId=" + _myHortData.MyHortId);
 		getMyHortDetailReq.setRequestHeader('Authorization-Token', utm.AuthToken);
 		getMyHortDetailReq.send();
@@ -892,7 +893,7 @@ if(isOwner){
 	}
 
 	win.addEventListener("blur", function() {
-		utm.setActivityIndicator('');
+		utm.setActivityIndicator(view , '');
 	});
 
 

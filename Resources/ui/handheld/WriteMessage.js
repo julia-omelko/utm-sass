@@ -36,7 +36,8 @@ var WriteMessage_window =function(utm) {
 		writeMessageWindow.add(my_navbar);
 		
 		//add activityIndicator to window
-		writeMessageWindow.add(utm.activityIndicator)		
+		if (utm.iPhone || utm.iPad)
+			writeMessageWindow.add(utm.activityIndicator);		
 	}	
 
 	var scrollableView = Ti.UI.createScrollView({

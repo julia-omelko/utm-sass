@@ -3,25 +3,26 @@ var MyHorts_window = function(utm) {
 	var CreateMyHortWindow = require('ui/handheld/CreateMyHort');
 	var Header = require('ui/common/Header');
 
-	var myHortsWindow = new Header(utm, 'MyHorts', L('button_back'));
+	var win = new Header(utm, 'MyHorts', L('button_back'));
 
 	var deleteButton = Titanium.UI.createButton({
 		title : 'Delete'
 	});
 
 	if (utm.iPhone || utm.iPad) {
-		myHortsWindow.setRightNavButton(deleteButton);
+		win.setRightNavButton(deleteButton);
 	}
 
 
 	//add activityIndicator to window
-	myHortsWindow.add(utm.activityIndicator)
+	if (utm.iPhone || utm.iPad)
+		win.add(utm.activityIndicator);
 
 	var createButton = Ti.UI.createButton({
 		title : 'Create a New MyHort',
 		top : 5
 	});
-	myHortsWindow.add(createButton);
+	win.add(createButton);
 
 	createButton.addEventListener('click', function() {
 		utm.createMyHortWindow = new CreateMyHortWindow(utm);
@@ -39,15 +40,15 @@ var MyHorts_window = function(utm) {
 		editable : true,
 		allowsSelectionDuringEditing : true
 	});
-	myHortsWindow.add(tableView);
+	win.add(tableView);
 
-	myHortsWindow.addEventListener("focus", function() {
+	win.addEventListener("focus", function() {
 		loadMyHorts();
 	});
 
 	deleteButton.addEventListener('click', function() {
 		if (utm.iPhone || utm.iPad) {
-			myHortsWindow.setRightNavButton(cancel);
+			win.setRightNavButton(cancel);
 			tableView.editing = true;
 		}		
 	});
@@ -58,29 +59,29 @@ var MyHorts_window = function(utm) {
 	});
 	cancel.addEventListener('click', function() {
 		if (utm.iPhone || utm.iPad) {
-			myHortsWindow.setRightNavButton(deleteButton);
+			win.setRightNavButton(deleteButton);
 		}
 		tableView.editing = false;
 	});
 	if (utm.iPhone || utm.iPad) {
-		myHortsWindow.setRightNavButton(deleteButton);
+		win.setRightNavButton(deleteButton);
 	}
 
 	function loadMyHorts() {
 		getMyHortsReq.open("GET", utm.serviceUrl + "MyHort?$orderby=FriendlyName");
 		getMyHortsReq.setRequestHeader('Authorization-Token', utm.AuthToken);
-		utm.setActivityIndicator('Getting your MyHorts...');
+		utm.setActivityIndicator(win , 'Getting your MyHorts...');
 		getMyHortsReq.send();
 	}
 
 	var getMyHortsReq = Ti.Network.createHTTPClient({
 		validatesSecureCertificate : utm.validatesSecureCertificate,
 		onerror : function(e) {
+			utm.setActivityIndicator(win , '');
 			utm.handleError(e, this.status, this.responseText);
 		},
 		onload : function(e) {
 			var response = eval('(' + this.responseText + ')');
-			utm.setActivityIndicator('');
 			Titanium.Analytics.featureEvent('user.viewed_myHorts');
 			if (this.status == 200) {
 
@@ -88,6 +89,7 @@ var MyHorts_window = function(utm) {
 				populateTable(response);
 				utm.User.MyHorts = response;
 			}
+			utm.setActivityIndicator(win , '');
 		},
 		timeout : utm.netTimeout
 	});
@@ -189,7 +191,7 @@ var MyHorts_window = function(utm) {
 	// ##################### DELETE MyHort #####################
 	function deleteMyHort(myHortId) {
 		utm.log('Deleting MyHort ' + myHortId);
-		utm.setActivityIndicator('Deleting...');
+		utm.setActivityIndicator(win , 'Deleting...');
 		deleteMyHortDetailReq.open("GET", utm.serviceUrl + "MyHort/DeleteUsersMyHort?myhortId=" + myHortId);
 		deleteMyHortDetailReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");
 		deleteMyHortDetailReq.setRequestHeader('Authorization-Token', utm.AuthToken);
@@ -200,12 +202,12 @@ var MyHorts_window = function(utm) {
 	var deleteMyHortDetailReq = Ti.Network.createHTTPClient({
 		validatesSecureCertificate : utm.validatesSecureCertificate,
 		onload : function() {
-			utm.setActivityIndicator('');
+			utm.setActivityIndicator(win , '');
 
 			//loadMyHorts();
 		},
 		onerror : function() {
-			utm.setActivityIndicator('');
+			utm.setActivityIndicator(win , '');
 			utm.log('error');
 		}
 	});
@@ -221,9 +223,9 @@ var MyHorts_window = function(utm) {
 	}
 
 
-	myHortsWindow.addEventListener('blur', function() {
+	win.addEventListener('blur', function() {
 		if (utm.iPhone || utm.iPad) {
-			myHortsWindow.setRightNavButton(deleteButton);
+			win.setRightNavButton(deleteButton);
 		}
 		tableView.editing = false;
 	});
@@ -237,13 +239,13 @@ var MyHorts_window = function(utm) {
 		tableView.setData([]);
 	});
 	
-	//setTimeout(function() { myHortsWindow.show() }, 200);
+	//setTimeout(function() { win.show() }, 200);
 	
-	myHortsWindow.addEventListener("blur", function() {
-		utm.setActivityIndicator('');
+	win.addEventListener("blur", function() {
+		utm.setActivityIndicator(win , '');
 	});
 
-	return myHortsWindow;
+	return win;
 
 }
 module.exports = MyHorts_window;

@@ -176,7 +176,7 @@ function signUp_window(utm) {
 		
 	function register() {
 		saveButton.enabled = false;
-		utm.setActivityIndicator('Signup in progress...');
+		utm.setActivityIndicator(win , 'Signup in progress...');
 		utm.curReg={};
 		utm.curReg.UserName = userName.getValue();
 		utm.curReg.Password = password.getValue();
@@ -186,7 +186,7 @@ function signUp_window(utm) {
 		utm.curReg.AcceptTerms = true;
 		utm.curReg.RegistrationMethod= utm.Android ? 'android' : 'ios';
 		
-		utm.setActivityIndicator('Sign Up in Progress...');
+		utm.setActivityIndicator(win , 'Sign Up in Progress...');
 		getSignUpReq.open("POST", utm.serviceUrl + "Account/Create?returnUrl=/Account/Verify");
 		getSignUpReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");
 		getSignUpReq.send(JSON.stringify(utm.curReg));
@@ -196,7 +196,7 @@ function signUp_window(utm) {
 		validatesSecureCertificate : utm.validatesSecureCertificate,
 		onload : function() {
 
-			utm.setActivityIndicator('');
+			utm.setActivityIndicator(win , '');
 			var response = eval('(' + this.responseText + ')');
 			utm.signUps = response;
 
@@ -230,10 +230,10 @@ function signUp_window(utm) {
 				utm.recordError('Error')
 			}
 
-			utm.setActivityIndicator('');
+			utm.setActivityIndicator(win , '');
 		},
 		onerror : function(e) {
-			utm.setActivityIndicator('');
+			utm.setActivityIndicator(win , '');
 			saveButton.enabled = true;
 			
 			if(this.responseData){
@@ -324,7 +324,7 @@ function signUp_window(utm) {
 			
 		},
 		onerror:  function(e) {
-			utm.setActivityIndicator('');
+			utm.setActivityIndicator(win , '');
 			if (this.status != undefined && this.status === 404) {
 				alert('An error occured checking your user name.');
 			} else {

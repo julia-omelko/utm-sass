@@ -3,8 +3,17 @@ var NavigationController = function(utm) {
 
     self.open = function(windowToOpen) {
         //make "heavyweight" and associate with an Android activity
-        windowToOpen.navBarHidden = windowToOpen.navBarHidden || false;
-        windowToOpen.add(utm.activityIndicator);
+    		windowToOpen.navBarHidden = windowToOpen.navBarHidden || false;
+        
+        
+           
+	   	var thisActivityIndicator = Ti.UI.Android.createProgressIndicator({
+		    activityIndicatorStyle : Ti.UI.ActivityIndicatorStyle.DARK,
+		    location : Ti.UI.Android.PROGRESS_INDICATOR_DIALOG,   // display in dialog 
+		    type : Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT // display a spinner
+	 	 });
+        
+	        windowToOpen.add(thisActivityIndicator);
 
         if(!self.rootWindow) {
             //windowToOpen.exitOnClose = true;
@@ -22,7 +31,7 @@ var NavigationController = function(utm) {
     		}else{
     			utm.log('NO CLOSE WINDOW  '+ windowToClose);
     		}
-        
+        windowToClose=null;
     };
 
     return self;

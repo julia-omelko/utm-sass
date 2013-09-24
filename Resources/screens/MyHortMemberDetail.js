@@ -117,7 +117,7 @@ function myHortDetail_window(_myHortMember, utm) {
 
 	function updateMyHortMemberData() {
 		saveButton.enabled = false;
-		utm.setActivityIndicator('Updating...');
+		utm.setActivityIndicator(view , 'Updating...');
 
 		_myHortMember.NickName = nickNameTextField.value;
 		
@@ -144,9 +144,9 @@ function myHortDetail_window(_myHortMember, utm) {
 
 			var json = this.responseData;
 			if (this.status == 200) {
-				utm.setActivityIndicator('Update Complete');
+				utm.setActivityIndicator(view , 'Update Complete');
 				Ti.App.fireEvent("app:showMyHortWindow", {});
-				utm.setActivityIndicator('');
+				utm.setActivityIndicator(view , '');
 
 				loadMyHortDetail(_myHortMember.MyHortId);
 
@@ -160,10 +160,10 @@ function myHortDetail_window(_myHortMember, utm) {
 				utm.recordError(utm.myHortDetails.MyHort)
 			}
 			saveButton.enabled = true;
-			utm.setActivityIndicator('');
+			utm.setActivityIndicator(view , '');
 		},
 		onerror : function(e) {
-			utm.setActivityIndicator('');
+			utm.setActivityIndicator(view , '');
 			if (this.status != undefined && this.status === 404) {
 				alert('MyHort Update Failed');
 				Ti.App.fireEvent('app:refreshMyHorts', {
@@ -173,14 +173,14 @@ function myHortDetail_window(_myHortMember, utm) {
 				utm.handleError(e, this.status, this.responseText);
 			}
 			saveButton.enabled = true;
-			utm.setActivityIndicator('');
+			utm.setActivityIndicator(view , '');
 		},
 		timeout : utm.netTimeout
 	});
 
 	//Reload the myhort with the changes
 	function loadMyHortDetail(MyHortId) {
-		//utm.setActivityIndicator('Getting your MyHort Details...');
+		//utm.setActivityIndicator(view , 'Getting your MyHort Details...');
 		getMyHortDetailReq.open("GET", utm.serviceUrl + "MyHort/GetMyHortDetails?myHortId=" + MyHortId);
 		getMyHortDetailReq.setRequestHeader('Authorization-Token', utm.AuthToken);
 		getMyHortDetailReq.send();
@@ -205,7 +205,7 @@ function myHortDetail_window(_myHortMember, utm) {
 
 		},
 		onerror : function(e) {
-			utm.setActivityIndicator('');
+			utm.setActivityIndicator(view , '');
 			if (this.status != undefined && this.status === 404) {
 				alert('The myHort you are looking for does not exist.');
 			} else {

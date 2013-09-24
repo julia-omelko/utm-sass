@@ -2,33 +2,33 @@ function createMyHortWindow(myHortId,utm) {
 
 	var Header = require('ui/common/Header');
 
-	var myHortPendingWindow = new Header(utm, 'Your Pending Invitations', L('button_back'));
-	myHortPendingWindow.left='5dp';
-	myHortPendingWindow.right='5dp';
+	var win = new Header(utm, 'Your Pending Invitations', L('button_back'));
+	win.left='5dp';
+	win.right='5dp';
 	
 
 	var tableView = Titanium.UI.createTableView({
 		top:utm.iPhone || utm.iPad?'20%':'10dp',
 		height : '60%'
 	});
-	myHortPendingWindow.add(tableView);
+	win.add(tableView);
 	
 	//############ Buttons ################
 	var buttonView = Ti.UI.createView();
-	myHortPendingWindow.add(buttonView);
+	win.add(buttonView);
 	var closeButton = Ti.UI.createButton({
 		title : 'Done'
 	});
 	closeButton.addEventListener('click', function() {
-		myHortPendingWindow.close();
+		win.close();
 	});
 	buttonView.add(closeButton);
 
 	
 
 	//Load list on focus event
-	myHortPendingWindow.addEventListener("focus", function() {
-		utm.setActivityIndicator('Getting your Pending Invitations...');
+	win.addEventListener("focus", function() {
+		utm.setActivityIndicator(win , 'Getting your Pending Invitations...');
 		loadPending();
 	});
 
@@ -38,7 +38,7 @@ function createMyHortWindow(myHortId,utm) {
 			validatesSecureCertificate : utm.validatesSecureCertificate,
 			onload : function(e) {
 				var response = eval('('+this.responseText+')');
-				utm.setActivityIndicator('');
+				utm.setActivityIndicator(win , '');
 				Titanium.Analytics.featureEvent('user.viewed_myHortPending');
 				if (this.status == 200) {
 					utm.log("MyHort data returned " + response.length + '  pending returned');
@@ -135,7 +135,7 @@ function createMyHortWindow(myHortId,utm) {
 
 	}
 
-	return myHortPendingWindow;
+	return win;
 
 }
 

@@ -32,6 +32,7 @@ utm.appPauseTime=0;
 utm.twitterConsumerKey = ""; //'8qiy2PJv3MpVyzuhfNXkOw';
 utm.twitterConsumerSecret = ""; //'Qq0rth4MHGB70nh20nSzov2zz6GbVxuVndCh2IxkRWI';
 utm.facebookAppId = '494625050591800';
+utm.currentOpenWindow='';
 
 var unlockWindow = null;
 
@@ -79,14 +80,7 @@ if (utm.iPhone || utm.iPad){
 	});
   
 }else {
-  utm.activityIndicatorStyle = Ti.UI.ActivityIndicatorStyle.DARK;
-  
-   utm.activityIndicator = Ti.UI.Android.createProgressIndicator({
-	    message : 'Loading...',
-	    location : Ti.UI.Android.PROGRESS_INDICATOR_DIALOG,   // display in dialog 
-	    type : Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT // display a spinner
-	  });
-  
+ 	//Android handled in NavigationController.js
 }
 
 
@@ -96,6 +90,7 @@ if (utm.iPhone || utm.iPad){
 utm.Login = require('screens/login');
 utm.loginView = new utm.Login(utm);
 utm.navController.open(utm.loginView );
+utm.currentOpenWindow=utm.loginView;
 
 utm.setEnvModePrefix= function (env){
 	utm.envModePrefix =env;
@@ -136,8 +131,8 @@ appInit();
 utm.LandingScreen = require('screens/landing');
 utm.landingView = new utm.LandingScreen(utm);
 
-utm.MessageScreen = require('screens/Messages');
-utm.messageWindow = new utm.MessageScreen(utm);
+//utm.MessageScreen = require('screens/Messages');
+//utm.messageWindow = new utm.MessageScreen(utm);
 
 utm.MyAccountWindow = require('/ui/handheld/MyAccount');
 utm.myAccountWindow = new utm.MyAccountWindow(utm);
@@ -219,12 +214,17 @@ function handleLoginSuccess(event) {
 
 Ti.App.addEventListener('app:showLandingView', showLandingView);
 function showLandingView() {		
+	utm.currentOpenWindow=utm.landingView;
 	utm.navController.open(utm.landingView);
 }
 
 Ti.App.addEventListener('app:showMessages', showMessageWindow);
 function showMessageWindow() {
+	utm.MessageScreen = require('screens/Messages');
+	utm.messageWindow = new utm.MessageScreen(utm);
+	utm.currentOpenWindow=utm.messageWindow;
 	utm.navController.open(utm.messageWindow);
+	utm.messageWindow.showMessageWindow();
 	utm.recordAnalytics('show messages', '' );
 }
 
@@ -238,12 +238,14 @@ function showChooseMyHortWindow() {
 
 Ti.App.addEventListener('app:showMyAccountWindow', showMyAccountWindow);
 function showMyAccountWindow() {
+	utm.currentOpenWindow=utm.myAccountWindow;
 	utm.navController.open(utm.myAccountWindow);
 	utm.recordAnalytics('Show Account Window', '' );
 }
 
 Ti.App.addEventListener('app:showMyHortWindow', showMyHortWindow);
 function showMyHortWindow() {
+	utm.currentOpenWindow=utm.myHortView;
 	utm.navController.open(utm.myHortView);
 	utm.recordAnalytics('Show MyHort Window', '' );
 }
@@ -252,6 +254,7 @@ Ti.App.addEventListener('app:myHortChoosen', setMyHort);
 function setMyHort(e) {
 	utm.log('setMyHort() fired myHortId=' + e.myHortId);
 	utm.targetMyHortID = e.myHortId
+	utm.currentOpenWindow=utm.chooseContactsView;
 	utm.navController.open(utm.chooseContactsView);
 	if(e.direct) utm.chooseContactsView.setBackButtonTitle(L('back')); 
 
@@ -272,7 +275,7 @@ function setContactsChoosen(e) {
 	 previewMessageView.sentToContactListString=utm.sentToContactListString;
 	 utm.sentToContactListString=utm.sentToContactListString.slice(0, - 1);
 	 */
-
+	utm.currentOpenWindow=utm.writeMessageView;
 	utm.navController.open(utm.writeMessageView);
 
 }
@@ -284,6 +287,7 @@ function showWriteMessageView(e) {
 	utm.writeMessageView.setMessageData(e.messageData);
 	
 	//originalMessageId:_messageData.Id, replyTo:_messageData.FromUserId
+	utm.currentOpenWindow=utm.writeMessageView;
 	utm.navController.open(utm.writeMessageView);	
 }
 
@@ -307,9 +311,11 @@ function showMessagesAfterSend() {
 	
 	if(utm.MessageDetailWindow !=undefined ){
 		utm.navController.close(utm.messageDetailWindow,{animated:false}); 
+		utm.MessageDetailWindow=null;
 	}
 	if(utm.messageWindow  !=undefined ){
 		utm.navController.close(utm.messageWindow ,{animated:false}); 
+		utm.messageWindow =null;
 	}	
 		
 	if(utm.chooseContactsView != undefined){
@@ -340,6 +346,7 @@ function showMessagesAfterReply() {
 	
 	if(utm.MessageDetailWindow !=undefined ){
 		utm.navController.close(utm.messageDetailWindow,{animated:false}); 
+		utm.MessageDetailWindow=null;
 	}
 			
 	if(utm.writeMessageView !=undefined){
@@ -527,14 +534,42 @@ function showSubscriptionInstructions(){
 	utm.subscribeInfoView.updateMessage();
 }
 
-utm.setActivityIndicator =function (_message) {
-	if (_message != '') {
-		utm.activityIndicator.show();
-	} else {
-		utm.activityIndicator.hide();
+utm.setActivityIndicator =function (_curWindow, _message) {
+	
+	if(utm.iPhone || utm.iPad ){
+		if (_message != '') {
+			utm.activityIndicator.show();
+		} else {
+			utm.activityIndicator.hide();
+		}
+		utm.activityIndicator.setMessage(_message);
+	}else{
+
+		if(_curWindow==null) return;
+		 var isActivityIndicatorFound=false;
+		 var children = _curWindow.children;
+		 
+		 for( i=0; i< children.length; i++ ){
+			var obj = children[i];
+		 	
+		 	if ( isProgressIndicator(obj)){
+		 		isActivityIndicatorFound=true;
+		 		obj.setMessage(_message);
+		 		if (_message != '') {
+					obj.show();
+				} else {
+					obj.hide();
+				}
+		 	}
+		 }
 	}
-	utm.activityIndicator.setMessage(_message);
 }
+
+   function isProgressIndicator(input) {
+        return Object.prototype.toString.call(input) === '[object ProgressIndicator]';
+    }
+
+
 
 Ti.Network.addEventListener('change', function(e) {
 	utm.log('Network Status Changed:' + e.online);
@@ -542,9 +577,9 @@ Ti.Network.addEventListener('change', function(e) {
 	utm.networkIsOnline = e.online;
 	
 	if( e.online){
-		utm.setActivityIndicator('');
+		utm.setActivityIndicator(utm.currentOpenWindow , '');
 	}else{
-		utm.setActivityIndicator('No Internet Connection Available');// TODO come up with a way to display more text - UTM Application requires an Internet Connection');		
+		utm.setActivityIndicator(utm.currentOpenWindow , 'No Internet Connection Available');// TODO come up with a way to display more text - UTM Application requires an Internet Connection');		
 	}
 		
 	Ti.App.fireEvent("app:networkChange", {
@@ -554,9 +589,9 @@ Ti.Network.addEventListener('change', function(e) {
 
 function checkNetworkOnInit(){
 	if ( !Titanium.Network.online ){
-		utm.setActivityIndicator('No Internet Connection Available');// TODO come up with a way to display more text - UTM Application requires an Internet Connection');		
+		utm.setActivityIndicator(utm.currentOpenWindow , 'No Internet Connection Available');// TODO come up with a way to display more text - UTM Application requires an Internet Connection');		
 	}else{
-		utm.setActivityIndicator('');
+		utm.setActivityIndicator(utm.currentOpenWindow , '');
 	}
 	
 }
@@ -571,10 +606,16 @@ function closeAllScreens(leaveLanding){
 			if(utm.landingView != undefined){utm.navController.close(utm.landingView,{animated:false});	}
 	
 		
-		if(utm.MessageDetailWindow !=undefined ){utm.navController.close(utm.messageDetailWindow,{animated:false});}
+		if(utm.MessageDetailWindow !=undefined ){
+			utm.navController.close(utm.messageDetailWindow,{animated:false});
+			utm.MessageDetailWindow=null;
+		}
 	
 		
-		if(utm.messageWindow  !=undefined ){utm.navController.close(utm.messageWindow ,{animated:false}); }	
+		if(utm.messageWindow  !=undefined ){
+			utm.navController.close(utm.messageWindow ,{animated:false});
+			utm.messageWindow =null; 
+		}	
 		
 		if(utm.chooseMyHortView !=undefined){utm.navController.close(utm.chooseMyHortView,{animated:false});}	
 		if(utm.chooseContactsView != undefined){utm.navController.close(utm.chooseContactsView,{animated:false});}
@@ -608,7 +649,7 @@ function closeAllScreens(leaveLanding){
 }
 
 utm.handleError = function (e,status,responseText) {	
-	utm.setActivityIndicator('');
+	utm.setActivityIndicator(utm.currentOpenWindow , '');
 	var err = JSON.parse(responseText);
 	var message = 'Error Unknown';
 	
@@ -638,6 +679,7 @@ utm.handleError = function (e,status,responseText) {
 Ti.App.addEventListener('app:signup', function(){
 	utm.SignupView = require('screens/SignUp');
 	utm.signupView = new utm.SignupView(utm);
+	utm.currentOpenWindow=utm.signupView;
 	utm.navController.open(utm.signupView);
 });
 

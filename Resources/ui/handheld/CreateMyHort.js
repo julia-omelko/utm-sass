@@ -1,9 +1,9 @@
-function createMyHortWindow(utm) {
+function createwin(utm) {
 
 	var Header = require('ui/common/Header');
 
-	var myHortWindow = new Header(utm, 'Create MyHort', L('button_back'));
-	myHortWindow.left='5dp';
+	var win = new Header(utm, 'Create MyHort', L('button_back'));
+	win.left='5dp';
 	
 	var fldView = Ti.UI.createView({
 		layout:'horizontal'
@@ -36,7 +36,7 @@ function createMyHortWindow(utm) {
 		}
 	});
 	
-	myHortWindow.add(fldView);
+	win.add(fldView);
 	
 	//############ Buttons ################
 	var buttonView = Ti.UI.createView({
@@ -44,7 +44,7 @@ function createMyHortWindow(utm) {
 		,width:'100%'
 		,top:'10dp'
 	});
-	myHortWindow.add(buttonView);
+	win.add(buttonView);
 	
 	var createButton = Ti.UI.createButton({
 		title : 'Save'
@@ -61,7 +61,7 @@ function createMyHortWindow(utm) {
 		left : 10
 	});
 	closeButton.addEventListener('click', function() {
-		myHortWindow.close();
+		win.close();
 	});
 	buttonView.add(closeButton);
 	
@@ -69,7 +69,7 @@ function createMyHortWindow(utm) {
 	function createMyHort(myHortName){		
 		utm.log('Create MyHort: '+myHortName);
 		createButton.enabled=false;
-		utm.setActivityIndicator('Adding New MyHort...');
+		utm.setActivityIndicator(win , 'Adding New MyHort...');
 		createMyHortReq.open("POST", utm.serviceUrl + "MyHort/CreateMyHortDetails");
 		createMyHortReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");
 		createMyHortReq.setRequestHeader('Authorization-Token', utm.AuthToken);
@@ -82,9 +82,9 @@ function createMyHortWindow(utm) {
 	var createMyHortReq = Ti.Network.createHTTPClient({
 		validatesSecureCertificate : utm.validatesSecureCertificate,
 		onload : function() {
-			utm.setActivityIndicator('');
+			utm.setActivityIndicator(win , '');
 			refreshMyHortList();
-			myHortWindow.close();
+			win.close();
 		},onerror: function(e){
 			createButton.enabled=true;
 			utm.handleError(e, this.status, this.responseText);
@@ -94,13 +94,13 @@ function createMyHortWindow(utm) {
 	});
 	
 	function refreshMyHortList(){
-		utm.setActivityIndicator('Refreshing your MyHorts...');	
+		utm.setActivityIndicator(win , 'Refreshing your MyHorts...');	
 		Ti.App.fireEvent("app:loadMyHorts");
 	}
 	
 		
-	return myHortWindow;
+	return win;
 
 }
 
-module.exports = createMyHortWindow; 
+module.exports = createwin; 

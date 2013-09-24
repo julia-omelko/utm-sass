@@ -51,6 +51,7 @@ function message_window(utm) {
 		//create the base screen and hide the Android navbar
 		var win = Titanium.UI.createWindow({
 			layout : 'vertical',
+			title : 'Messages',
 			backgroundColor : utm.backgroundColor,
 			navBarHidden : true
 		});
@@ -67,6 +68,18 @@ function message_window(utm) {
 
 		//add the navbar to the screen
 		win.add(my_navbar);
+
+	/*	var navTitle = Ti.UI.createLabel({
+		    height : 50,
+		    width : '100%',
+		    backgroundColor : utm.androidBarColor,
+		    color : utm.backgroundColor,
+		     font:{fontSize:utm.androidTitleFontSize,fontWeight:utm.androidTitleFontWeight},
+		    textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+		    text:'Messages',
+		    top:0
+		});
+		my_navbar.add(navTitle);*/
 
 		var refreshButton = Ti.UI.createButton({
 			backgroundImage : '/images/refresh.gif',
@@ -159,7 +172,8 @@ function message_window(utm) {
 		
 	}
 	//add activityIndicator to window
-	win.add(utm.activityIndicator);
+	if (utm.iPhone || utm.iPad)
+		win.add(utm.activityIndicator);
 	
 	var tableView = Titanium.UI.createTableView({
 		left : 2,
@@ -175,11 +189,14 @@ function message_window(utm) {
 	});
 
 	function showMessageDetail(_messageData) {
-		utm.MessageDetailWindow=null;
+		utm.messageDetailWindow=null;
 		utm.MessageDetailWindow = require('screens/MessageDetail');
 		utm.messageDetailWindow = new utm.MessageDetailWindow(_messageData, curMode, utm);
 		utm.messageDetailWindow.title = 'Message';
-		utm.navController.open(utm.messageDetailWindow);
+		utm.navController.open(utm.messageDetailWindow);	
+		//Trigger the call to the details
+		utm.messageDetailWindow.getMessageDetails();
+
 	}
 
 	if(utm.Android){
@@ -299,8 +316,8 @@ function message_window(utm) {
 		win.setRightNavButton(edit);
 	}
 
-	Ti.App.addEventListener('app:showMessages', showMessageWindow);
-	function showMessageWindow() {
+	//Ti.App.addEventListener('app:showMessages', showMessageWindow);
+	win.showMessageWindow = function () {
 		getMessages(curMode);
 	}
 
@@ -327,9 +344,9 @@ function message_window(utm) {
 	function getMessages(mode, showProgress) {
 		if ( typeof showProgress === 'undefined')
 			showProgress = true;
-
+		
 		if (showProgress) {
-			utm.setActivityIndicator('Getting your messages...');
+			utm.setActivityIndicator(win , 'Getting your messages...');
 		}
 
 		var getMessagesReq = Ti.Network.createHTTPClient({
@@ -438,7 +455,7 @@ function message_window(utm) {
 					utm.recordError("error");
 				}
 				getMessagesReq = null;
-				utm.setActivityIndicator('');
+				utm.setActivityIndicator(win , '');
 			},
 
 			onerror : function(e) {
@@ -644,10 +661,6 @@ function message_window(utm) {
 			win.setRightNavButton(edit);
 		}
 		tableView.editing = false;
-	});
-
-	win.addEventListener("blur", function() {
-		utm.setActivityIndicator('');
 	});
 
 	return win;

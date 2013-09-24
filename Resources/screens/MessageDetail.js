@@ -13,9 +13,11 @@ function messageDetail_window(_messageData,_curMode,utm) {
 		});
 	}
 	if(utm.iPhone || utm.iPad ){
+		win.add(utm.activityIndicator);
+		
 		var scrollingView = Ti.UI.createScrollView({
-		showVerticalScrollIndicator : true,
-		showHorizontalScrollIndicator : false
+			showVerticalScrollIndicator : true,
+			showHorizontalScrollIndicator : false
 		});
 	}
 	win.add(scrollingView);
@@ -217,6 +219,11 @@ function messageDetail_window(_messageData,_curMode,utm) {
 		getMembersReq.send();			
 	}
 
+	win.getMessageDetails = function (){
+		utm.setActivityIndicator(win , 'Loading Message...');	
+		getMessageDetailReq.setRequestHeader('Authorization-Token', utm.AuthToken);	
+		getMessageDetailReq.send();	
+	}
 	
 	// ##################### Call out to get message detail #####################
 	var getMessageDetailReq = Ti.Network.createHTTPClient({
@@ -263,10 +270,10 @@ function messageDetail_window(_messageData,_curMode,utm) {
 			}else{
 				utm.recordError(response.Message)
 			}	
-			utm.setActivityIndicator('');	
+			utm.setActivityIndicator(win , '');	
 		},		
 		onerror:function(e){	
-			utm.setActivityIndicator('');	
+			utm.setActivityIndicator(win , '');	
 			if(this.status != undefined && this.status ===404)
 			{
 				alert('The message you are looking for does not exist.');	
@@ -281,11 +288,7 @@ function messageDetail_window(_messageData,_curMode,utm) {
 		getMessageDetailReq.open("GET",utm.serviceUrl+"ReceivedMessages/"+_messageData.Id);	
 	}else{
 		getMessageDetailReq.open("GET",utm.serviceUrl+"SentMessages/"+_messageData.Id);
-	}
-	
-	utm.setActivityIndicator('Getting your message...');	
-	getMessageDetailReq.setRequestHeader('Authorization-Token', utm.AuthToken);	
-	getMessageDetailReq.send();		
+	}	
 	
 	var getMarkMessageAsReadReq = Ti.Network.createHTTPClient({
 		validatesSecureCertificate:utm.validatesSecureCertificate 
@@ -308,7 +311,7 @@ function messageDetail_window(_messageData,_curMode,utm) {
 	}
 		
 	function callOutToGetAttachments(_messageData){		
-		utm.setActivityIndicator('Loading Attachment...');	
+		utm.setActivityIndicator(win , 'Loading Attachment...');	
 		for(i=0;i < _messageData.Attachments.length;i++){		
 			
 			
@@ -322,7 +325,7 @@ function messageDetail_window(_messageData,_curMode,utm) {
 						populateImageViews(response);
 					}
 					getAttachmentsReq=null;
-					utm.setActivityIndicator('');		
+					utm.setActivityIndicator(win , '');		
 				},		
 				onerror:function(e){
 					utm.handleError(e,this.status,this.responseText); 		
@@ -364,10 +367,6 @@ function messageDetail_window(_messageData,_curMode,utm) {
 			//could fail but nothing we can do with it
 		}
 	}
-
-	win.addEventListener("blur", function() {
-		utm.setActivityIndicator('');
-	});
 
 	return win;
 };

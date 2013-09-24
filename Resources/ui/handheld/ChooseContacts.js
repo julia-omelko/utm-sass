@@ -4,7 +4,7 @@ var ChooseContacts_window = function(utm) {
 	var selectedContacts = [];
 	
 	if(utm.iPhone || utm.iPad){
-		var chooseContactsView = Titanium.UI.createWindow({
+		var win = Titanium.UI.createWindow({
 			layout : 'vertical',
 			title : L('send_choose_contacts'),
 			backgroundColor : utm.backgroundColor,
@@ -14,7 +14,7 @@ var ChooseContacts_window = function(utm) {
 	
 	if(utm.Android){
 		//create the base screen and hide the Android navbar
-		var chooseContactsView = Titanium.UI.createWindow({
+		var win = Titanium.UI.createWindow({
 		    layout : 'vertical',
 		 	backgroundColor : utm.backgroundColor,
 		    navBarHidden:true
@@ -33,17 +33,18 @@ var ChooseContacts_window = function(utm) {
 		});
 		
 		//add the navbar to the screen
-		chooseContactsView.add(my_navbar);
+		win.add(my_navbar);
 		
 		//add activityIndicator to window
-		chooseContactsView.add(utm.activityIndicator);
+		if (utm.iPhone || utm.iPad)
+			win.add(utm.activityIndicator);
 	}
 	 
 	var mainView = Ti.UI.createView({layout:'vertical', width:'100%', height:'80%'});
 	var bottomView = Ti.UI.createView({layout:'vertical', width:'100%', height:'20%'});
 
-	chooseContactsView.add(mainView);
-	chooseContactsView.add(bottomView);
+	win.add(mainView);
+	win.add(bottomView);
 
 	var chooseAllButton = Ti.UI.createButton({
 		title : 'Choose All',
@@ -149,13 +150,13 @@ var ChooseContacts_window = function(utm) {
 		writeMessageButton.enabled=false;
 		chooseAllButton.enabled=false;
 		//Clear out the list
-		utm.setActivityIndicator('Getting your MyHort Contacts...');
+		utm.setActivityIndicator(win , 'Getting your MyHort Contacts...');
 		utm.log('call server and get contact list for myHortId:' + utm.targetMyHortID);
 
 		var getMembersReq = Ti.Network.createHTTPClient({
 			validatesSecureCertificate : utm.validatesSecureCertificate,
 			onload : function(e) {
-				utm.setActivityIndicator('');
+				utm.setActivityIndicator(win , '');
 				Ti.API.info("Received text: " + this.responseText);
 				var response = eval('('+this.responseText+')');
 				//Received text: [{"UserId":1004,"MyHortId":1003,"MemberType":"Primary","NickName":"Ant","HasMobile":true,"HasEmail":true,"HasFaceBook":false,"HasTwitter":false}]
@@ -183,7 +184,8 @@ var ChooseContacts_window = function(utm) {
 							},
 							height : '30dp',
 							color : '#000',
-							text : response[i].NickName
+							text : response[i].NickName,
+							width:'80%'
 						});
 						row.add(l);
 
@@ -211,7 +213,7 @@ var ChooseContacts_window = function(utm) {
 			},
 			// function called when an error occurs, including a timeout
 			onerror : function(e) {
-				utm.setActivityIndicator('');
+				utm.setActivityIndicator(win , '');
 				utm.handleError(e, this.status, this.responseText);
 			},
 			timeout : utm.netTimeout
@@ -222,7 +224,7 @@ var ChooseContacts_window = function(utm) {
 
 	});
 
-	chooseContactsView.restForm = function() {
+	win.restForm = function() {
 		
 		if (tableview.data == undefined || tableview.data[0] == undefined)
 			return;
@@ -255,7 +257,7 @@ var ChooseContacts_window = function(utm) {
 		}
 	}
 
-	return chooseContactsView;
+	return win;
 };
 
 module.exports = ChooseContacts_window;

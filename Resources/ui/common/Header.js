@@ -34,7 +34,7 @@ function HeaderWindow(utm,_title,_backButtonTitle) {
 		titleView.add(my_navbar);
 	}
 	//add activityIndicator to window
-	titleView.add(utm.activityIndicator);
+	//titleView.add(utm.activityIndicator);
 	
 	return titleView;
 } 

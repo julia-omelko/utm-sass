@@ -8,7 +8,7 @@ var NavigationController = function() {
         var containerWindow = Ti.UI.createWindow();
         containerWindow.add(self.navGroup);
         containerWindow.open();
-        containerWindow.add(this.utm.activityIndicator);
+        containerWindow.add(utm.activityIndicator);
     };
 
     self.open = function(windowToOpen) {

@@ -153,7 +153,7 @@ var TheLoginScreen_view = function(utm) {
 	
 				var response = eval('('+this.responseText+')');
 				utm.log('success');
-				utm.setActivityIndicator('');
+				utm.setActivityIndicator(win , '');
 				//clear out the password
 				
 				utm.log('Login Service Returned');
@@ -177,12 +177,12 @@ var TheLoginScreen_view = function(utm) {
 			},
 			onerror:function(e){
 				//clear out the password   //FIXME  e.error   needs to be 
-				utm.setActivityIndicator('');
+				utm.setActivityIndicator(win , '');
 				password.value='';
 				//username.value="";
 				utm.log('errro');
 				if(this.status==401){
-				  	utm.setActivityIndicator('');
+				  	utm.setActivityIndicator(win , '');
 					
 					var err = JSON.parse(this.responseText);
 					alert(err.Message);
@@ -215,7 +215,7 @@ var TheLoginScreen_view = function(utm) {
 	{
 		username.blur();
 		password.blur();
-		utm.setActivityIndicator('Logging in');
+		utm.setActivityIndicator(win , 'Logging in...');
 		setMessageArea("");
 		utm.log('Logging on using '+ utm.serviceUrl);
 		if (username.value != '' && password.value != '')
@@ -233,7 +233,7 @@ var TheLoginScreen_view = function(utm) {
 		}
 		else
 		{
-			utm.setActivityIndicator('');
+			utm.setActivityIndicator(win , '');
 			alert(L('user_name_password_req'));			
 		}
 	});

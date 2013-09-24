@@ -11,7 +11,7 @@ function inviteMyHortWindow(myHortInfo, utm) {
 	}
 	
 	var Header = require('ui/common/Header');
-	var myHortInviteWindow = new Header(utm,'Invite', 'MyHort Info');
+	var win = new Header(utm,'Invite', 'MyHort Info');
 	
 	var view = Ti.UI.createScrollView({
 		showVerticalScrollIndicator : true,
@@ -20,7 +20,7 @@ function inviteMyHortWindow(myHortInfo, utm) {
 		contentHeight:'auto',
 		layout:'vertical'
 	});
-	myHortInviteWindow.add(view);
+	win.add(view);
 
 	var titleLbl = Ti.UI.createLabel({
 		text : 'Invite users to ' + myHortInfo.FriendlyName + ' Group',
@@ -255,7 +255,7 @@ function inviteMyHortWindow(myHortInfo, utm) {
 		left : 10
 	});
 	closeButton.addEventListener('click', function() {
-		utm.navController.close(utm.myHortInviteWindow,{animated:false});
+		utm.navController.close(utm.win,{animated:false});
 	});
 	buttonView.add(closeButton);
 
@@ -268,13 +268,13 @@ function inviteMyHortWindow(myHortInfo, utm) {
 			return;
 		}
 		
-		utm.setActivityIndicator('Inviting New MyHort Members...');
+		utm.setActivityIndicator(win , 'Inviting New MyHort Members...');
 		
 		var inviteMyHortReq = Ti.Network.createHTTPClient({
 			validatesSecureCertificate : utm.validatesSecureCertificate,
 			onload : function() {
-				utm.setActivityIndicator('');
-				utm.navController.close(myHortInviteWindow);
+				utm.setActivityIndicator(win , '');
+				utm.navController.close(win);
 				inviteMyHortReq=null;
 			},
 			onerror : function(e) {
@@ -386,7 +386,7 @@ function inviteMyHortWindow(myHortInfo, utm) {
 
 	}
 
-	return myHortInviteWindow;
+	return win;
 
 }
 

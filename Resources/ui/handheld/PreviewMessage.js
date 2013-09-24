@@ -467,7 +467,7 @@ var PreviewMessage_window = function(utm) {
 		}
 
 		utm.log(JSON.stringify(params));
-		utm.setActivityIndicator('Sending ...');
+		utm.setActivityIndicator(win , 'Sending ...');
 		
 		sendMessage(params);
 		
@@ -484,7 +484,7 @@ var PreviewMessage_window = function(utm) {
 		if(attachments !=null){
 			afterMessageSent();
 			resetScreen();
-			utm.setActivityIndicator('');
+			utm.setActivityIndicator(win , '');
 		}
 		
 	}
@@ -505,7 +505,7 @@ var PreviewMessage_window = function(utm) {
 			validatesSecureCertificate : utm.validatesSecureCertificate,
 			onload : function() {
 				var response = eval('(' + this.responseText + ')');
-				utm.setActivityIndicator('');
+				utm.setActivityIndicator(win , '');
 				camera = null;
 				if (this.status == 200 && response.Status == 'Success') {
 					utm.log('Send Successful');
@@ -536,7 +536,7 @@ var PreviewMessage_window = function(utm) {
 					Titanium.Analytics.featureEvent('user.sent_message');
 				} else {
 					//Error:UserId: 1007 cannot accept Email messages
-					utm.setActivityIndicator('');
+					utm.setActivityIndicator(win , '');
 					utm.recordError(response.Message + ' ExceptionMessag:' + response.ExceptionMessage);
 					sendButton.enabled = true;
 					alert('An error occured while sending your message - one of the message services is down or not available.  Please try again.');
@@ -545,7 +545,7 @@ var PreviewMessage_window = function(utm) {
 	
 			},
 			onerror : function(e) {
-				utm.setActivityIndicator('');
+				utm.setActivityIndicator(win , '');
 				camera = null;
 				sendButton.enabled = true;
 				utm.handleError(e, this.status, this.responseText);
@@ -579,7 +579,7 @@ var PreviewMessage_window = function(utm) {
 			validatesSecureCertificate : utm.validatesSecureCertificate,
 			onload : function() {
 				var response = eval('(' + this.responseText + ')');
-				utm.setActivityIndicator('');
+				utm.setActivityIndicator(win , '');
 				sendButton.enabled = true;
 				regenUtm.enabled=true;
 				utm.log('PreviewMessages Service Returned');
@@ -631,7 +631,7 @@ var PreviewMessage_window = function(utm) {
 				getMessagesPreviewReq=null;
 			},
 			onerror : function(e) {
-				utm.setActivityIndicator('');
+				utm.setActivityIndicator(win , '');
 				sendButton.enabled = true;
 				regenUtm.enabled=true;
 				utm.handleError(e, this.status, this.responseText);
@@ -643,7 +643,7 @@ var PreviewMessage_window = function(utm) {
 		
 		getMessagesPreviewReq.open("POST", utm.serviceUrl + "EncryptMessage");
 		getMessagesPreviewReq.setRequestHeader('Authorization-Token', utm.AuthToken);
-		utm.setActivityIndicator('Loading...');
+		utm.setActivityIndicator(win , 'Loading...');
 		getMessagesPreviewReq.send(params);
 	}
 
