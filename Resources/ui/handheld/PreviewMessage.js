@@ -1,12 +1,8 @@
 var PreviewMessage_window = function(utm) {
 
-<<<<<<< HEAD
-	var Camera = require("/lib/Camera");
-	var camera = new Camera();
-=======
 	var Camera =require("/lib/Camera");
 	var camera=null;
->>>>>>> 429719543d4d58b261305f62a4e771be17892be4
+
 	var curUtmText = '';
 	var curRjCrypt = '';
 

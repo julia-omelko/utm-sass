@@ -109,7 +109,7 @@ var TheLoginScreen_view = function(utm) {
 	
 	//Forgot Your Password?
 	var forgotPWLabel = createLink(L('login_forgot_password'), '/Account/PasswordReset');
-	loginView.add(forgotPWLabel);
+	view.add(forgotPWLabel);
 
 		
 	//Want to sign up?
