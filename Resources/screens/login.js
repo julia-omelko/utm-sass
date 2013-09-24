@@ -3,7 +3,27 @@ var TheLoginScreen_view = function(utm) {
 	var webUrl='';
 	var Header = require('ui/common/Header');
 	
-	var loginView = new Header(utm,'', '');
+	var win = new Header(utm,'', '');
+	
+	// set scroll context differently for platform
+	if(utm.Android){
+		var scrollingView = Ti.UI.createScrollView({
+		scrollType : 'vertical'
+		});
+	}
+	if(utm.iPhone || utm.iPad ){
+		var scrollingView = Ti.UI.createScrollView({
+		showVerticalScrollIndicator : true,
+		showHorizontalScrollIndicator : false
+		});
+	}
+	win.add(scrollingView);
+
+	var view = Ti.UI.createView({
+		layout : 'vertical' 
+	});
+
+	scrollingView.add(view);
 	
 	var messageArea = Ti.UI.createLabel({
 	  color: utm.textColor,
@@ -11,39 +31,39 @@ var TheLoginScreen_view = function(utm) {
 	  textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
 	  width: 'auto', height: 'auto'
 	});
-	loginView.add(messageArea);
+	view.add(messageArea);
 		
 	var utmLogo = Ti.UI.createImageView({
 		image:'/images/ytm_Narrow.png',
-		width:275,
-		height:71,
-		top:20,
-		bottom:utm.Android ? 50 : 0
+		width:'275dp',
+		height:'71dp',
+		top:utm.Android ? '10dp' : 15,
+		bottom:utm.Android ? '50dp' : 0
 	});
-	loginView.add(utmLogo);
+	view.add(utmLogo);
 	
 	var username = Ti.UI.createTextField({
 		color:utm.textFieldColor,		
-		width:300,
+		width:'300dp',
 		hintText:L('label_user_name'),
 		autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
 		autocorrect: false,
 		keyboardType:Ti.UI.KEYBOARD_DEFAULT,
 		returnKeyType:Ti.UI.RETURNKEY_DEFAULT,
 		borderStyle:Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
-		top:utm.Android ? 30 : 5,
+		top:utm.Android ? '10dp' : 15,
 		_hasFocus: false
 	});
 	
 	username.addEventListener('focus', function() { username._hasFocus = true; });
 	username.addEventListener('blur', function() { username._hasFocus = false; });
 	
-	loginView.add(username);
+	view.add(username);
 	
 	var password = Ti.UI.createTextField({
 		color:utm.textFieldColor,
-		top:utm.Android ? 40 : 20,
-		width:300,
+		top:utm.Android ? '10dp' : 15,
+		width:'300dp',
 		hintText:L('label_password'),
 		passwordMask:true,
 		autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
@@ -57,7 +77,7 @@ var TheLoginScreen_view = function(utm) {
 	password.addEventListener('focus', function() { password._hasFocus = true; });
 	password.addEventListener('blur', function() { password._hasFocus = false; });
 	
-	loginView.add(password);
+	view.add(password);
 	
 	password.addEventListener('return', function () {
 		loginBtn.fireEvent('click');  
@@ -65,12 +85,12 @@ var TheLoginScreen_view = function(utm) {
 	
 	var loginBtn = Ti.UI.createButton({
 		title:L('login'),
-		top:utm.Android ? 40 : 20,
+		top:utm.Android ? '20dp' : 15,
 		width:100,
 		borderRadius:1,
 		font:{fontFamily:'Arial',fontWeight:'bold',fontSize:'14dp'}
 	});
-	loginView.add(loginBtn);
+	view.add(loginBtn);
 	
 	function check_network() {
 		//utm.log('Check network: '+Titanium.Network.networkType == Titanium.Network.NETWORK_NONE);
@@ -88,8 +108,13 @@ var TheLoginScreen_view = function(utm) {
 	}
 	
 	//Forgot Your Password?
+<<<<<<< HEAD
 	var forgotPWLabel = createLink(L('login_forgot_password'), '/Account/PasswordReset');
 	loginView.add(forgotPWLabel);
+=======
+	var forgotPWLabel = createLink(L('login_forgot_password'), '/Account/PasswordReset')
+	view.add(forgotPWLabel);
+>>>>>>> 429719543d4d58b261305f62a4e771be17892be4
 		
 	//Want to sign up?
 	var signUpLabel = createLink(L('login_signup'), '/Account/Register');
@@ -97,20 +122,30 @@ var TheLoginScreen_view = function(utm) {
 		 text:L('login_signup'),
 		 color: utm.textColor,		
 		 textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
-		 top: 20,
+		 top:utm.Android ? '10dp' : 15,
 		 width:'auto',
 		 font: { fontSize:'20dp' }
 		 //height: 20
+<<<<<<< HEAD
 	});
 	 
 	loginView.add(signUpLabel);
+=======
+	}) 
+	view.add(signUpLabel);
+>>>>>>> 429719543d4d58b261305f62a4e771be17892be4
 	signUpLabel.addEventListener('click',function(){
 		Ti.App.fireEvent('app:signup');
 	});
 	
 	//About UTM
+<<<<<<< HEAD
 	var tosLabel = createLink(L('login_about'), '/Home/WhoWeAre');
 	loginView.add(tosLabel);
+=======
+	var tosLabel = createLink(L('login_about'), '/Home/WhoWeAre')
+	view.add(tosLabel);
+>>>>>>> 429719543d4d58b261305f62a4e771be17892be4
 
 	//Version 0.12 Alpha	
 	var versionLabel = Ti.UI.createLabel({
@@ -118,12 +153,12 @@ var TheLoginScreen_view = function(utm) {
 		  font: { fontSize:'14dp' },
 		  text: utm.appVersion,
 		  textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
-		  top: 10,
-		  width: 220, 
-		  height: 50
+		  top:utm.Android ? '10dp' : 15,
+		  width: 220//, 
+		  //height: 50
 		});
 	
-	loginView.add(versionLabel);
+	view.add(versionLabel);
 	
 	function sendLogin(params) {
 		var loginReq = Ti.Network.createHTTPClient({
@@ -225,7 +260,7 @@ var TheLoginScreen_view = function(utm) {
 		  color: utm.textColor,		
 		  text: lbl,
 		  textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
-		  top: 20,
+		  top:utm.Android ? '10dp' : 15,
 		  width:'auto',
 		  font: { fontSize:'20dp' }
 		  //height: 20
@@ -280,15 +315,15 @@ var TheLoginScreen_view = function(utm) {
 			dialog.show();
 	});
 	
-	loginView.setVersionLabel =function(){
+	win.setVersionLabel =function(){
 		versionLabel.text=utm.appVersion;// + '  ('+utm.envModePrefix +' DB)';
 	}
 	
-	loginView.enableLoginButton =function(_enabled){
+	win.enableLoginButton =function(_enabled){
 		loginBtn.enabled=_enabled;
 	}
 	
-	loginView.setWebUrl = function(_webUrl){
+	win.setWebUrl = function(_webUrl){
 		webUrl=_webUrl;
 	}
 	
@@ -297,7 +332,7 @@ var TheLoginScreen_view = function(utm) {
 	
 	check_network();
 	
-	loginView.addEventListener('click', function(e) { 
+	view.addEventListener('click', function(e) { 
 		var element = e.source.toString();
 		
 		if ( element == "[object TiUIWindow]" || element == "[object TiUIImageView]" ) {
@@ -312,10 +347,10 @@ var TheLoginScreen_view = function(utm) {
 		
 	});
 
-	loginView.backButtonTitle = '';
+	win.backButtonTitle = '';
 	
 	
-	loginView.addEventListener('android:back',function(){
+	win.addEventListener('android:back',function(){
 		
 		var closeDialog = Ti.UI.createAlertDialog({
 				cancel : 1,
@@ -324,8 +359,8 @@ var TheLoginScreen_view = function(utm) {
 			});
 			closeDialog.addEventListener('click', function(e) {
 				if (e.index === 0) {
-					//loginView.exitOnClose = true;
-					utm.navController.close(utm.loginView,{animated:false});			
+					//win.exitOnClose = true;
+					utm.navController.close(utm.win,{animated:false});			
 					var activity = Titanium.Android.currentActivity;
         				activity.finish();
 				} else {
@@ -337,7 +372,7 @@ var TheLoginScreen_view = function(utm) {
 	});
 	
 
-	return loginView;
+	return win;
 };
 module.exports = TheLoginScreen_view;
 

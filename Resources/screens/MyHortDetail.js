@@ -67,6 +67,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		});
 
 		function enableButtonBar(_enable) {
+			if(buttons == undefined) return;
 			
 			if (isOwner) {
 				buttons[0].enabled = _enable;
@@ -889,6 +890,11 @@ if(isOwner){
 		Titanium.Facebook.addEventListener('logout', updateLoginStatus);
 
 	}
+
+	win.addEventListener("blur", function() {
+		utm.setActivityIndicator('');
+	});
+
 
 	return win;
 };

@@ -4,7 +4,7 @@ var NavigationController = function(utm) {
     self.open = function(windowToOpen) {
         //make "heavyweight" and associate with an Android activity
         windowToOpen.navBarHidden = windowToOpen.navBarHidden || false;
-        //windowToOpen.add(this.utm.activityIndicator);
+        windowToOpen.add(utm.activityIndicator);
 
         if(!self.rootWindow) {
             //windowToOpen.exitOnClose = true;

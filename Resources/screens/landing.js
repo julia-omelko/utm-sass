@@ -2,7 +2,7 @@ var TheLandingScreen_view = function(utm) {
 
 	if(utm.iPhone || utm.iPad ){
 		
-		var landingView = Ti.UI.createWindow({			
+		var win = Ti.UI.createWindow({			
 			layout:'vertical',title:''		
 			, backgroundColor:utm.backgroundColor
 			, barColor:utm.barColor
@@ -16,12 +16,12 @@ var TheLandingScreen_view = function(utm) {
 			utm.log("Back button pressed while on landing screen on ios. Firing app:logout");
   			Ti.App.fireEvent("app:logout", {});			
 		});
-		landingView.leftNavButton=logoutBtn;
+		win.leftNavButton=logoutBtn;
 		
 	}else	if(utm.Android){
 		
 		//create the base screen and hid the Android navbar
-		var landingView = Titanium.UI.createWindow({
+		var win = Titanium.UI.createWindow({
 		    layout : 'vertical',
 		 	backgroundColor : utm.backgroundColor,
 		    navBarHidden:true
@@ -29,7 +29,7 @@ var TheLandingScreen_view = function(utm) {
 		
 		//create a navbar for Android
 		var my_navbar = Ti.UI.createLabel({
-		    height : 50,
+		    height : '50dp',
 		    width : '100%',
 		    backgroundColor : utm.androidBarColor,
 		    color : utm.backgroundColor,
@@ -38,44 +38,66 @@ var TheLandingScreen_view = function(utm) {
 		});
  
  		//add the navbar to the screen
-		landingView.add(my_navbar);
+		win.add(my_navbar);
 	
 		//since there is no back ("Logout") button in Nav bar, must fire logout event when user uses back button on landing page
-		landingView.addEventListener('android:back', function () {
+		win.addEventListener('android:back', function () {
   			utm.log("Back button pressed while on landing screen on Android. Firing app:logout");
   			Ti.App.fireEvent("app:logout", {});
 		});
 	}
 	
+	//------------- Scroll Code -----------
+	// set scroll context differently for platform
+	if(utm.Android){
+		var scrollingView = Ti.UI.createScrollView({
+		scrollType : 'vertical'
+		});
+	}
+	if(utm.iPhone || utm.iPad ){
+		var scrollingView = Ti.UI.createScrollView({
+		showVerticalScrollIndicator : true,
+		showHorizontalScrollIndicator : false
+		});
+	}
+	win.add(scrollingView);
+
+	var view = Ti.UI.createView({
+		layout : 'vertical' 
+	});
+
+	scrollingView.add(view);
+	
+	//------------- End Scroll Code
 	var utmLogo = Ti.UI.createImageView({
 		image:'/images/ytm_Narrow.png',
-		width:275,
-		height:71,
-		top:20
+		width:'275dp',
+		height:'71dp',
+		top:'20dp'
 	});
-	landingView.add(utmLogo);	
+	view.add(utmLogo);	
 	
 	var viewMessageBtn = Ti.UI.createButton({
 		title:L('landing_view_messages'),
-		top:20,
-		bottom:20,
-		width:200,
+		top:'20dp',
+		width:'200dp',
 		height:'50dp',
 		font:{fontFamily:'Arial',fontWeight:'bold',fontSize:'14dp'}
 	});
-	landingView.add(viewMessageBtn);
+	view.add(viewMessageBtn);
 	
 	
 	var sendMessageBtn = Ti.UI.createButton({
 		title:L('landing_send_messages'),
-		width:200,
+		top:'20dp',
+		width:'200dp',
 		height:'50dp',
 		font:{fontFamily:'Arial',fontWeight:'bold',fontSize:'14dp'}
 	});
-	landingView.add(sendMessageBtn);	
+	view.add(sendMessageBtn);	
 	
 	
-	landingView.allowSendMessage = function(){		
+	win.allowSendMessage = function(){		
 		if(utm.User.MyHorts.length==1){
 			Ti.App.fireEvent("app:myHortChoosen", {myHortId:utm.User.MyHorts[0].MyHortId, direct:true});	//Direct tells us we need to setBackButtonTitle()
 		}else{
@@ -92,21 +114,21 @@ var TheLandingScreen_view = function(utm) {
 	
 	var myHortBtn = Ti.UI.createButton({
 		title:'MyHorts',
-		top:20,
-		width:200,
+		top:'20dp',
+		width:'200dp',
 		height:'50dp',
 		font:{fontFamily:'Arial',fontWeight:'bold',fontSize:'14dp'}
 	});
-	landingView.add(myHortBtn);	
+	view.add(myHortBtn);	
 	
 	var myAccountBtn = Ti.UI.createButton({
 		title:L('landing_my_account'),
-		top:20,
-		width:200,
+		top:'20dp',
+		width:'200dp',
 		height:'50dp',
 		font:{fontFamily:'Arial',fontWeight:'bold',fontSize:'14dp'}
 	});
-	landingView.add(myAccountBtn);	
+	view.add(myAccountBtn);	
 	
 	viewMessageBtn.addEventListener('click',function(e)
 	{	
@@ -125,7 +147,7 @@ var TheLandingScreen_view = function(utm) {
 	});
 	
 
-	return landingView;
+	return win;
 };
 module.exports = TheLandingScreen_view;
 

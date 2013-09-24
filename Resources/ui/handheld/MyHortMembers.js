@@ -145,9 +145,9 @@ function createMyHortWindow(_myHortData, utm, _isOwner) {
 				
 				if(myHortMembersData[i].MemberType==='Invisible'){
 					memberType.text = 'No'
-				}else if(myHortMembersData[i].MemberType==='Secondary'){
+				}else{
 					memberType.text = 'Yes'
-				}// leave primary blank
+				}
 				
 	
 				var iconView = Ti.UI.createView({

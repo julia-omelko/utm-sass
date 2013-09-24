@@ -1,18 +1,18 @@
 function CameraView(_win) {
 	var resizedImage;
+	var imageForPreview;
 	
 	var CameraView = Titanium.UI.createView({
-        layout: 'vertical',
-        visible:true,
-        height:135
+        layout: 'horizontal',
+        visible:true
 	});
 
 		
 	var imageBorder = Ti.UI.createView({
 		left:25,
-		//top:CameraView.height*0.01,
-		//height:CameraView.height*0.3,
-		height:36,
+		top:2,//CameraView.height*0.01,
+		height:CameraView.height*0.3,
+		//height:36,
 		width:Ti.Platform.displayCaps.platformWidth-50,
 		borderColor:'black',
 		borderWidth:0,
@@ -23,9 +23,10 @@ function CameraView(_win) {
 	
 	var imageContainer = Ti.UI.createImageView({
 		left:(imageBorder.width-36)/2,
-		//top:(imageBorder.height-130)/2,
-		height:36,//imageBorder.getHeight(),
-		width:36//,//imageBorder.getWidth(),
+		top:2,//(imageBorder.height-130)/2,
+		height:imageBorder.getHeight(),
+		width:imageBorder.getWidth(),
+		visible:false
 	//	image:'/images/camera-ip.png'
 	});
 	imageBorder.add(imageContainer);
@@ -41,11 +42,11 @@ function CameraView(_win) {
 	*/
 	CameraView.captureImage= function(){
 		resizedImage = null;
-		imageContainer.setHeight(130);
-		imageContainer.setWidth(193);
-		imageContainer.setLeft((imageBorder.width-193)/2);
-		imageContainer.setTop((imageBorder.height-130)/2);
-		imageContainer.setImage('/images/camera-ip.png');
+		//imageContainer.setHeight(130);
+		//imageContainer.setWidth(193);
+		//imageContainer.setLeft((imageBorder.width-193)/2);
+		//imageContainer.setTop((imageBorder.height-130)/2);
+		//imageContainer.setImage('/images/camera-ip.png');
 		
 		var photoDialog = Ti.UI.createOptionDialog({
 			title:'Please provide a picture.',
@@ -56,33 +57,47 @@ function CameraView(_win) {
 		});
 		
 		photoDialog.addEventListener('click', function(e){
+			
+			resizedImage=null;
+			imageForPreview=null;
+			
 			if (e.cancel === e.index || e.cancel === true) {
 				return;
 			} else if (e.index === 0){
 				Titanium.Media.showCamera({
-					saveToPhotoGallery:false,
+					saveToPhotoGallery:false,//NOTE this is important to be set to FALSE
 					mediaTypes:[Ti.Media.MEDIA_TYPE_PHOTO],  //, Ti.Media.MEDIA_TYPE_VIDEO this will need work to get video working
 					success:function(event) {
-						resizedImage = event.media;
+						if(utm.Android){
+							resizedImage = event.media.imageAsResized(event.media.width/6,event.media.height/6);
+						}else{
+							resizedImage = event.media.imageAsResized(event.media.width/3,event.media.height/3);
+						}	
 						
 						resizeRatio = (Math.max(event.media.width/3,event.media.height/3));
 						resizeWidth = Math.round(event.media.width/resizeRatio);
 						resizeHeight = Math.round(event.media.height/resizeRatio);
 						
-						//resizedImage = resizedImage.imageAsResized(event.media.width/3,event.media.height/3);
+						//imageForPreview = event.media.imageAsResized(event.media.width/2,event.media.height/2);
 						
-						displayRatio = (Math.max(event.media.width/imageBorder.getWidth(),event.media.height/imageBorder.getHeight()));
-						thumbWidth = Math.round(event.media.width/displayRatio);
-						thumbHeight = Math.round(event.media.height/displayRatio);
-						
+						if(utm.Android){
+							imageForPreview = event.media.imageAsResized(event.media.width/6,event.media.height/6);
+						}else{
+							imageForPreview = event.media.imageAsResized(event.media.width/2,event.media.height/2);
+						}	
+
+						displayRatio = (Math.max(imageForPreview.width/imageBorder.getWidth(),imageForPreview.height/imageBorder.getHeight()));
+						thumbWidth = Math.round(imageForPreview.width/displayRatio);
+						thumbHeight = Math.round(imageForPreview.height/displayRatio);
 						
 						imageContainer.setVisible(false);
 						imageContainer.setWidth(thumbWidth);
-						imageContainer.setLeft((imageBorder.getWidth()-thumbWidth)/2);
+						imageContainer.setLeft((imageBorder.getWidth()-thumbWidth));
 						imageContainer.setHeight(thumbHeight);
-						imageContainer.setTop((imageBorder.getHeight()-thumbHeight)/2);
-						imageContainer.setImage(event.media);
+						//imageContainer.setTop((imageBorder.getHeight()-thumbHeight));
+						imageContainer.setImage(imageForPreview);
 						imageContainer.setVisible(true);
+						
 					},
 		        	cancel:function(){
 						return;
@@ -99,39 +114,26 @@ function CameraView(_win) {
 				Ti.Media.openPhotoGallery({
 					
 					success:function(event) {
-						resizedImage = event.media;
+						
+						resizedImage = event.media.imageAsResized(event.media.width/3,event.media.height/3);	
 						
 						resizeRatio = (Math.max(event.media.width/3,event.media.height/3));
 						resizeWidth = Math.round(event.media.width/resizeRatio);
 						resizeHeight = Math.round(event.media.height/resizeRatio);
 						
-						displayRatio = (Math.max(event.media.width/imageBorder.getWidth(),event.media.height/imageBorder.getHeight()));
-						thumbWidth = Math.round(event.media.width/displayRatio);
-						thumbHeight = Math.round(event.media.height/displayRatio);
-						
-						
+						imageForPreview = event.media.imageAsResized(event.media.width/2,event.media.height/2);
+
+						displayRatio = (Math.max(imageForPreview.width/imageBorder.getWidth(),imageForPreview.height/imageBorder.getHeight()));
+						thumbWidth = Math.round(imageForPreview.width/displayRatio);
+						thumbHeight = Math.round(imageForPreview.height/displayRatio);
+
 						imageContainer.setVisible(false);
 						imageContainer.setWidth(thumbWidth);
-						imageContainer.setLeft((imageBorder.getWidth()-thumbWidth)/2);
+						imageContainer.setLeft((imageBorder.getWidth()-thumbWidth));
 						imageContainer.setHeight(thumbHeight);
-						imageContainer.setTop((imageBorder.getHeight()-thumbHeight)/2);
-						imageContainer.setImage(event.media);
+						//imageContainer.setTop((imageBorder.getHeight()-thumbHeight));
+						imageContainer.setImage(imageForPreview);
 						imageContainer.setVisible(true);
-						
-						
-						/*resizedImage = event.media.imageAsResized(event.media.width/3,event.media.height/3);
-				
-						displayRatio = (Math.max(event.media.width/imageBorder.getWidth(),event.media.height/imageBorder.getHeight()));
-						thumbWidth = Math.round(event.media.width/displayRatio);
-						thumbHeight = Math.round(event.media.height/displayRatio);
-						
-						imageContainer.setVisible(false);
-						imageContainer.setWidth(thumbWidth);
-						imageContainer.setLeft((imageBorder.getWidth()-thumbWidth)/2);
-						imageContainer.setHeight(thumbHeight);
-						imageContainer.setTop((imageBorder.getHeight()-thumbHeight)/2);
-						imageContainer.setImage(event.media.imageAsResized(thumbWidth,thumbHeight));
-						imageContainer.setVisible(true);*/
 					},
 		        	cancel:function(){
 						return;
@@ -178,7 +180,8 @@ function CameraView(_win) {
 	
 	CameraView.reset = function(){
 		imageContainer.setVisible(false);
-		resizedImage=null;			
+		resizedImage=null;	
+		imageForPreview=null;		
 	}
 	
 

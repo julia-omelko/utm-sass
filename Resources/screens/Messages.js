@@ -175,25 +175,29 @@ function message_window(utm) {
 	});
 
 	function showMessageDetail(_messageData) {
+		utm.MessageDetailWindow=null;
 		utm.MessageDetailWindow = require('screens/MessageDetail');
 		utm.messageDetailWindow = new utm.MessageDetailWindow(_messageData, curMode, utm);
 		utm.messageDetailWindow.title = 'Message';
 		utm.navController.open(utm.messageDetailWindow);
 	}
 
-	//Add Swipe event to delete messages
-	/*tableView.addEventListener('swipe', function(eventObject){
-
-	deleteMessage(eventObject.row.messageData.Id,false);
-	});*/
-
+	if(utm.Android){
+		//Add Swipe event to delete messages
+		tableView.addEventListener('swipe', function(eventObject){
+			if(eventObject.direction == 'right'){
+				deleteMessage(eventObject.row.messageData.Id,eventObject.row);
+			}	
+		});
+	}
+	
 	// add delete event listener
 	tableView.addEventListener('delete', function(e) {
 		var s = e.section;
-		deleteMessage(e.rowData.messageData.Id, false)
+		deleteMessage(e.rowData.messageData.Id, e.row);
 	});
 
-	function deleteMessage(messageId) {
+	function deleteMessage(messageId, theRow) {
 
 		if (curMode == 'sent') {
 
@@ -207,8 +211,10 @@ function message_window(utm) {
 			dialog.addEventListener('click', function(e) {
 				if (e.index === 0) {
 					callDeleteMessage(messageId, false);
+					tableView.deleteRow(theRow);
 				} else if (e.index === 1) {
 					callDeleteMessage(messageId, true);
+					tableView.deleteRow(theRow);
 				} else if (e.index === 2) {
 					Ti.API.info('The cancel button was clicked');
 				}
@@ -216,7 +222,29 @@ function message_window(utm) {
 			dialog.show();
 
 		} else {
-			callDeleteMessage(messageId, false);
+			if(utm.Android){
+				
+				var dialog = Ti.UI.createAlertDialog({
+					cancel : 1,
+					buttonNames : ['Yes',  L('cancel')],
+					message : 'Do you want to Delete this message? ',
+					title : 'Delete Confirmation',
+					messageId : messageId
+				});
+				dialog.addEventListener('click', function(e) {
+					if (e.index === 0) {
+						callDeleteMessage(messageId, true);
+						tableView.deleteRow(theRow);
+					}
+				});
+				dialog.show();
+				
+				
+			}else{
+				callDeleteMessage(messageId, false);
+				tableView.deleteRow(theRow);
+			}
+			
 		}
 
 	}
@@ -229,11 +257,6 @@ function message_window(utm) {
 			onload : function(e) {
 				utm.log('Message was deleted');
 
-				/*var opts = {options: [L('ok_button')], title:L('messages_message_deleted')};
-				 var dialog = Ti.UI.createOptionDiautm.log(opts).show();
-				 dialog.addEventListener('click', function(e){
-				 getMessages(curMode);
-				 });*/
 				deleteMessagesReq = null;
 			},
 			onerror : function(e) {
@@ -263,7 +286,7 @@ function message_window(utm) {
 	});
 
 	var cancel = Titanium.UI.createButton({
-		title : L('cancel'),
+		title : L('done'),
 		style : Titanium.UI.iPhone.SystemButtonStyle.DONE
 	});
 	cancel.addEventListener('click', function() {
@@ -327,7 +350,7 @@ function message_window(utm) {
 							row : clickName = 'row',
 							objName : 'row',
 							touchEnabled : true,
-							height : utm.Android ? '55dp' : 55,
+							height : utm.Android ? '60dp' : 55,
 							hasChild : true,
 							messageData : response[i]
 						});
@@ -362,7 +385,7 @@ function message_window(utm) {
 							top : 2,
 							left : 17,
 							width : utm.SCREEN_WIDTH - 100,
-							height : utm.Android ? '15dp' : 15,
+							height : utm.Android ? '18dp' : 15,
 							ellipsize : true
 						});
 						hView.add(fromMessage);
@@ -376,7 +399,7 @@ function message_window(utm) {
 							objName : 'utmMessage',
 							text : response[i].UtmText,
 							touchEnabled : true,
-							top : 30,
+							top : 35,
 							left : 15,
 							height : utm.Android ? '20dp' : '20',
 							width : '100%'
@@ -621,6 +644,10 @@ function message_window(utm) {
 			win.setRightNavButton(edit);
 		}
 		tableView.editing = false;
+	});
+
+	win.addEventListener("blur", function() {
+		utm.setActivityIndicator('');
 	});
 
 	return win;

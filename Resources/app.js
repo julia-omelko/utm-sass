@@ -69,23 +69,32 @@ utm.navController = new NavigationController(utm);
 
 utm.activityIndicatorStyle;
 if (utm.iPhone || utm.iPad){
-  utm.activityIndicatorStyle = Ti.UI.iPhone.ActivityIndicatorStyle.DARK;
-}
-else {
+  
+	  utm.activityIndicator = Ti.UI.createActivityIndicator({
+		color : utm.color_org,
+		font : {
+			fontFamily : 'Helvetica Neue',
+			fontSize : 18,
+			fontWeight : 'bold'
+		},
+		style : Ti.UI.iPhone.ActivityIndicatorStyle.DARK,
+		height : 'auto',
+		width : 'auto'
+	});
+  
+}else {
   utm.activityIndicatorStyle = Ti.UI.ActivityIndicatorStyle.DARK;
+  
+   utm.activityIndicator = Ti.UI.Android.createProgressIndicator({
+	    message : 'Loading...',
+	    location : Ti.UI.Android.PROGRESS_INDICATOR_DIALOG,   // display in dialog 
+	    type : Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT // display a spinner
+	  });
+  
 }
 
-utm.activityIndicator = Ti.UI.createActivityIndicator({
-	color : utm.color_org,
-	font : {
-		fontFamily : 'Helvetica Neue',
-		fontSize : 18,
-		fontWeight : 'bold'
-	},
-	style : utm.activityIndicatorStyle,
-	height : 'auto',
-	width : 'auto'
-});
+
+
 
 //open initial window
 utm.Login = require('screens/login');
