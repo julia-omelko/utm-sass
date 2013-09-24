@@ -255,7 +255,7 @@ function inviteMyHortWindow(myHortInfo, utm) {
 		left : 10
 	});
 	closeButton.addEventListener('click', function() {
-		utm.navController.close(utm.win,{animated:false});
+		utm.navController.close(win,{animated:false});
 	});
 	buttonView.add(closeButton);
 
