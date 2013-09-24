@@ -76,8 +76,9 @@
         <module platform="commonjs" version="2.3.0">ti.cloud</module>
         <module platform="iphone">com.qbset.unlockscreen</module>
         <module platform="iphone">com.0x82.key.chain</module>
-        <module platform="android">facebook</module>
+        <module platform="iphone">ti.storekit</module>
         <module platform="iphone">facebook</module>
+        <module platform="android">facebook</module>
     </modules>
     <property name="ti.deploytype">test</property>
 </ti:app>

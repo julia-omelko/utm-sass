@@ -11,20 +11,21 @@ utm.backgroundColor='#fff';
 utm.textColor='#000';
 utm.textFieldColor='#336699';
 utm.textErrorColor='#800000';
-utm.androidTitleFontSize=25
-utm.androidTitleFontWeight='bold'
-utm.androidLabelFontSize=25
-utm.appVersion = 'Version:'+Ti.App.version;
-utm.netTimeout=18000;
-utm.screenLockTime=5000;
+utm.androidTitleFontSize = 25;
+utm.androidTitleFontWeight = 'bold';
+utm.androidLabelFontSize = 25;
+utm.appVersion = 'Version:' + Ti.App.version;
+utm.netTimeout = 18000;
+utm.screenLockTime = 5000;
 utm.sentToContactListString = '';
 utm.networkIsOnline = false;
 var pWidth = Ti.Platform.displayCaps.platformWidth;
 var pHeight = Ti.Platform.displayCaps.platformHeight;
 utm.SCREEN_WIDTH = (pWidth > pHeight) ? pHeight : pWidth;
 utm.SCREEN_HEIGHT = (pWidth > pHeight) ? pWidth : pHeight;
-utm.enableSendMessageButton=false;
-utm.appPauseTime=0;
+utm.showSplashScreenOnPause = true;
+utm.enableSendMessageButton = false;
+utm.appPauseTime = 0;
 //var gaModule = require('Ti.Google.Analytics');
 //var analytics = new gaModule('UA-38943374-1');
 
@@ -33,6 +34,9 @@ utm.twitterConsumerKey = ""; //'8qiy2PJv3MpVyzuhfNXkOw';
 utm.twitterConsumerSecret = ""; //'Qq0rth4MHGB70nh20nSzov2zz6GbVxuVndCh2IxkRWI';
 utm.facebookAppId = '494625050591800';
 utm.currentOpenWindow='';
+
+//this will need to be coming from the database in the future
+utm.products = ['com.youthisme.20for99', 'com.youthisme.500for1999'];
 
 var unlockWindow = null;
 
@@ -53,14 +57,14 @@ if(utm.iPhone || utm.iPad ){
 	var keychain = require("com.0x82.key.chain");
 }
 
-utm.log=function (message) {
+utm.log = function (message) {
 	Ti.API.info(message);
-}
+};
 
 Ti.UI.setBackgroundColor('#fff');
 
 //Note 2 diff controllers based on platform folders
-var NavigationController = require('NavigationController')
+var NavigationController = require('NavigationController');
 //MainWindow = require('/screens/MainWindow').MainWindow;
 utm.navController = new NavigationController(utm);
 
@@ -405,7 +409,7 @@ function isAllowedSendMessage(){
 function showLoginScreenLockView() {	
 	//TODO figure out how to NOT have to close all the windows to open the login window
 	//Maybe a model popup 100% x 100%
-	utm.loggedIn = false
+	utm.loggedIn = false;
 	//closeAllScreens(false);
 	//utm.navController.open(utm.loginView);	
 	showLoginView();
@@ -488,8 +492,8 @@ Ti.App.addEventListener('app:getSubscriptionInfo', function (e){
 	
 			if (this.status == 200) {		
 				
-				utm.User.UserProfile.MessagesRemaining=response.MessagesRemaining;
-				utm.User.UserProfile.SubscriptionEnds	=response.SubscriptionEnds;
+				utm.User.UserProfile.MessagesRemaining = response.MessagesRemaining;
+				utm.User.UserProfile.SubscriptionEnds = response.SubscriptionEnds;
 						
 				var now = new Date();		
 				var subDate = utm.User.UserProfile.SubscriptionEnds.substring(0,	10);
@@ -692,34 +696,36 @@ Ti.App.addEventListener("paused", function(e){
 //IF the app is left for more then one minute force login
 Ti.App.addEventListener("resumed", function(e){
 	
-	//RE #391 - Stop Screenshot when App Looses Focus - close the splash screen
-	utm.log(' **********************  -------  APP resumed ------ **********************    ');
-	utm.splashView.close();	
-
-	if(!utm.loggedIn) return;
-
-	var curDate = new Date();
-	var curMil =curDate.valueOf() ;
-	var pauseMil = appPauseTime.valueOf();
-	var diff = curMil-pauseMil;
+	if(!utm.showSplashScreenOnPause) {
+		//RE #391 - Stop Screenshot when App Looses Focus - close the splash screen
+		utm.log(' **********************  -------  APP resumed ------ **********************    ');
+		utm.splashView.close();	
 	
-	if( diff  > utm.screenLockTime){
-			utm.log('-------  APP resumed  FORCE LOGIN');
-			
-			if(utm.iPhone || utm.iPad ){
-				var pass = keychain.getPasswordForService('utm', 'lockscreen');
-				if(pass == null){
+		if(!utm.loggedIn) return;
+	
+		var curDate = new Date();
+		var curMil = curDate.valueOf() ;
+		var pauseMil = utm.appPauseTime.valueOf() ? utm.appPauseTime.valueOf() : 0;
+		var diff = curMil - pauseMil;
+		
+		if( pauseMil != 0 && diff  > utm.screenLockTime){
+				utm.log('-------  APP resumed  FORCE LOGIN');
+				
+				if(utm.iPhone || utm.iPad ){
+					var pass = keychain.getPasswordForService('utm', 'lockscreen');
+					if(pass == null){
+						showLoginScreenLockView();
+					}else{
+						showPinLockScreen(pass);		
+					}
+					
+				}else if(utm.Android){
 					showLoginScreenLockView();
-				}else{
-					showPinLockScreen(pass);		
 				}
-				
-			}else if(utm.Android){
-				showLoginScreenLockView();
-			}
-				
-	}else{
+					
+		}else{
 			utm.log('-------  APP resumed  NO FORCE LOGIN');
+		}
 	}	
 });
 
@@ -760,7 +766,9 @@ if(utm.iPhone || utm.iPad ){
 }
 //RE #391 - Stop Screenshot when App Looses Focus - put up the splash screen
 Ti.App.addEventListener('pause', function(e){
-	utm.splashView.open();
+	if(utm.showSplashScreenOnPause) {
+		utm.splashView.open();
+	}
 	//Note: Splash is closed in resumed event
 });
 
@@ -788,7 +796,7 @@ function getDateTimeFormat(dateSent){
 	var hours = sent.fromNow();
 	var now = moment();
 
-	diff = now.diff(sent, 'days') // 1
+	diff = now.diff(sent, 'days'); // 1
 			
 	if(diff > 0){
 		return sent.format("M/D/YY");
@@ -811,13 +819,13 @@ Titanium.App.addEventListener('close', function(e){
 
 utm.recordError = function (message) {
 	utm.log('Error:' + message);
-}
+};
 
 
 utm.recordAnalytics = function (theEvent,theData){
 	//	category, action, label, value
 	//TODO Replace Google analytics.trackEvent('Usage',theEvent,'Lbl1',theData );	
-}
+};
 
 function setTimer(timetowait,context) {
 	mt=0;

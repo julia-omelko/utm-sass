@@ -2,6 +2,7 @@ var MyAccount_window = function(utm) {
 	
 	if(utm.iPhone || utm.iPad ){
 		var SetPinWindow = require('/ui/handheld/SetPin');
+		var SetSubscriptionWindow = require('ui/handheld/SubscribeInfo');
 		
 		var myAccountWindow = Titanium.UI.createWindow({
 			layout : 'vertical',
@@ -11,20 +12,21 @@ var MyAccount_window = function(utm) {
 			barColor : utm.barColor
 		});
 	
-		/*var upgradeButton = Ti.UI.createButton({
-			title : 'Upgrade Me',
+		var buyMessagesButton = Ti.UI.createButton({
+			title : L('buy_messages'),
 			top : 20,
 			width : 200,	
-			enabled : false
+			enabled : true
 		});
-		myAccountWindow.add(upgradeButton);
+		myAccountWindow.add(buyMessagesButton);
 	
-		upgradeButton.addEventListener('click', function() {
-			
-		});	*/
+		buyMessagesButton.addEventListener('click', function() {
+			utm.setSubscriptionWindow = new SetSubscriptionWindow(utm);	
+			utm.navController.open(utm.setSubscriptionWindow);
+		});	
 		
 		var setPinLockButton = Ti.UI.createButton({
-			title : 'Set Unlock Code',
+			title : L('unlock_code'),
 			top : 20,
 			width : 200,	
 			enabled : true
@@ -35,7 +37,7 @@ var MyAccount_window = function(utm) {
 			utm.setPinWindow = new SetPinWindow(utm);		
 			utm.navController.open(utm.setPinWindow);		
 		});
-	}else	if(utm.Android){
+	}else if(utm.Android){
 		
 		//create the base screen and hid the Android navbar
 		var myAccountWindow = Titanium.UI.createWindow({
@@ -111,5 +113,5 @@ var MyAccount_window = function(utm) {
 
 	return myAccountWindow;
 
-}
+};
 module.exports = MyAccount_window;
