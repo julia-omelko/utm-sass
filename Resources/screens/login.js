@@ -347,7 +347,7 @@ var TheLoginScreen_view = function(utm) {
 			closeDialog.addEventListener('click', function(e) {
 				if (e.index === 0) {
 					//win.exitOnClose = true;
-					utm.navController.close(utm.win,{animated:false});			
+					utm.navController.close(win,{animated:false});			
 					var activity = Titanium.Android.currentActivity;
         				activity.finish();
 				} else {
