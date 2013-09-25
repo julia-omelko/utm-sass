@@ -51,6 +51,14 @@
                         <action android:name="android.intent.action.MAIN"/>
                         <category android:name="android.intent.category.LAUNCHER"/>
                     </intent-filter>
+	<!-- SOASTA TOUCHTEST CODE BLOCK 1 of 2 in this module.  Uncomment the two blocks of code in this module and one block in app.js
+                    <intent-filter>
+	                    <data android:scheme="touchtest-3edd146f-e15f-4190-aabf-deb60a81c3cc"/>
+	                    <action android:name="android.intent.action.VIEW"/>
+	                    <category android:name="android.intent.category.BROWSABLE"/>
+	                    <category android:name="android.intent.category.DEFAULT"/>
+    	            </intent-filter>
+	-->
                 </activity>
                 <activity android:configChanges="keyboardHidden|orientation" android:name="ti.modules.titanium.media.TiCameraActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"/>
                 <activity android:configChanges="keyboardHidden|orientation" android:name="org.appcelerator.titanium.TiActivity" android:screenOrientation="portrait"/>
@@ -81,4 +89,32 @@
         <module platform="android">facebook</module>
     </modules>
     <property name="ti.deploytype">test</property>
+    
+    <!-- SOASTA TOUCHTEST CODE BLOCK 2 of 2 in this module.  Uncomment the two blocks of code in this module and one block in app.js
+    <property name="com-soasta-touchtest-version" type="string">6619.31</property>
+    <ios>
+	    <plist>
+	        <dict>
+	            <key>CFBundleURLTypes</key>
+	            <array>
+	                <dict>
+	                    <key>CFBundleTypeRole</key>
+	                    <string>Editor</string>
+	                    <key>CFBundleURLName</key>
+	                    <string>com.utm</string>
+	                    <key>CFBundleURLSchemes</key>
+	                    <array>
+	                        <string>touchtest-3edd146f-e15f-4190-aabf-deb60a81c3cc</string>
+	                    </array>
+	                </dict>
+	            </array>
+	        </dict>
+	    </plist>
+	</ios>
+	<plugins>
+    	<plugin>com.soasta.touchtest.android</plugin>
+	</plugins>
+	<property name="com-soasta-touchtest-ios-appId" type="string">171318</property>
+   -->
+   
 </ti:app>
