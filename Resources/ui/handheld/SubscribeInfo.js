@@ -19,9 +19,11 @@ var subscribe_window = function(utm) {
 	
 	win.add(instructionLbl);
 	
-	win.addEventListener('open', function() {
+	/*
+	 * removed due to load order and sometimes cant get ride of the loading message...
+	 win.addEventListener('open', function() {
 		utm.setActivityIndicator(win,'Loading Products...');
-	});	
+	});*/	
 	
 	//TODO GetProducts... service
 	

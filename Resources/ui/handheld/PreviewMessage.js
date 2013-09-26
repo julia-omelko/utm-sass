@@ -81,15 +81,14 @@ var PreviewMessage_window = function(utm) {
 	}
 	
 	cameraButton.addEventListener('click', function(){
-		camera = getCamera();
-		scrollView.add(camera);
+		camera =  getCamera();
 		camera.captureImage();		
 	});	
 	
 	
 	function getCamera(){
 		if(camera ==null){
-			camera = new Camera();
+			camera = new Camera(win,imagePreview);
 		}
 		return camera;
 	}
@@ -104,6 +103,9 @@ var PreviewMessage_window = function(utm) {
 	  layout:'vertical'
 	});
 	win.add(scrollView);
+	
+
+	
 	
 	//---------------Original Message --------------------
 	var yourOrgMessageLabel = Ti.UI.createLabel({
@@ -339,24 +341,18 @@ var PreviewMessage_window = function(utm) {
 	});
 	scrollView.add(sendButton);
 	
-	/*
-	var scrollingView = Ti.UI.createScrollView({
-		showVerticalScrollIndicator : true,
-		showHorizontalScrollIndicator : false
+	
+	
+	var imagePreview= Ti.UI.createImageView({
+		left:'10dp',
+		right:'10dp',
+		visible:false
 	});
-	win.add(scrollingView);
-
-	var view = Ti.UI.createView({
-		height : 2000,
-		layout : 'vertical'
-	});
-
-	scrollingView.add(view);
-*/
-
-
-
-
+	scrollView.add(imagePreview);
+	
+	
+	
+	
 	sendButton.addEventListener('click', function() {
 		var messageType = getMessageSendTypes();
 		//1st check to see if any message types have been chosen
@@ -385,10 +381,15 @@ var PreviewMessage_window = function(utm) {
 			dialog.show();
 
 		} else {
+			imagePreview.visible=false;
 			sendMessages(messageType);
 		}
 
 	});
+	
+	
+	camera = getCamera();
+	scrollView.add(camera);
 
 
 	function sendMessages(messageType) {
