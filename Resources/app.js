@@ -529,11 +529,10 @@ Ti.App.addEventListener('app:getSubscriptionInfo', function (e){
 
 function showSubscriptionInstructions(){
 	
-	if(! utm.subscribeInfoView){		
-		utm.SubscribeInfoView = require('/ui/handheld/SubscribeInfo');
-		utm.subscribeInfoView = new utm.SubscribeInfoView(utm);
-	}
-
+	utm.subscribeInfoView=null;	
+	utm.SubscribeInfoView = require('/ui/handheld/SubscribeInfo');
+	utm.subscribeInfoView = new utm.SubscribeInfoView(utm);
+	
 	utm.navController.open(utm.subscribeInfoView);
 	utm.subscribeInfoView.updateMessage();
 }
@@ -642,7 +641,10 @@ function closeAllScreens(leaveLanding){
 
 	
 		if(utm.signupView != undefined){utm.navController.close(utm.signupView,{animated:false});	}
-		if(utm.subscribeInfoView != undefined){utm.navController.close(utm.subscribeInfoView,{animated:false});	}	
+		if(utm.subscribeInfoView != undefined){
+			utm.navController.close(utm.subscribeInfoView,{animated:false});
+			utm.subscribeInfoView=null;
+		}	
 		
 		if(utm.splashView != undefined){	utm.splashView.close(),{animated:false}}		
 		

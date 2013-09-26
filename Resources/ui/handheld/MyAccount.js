@@ -21,6 +21,7 @@ var MyAccount_window = function(utm) {
 		myAccountWindow.add(buyMessagesButton);
 	
 		buyMessagesButton.addEventListener('click', function() {
+			utm.setSubscriptionWindow=null;
 			utm.setSubscriptionWindow = new SetSubscriptionWindow(utm);	
 			utm.navController.open(utm.setSubscriptionWindow);
 		});	
