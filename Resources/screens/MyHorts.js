@@ -103,7 +103,7 @@ var MyHorts_window = function(utm) {
 				row : clickName = 'row',
 				objName : 'row',
 				touchEnabled : true,
-				height : 55,
+				height : '55dp',
 				hasChild : true,
 				myHortData : myHortData[i]
 			});
