@@ -80,9 +80,15 @@ var ChooseContacts_window = function(utm) {
 
 			if (section.rows[index].getHasCheck()) {
 				section.rows[index].hasCheck = false;
+				if(utm.Android){
+		          	section.rows[index].backgroundColor= '#ffffff';
+		        }
 
 			} else {
 				section.rows[index].hasCheck = true;
+				if(utm.Android){
+		          	section.rows[index].backgroundColor= utm.androidBarColor;
+		        }
 			}
 			checkEnableSendButton();
 
@@ -199,6 +205,8 @@ var ChooseContacts_window = function(utm) {
 							}							
 							
 						}
+						
+						
 
 						data[i] = row;
 					}
@@ -235,6 +243,9 @@ var ChooseContacts_window = function(utm) {
 			var curRow = checkRows[ii];
 			if (curRow.getHasCheck()) {
 				curRow.setHasCheck(false);
+				if(utm.Android){
+		          	curRow.backgroundColor= '#ffffff';
+		        }
 			}
 		}
 		writeMessageButton.enabled = false;
@@ -245,6 +256,14 @@ var ChooseContacts_window = function(utm) {
 		for (var ii = 0; ii < checkRows.length; ii++) {
 			var curRow = checkRows[ii];
 			curRow.setHasCheck(_allChecked);
+			
+			if(utm.Android){
+				if(_allChecked)
+	          		curRow.backgroundColor= utm.androidBarColor;
+	          	else
+	          		curRow.backgroundColor= '#ffffff';	
+	        }
+			
 		}
 		allChecked = !allChecked;
 
