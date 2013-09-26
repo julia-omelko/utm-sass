@@ -17,7 +17,7 @@
     <sdk-version>3.1.2.GA</sdk-version>
     <id>com.utm</id>
     <name>UTM</name>
-    <version>1.22</version>
+    <version>1.24</version>
     <publisher>youthisme</publisher>
     <url>http://youthisme.com</url>
     <description>YouThisMe™ (UTM) is an innovative new technology that provides privacy in digital communications and postings on social media. The messages are hidden in plain sight and only the intended recipient(s) can decode them.</description>
@@ -43,15 +43,24 @@
             <orientation>Ti.UI.LANDSCAPE_RIGHT</orientation>
         </orientations>
     </iphone>
+    
+   
+    
     <android xmlns:android="http://schemas.android.com/apk/res/android">
+    	
+    	  <manifest android:installLocation="preferExternal" android:versionCode="1" android:versionName="1.24"/>
+    	
+    	
         <manifest>
+        		
+        		
             <application>
                 <activity android:configChanges="keyboardHidden|orientation" android:label="UTM" android:name=".UtmActivity" android:screenOrientation="portrait" android:theme="@style/Theme.Titanium">
                     <intent-filter>
                         <action android:name="android.intent.action.MAIN"/>
                         <category android:name="android.intent.category.LAUNCHER"/>
                     </intent-filter>
-	<!-- SOASTA TOUCHTEST CODE BLOCK 1 of 2 in this module.  Uncomment the two blocks of code in this module and one block in app.js
+                    <!-- SOASTA TOUCHTEST CODE BLOCK 1 of 2 in this module.  Uncomment the two blocks of code in this module and one block in app.js
                     <intent-filter>
 	                    <data android:scheme="touchtest-3edd146f-e15f-4190-aabf-deb60a81c3cc"/>
 	                    <action android:name="android.intent.action.VIEW"/>
@@ -89,7 +98,6 @@
         <module platform="android">facebook</module>
     </modules>
     <property name="ti.deploytype">test</property>
-    
     <!-- SOASTA TOUCHTEST CODE BLOCK 2 of 2 in this module.  Uncomment the two blocks of code in this module and one block in app.js
     <property name="com-soasta-touchtest-version" type="string">6619.31</property>
     <ios>
@@ -116,5 +124,4 @@
 	</plugins>
 	<property name="com-soasta-touchtest-ios-appId" type="string">171318</property>
    -->
-   
 </ti:app>

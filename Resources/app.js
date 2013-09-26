@@ -697,11 +697,11 @@ Ti.App.addEventListener("paused", function(e){
 
 //IF the app is left for more then one minute force login
 Ti.App.addEventListener("resumed", function(e){
-	
+	utm.splashView.close();	
 	if(!utm.showSplashScreenOnPause) {
 		//RE #391 - Stop Screenshot when App Looses Focus - close the splash screen
 		utm.log(' **********************  -------  APP resumed ------ **********************    ');
-		utm.splashView.close();	
+		
 	
 		if(!utm.loggedIn) return;
 	
