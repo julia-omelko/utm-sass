@@ -6,6 +6,9 @@ function messageDetail_window(_messageData,_curMode,utm) {
 
 	var win = new Header(utm, 'Message', 'Messages');
 	
+	if (utm.iPhone || utm.iPad)
+		win.add(utm.activityIndicator);
+		
 	// set scroll context differently for platform
 	if(utm.Android){
 		var scrollingView = Ti.UI.createScrollView({
@@ -330,6 +333,7 @@ function messageDetail_window(_messageData,_curMode,utm) {
 				onerror:function(e){
 					utm.handleError(e,this.status,this.responseText); 		
 					getAttachmentsReq=null;	
+					utm.setActivityIndicator(win , '');
 				}
 				,timeout:utm.netTimeout
 			});	
