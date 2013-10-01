@@ -268,7 +268,11 @@ function messageDetail_window(_messageData,_curMode,utm) {
 			}else{
 				utm.recordError(response.Message)
 			}	
-			utm.setActivityIndicator(win , '');	
+			
+			//This hide message call clears the loading attachment message
+			if(! _messageData.HasAttachments){
+				utm.setActivityIndicator(win , '');
+			}	
 		},		
 		onerror:function(e){	
 			utm.setActivityIndicator(win , '');	
@@ -362,7 +366,7 @@ function messageDetail_window(_messageData,_curMode,utm) {
 			scrollVu.height = singleImageView.height;
 			scrollVu.views=imageViews;	
 		}catch(e){
-			//alert('');	
+			alert('Device out of memory error - your device does not have enough memory available to load the attachment.');	
 			//could fail but nothing we can do with it
 		}
 	}
