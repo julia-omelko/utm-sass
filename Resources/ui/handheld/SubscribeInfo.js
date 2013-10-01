@@ -25,12 +25,12 @@ var subscribe_window = function(utm) {
 		utm.setActivityIndicator(win,'Loading Products...');
 	});*/	
 	
-	//TODO GetProducts... service
 	
+	utm.setActivityIndicator(win, 'Connecting to iTunes...');		
 
 	Storekit.requestProducts(utm.products, function(storeProducts) {
 		if(storeProducts.success) {		
-			utm.setActivityIndicator(win, '');		
+			
 			
 			//TODO Add new service to get the list of Products in our DB + cross check with Apple Products 
 					
@@ -72,7 +72,7 @@ var subscribe_window = function(utm) {
 				});	
 			
 			
-			
+			utm.setActivityIndicator(win, '');		
 		} else {
 			utm.setActivityIndicator(win, '');
 			var errorLabel = Ti.UI.createLabel({
@@ -89,7 +89,7 @@ var subscribe_window = function(utm) {
 			//Have to bypass the screenLockTime in order to stop the app 
 			//from thinking it's being paused by an outside process
 			//utm.screenLockTime += 10000;
-			utm.setActivityIndicator(win, '');
+		//	utm.setActivityIndicator(win, '');
 			
 			switch (event.state) {
 				case Storekit.FAILED:
@@ -113,6 +113,7 @@ var subscribe_window = function(utm) {
 					break;
 				case Storekit.PURCHASING:
 					Ti.API.debug("Purchasing " + event.productIdentifier);
+					utm.setActivityIndicator(win, 'Connecting to iTunes...');		
 					break;
 				case Storekit.RESTORED:
 					utm.showSplashScreenOnPause = true;

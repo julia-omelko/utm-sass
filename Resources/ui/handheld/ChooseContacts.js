@@ -10,6 +10,8 @@ var ChooseContacts_window = function(utm) {
 			backgroundColor : utm.backgroundColor,
 			barColor : utm.barColor
 		});
+		//add activityIndicator to window
+		win.add(utm.activityIndicator);	
 	}
 	
 	if(utm.Android){
@@ -34,10 +36,6 @@ var ChooseContacts_window = function(utm) {
 		
 		//add the navbar to the screen
 		win.add(my_navbar);
-		
-		//add activityIndicator to window
-		if (utm.iPhone || utm.iPad)
-			win.add(utm.activityIndicator);
 	}
 	 
 	var mainView = Ti.UI.createView({layout:'vertical', width:'100%', height:'80%'});

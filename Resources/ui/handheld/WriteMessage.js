@@ -10,6 +10,8 @@ var WriteMessage_window =function(utm) {
 			,backgroundColor:utm.backgroundColor
 		   ,barColor:utm.barColor
 		});
+		//add activityIndicator to window
+		writeMessageWindow.add(utm.activityIndicator);		
 	}
 	
 	if(utm.Android){
@@ -35,9 +37,7 @@ var WriteMessage_window =function(utm) {
  		//add the navbar to the screen
 		writeMessageWindow.add(my_navbar);
 		
-		//add activityIndicator to window
-		if (utm.iPhone || utm.iPad)
-			writeMessageWindow.add(utm.activityIndicator);		
+	
 	}	
 
 	var scrollableView = Ti.UI.createScrollView({

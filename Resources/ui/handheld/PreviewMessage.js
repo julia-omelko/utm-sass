@@ -78,6 +78,8 @@ var PreviewMessage_window = function(utm) {
 			barColor : utm.barColor,
 			rightNavButton:cameraButton
 		});			
+		//add activityIndicator to window
+		win.add(utm.activityIndicator);	
 	}
 	
 	cameraButton.addEventListener('click', function(){
@@ -346,7 +348,8 @@ var PreviewMessage_window = function(utm) {
 	var imagePreview= Ti.UI.createImageView({
 		left:'10dp',
 		right:'10dp',
-		visible:false
+		visible:false,
+		autorotate:true
 	});
 	scrollView.add(imagePreview);
 	

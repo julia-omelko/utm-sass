@@ -5,9 +5,6 @@ function messageDetail_window(_messageData,_curMode,utm) {
 	var Header = require('ui/common/Header');
 
 	var win = new Header(utm, 'Message', 'Messages');
-	
-	if (utm.iPhone || utm.iPad)
-		win.add(utm.activityIndicator);
 		
 	// set scroll context differently for platform
 	if(utm.Android){
@@ -15,9 +12,7 @@ function messageDetail_window(_messageData,_curMode,utm) {
 		scrollType : 'vertical'
 		});
 	}
-	if(utm.iPhone || utm.iPad ){
-		win.add(utm.activityIndicator);
-		
+	if(utm.iPhone || utm.iPad ){	
 		var scrollingView = Ti.UI.createScrollView({
 			showVerticalScrollIndicator : true,
 			showHorizontalScrollIndicator : false
