@@ -1,52 +1,18 @@
 function CameraView(_win,_imagePreview) {
 	var resizedImage;
-	var imageForPreview;
+	//var imageForPreview;
 	
 	var CameraView = Titanium.UI.createView({
         layout: 'horizontal',
-        visible:true
+        visible:false
 	});
 
-		
-	var imageBorder = Ti.UI.createView({
-		left:25,
-		top:2,//CameraView.height*0.01,
-		height:CameraView.height*0.3,
-		//height:36,
-		width:Ti.Platform.displayCaps.platformWidth-50,
-		borderColor:'black',
-		borderWidth:0,
-		backgroundColor:'#fff',
-		borderRadius: 5
-	});
-	CameraView.add(imageBorder);
-	
-	var imageContainer = Ti.UI.createImageView({
-		left:(imageBorder.width-36)/2,
-		top:2,//(imageBorder.height-130)/2,
-		height:imageBorder.getHeight(),
-		width:imageBorder.getWidth(),
-		visible:false
-	//	image:'/images/camera-ip.png'
-	});
-	imageBorder.add(imageContainer);
-	
-	imageContainer.addEventListener('click',function(e){
+	_imagePreview.addEventListener('click',function(e){
 		askDelete();
 	});
-	
-	
-/*	imageContainer.addEventListener('click',function(e){
-		this.captureImage();
-	});
-	*/
+
 	CameraView.captureImage= function(){
 		resizedImage = null;
-		//imageContainer.setHeight(130);
-		//imageContainer.setWidth(193);
-		//imageContainer.setLeft((imageBorder.width-193)/2);
-		//imageContainer.setTop((imageBorder.height-130)/2);
-		//imageContainer.setImage('/images/camera-ip.png');
 		
 		var photoDialog = Ti.UI.createOptionDialog({
 			title:'Please provide a picture.',
@@ -59,7 +25,6 @@ function CameraView(_win,_imagePreview) {
 		photoDialog.addEventListener('click', function(e){
 			
 			resizedImage=null;
-			imageForPreview=null;
 			
 			if (e.cancel === e.index || e.cancel === true) {
 				return;
@@ -90,7 +55,6 @@ function CameraView(_win,_imagePreview) {
 						
 						processImage(event);
 						
-
 					},
 		        	cancel:function(){
 						return;
@@ -117,21 +81,8 @@ function CameraView(_win,_imagePreview) {
 			resizedImage = event.media.imageAsResized(event.media.width/3,event.media.height/3);
 		}	
 		
-
-		
-		if(utm.Android){
-			imageForPreview = event.media.imageAsResized(event.media.width/6,event.media.height/6);
-		}else{
-			imageForPreview = event.media.imageAsResized(event.media.width/2,event.media.height/2);
-		}	
-
-		imageContainer.visible=false;
-		imageBorder.visible=false;
-		_imagePreview.setImage(imageForPreview);
+		_imagePreview.setImage(resizedImage);
 		_imagePreview.visible=true;
-		
-		
-		
 		
 	}
 	
@@ -149,7 +100,7 @@ function CameraView(_win,_imagePreview) {
 			if (e.cancel === e.index || e.cancel === true) {
 				return;
 			} else if (e.index === 0){
-				imageContainer.setVisible(false);
+				_imagePreview.setVisible(false);
 				resizedImage=null;				
 			}		
 		});		
@@ -162,9 +113,8 @@ function CameraView(_win,_imagePreview) {
 	}
 	
 	CameraView.reset = function(){
-		imageContainer.setVisible(false);
+		_imagePreview.setVisible(false);
 		resizedImage=null;	
-		imageForPreview=null;		
 	}
 	
 
