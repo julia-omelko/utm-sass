@@ -137,9 +137,8 @@ var subscribe_window = function(utm) {
 							
 							if(response.Status ==='Sucess'){
 
-								var data =  eval('('+response.Data+')');
-								utm.User.UserProfile.MessagesRemaining = data.MessagesRemaining;
-								utm.User.UserProfile.SubscriptionEnds	 = data.SubscriptionEnds;
+								utm.User.UserProfile.MessagesRemaining = response.Data.MessagesRemaining;
+								utm.User.UserProfile.SubscriptionEnds = response.Data.SubscriptionEnds; //Issue with dates not the same with SubscriptionInfo vs VerifyAppleReceipt when null
 								
 								alert("Thank you for your purchase, you now have "+ utm.User.UserProfile.MessagesRemaining + "  messages remaining.");
 							}else{
@@ -176,7 +175,10 @@ var subscribe_window = function(utm) {
 			message = 'You have ' + utm.User.UserProfile.MessagesRemaining + ' messages remaining \n';
 		}
 		
-		var now = new Date();		
+	/*	
+	 *  Hide Date message due to //Issue with dates not the same with SubscriptionInfo vs VerifyAppleReceipt when null
+	 * 
+	 var now = new Date();		
 		var subDate = utm.User.UserProfile.SubscriptionEnds ? utm.User.UserProfile.SubscriptionEnds.substring(0, 10) : "UNKNOWN";
 		var displayDate = subDate === "UNKNOWN" ? "UNKNOWN" : moment(subDate).format('L');
 		subDate = subDate.replace(/-/g, '/');
@@ -190,7 +192,7 @@ var subscribe_window = function(utm) {
 				message += '\nYour subscriptions ends on ' + displayDate;
 			}
 		}
-				
+		*/		
 		instructionLbl.text = message;
 	};		
 	
