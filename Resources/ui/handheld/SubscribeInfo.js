@@ -49,6 +49,15 @@ var subscribe_window = function(utm) {
 				});	
 				win.add(productButton);
 				
+				var prodDescription = Ti.UI.createLabel({
+					width : 260,	
+					font: {fontSize:'11dp'},
+					textAlign:'center',
+					text:storeProducts.products[i].description
+				});
+				
+				win.add(prodDescription);
+				
 				productButton.addEventListener('click', function(event){
 					utm.showSplashScreenOnPause = false;
 					utm.setActivityIndicator(win, 'Purchasing...');
@@ -59,7 +68,7 @@ var subscribe_window = function(utm) {
 			
 			var cancelButton = Ti.UI.createButton({
 					title : 'Cancel',
-					top : 20,
+					top : 25,
 					height : 70,
 					width : 260,	
 					enabled : true,
