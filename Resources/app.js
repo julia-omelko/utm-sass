@@ -83,13 +83,10 @@ if (utm.iPhone || utm.iPad){
 		height : 'auto',
 		width : 'auto'
 	});
-  
-}else {
+	
+} else {
  	//Android handled in NavigationController.js
 }
-
-
-
 
 //open initial window
 utm.Login = require('screens/login');
@@ -261,7 +258,7 @@ function setMyHort(e) {
 	utm.targetMyHortID = e.myHortId;
 	utm.currentOpenWindow=utm.chooseContactsView;
 	utm.navController.open(utm.chooseContactsView);
-	if(e.direct) utm.chooseContactsView.setBackButtonTitle(L('back')); 
+	if(e.direct && !utm.android) utm.chooseContactsView.setBackButtonTitle(L('back')); 
 
 	//Fire event to trigger call to get contacts
 	Ti.App.fireEvent('app:getContacts');
@@ -569,11 +566,28 @@ utm.setActivityIndicator =function (_curWindow, _message) {
 	}
 };
 
-   function isProgressIndicator(input) {
-        return Object.prototype.toString.call(input) === '[object ProgressIndicator]';
-    }
+function isProgressIndicator(input) {
+    return Object.prototype.toString.call(input) === '[object ProgressIndicator]';
+}
 
+ // Function to test if device is iOS 7 or later
+function isiOS7Plus() {
+	// iOS-specific test
+	if (Titanium.Platform.name == 'iPhone OS')
+	{
+		var version = Titanium.Platform.version.split(".");
+		var major = parseInt(version[0],10);
 
+		// Can only test this support on a 3.2+ device
+		if (major >= 7)
+		{
+			return true;
+		}
+	}
+	return false;
+};
+
+utm.iOS7 = isiOS7Plus();
 
 Ti.Network.addEventListener('change', function(e) {
 	utm.log('Network Status Changed:' + e.online);

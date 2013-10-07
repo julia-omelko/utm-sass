@@ -103,7 +103,7 @@ var TheLandingScreen_view = function(utm) {
 		}else{
 			Ti.App.fireEvent("app:showChooseMyHortWindow", {});
 		}		
-	}
+	};
 	
 	sendMessageBtn.addEventListener('click',function(e)
 	{																					//NOTE cant pass function only the string
@@ -146,7 +146,6 @@ var TheLandingScreen_view = function(utm) {
 		Ti.App.fireEvent("app:showMyAccountWindow", {});
 	});
 	
-
 	return win;
 };
 module.exports = TheLandingScreen_view;

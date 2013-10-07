@@ -69,7 +69,7 @@ var ChooseMyHort_window =function(utm) {
 
 		myHortPicker.add(data);
 		
-		if(data.length ==1){
+		if(data.length == 1){
 			var curRow =  myHortPicker.getSelectedRow(0,0);
 			var val = data[0].custom_item;	
 			utm.navController.open(utm.chooseMyHortView);	
@@ -79,7 +79,7 @@ var ChooseMyHort_window =function(utm) {
 			utm.navController.open(utm.chooseMyHortView);
 		}
 		
-	} 
+	}; 
 
 	var chooseMyhortButton = Ti.UI.createButton({
 		title:L('send_choose_contacts'),
@@ -98,10 +98,10 @@ var ChooseMyHort_window =function(utm) {
 		
 	});
 	
-	chooseMyHortView.restForm=function(){		
+	chooseMyHortView.restForm  =function(){		
 		//myHortPicker.setSelectedRow(0,-1,false);		
 		//populateMyHortPicker();
-	}
+	};
 	
 	
 	return chooseMyHortView;
