@@ -1,6 +1,10 @@
 var AddWindow = function() {
+	var iOS7 = isIOS7Plus();
+	var theTop = iOS7 ? 20 : 0;
+	
 	var win = Ti.UI.createWindow({
 		title:L('new_fugitive'),
+		top: theTop,
 		layout:'vertical',
 		barColor: '#6d0a0c',
 		backgroundColor: 'transparent',
