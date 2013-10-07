@@ -6,9 +6,9 @@ var subscribe_window = function(utm) {
 	var Header = require('ui/common/Header');
 	var win = new Header(utm,L('account_info'), L('button_back'));
 
-	var message='';	
+	var message = '';	
 	var purchaseSuccess = false;
-		
+	
 	var instructionLbl = Ti.UI.createLabel({ 
 		top:10,
 		left:10,
@@ -25,84 +25,82 @@ var subscribe_window = function(utm) {
 		utm.setActivityIndicator(win,'Loading Products...');
 	});*/	
 	
-	
 	utm.setActivityIndicator(win, 'Connecting to iTunes...');		
 
-	Storekit.requestProducts(utm.products, function(storeProducts) {
-		if(storeProducts.success) {		
-			
-			
-			//TODO Add new service to get the list of Products in our DB + cross check with Apple Products 
+	try
+	{
+		Storekit.requestProducts(utm.products, function(storeProducts) {
+			if(storeProducts.success) {		
+							
+				//TODO Add new service to get the list of Products in our DB + cross check with Apple Products 
+						
+				for(i = 0; i < storeProducts.products.length; i++) {
 					
-			for(i = 0; i < storeProducts.products.length; i++) {
+					//TODO improvement to add a check IF MATCH then add product 
+					
+					var productButton = Ti.UI.createButton({
+						title : storeProducts.products[i].title,
+						top : 20,
+						height : 70,
+						width : 260,	
+						enabled : true,
+						padding : 5,
+						_product: storeProducts.products[i]
+					});	
+					win.add(productButton);
+					
+					var prodDescription = Ti.UI.createLabel({
+						width : 260,	
+						font: {fontSize:'11dp'},
+						textAlign:'center',
+						text:storeProducts.products[i].description
+					});
+					
+					win.add(prodDescription);
+					
+					productButton.addEventListener('click', function(event){
+						utm.inSubscriptionMode = true;
+						utm.setActivityIndicator(win, 'Purchasing...');
+						Storekit.purchase(event.source._product);
+					});	
+	
+				}
 				
-				//TODO improvement to add a check IF MATCH then add product 
+				var cancelButton = Ti.UI.createButton({
+						title : 'Cancel',
+						top : 25,
+						height : 70,
+						width : 260,	
+						enabled : true,
+						padding : 5,
+					});	
+					win.add(cancelButton);
+					
+					cancelButton.addEventListener('click', function(event){
+						closeWin();
+					});	
 				
-				var productButton = Ti.UI.createButton({
-					title : storeProducts.products[i].title,
-					top : 20,
-					height : 70,
-					width : 260,	
-					enabled : true,
-					padding : 5,
-					_product: storeProducts.products[i]
-				});	
-				win.add(productButton);
 				
-				var prodDescription = Ti.UI.createLabel({
-					width : 260,	
-					font: {fontSize:'11dp'},
-					textAlign:'center',
-					text:storeProducts.products[i].description
+				utm.setActivityIndicator(win, '');		
+			} else {
+				utm.setActivityIndicator(win, '');
+				var errorLabel = Ti.UI.createLabel({
+					text : "There was an error loading the product list from the Apple App Store! Please try again later."
 				});
 				
-				win.add(prodDescription);
-				
-				productButton.addEventListener('click', function(event){
-					utm.showSplashScreenOnPause = false;
-					utm.setActivityIndicator(win, 'Purchasing...');
-					Storekit.purchase(event.source._product);
-				});	
-
+				win.add(errorLabel);	 
 			}
-			
-			var cancelButton = Ti.UI.createButton({
-					title : 'Cancel',
-					top : 25,
-					height : 70,
-					width : 260,	
-					enabled : true,
-					padding : 5,
-				});	
-				win.add(cancelButton);
-				
-				cancelButton.addEventListener('click', function(event){
-					closeWin();
-				});	
-			
-			
-			utm.setActivityIndicator(win, '');		
-		} else {
-			utm.setActivityIndicator(win, '');
-			var errorLabel = Ti.UI.createLabel({
-				text : "There was an error loading the product list from the Apple App Store! Please try again later."
-			});
-			
-			win.add(errorLabel);	 
-		}
-	});	
-	
+		});
+	}	
+	catch(err) 
+	{
+		alert(err);
+	}
 					
 		Storekit.addEventListener('transactionState', function(event){
 			
-			//Have to bypass the screenLockTime in order to stop the app 
-			//from thinking it's being paused by an outside process
-			//utm.screenLockTime += 10000;
-		//	utm.setActivityIndicator(win, '');
-			
 			switch (event.state) {
 				case Storekit.FAILED:
-					utm.showSplashScreenOnPause = true;
 					if (event.cancelled) {
 						resultMessage = 'Purchase cancelled!';
 					} else {
@@ -114,9 +112,10 @@ var subscribe_window = function(utm) {
 					//logic to verify receipt
 					//sent to service with event.receipt
 					//HAD to add this check due to a double call issue - only want this called one time
-					if(! purchaseSuccess){
+					if(!purchaseSuccess){
+						utm.inSubscriptionMode = false;
 						verifyServerSideWithApple(event.receipt);
-						purchaseSuccess=true;
+						purchaseSuccess = true;
 					}	
 
 					break;
@@ -125,7 +124,6 @@ var subscribe_window = function(utm) {
 					utm.setActivityIndicator(win, 'Connecting to iTunes...');		
 					break;
 				case Storekit.RESTORED:
-					utm.showSplashScreenOnPause = true;
 					// The complete list of restored products is sent with the `restoredCompletedTransactions` event
 					Ti.API.debug("Restored " + event.productIdentifier);
 				    break;
@@ -139,7 +137,7 @@ var subscribe_window = function(utm) {
 					timeout:utm.netTimeout,
 					onload : function(e) {
 						utm.setActivityIndicator(win, '');
-						utm.showSplashScreenOnPause = true;
+						utm.inSubscriptionMode = true;
 				
 						if (this.status == 200) {		
 							var response = eval('('+this.responseText+')');
@@ -149,7 +147,7 @@ var subscribe_window = function(utm) {
 								utm.User.UserProfile.MessagesRemaining = response.Data.MessagesRemaining;
 								utm.User.UserProfile.SubscriptionEnds = response.Data.SubscriptionEnds; //Issue with dates not the same with SubscriptionInfo vs VerifyAppleReceipt when null
 								
-								alert("Thank you for your purchase, you now have "+ utm.User.UserProfile.MessagesRemaining + "  messages remaining.");
+								alert("Thank you for your purchase, you now have "+ utm.User.UserProfile.MessagesRemaining + " messages remaining.");
 							}else{
 								alert("Your purchase was successful but will not be reflected right a way.");
 							}
@@ -165,7 +163,7 @@ var subscribe_window = function(utm) {
 						utm.setActivityIndicator(win, '');
 						utm.handleError(e, this.status, this.responseText);
 						resultMessage = "There was an error processing your request!";
-						utm.showSplashScreenOnPause = true;
+						utm.inSubscriptionMode = false;
 						closeWin();
 					}
 					,timeout:utm.netTimeout
@@ -206,8 +204,8 @@ var subscribe_window = function(utm) {
 	};		
 	
 	function closeWin(){
+		utm.inSubscriptionMode = false;
 		utm.navController.close(utm.setSubscriptionWindow);
-		//utm.setSubscriptionWindow=null;
 	}
 	
 	win.updateMessage();

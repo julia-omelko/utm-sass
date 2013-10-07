@@ -26,6 +26,7 @@ utm.SCREEN_HEIGHT = (pWidth > pHeight) ? pWidth : pHeight;
 utm.showSplashScreenOnPause = true;
 utm.enableSendMessageButton = false;
 utm.appPauseTime = 0;
+utm.inSubscriptionMode = false;
 //var gaModule = require('Ti.Google.Analytics');
 //var analytics = new gaModule('UA-38943374-1');
 
@@ -120,7 +121,7 @@ utm.setEnvModePrefix= function (env){
 	utm.log('env='+env);
 	utm.log('utm.seviceUrl='+utm.serviceUrl);
 	utm.loginView.setWebUrl(utm.webUrl );
-}
+};
 
 appInit();
 
@@ -257,7 +258,7 @@ function showMyHortWindow() {
 Ti.App.addEventListener('app:myHortChoosen', setMyHort);
 function setMyHort(e) {
 	utm.log('setMyHort() fired myHortId=' + e.myHortId);
-	utm.targetMyHortID = e.myHortId
+	utm.targetMyHortID = e.myHortId;
 	utm.currentOpenWindow=utm.chooseContactsView;
 	utm.navController.open(utm.chooseContactsView);
 	if(e.direct) utm.chooseContactsView.setBackButtonTitle(L('back')); 
@@ -287,7 +288,7 @@ function setContactsChoosen(e) {
 Ti.App.addEventListener('app:showWriteMessageView', showWriteMessageView);
 function showWriteMessageView(e) {
 	utm.log('showWriteMessageView() fired' );
-	utm.writeMessageView.setMode(e.mode)
+	utm.writeMessageView.setMode(e.mode);
 	utm.writeMessageView.setMessageData(e.messageData);
 	
 	//originalMessageId:_messageData.Id, replyTo:_messageData.FromUserId
@@ -300,10 +301,10 @@ function showPreview(e) {
 	utm.log('showPreview() fired message=' + e.messageText);
 	utm.originalTextMessage = e.messageText;
 	
-	utm.previewMessageView.setMode(e.mode)
+	utm.previewMessageView.setMode(e.mode);
 	utm.previewMessageView.setMessageData(e.messageData);
 	
-	utm.navController.open(utm.previewMessageView)
+	utm.navController.open(utm.previewMessageView);
 	Ti.App.fireEvent('app:getMessagePreview', {
 		messageText : e.messageText
 	});
@@ -566,7 +567,7 @@ utm.setActivityIndicator =function (_curWindow, _message) {
 		 	}
 		 }
 	}
-}
+};
 
    function isProgressIndicator(input) {
         return Object.prototype.toString.call(input) === '[object ProgressIndicator]';
@@ -680,7 +681,7 @@ utm.handleError = function (e,status,responseText) {
  	}
  	
  	alert(message);         
-}
+};
 
 Ti.App.addEventListener('app:signup', function(){
 	utm.SignupView = require('screens/SignUp');
@@ -698,37 +699,35 @@ Ti.App.addEventListener("paused", function(e){
 //IF the app is left for more then one minute force login
 Ti.App.addEventListener("resumed", function(e){
 	utm.splashView.close();	
-	if(!utm.showSplashScreenOnPause) {
-		//RE #391 - Stop Screenshot when App Looses Focus - close the splash screen
-		utm.log(' **********************  -------  APP resumed ------ **********************    ');
+	//RE #391 - Stop Screenshot when App Looses Focus - close the splash screen
+	utm.log(' **********************  -------  APP resumed ------ **********************    ');
 		
+	if(!utm.loggedIn) return;
+	if(utm.inSubscriptionMode) return; 
 	
-		if(!utm.loggedIn) return;
+	var curDate = new Date();
+	var curMil = curDate.valueOf() ;
+	var pauseMil = utm.appPauseTime.valueOf();
+	var diff = curMil - pauseMil;
 	
-		var curDate = new Date();
-		var curMil = curDate.valueOf() ;
-		var pauseMil = utm.appPauseTime.valueOf() ? utm.appPauseTime.valueOf() : 0;
-		var diff = curMil - pauseMil;
-		
-		if( pauseMil != 0 && diff  > utm.screenLockTime){
-				utm.log('-------  APP resumed  FORCE LOGIN');
-				
-				if(utm.iPhone || utm.iPad ){
-					var pass = keychain.getPasswordForService('utm', 'lockscreen');
-					if(pass == null){
-						showLoginScreenLockView();
-					}else{
-						showPinLockScreen(pass);		
-					}
-					
-				}else if(utm.Android){
+	if( diff  > utm.screenLockTime){
+			utm.log('-------  APP resumed  FORCE LOGIN');
+			
+			if(utm.iPhone || utm.iPad ){
+				var pass = keychain.getPasswordForService('utm', 'lockscreen');
+				if(pass == null){
 					showLoginScreenLockView();
+				}else{
+					showPinLockScreen(pass);		
 				}
-					
-		}else{
-			utm.log('-------  APP resumed  NO FORCE LOGIN');
-		}
-	}	
+				
+			}else if(utm.Android){
+				showLoginScreenLockView();
+			}
+				
+	}else{
+		utm.log('-------  APP resumed  NO FORCE LOGIN');
+	}		
 });
 
 if(utm.iPhone || utm.iPad ){
@@ -767,8 +766,9 @@ if(utm.iPhone || utm.iPad ){
 	}
 }
 //RE #391 - Stop Screenshot when App Looses Focus - put up the splash screen
-Ti.App.addEventListener('pause', function(e){
-	if(utm.showSplashScreenOnPause) {
+ Ti.App.addEventListener('pause', function(e){
+	
+	if(!utm.inSubscriptionMode || !utm.showSplashScreenOnPause) {
 		utm.splashView.open();
 	}
 	//Note: Splash is closed in resumed event
