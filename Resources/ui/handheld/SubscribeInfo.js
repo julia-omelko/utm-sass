@@ -149,7 +149,7 @@ var subscribe_window = function(utm) {
 								
 								alert("Thank you for your purchase, you now have "+ utm.User.UserProfile.MessagesRemaining + " messages remaining.");
 							}else{
-								alert("Your purchase was successful but will not be reflected right a way.");
+								alert("Your purchase was successful but will not be reflected right away.");
 							}
 							closeWin();
 						} 

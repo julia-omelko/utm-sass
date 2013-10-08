@@ -9,11 +9,12 @@ function messageDetail_window(_messageData,_curMode,utm) {
 	// set scroll context differently for platform
 	if(utm.Android){
 		var scrollingView = Ti.UI.createScrollView({
-		scrollType : 'vertical'
+			scrollType : 'vertical'
 		});
 	}
 	if(utm.iPhone || utm.iPad ){	
 		var scrollingView = Ti.UI.createScrollView({
+			contentWidth: utm.SCREEN_WIDTH,
 			showVerticalScrollIndicator : true,
 			showHorizontalScrollIndicator : false
 		});
@@ -115,7 +116,7 @@ function messageDetail_window(_messageData,_curMode,utm) {
 	view.add(replyButton);
 		
 	var bottomSpacerView = Ti.UI.createView({height:'10dp'});
-	view.add(bottomSpacerView)
+	view.add(bottomSpacerView);
 	
 	var scrollVu = Ti.UI.createScrollableView({	  
 		top:4,
@@ -215,13 +216,13 @@ function messageDetail_window(_messageData,_curMode,utm) {
 		getMembersReq.open("GET",utm.serviceUrl+"Members/"+_messageData.MyHortId +'?$filter=UserId eq '+replyingToUserId );
 		getMembersReq.setRequestHeader('Authorization-Token', utm.User.UserProfile.AuthToken);	
 		getMembersReq.send();			
-	}
+	};
 
 	win.getMessageDetails = function (){
 		utm.setActivityIndicator(win , 'Loading Message...');	
 		getMessageDetailReq.setRequestHeader('Authorization-Token', utm.AuthToken);	
 		getMessageDetailReq.send();	
-	}
+	};
 	
 	// ##################### Call out to get message detail #####################
 	var getMessageDetailReq = Ti.Network.createHTTPClient({
@@ -264,9 +265,9 @@ function messageDetail_window(_messageData,_curMode,utm) {
 					
 				
 			}else if(this.status == 400){
-				utm.recordError(response.Message)
+				utm.recordError(response.Message);
 			}else{
-				utm.recordError(response.Message)
+				utm.recordError(response.Message);
 			}	
 			
 			//This hide message call clears the loading attachment message
@@ -346,7 +347,7 @@ function messageDetail_window(_messageData,_curMode,utm) {
 		
 		if( _messageData.Attachments.length ==1){
 			scrollVu.visible=true;
-			showPagingControl:false
+			showPagingControl:false;
 		}else if( _messageData.Attachments.length > 1){
 			scrollVu.visible=true;
 			showPagingControl=true;
