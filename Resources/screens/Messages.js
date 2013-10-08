@@ -416,7 +416,7 @@ function message_window(utm) {
 							objName : 'utmMessage',
 							text : response[i].UtmText,
 							touchEnabled : true,
-							top : 35,
+							top : '35dp',
 							left : 15,
 							height : utm.Android ? '20dp' : '20',
 							width : '100%'
