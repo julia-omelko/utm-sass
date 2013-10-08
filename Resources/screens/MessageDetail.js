@@ -355,7 +355,6 @@ function messageDetail_window(_messageData,_curMode,utm) {
 		}
 	}
 	
-
 	function populateImageViews(_attachment){
 		var imageSrc = _attachment.Attachment;	
 
@@ -374,6 +373,5 @@ function messageDetail_window(_messageData,_curMode,utm) {
 
 	return win;
 };
-
 
 module.exports = messageDetail_window;
