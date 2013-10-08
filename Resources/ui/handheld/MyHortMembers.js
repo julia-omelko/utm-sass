@@ -123,7 +123,7 @@ function createMyHortWindow(_myHortData, utm, _isOwner) {
 					//top : 5,
 					left : 2,
 					width : '110dp',
-					height : '15dp',
+					height : '20dp',
 					ellipsize : false
 				});
 				hView.add(nickName);
@@ -135,7 +135,7 @@ function createMyHortWindow(_myHortData, utm, _isOwner) {
 					objName : 'memberType',
 					touchEnabled : false,
 					left : '115dp',
-					height : '15dp',
+					height : '20dp',
 					font : {
 						fontSize : '14dp'
 					},

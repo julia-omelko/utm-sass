@@ -2,12 +2,12 @@ function inputField(utm,_label, _labelWidth,  _val, _valWidth, _keyboardType,_re
 
 	var mainView = Ti.UI.createView({
 		layout:'vertical',
-		height:'50dp',
+		height:'75dp',
 		left:5	
 	});
 	
 	var hView = Ti.UI.createView({
-		height:'50dp',
+		height:'75dp',
 		layout:'horizontal'
 	});
 	mainView.add(hView);
@@ -23,7 +23,7 @@ function inputField(utm,_label, _labelWidth,  _val, _valWidth, _keyboardType,_re
 	
 	var lbl = Ti.UI.createLabel({
 		text: _label	
-		,top:16
+		,top:'16dp'
 		,left:2	
 		,font:{fontWeight:'bold',fontSize:'14dp'}
 		,width:_labelWidth
@@ -96,13 +96,13 @@ function inputField(utm,_label, _labelWidth,  _val, _valWidth, _keyboardType,_re
 	
 	mainView.setMessage=function(val){
 		if(val!=''){
-			mainView.height='70dp';
+			mainView.height='75dp';
 			fldMessageLabel.height='15dp';
 			fldMessageLabel.visible=true;
 			fldMessageLabel.text=val;
 		//	fld.borderColor ='#EF8181';
 		}else{
-			mainView.height='50dp';
+			mainView.height='75dp';
 			fldMessageLabel.height='0dp';
 			fldMessageLabel.visible=false;
 			fldMessageLabel.text='';

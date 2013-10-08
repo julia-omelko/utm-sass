@@ -2,7 +2,7 @@ function createMyHortWindow(myHortId,utm) {
 
 	var Header = require('ui/common/Header');
 
-	var win = new Header(utm, 'Your Pending Invitations', L('button_back'));
+	var win = new Header(utm, 'Pending Invitations', L('button_back'));
 	win.left='5dp';
 	win.right='5dp';
 	
@@ -123,7 +123,7 @@ function createMyHortWindow(myHortId,utm) {
 						fontSize : '16dp'
 					},
 					left : '205dp'
-				})
+				});
 				hView.add(expiredLbl);
 			}
 
