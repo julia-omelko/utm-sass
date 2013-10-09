@@ -1,7 +1,7 @@
 var PreviewMessage_window = function(utm) {
 
-	var Camera =require("/lib/Camera");
-	var camera=null;
+	var Camera = require("/lib/Camera");
+	var camera = null;
 
 	var curUtmText = '';
 	var curRjCrypt = '';
@@ -89,7 +89,7 @@ var PreviewMessage_window = function(utm) {
 	
 	
 	function getCamera(){
-		if(camera ==null){
+		if(camera == null){
 			camera = new Camera(win,imagePreview);
 		}
 		return camera;
@@ -413,7 +413,7 @@ var PreviewMessage_window = function(utm) {
 				var sendImageSrc = Ti.Utils.base64encode(theImage);
 				attachments = [{ Attachment: sendImageSrc.toString(),MimeType:theImage.mimeType,WasVirusScanned:true  }];	
 
-			}catch(err){
+			} catch(err){
 				camera = null;
 				if(utm.Android){
 					alert("An error occured handling the photo-Some Android phones can't support attaching photos direct form the camera - try attaching an image from a Album.");
