@@ -38,8 +38,8 @@ var ChooseContacts_window = function(utm) {
 		win.add(my_navbar);
 	}
 	 
-	var mainView = Ti.UI.createView({layout:'vertical', width:'100%', height:'80%'});
-	var bottomView = Ti.UI.createView({layout:'vertical', width:'100%', height:'20%'});
+	var mainView = Ti.UI.createView({layout:'vertical', width:'100%', height:'70%'});
+	var bottomView = Ti.UI.createView({layout:'vertical', width:'100%', height:'30%'});
 
 	win.add(mainView);
 	win.add(bottomView);
@@ -61,8 +61,8 @@ var ChooseContacts_window = function(utm) {
 
 	// create table view
 	var tableview = Titanium.UI.createTableView({
-		style : Titanium.UI.iPhone.TableViewStyle.GROUPED,
-		height : '80%'
+		style : Titanium.UI.iPhone.TableViewStyle.GROUPED
+//		height : '80%'
 	});
 	mainView.add(tableview);
 
