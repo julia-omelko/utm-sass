@@ -362,8 +362,8 @@ function messageDetail_window(_messageData,_curMode,utm) {
 			var singleImageView = Ti.UI.createImageView();
 			singleImageView.setImage(Ti.Utils.base64decode(imageSrc));
 			imageViews.push(singleImageView);
-			scrollVu.width = "'" + singleImageView.width +"dp'";
-			scrollVu.height = "'" + singleImageView.height + "dp'";
+			scrollVu.width = singleImageView.width;
+			scrollVu.height = singleImageView.height; 
 			scrollVu.views=imageViews;	
 		}catch(e){
 			alert('Device out of memory error - your device does not have enough memory available to load the attachment.');	
