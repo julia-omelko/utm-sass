@@ -45,8 +45,8 @@
         </orientations>
     </iphone>
     <android xmlns:android="http://schemas.android.com/apk/res/android">
-        <manifest android:installLocation="auto" android:versionCode="1" android:versionName="1.24"/>
-        <manifest>
+        <manifest android:installLocation="auto" android:versionCode="2" android:versionName="1.24.0">
+        	<uses-permission android:name="com.android.vending.BILLING" />
             <application>
                 <activity
                     android:configChanges="keyboardHidden|orientation"

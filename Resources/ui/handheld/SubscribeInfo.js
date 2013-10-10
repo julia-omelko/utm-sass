@@ -173,7 +173,7 @@ var subscribe_window = function(utm) {
 				verifyReceipt.setRequestHeader('Authorization-Token', utm.AuthToken);
 				verifyReceipt.send(_receipt);
 		}
-		
+	
 	win.updateMessage = function(){
 		message='';
 		if( utm.User.UserProfile.MessagesRemaining < 1 ){
