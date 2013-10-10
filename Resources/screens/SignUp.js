@@ -103,7 +103,8 @@ function signUp_window(utm) {
 	var mobile = Ti.UI.createTextField({
 		color:utm.textFieldColor,	
 		width:'50%',
-		height:'40dp',    
+		top:'5dp',
+		height:Ti.UI.SIZE, 
 		autocorrect: false,
 		keyboardType:  Ti.UI.KEYBOARD_DECIMAL_PAD,
 		returnKeyType:Ti.UI.RETURNKEY_DEFAULT,

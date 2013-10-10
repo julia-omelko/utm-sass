@@ -2,12 +2,13 @@ function inputField(utm,_label, _labelWidth,  _val, _valWidth, _keyboardType,_re
 
 	var mainView = Ti.UI.createView({
 		layout:'vertical',
-		height:'75dp',
-		left:5	
+		height:Ti.UI.SIZE,
+		left:'5dp'	,
+		top:'5dp'
 	});
 	
 	var hView = Ti.UI.createView({
-		height:'75dp',
+	   height:Ti.UI.SIZE, 
 		layout:'horizontal'
 	});
 	mainView.add(hView);
@@ -35,7 +36,7 @@ function inputField(utm,_label, _labelWidth,  _val, _valWidth, _keyboardType,_re
 		color:utm.textFieldColor,	
 		passwordMask:_fldType === 'password'?true:false,	
 		width:_valWidth,
-		height:'40dp',
+		height:Ti.UI.SIZE, 
      	autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
 		autocorrect: false,
 		keyboardType: _keyboardType ?_keyboardType: Ti.UI.KEYBOARD_DEFAULT,
@@ -61,12 +62,12 @@ function inputField(utm,_label, _labelWidth,  _val, _valWidth, _keyboardType,_re
 		layout:'horizontal',
 		width:'100%',
 		right:'10dp'
-		
 	});
 	mainView.add(messageView);
 	
 	var fldMessageLabel = Ti.UI.createLabel({
 		height:0,
+		top:2,
 		width:'100%',
 		left:lbl.x + lbl.width,
 		color:utm.textErrorColor, 
@@ -96,19 +97,21 @@ function inputField(utm,_label, _labelWidth,  _val, _valWidth, _keyboardType,_re
 	
 	mainView.setMessage=function(val){
 		if(val!=''){
-			mainView.height='75dp';
-			fldMessageLabel.height='15dp';
 			fldMessageLabel.visible=true;
 			fldMessageLabel.text=val;
+			fldMessageLabel.height=Ti.UI.SIZE;
+			messageView.height=Ti.UI.SIZE;
+			mainView.height=Ti.UI.SIZE;
+			
 		//	fld.borderColor ='#EF8181';
 		}else{
-			mainView.height='75dp';
-			fldMessageLabel.height='0dp';
 			fldMessageLabel.visible=false;
 			fldMessageLabel.text='';
-		//	fld.borderColor ='transparent';
+			messageView.height='0dp';
+			fldMessageLabel.height='0dp';
+			mainView.height=Ti.UI.SIZE;
 		}
-		messageView.height=fldMessageLabel.height;
+		
 	}
 	
 	if(_keyboardType === Ti.UI.KEYBOARD_EMAIL){
