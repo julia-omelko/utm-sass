@@ -62,6 +62,17 @@ var MyAccount_window = function(utm) {
  
  		//add the navbar to the screen
 		myAccountWindow.add(my_navbar);	
+		
+		var upgradeBtn = Ti.UI.createButton({
+			title:'Buy Messages',
+			top: 10,
+			width: 200,
+			height: 70
+		});
+		myAccountWindow.add(upgradeBtn);
+		upgradeBtn.addEventListener('click', function(){
+			  Ti.Platform.openURL(utm.webUrl +'/Store');
+		});		
 	}
 	
 	var forgetMeButton = Ti.UI.createButton({
