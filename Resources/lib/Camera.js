@@ -24,7 +24,7 @@ function CameraView(_win,_imagePreview) {
 		
 		photoDialog.addEventListener('click', function(e){
 			
-			resizedImage=null;
+			resizedImage = null;
 			
 			if (e.cancel === e.index || e.cancel === true) {
 				return;
@@ -44,7 +44,8 @@ function CameraView(_win,_imagePreview) {
 		            	if (error.code == Titanium.Media.NO_CAMERA){
 		            		alert('Device does not have camera capabilities');
 		            	}else{
-		                	alert('Unexpected error: ' + error.code);
+		                	alert('Unexpected error: ' + error.message + '\nTry choosing a picture from the gallery');
+		                	// Ti.API.error(JSON.stringify(error));
 		            	}
 		            }
 				});
@@ -68,10 +69,11 @@ function CameraView(_win,_imagePreview) {
 		            }
 				});
 			}
-		})
+		});
+		
 		photoDialog.show();
 		
-	}
+	};
 	
 	function processImage(event){
 		
@@ -110,12 +112,12 @@ function CameraView(_win,_imagePreview) {
 	
 	CameraView.getImage = function(){
 		return resizedImage;
-	}
+	};
 	
 	CameraView.reset = function(){
 		_imagePreview.setVisible(false);
-		resizedImage=null;	
-	}
+		resizedImage = null;	
+	};
 	
 
 	return CameraView;

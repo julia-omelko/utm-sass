@@ -83,8 +83,17 @@ var PreviewMessage_window = function(utm) {
 	}
 	
 	cameraButton.addEventListener('click', function(){
-		camera =  getCamera();
-		camera.captureImage();		
+		try { 
+			Ti.API.info("get camera");
+			camera =  getCamera();
+			
+			Ti.API.info("capture");
+			
+			camera.captureImage();		
+		} catch(error) {
+			alert("There was an error fetching the camera!");
+			Ti.API.error(JSON.stringify(error));
+		}
 	});	
 	
 	

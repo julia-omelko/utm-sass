@@ -192,10 +192,23 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 			view.add(utm.activityIndicator);
 	}
 	
-	var backButton = Ti.UI.createButton({title: 'MyHorts'});
+	if(!utm.Android) {
+		var backButton = Ti.UI.createButton({title: 'MyHorts'});
+		
+		backButton.addEventListener('click', function()
+		{
+			killNavigation();
+		});
+		
+		win.leftNavButton = backButton;
+	} else {
+		win.addEventListener('android:back', function(e) {
+		    e.cancelBubble = true;
+			killNavigation();
+		});
+	}
 	
-	backButton.addEventListener('click', function()
-	{
+	function killNavigation( ) {
 		var dirty = checkIfFormIsDirty();
 		
 		if ( dirty ) {
@@ -212,10 +225,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		} else {
 			utm.navController.close(utm.myHortDetailWindow);
 		}
-	});
-	
-	win.leftNavButton = backButton;
-	
+	}
 	function checkIfFormIsDirty( ) {
 		
 		var isDirty = false;
@@ -471,12 +481,24 @@ if(isOwner){
 		color:utm.textFieldColor,	
 		height:'40dp',
 		borderStyle:Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
-		borderRadius :5
+		borderRadius :5,
+		suppressChangeEvent: false,
+		clear: function() { if( this.value != '' ) { 
+								this.suppressChangeEvent = true;
+								this.value = ''; 
+								checkIfFormIsDirty();
+							} 
+						  }
 	});
 	keyWordPreGroup.add(keyWordPre);
 	
-	keyWordPre.addEventListener('change', function(){ 
-		keyWordPost.value='';
+	keyWordPre.addEventListener('change', function(){ 	
+		if(!keyWordPre.suppressChangeEvent) {
+			keyWordPost.clear();
+		} else {
+			keyWordPre.suppressChangeEvent = false;
+		}
+		
 		checkIfFormIsDirty();		
 	});
 	
@@ -521,12 +543,26 @@ if(isOwner){
 		color:utm.textFieldColor,	
 		height:'40dp',
 		borderStyle:Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
-		borderRadius :5
+		borderRadius :5,
+		suppressChangeEvent: false,
+		clear: function() { if( this.value != '' ) { 
+								this.suppressChangeEvent = true;
+								this.value = ''; 
+								checkIfFormIsDirty();
+							} 
+						  }
 	});
 	keyWordPostGroup.add(keyWordPost);
+	
 	keyWordPost.addEventListener('change', function(){ 
-		keyWordPre.value='';
+		if(!keyWordPost.suppressChangeEvent) {
+			keyWordPre.clear();	
+		} else {
+			keyWordPost.suppressChangeEvent = false;
+		}
+		
 		checkIfFormIsDirty();
+
 	 });
 }
 
@@ -540,6 +576,7 @@ if(isOwner){
 	saveButton.addEventListener('click', function() {
 		if(checkAtLeastOneTypeOfMessageSet()){
 			updateMyHortData();
+			utm.navController.close(utm.myHortDetailWindow);
 		}
 	});
 	view.add(saveButton);
