@@ -1,6 +1,7 @@
 function messageDetail_window(_messageData,_curMode,utm) {
 	var moment = require('lib/moment');
-	var imageViews=[];
+	var imageViews = [];
+	var attachmentsLoaded = false;
 
 	var Header = require('ui/common/Header');
 
@@ -118,12 +119,12 @@ function messageDetail_window(_messageData,_curMode,utm) {
 	var bottomSpacerView = Ti.UI.createView({height:'10dp'});
 	view.add(bottomSpacerView);
 	
-	var scrollVu = Ti.UI.createScrollableView({	  
-		top:4,
-	    cacheSize:3,
-	    visible:false
-	});
-	view.add(scrollVu);
+	// var scrollVu = Ti.UI.createScrollableView({	  
+		// top:4,
+	    // cacheSize:3,
+	    // visible:false
+	// });
+	// view.add(scrollVu);
 	
 
 // ##################### Call out to get Reply To User Data #####################
@@ -137,7 +138,7 @@ function messageDetail_window(_messageData,_curMode,utm) {
 		        var response = eval('('+this.responseText+')');
 				//Received text: [{"UserId":1004,"MyHortId":1003,"MemberType":"Primary","NickName":"Ant","HasMobile":true,"HasEmail":true,"HasFaceBook":false,"HasTwitter":false}]
 				
-				if(this.status ==200){					
+				if(this.status == 200){					
 					utm.log("data returned:"+response);
 					var data = [];
 					utm.curUserCurMyHortHasTwitter = false;
@@ -152,64 +153,20 @@ function messageDetail_window(_messageData,_curMode,utm) {
 				        sentToContactList: selectedContacts
 				    });	
 					
+			    	Ti.App.fireEvent("app:showWriteMessageView", {mode:'reply', messageData: _messageData});
 					
-				    
-				    	Ti.App.fireEvent("app:showWriteMessageView", {mode:'reply', messageData: _messageData});
-				
-				/*  ATD We dont have the data here for the cur user's MyHort if has Twitter/Facebook
-					for(i=0; i< utm.User.MyHorts.length; i++ ){
-						var mh = utm.User.MyHorts[i];
-						if(mh.MyHortId= response[0].MyHortId){
-							
-							for (x=0; x < mh.Members.length; x++){
-								
-								var curMember = mh.Member[x];
-								
-									if (response[i].HasTwitter) {
-										utm.curUserCurMyHortHasTwitter = true;
-									}
-									if (response[i].HasFaceBook) {
-										utm.curUserCurMyHortHasFacebook = true;
-									}	
-							}							
-							
-							break;
-						}
-					}
-					*/
-					
-					
-				    	
-					
-				/*	for (var i=0;i<response.length;i++)
-					{
-						var row = Ti.UI.createTableViewRow({UserId:response[i].UserId, id:i, nickName:response[i].NickName,height:35,userData:response[i]});
-						
-						var l = Ti.UI.createLabel({left:5, font:{fontSize:16}, height:30,color:'#000',text:response[i].NickName});
-						row.add(l);
-						
-						if(utm.User.UserProfile.UserId ===response[i].UserId ){
-							if(response[i].HasTwitter){
-								utm.curUserCurMyHortHasTwitter=true;
-							}
-						}
-						
-						data[i] = row;
-					}
-				
-		*/
-					
-				}else if(this.status == 400){				
-					utm.recordError(response.Message+ ' ExceptionMessag:'+response.ExceptionMessage);			
-				}else{
+				} else if (this.status == 400) {				
+					utm.recordError(response.Message+ ' ExceptionMessage:' + response.ExceptionMessage);			
+				} else {
 					utm.log("error");				
 				}		
-				getMembersReq=null;
+				
+				getMembersReq = null;
 		     },
 		     // function called when an error occurs, including a timeout
 		     onerror : function(e) {		        
 		        	utm.handleError(e,this.status,this.responseText); 
-		        	getMembersReq=null;
+		        	getMembersReq = null;
 		     }
 		     ,timeout:utm.netTimeout
 		});	
@@ -232,41 +189,40 @@ function messageDetail_window(_messageData,_curMode,utm) {
 			win.visible=true;
 			var response = eval('('+this.responseText+')');
 			
-			if(this.status ==200){
-				utm.log("message data returned:"+response);
+			if(this.status == 200){
+				utm.log("message data returned:" + JSON.stringify(response));
 				if(response.Message.length > 1000){
-					view.height=Titanium.UI.SIZE ;
-				}else{
-					//view.height=2000;
-				}
+					view.height = Titanium.UI.SIZE ;
+				} 
 				
+				//If there are messages, get them and mark it as read
+				//Else, mark the message as read
 				if(_messageData.HasAttachments){
 					callOutToGetAttachments(_messageData);
-				}	
+				} else {
+					//Mark Message as Read
+					utm.log('Mark Message as Read (no attachments):' + !_messageData.WasRead);
+					if(!_messageData.WasRead) {
+						//#124 Fix issue with message list not refreshing IF message is marked as Read
+						setMessageAsRead(_messageData.Id);
+					}
+				} 	
 				
 				//Now that we have date set all the values
-				toDate.text = 'Sent: '+getDateTimeFormat(_messageData.DateSent);
-				utmMessageValue.text=_messageData.UtmText;	
+				toDate.text = 'Sent: ' + getDateTimeFormat(_messageData.DateSent);
+				utmMessageValue.text = _messageData.UtmText;	
 				realMessageValue.text = response.Message;
 				
-				//Mark Message as Read
-				utm.log('Mark Message as Read'+ ! _messageData.WasRead);
-				if(  _messageData.WasRead !=1){
-					//#124 Fix issue with message list not refreshing IF message is marked as Read
-					setMessageAsRead(_messageData.Id);
-				}
+
 				
-				if(_curMode=='recieved'){
-					toLabel.text='From: '+_messageData.FromUserName;
+				if(_curMode == 'recieved'){
+					toLabel.text = 'From: ' + _messageData.FromUserName;
 				}else{
-					toLabel.text='To: '+_messageData.ToHeader;
-					replyButton.visible=false;
+					toLabel.text = 'To: ' + _messageData.ToHeader;
+					replyButton.visible = false;
 				}
 					
-				
-			}else if(this.status == 400){
-				utm.recordError(response.Message);
-			}else{
+			} else {
 				utm.recordError(response.Message);
 			}	
 			
@@ -287,7 +243,7 @@ function messageDetail_window(_messageData,_curMode,utm) {
 		}
 		,timeout:utm.netTimeout
 	});	
-	if(_curMode=='recieved'){
+	if(_curMode == 'recieved'){
 		getMessageDetailReq.open("GET",utm.serviceUrl+"ReceivedMessages/"+_messageData.Id);	
 	}else{
 		getMessageDetailReq.open("GET",utm.serviceUrl+"SentMessages/"+_messageData.Id);
@@ -324,50 +280,57 @@ function messageDetail_window(_messageData,_curMode,utm) {
 				{
 					var response = eval('('+this.responseText+')');
 					
-					if(this.status ==200){
+					if(this.status == 200){
 						populateImageViews(response);
+						
+						//Mark Message as Read
+						utm.log('Mark Message as Read (with attachments):' + !_messageData.WasRead);
+						if(!_messageData.WasRead) {
+							//#124 Fix issue with message list not refreshing IF message is marked as Read
+							setMessageAsRead(_messageData.Id);
+						}
 					}
-					getAttachmentsReq=null;
+					getAttachmentsReq = null;
 					utm.setActivityIndicator(win , '');		
 				},		
 				onerror:function(e){
 					utm.handleError(e,this.status,this.responseText); 		
-					getAttachmentsReq=null;	
+					getAttachmentsReq = null;	
 					utm.setActivityIndicator(win , '');
+					alert ('There was an error fetching the attachment. \nLeaving message unread.');
 				}
 				,timeout:utm.netTimeout
 			});	
-			
-						
+									
 			getAttachmentsReq.open("GET",utm.serviceUrl+"Attachment/"+_messageData.Attachments[i].Id);	
 			getAttachmentsReq.setRequestHeader('Authorization-Token', utm.AuthToken);	
 			getAttachmentsReq.send();				
 			
 		}		
 		
-		if( _messageData.Attachments.length ==1){
-			scrollVu.visible=true;
-			showPagingControl:false;
+		if( _messageData.Attachments.length == 1){
+			//scrollVu.visible = true;
+			showPagingControl: false;
 		}else if( _messageData.Attachments.length > 1){
-			scrollVu.visible=true;
-			showPagingControl=true;
-	    		pagingControlOnTop=true;
+			//scrollVu.visible = true;
+			showPagingControl = true;
+	    	pagingControlOnTop = true;
 		}
 	}
 	
 	function populateImageViews(_attachment){
 		var imageSrc = _attachment.Attachment;	
-
+		var image = Ti.Utils.base64decode(imageSrc);
+		
 		try{
 			var singleImageView = Ti.UI.createImageView();
-			singleImageView.setImage(Ti.Utils.base64decode(imageSrc));
-			imageViews.push(singleImageView);
-			scrollVu.width = singleImageView.width;
-			scrollVu.height = singleImageView.height; 
-			scrollVu.views=imageViews;	
+			singleImageView.setImage(image);
+			view.add(singleImageView);
+			return true;
+			
 		}catch(e){
 			alert('Device out of memory error - your device does not have enough memory available to load the attachment.');	
-			//could fail but nothing we can do with it
+			return false;
 		}
 	}
 

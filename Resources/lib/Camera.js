@@ -44,7 +44,7 @@ function CameraView(_win,_imagePreview) {
 		            	if (error.code == Titanium.Media.NO_CAMERA){
 		            		alert('Device does not have camera capabilities');
 		            	}else{
-		                	alert('Unexpected error: ' + error.message + '\nTry choosing a picture from the gallery');
+		                	alert('Unable to access camera! \nPlease use a picture from the gallery.');
 		                	// Ti.API.error(JSON.stringify(error));
 		            	}
 		            }
