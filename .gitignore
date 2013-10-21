@@ -1,1 +1,4 @@
 /build
+.settings/com.appcelerator.titanium.mobile.prefs
+.settings/org.eclipse.core.resources.prefs
+.settings/com.appcelerator.titanium.core.prefs
