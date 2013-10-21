@@ -36,7 +36,6 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 			showVerticalScrollIndicator : true,
 			showHorizontalScrollIndicator : false,
 			contentWidth:'100%',
-			contentHeight:'auto',
 			layout:'vertical'
 		});
 		win.add(view);
@@ -89,7 +88,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 			navBarHidden : true,
 			title:  _myHortData.FriendlyName
 		});
-
+		
 		//create a navbar for Android
 		var my_navbar = Ti.UI.createLabel({
 			height : 50,
@@ -116,7 +115,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		win.add(scrollingView);
 
 		var view = Ti.UI.createView({
-			height : utm.SCREEN_HEIGHT * 1.25,
+			height : Ti.UI.SIZE, //utm.SCREEN_HEIGHT * 1.25,
 			layout : 'vertical'
 		});
 
@@ -126,7 +125,8 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		var btnWidth = spacer - 2;
 		var btnHeight = 39;
 		var leftPos = Math.round((Ti.Platform.displayCaps.platformWidth - btnWidth * 3) * 0.5);
-		if (isOwner) {
+	
+		if(isOwner) {
 			// TAB BAR aka Button Bar for Android
 			var tabBar = Ti.UI.createView({
 				width : '100%',
@@ -195,30 +195,44 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 			});
 			tab2.addEventListener('click', function() {
 				//Invite
-				if (isOwner){
-					utm.myHortInviteWindow = new MyHortInviteWindow(_myHortData, utm);
-					utm.navController.open(utm.myHortInviteWindow);
-				}
+				utm.myHortInviteWindow = new MyHortInviteWindow(_myHortData, utm);
+				utm.navController.open(utm.myHortInviteWindow);
+				
 			});
 			tab3.addEventListener('click', function() {
 				//Show Pending
-				if (isOwner){
-					utm.myHortPendingWindow = new MyHortPendingWindow(_myHortData.MyHortId, utm);
-					utm.myHortPendingWindow.open({
+				utm.myHortPendingWindow = new MyHortPendingWindow(_myHortData.MyHortId, utm);
+				utm.myHortPendingWindow.open({
 						modal : true,
 						navBarHidden : true
 					});
-				}
-		});
-			
+				
+			});
 		}
 		
 	}
 	
-	var backButton = Ti.UI.createButton({title: 'MyHorts'});
+	//add activityIndicator to view
+	if (utm.iPhone || utm.iPad) view.add(utm.activityIndicator);
 	
-	backButton.addEventListener('click', function()
-	{
+	//handle backbutton
+	if(!utm.Android) {
+		var backButton = Ti.UI.createButton({title: 'MyHorts'});
+		
+		backButton.addEventListener('click', function()
+		{
+			killNavigation();
+		});
+		
+		win.leftNavButton = backButton;
+	} else {
+		win.addEventListener('android:back', function(e) {
+		    e.cancelBubble = true;
+			killNavigation();
+		});
+	}
+	
+	function killNavigation( ) {
 		var dirty = checkIfFormIsDirty();
 		
 		if ( dirty ) {
@@ -235,10 +249,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		} else {
 			utm.navController.close(utm.myHortDetailWindow);
 		}
-	});
-	
-	win.leftNavButton = backButton;
-	
+	}
 	function checkIfFormIsDirty( ) {
 		
 		var isDirty = false;
@@ -494,12 +505,24 @@ if(isOwner){
 		color:utm.textFieldColor,	
 		height:'40dp',
 		borderStyle:Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
-		borderRadius :5
+		borderRadius :5,
+		suppressChangeEvent: false,
+		clear: function() { if( this.value != '' ) { 
+								this.suppressChangeEvent = true;
+								this.value = ''; 
+								checkIfFormIsDirty();
+							} 
+						  }
 	});
 	keyWordPreGroup.add(keyWordPre);
 	
-	keyWordPre.addEventListener('change', function(){ 
-		keyWordPost.value='';
+	keyWordPre.addEventListener('change', function(){ 	
+		if(!keyWordPre.suppressChangeEvent) {
+			keyWordPost.clear();
+		} else {
+			keyWordPre.suppressChangeEvent = false;
+		}
+		
 		checkIfFormIsDirty();		
 	});
 	
@@ -544,12 +567,26 @@ if(isOwner){
 		color:utm.textFieldColor,	
 		height:'40dp',
 		borderStyle:Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
-		borderRadius :5
+		borderRadius :5,
+		suppressChangeEvent: false,
+		clear: function() { if( this.value != '' ) { 
+								this.suppressChangeEvent = true;
+								this.value = ''; 
+								checkIfFormIsDirty();
+							} 
+						  }
 	});
 	keyWordPostGroup.add(keyWordPost);
+	
 	keyWordPost.addEventListener('change', function(){ 
-		keyWordPre.value='';
+		if(!keyWordPost.suppressChangeEvent) {
+			keyWordPre.clear();	
+		} else {
+			keyWordPost.suppressChangeEvent = false;
+		}
+		
 		checkIfFormIsDirty();
+
 	 });
 }
 
@@ -563,6 +600,7 @@ if(isOwner){
 	saveButton.addEventListener('click', function() {
 		if(checkAtLeastOneTypeOfMessageSet()){
 			updateMyHortData();
+			utm.navController.close(utm.myHortDetailWindow);
 		}
 	});
 	view.add(saveButton);
@@ -571,7 +609,7 @@ if(isOwner){
 	//----------Delete MyHort Button (Android Only)--------------------		
 	if (utm.Android) {
 		var deleteButton = Ti.UI.createButton({
-			title : 'Delete',
+			title : isOwner ? 'Delete' : 'Leave this MyHort',
 			top : 20,
 			height:'40dp',
 			width:'100dp',
@@ -605,13 +643,13 @@ if(isOwner){
 			validatesSecureCertificate : utm.validatesSecureCertificate,
 			onload : function() {
 				utm.setActivityIndicator(view , '');
-				deleteMyHortDetailReq=null;
+				deleteMyHortDetailReq = null;
 				updateMyHortData();
 				utm.navController.close(utm.myHortDetailWindow,{animated:false});
 			},
 			onerror : function() {
 				utm.setActivityIndicator(view , '');
-				deleteMyHortDetailReq=null;
+				deleteMyHortDetailReq = null;
 			}
 		});
 		
@@ -881,7 +919,6 @@ if(isOwner){
 
 		});
 	}
-	
 
 	function authFacebook() {
 		Titanium.Facebook.forceDialogAuth = false;
