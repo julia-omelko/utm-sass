@@ -36,7 +36,7 @@ utm.twitterConsumerSecret = ""; //'Qq0rth4MHGB70nh20nSzov2zz6GbVxuVndCh2IxkRWI';
 utm.facebookAppId = '494625050591800';
 utm.currentOpenWindow='';
 
-//this will need to be coming from the database in the future
+//TODO:this will need to be coming from the database in the future
 utm.products = ['com.youthisme.20for99', 'com.youthisme.500for1999'];
 
 var unlockWindow = null;

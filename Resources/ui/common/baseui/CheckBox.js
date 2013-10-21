@@ -2,14 +2,14 @@ function checkBox(_isChecked){
 	var isChecked=false;
 	var self = Ti.UI.createView({
         backgroundColor:'white', 
-        width:utm.Android?33:22,
-        height:utm.Android?33:22
+        width:utm.Android?'30dp':'22dp',
+        height:utm.Android?'30dp':'22dp'
     });
  
     var check_box = Ti.UI.createView({
         backgroundImage:'/images/checkbox.png',
-        width:utm.Android?33:22,
-        height:utm.Android?33:22
+        width:utm.Android?'30dp':'22dp',
+        height:utm.Android?'30dp':'22dp'
     });
  	self.add(check_box);
     self.addEventListener('click',function(){
@@ -28,10 +28,11 @@ function checkBox(_isChecked){
  	self.setChecked=function(_isChecked){
  		isChecked=_isChecked;
  		toggleCheck();
- 	}
+ 	};
+ 	
  	self.isChecked=function(){
  		return isChecked;
- 	}
+ 	};
 	
 	if(_isChecked){
 		self.setChecked(true);

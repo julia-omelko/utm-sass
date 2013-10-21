@@ -131,7 +131,7 @@ var TheLoginScreen_view = function(utm) {
 	});
 	
 	//About UTM
-	var tosLabel = createLink(L('login_about'), '/Home/WhoWeAre')
+	var tosLabel = createLink(L('login_about'), '/Home/WhoWeAre');
 	view.add(tosLabel);
 
 	//Version 0.12 Alpha	
@@ -274,8 +274,8 @@ var TheLoginScreen_view = function(utm) {
 	function fillInTestLogin(){
 		utm.log('Ti.Platform.model = ' +Ti.Platform.model );
 		if (Ti.Platform.model === 'Simulator'  || Ti.Platform.model ===  'google_sdk') { 
- 			username.value='ad';
- 			password.value='testtest1';
+ 			username.value='nokkusan';
+ 			password.value='Ba55fac3';
 		}
 	}
 	
