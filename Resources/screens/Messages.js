@@ -316,31 +316,14 @@ function message_window(utm) {
 		win.setRightNavButton(edit);
 	}
 
-	//Ti.App.addEventListener('app:showMessages', showMessageWindow);
 	win.showMessageWindow = function () {
 		getMessages(curMode);
-	}
+	};
 
-
-	Ti.App.addEventListener('app:backToMessageWindow', backToMessageWindow);
-	function backToMessageWindow() {
-		//Ti.App.fireEvent('app:showMessages');
-		utm.navController.open(utm.messageWindow);
-		getMessages(curMode);
-	}
-
-
-	Ti.App.addEventListener('app:refreshMessages', refreshMessages);
-	function refreshMessages(data) {
-		if (data.showProgress) {
-			showProgress = true;
-		} else {
-			showProgress = false;
-		}
-
-		getMessages(curMode, showProgress);
-	}
-
+	win.refreshMessages=function(){
+		getMessages(curMode, false);
+	};
+	
 	function getMessages(mode, showProgress) {
 		if ( typeof showProgress === 'undefined')
 			showProgress = true;
@@ -363,7 +346,7 @@ function message_window(utm) {
 
 					for (var i = 0; i < response.length; i++) {
 						var row = Ti.UI.createTableViewRow({
-							//className : 'row',
+							className : 'row',
 							row : clickName = 'row',
 							objName : 'row',
 							touchEnabled : true,
@@ -477,13 +460,6 @@ function message_window(utm) {
 		//	if(utm.messageDetailWindow != undefined){
 		//		utm.messageDetailWindow.close();
 		//	}
-	}
-
-	//RE #260 - Mobile Ti App: ver 0.28 Beta: Latency, can briefly see messages from previously logged in user
-	Ti.App.addEventListener('app:loginSuccess', handleLoginSuccess);
-	function handleLoginSuccess(event) {
-		tableData = [];
-		tableView.setData(tableData);
 	}
 
 	// #############################  Scroll Refresh Start #############################
@@ -637,7 +613,7 @@ function message_window(utm) {
 
 	Number.prototype.pad = function(len) {
 		return (new Array(len + 1).join("0") + this).slice(-len);
-	}
+	};
 	function pad(val) {
 		val = val < 10 ? '0' + val : '' + val;
 		return val;
@@ -655,13 +631,6 @@ function message_window(utm) {
 	}
 
 	// #############################  Scroll Refresh End #############################
-
-	win.addEventListener('blur', function() {
-		if (Ti.Platform.osname == 'iphone') {
-			win.setRightNavButton(edit);
-		}
-		tableView.editing = false;
-	});
 
 	return win;
 };

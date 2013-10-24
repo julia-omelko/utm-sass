@@ -274,8 +274,8 @@ var TheLoginScreen_view = function(utm) {
 	function fillInTestLogin(){
 		utm.log('Ti.Platform.model = ' +Ti.Platform.model );
 		if (Ti.Platform.model === 'Simulator'  || Ti.Platform.model ===  'google_sdk') { 
- 			username.value='nokkusan';
- 			password.value='Ba55fac3';
+ 			username.value='ad';
+ 			password.value='testtest1';
 		}
 	}
 	
@@ -304,15 +304,15 @@ var TheLoginScreen_view = function(utm) {
 	
 	win.setVersionLabel =function(){
 		versionLabel.text=utm.appVersion;// + '  ('+utm.envModePrefix +' DB)';
-	}
+	};
 	
 	win.enableLoginButton =function(_enabled){
 		loginBtn.enabled=_enabled;
-	}
+	};
 	
 	win.setWebUrl = function(_webUrl){
 		webUrl=_webUrl;
-	}
+	};
 	
 	
 	fillInTestLogin();
