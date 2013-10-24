@@ -861,7 +861,7 @@ checkNetworkOnInit();
 
 //SOASTA TOUCHTEST CODE
 //Un-comment this code block as well as 2 locations in tiapp.xml to make application "TouchTestable"
- 
+ /*
 if (Ti.Platform.osname === 'iphone' || Ti.Platform.osname === 'ipad')
 {
   var touchTestModule = undefined;
@@ -890,5 +890,5 @@ if (Ti.Platform.osname === 'iphone' || Ti.Platform.osname === 'ipad')
       touchTestModule && touchTestModule.initTouchTest(cloudTestURL);
     }
   });
-}	
+}	*/
  
