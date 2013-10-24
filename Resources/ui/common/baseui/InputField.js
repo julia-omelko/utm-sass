@@ -41,6 +41,7 @@ function inputField(utm,_label, _labelWidth,  _val, _valWidth, _keyboardType,_re
 		autocorrect: false,
 		keyboardType: _keyboardType ?_keyboardType: Ti.UI.KEYBOARD_DEFAULT,
 		returnKeyType:_returnKeyType ? _returnKeyType:Ti.UI.KEYBOARD_DEFAULT,
+		enableReturnKey: false,
 		borderStyle:Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
 		borderRadius :5,
 		_hasFocus: false,
@@ -49,7 +50,7 @@ function inputField(utm,_label, _labelWidth,  _val, _valWidth, _keyboardType,_re
 	
 	fld.addEventListener('focus', function() {
 		fld._hasFocus = true;
-	})
+	});
 	
 	fld.addEventListener('blur', function() {
 		fld._hasFocus = false;
@@ -79,21 +80,21 @@ function inputField(utm,_label, _labelWidth,  _val, _valWidth, _keyboardType,_re
 	
 	mainView.hasFocus = function(val) {
 		return fld._hasFocus;
-	}
+	};
 	
 	mainView.setFocus = function(val) {
 		fld._hasFocus = val;
 		
 		if(val) { fld.focus(); }
 		else { fld.blur(); }
-	}
+	};
 	
 	mainView.setValue = function(val){
 		fld.value = val;
-	}
+	};
 	mainView.getValue = function(val){
 		return fld.value;
-	}
+	};
 	
 	mainView.setMessage=function(val){
 		if(val!=''){
@@ -112,7 +113,7 @@ function inputField(utm,_label, _labelWidth,  _val, _valWidth, _keyboardType,_re
 			mainView.height=Ti.UI.SIZE;
 		}
 		
-	}
+	};
 	
 	if(_keyboardType === Ti.UI.KEYBOARD_EMAIL){
 		fld.addEventListener('blur', function(e){
@@ -136,7 +137,7 @@ function inputField(utm,_label, _labelWidth,  _val, _valWidth, _keyboardType,_re
 	
 	mainView.addEventListenerEvent = function(eventType,callBack){
 		fld.addEventListener(eventType,callBack);
-	}
+	};
 	
 	return mainView;
 }
