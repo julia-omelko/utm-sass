@@ -1,5 +1,6 @@
 var NavigationController = function(utm) { 
     var self = this;
+    var guid = require("/lib/guid");
 
     self.open = function(windowToOpen) {
         //make "heavyweight" and associate with an Android activity
@@ -19,7 +20,31 @@ var NavigationController = function(utm) {
             //windowToOpen.exitOnClose = true;
             self.rootWindow = windowToOpen;
         }
+		
+		function timeoutCompare(tempGuid){
+			if (tempGuid === utm.activityActive) {
+				Ti.App.fireEvent('resumed');
+			}
+		}
+		
+		function monitorGuid() {
+			var tempGuid = guid.generate();
+			utm.activityActive = tempGuid;
+			setTimeout(function() {
+			    timeoutCompare(tempGuid);
+			}, utm.androidTimeout)
+		};
 
+		windowToOpen.addEventListener('open', function(ev) {
+			monitorGuid();
+		});
+		windowToOpen.addEventListener('close', function(ev) {
+			monitorGuid();
+		})
+		windowToOpen.addEventListener('blur', function(ev) {
+			monitorGuid();
+		})
+	    
         windowToOpen.open();
     };
 
@@ -33,7 +58,10 @@ var NavigationController = function(utm) {
     		}
         windowToClose=null;
     };
-
+	
+	
+	
+	
     return self;
 };
 

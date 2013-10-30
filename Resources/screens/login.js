@@ -274,8 +274,8 @@ var TheLoginScreen_view = function(utm) {
 	function fillInTestLogin(){
 		utm.log('Ti.Platform.model = ' +Ti.Platform.model );
 		if (Ti.Platform.model === 'Simulator'  || Ti.Platform.model ===  'google_sdk') { 
- 			username.value='nokkusan';
- 			password.value='Ba55fac3';
+ 			username.value='tim';
+ 			password.value='*Arthur21';
 		}
 	}
 	

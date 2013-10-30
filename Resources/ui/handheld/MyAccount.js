@@ -1,8 +1,8 @@
 var MyAccount_window = function(utm) {
 	utm.inSubscriptionMode = false;
+	var SetPinWindow = require('/ui/handheld/SetPin');
 	
 	if(utm.iPhone || utm.iPad ){
-		var SetPinWindow = require('/ui/handheld/SetPin');
 		var SetSubscriptionWindow = require('ui/handheld/SubscribeInfo');
 		
 		var myAccountWindow = Titanium.UI.createWindow({
@@ -27,18 +27,7 @@ var MyAccount_window = function(utm) {
 			utm.navController.open(utm.setSubscriptionWindow);
 		});	
 		
-		var setPinLockButton = Ti.UI.createButton({
-			title : L('unlock_code'),
-			top : 20,
-			width : 200,	
-			enabled : true
-		});
-		myAccountWindow.add(setPinLockButton);
-	
-		setPinLockButton.addEventListener('click', function() {
-			utm.setPinWindow = new SetPinWindow(utm);		
-			utm.navController.open(utm.setPinWindow);		
-		});
+
 	}else if(utm.Android){
 		
 		//create the base screen and hid the Android navbar
@@ -74,6 +63,20 @@ var MyAccount_window = function(utm) {
 			  Ti.Platform.openURL(utm.webUrl +'/Store');
 		});		
 	}
+	
+	var setPinLockButton = Ti.UI.createButton({
+		title : L('unlock_code'),
+		top : 20,
+		width : 200,	
+		enabled : true
+	});
+	myAccountWindow.add(setPinLockButton);
+
+	setPinLockButton.addEventListener('click', function() {
+		utm.setPinWindow = new SetPinWindow(utm);		
+		utm.navController.open(utm.setPinWindow);		
+	});
+	
 	
 	var forgetMeButton = Ti.UI.createButton({
 		title : L('forget_me'),

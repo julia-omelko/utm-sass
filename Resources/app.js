@@ -27,6 +27,11 @@ utm.showSplashScreenOnPause = true;
 utm.enableSendMessageButton = false;
 utm.appPauseTime = 0;
 utm.inSubscriptionMode = false;
+
+// Android lock screen timout
+utm.activityActive = 0;
+utm.androidTimeout = (5*60*1000); // 5 minutes
+
 //var gaModule = require('Ti.Google.Analytics');
 //var analytics = new gaModule('UA-38943374-1');
 
@@ -35,6 +40,10 @@ utm.twitterConsumerKey = ""; //'8qiy2PJv3MpVyzuhfNXkOw';
 utm.twitterConsumerSecret = ""; //'Qq0rth4MHGB70nh20nSzov2zz6GbVxuVndCh2IxkRWI';
 utm.facebookAppId = '494625050591800';
 utm.currentOpenWindow='';
+
+
+
+
 
 //TODO:this will need to be coming from the database in the future
 utm.products = ['com.youthisme.20for99', 'com.youthisme.500for1999'];
@@ -52,10 +61,11 @@ if(Ti.Platform.osname == 'iphone'){
 	utm.Android = true;
 };
 
-
+var unpinLockScreen = require('/lib/com.qbset.unlockscreen');
 if(utm.iPhone || utm.iPad ){
-	var unpinLockScreen = require('com.qbset.unlockscreen');
 	var keychain = require("com.0x82.key.chain");
+} else {
+	var keychain = require("/lib/androidkeychain");
 }
 
 utm.log = function (message) {
@@ -710,6 +720,9 @@ Ti.App.addEventListener("paused", function(e){
 	utm.log('-------  APP Paused appPauseTime='+appPauseTime.valueOf());
 });
 
+
+
+
 //IF the app is left for more then one minute force login
 Ti.App.addEventListener("resumed", function(e){
 	utm.splashView.close();	
@@ -727,7 +740,7 @@ Ti.App.addEventListener("resumed", function(e){
 	if( diff  > utm.screenLockTime){
 			utm.log('-------  APP resumed  FORCE LOGIN');
 			
-			if(utm.iPhone || utm.iPad ){
+			//if(utm.iPhone || utm.iPad ){
 				var pass = keychain.getPasswordForService('utm', 'lockscreen');
 				if(pass == null){
 					showLoginScreenLockView();
@@ -735,16 +748,16 @@ Ti.App.addEventListener("resumed", function(e){
 					showPinLockScreen(pass);		
 				}
 				
-			}else if(utm.Android){
-				showLoginScreenLockView();
-			}
+			//}else if(utm.Android){
+			//	showLoginScreenLockView();
+			//}
 				
 	}else{
 		utm.log('-------  APP resumed  NO FORCE LOGIN');
 	}		
 });
 
-if(utm.iPhone || utm.iPad ){
+//if(utm.iPhone || utm.iPad ){
 	function showPinLockScreen(_pass){
 		
 		if(_pass == null || utm.isInPinLock){
@@ -778,7 +791,8 @@ if(utm.iPhone || utm.iPad ){
 			});	
 		
 	}
-}
+//}
+
 //RE #391 - Stop Screenshot when App Looses Focus - put up the splash screen
  Ti.App.addEventListener('pause', function(e){
 	
