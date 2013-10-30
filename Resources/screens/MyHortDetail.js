@@ -304,7 +304,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 	
 		
 	//----------Mobile # --------------------
-	var mobile = new InputField(utm,'Mobile', 80, '', '210dp', Ti.UI.KEYBOARD_DECIMAL_PAD);
+	var mobile = new InputField(utm,'Mobile', 80, '', '210dp', Ti.UI.KEYBOARD_NUMBERS_PUNCTUATION  );
 	view.add(mobile);
 	mobile.addEventListener("change", checkIfFormIsDirty);
 

@@ -87,33 +87,19 @@ function signUp_window(utm) {
 	});
 	mobileHView.add(mobileLbl);
 	
-	var flexSpace = Titanium.UI.createButton({
-	    systemButton : Titanium.UI.iPhone.SystemButton.FLEXIBLE_SPACE
-	});
-
-	var btnDone = Titanium.UI.createButton({    
-	    title : 'Done',
-	    width : 67,
-	    height : 32
-	});
-	btnDone.addEventListener('click',function(e){
-	    mobile.blur();
-	});
-	
 	var mobile = Ti.UI.createTextField({
 		color:utm.textFieldColor,	
 		width:'50%',
 		top:'5dp',
 		height:Ti.UI.SIZE, 
 		autocorrect: false,
-		keyboardType:  Ti.UI.KEYBOARD_DECIMAL_PAD,
+		keyboardType:  Ti.UI.KEYBOARD_NUMBERS_PUNCTUATION,
 		returnKeyType:Ti.UI.RETURNKEY_DEFAULT,
 		borderStyle:Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
-		enableReturnKey: true,
+		enableReturnKey: false,
 		borderRadius :5,
 		_hasFocus: false,
-		maxLength:12,
-		keyboardToolbar : [flexSpace,btnDone]
+		maxLength:12
 	});
 	mobileHView.add(mobile);
 	view.add(mobileView);

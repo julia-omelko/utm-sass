@@ -18,7 +18,7 @@
     <sdk-version>3.1.3.GA</sdk-version>
     <id>com.utm</id>
     <name>UTM</name>
-    <version>1.26.0</version>
+    <version>1.27.0</version>
     <publisher>youthisme</publisher>
     <url>http://youthisme.com</url>
     <description>YouThisMe™ (UTM) is an innovative new technology that provides privacy in digital communications and postings on social media. The messages are hidden in plain sight and only the intended recipient(s) can decode them.</description>
@@ -46,12 +46,9 @@
     </iphone>
     <android xmlns:android="http://schemas.android.com/apk/res/android">
         <manifest android:installLocation="auto" android:versionCode="1" android:versionName="1.24.0">
-        	<uses-permission android:name="com.android.vending.BILLING" />
-                <supports-screens 
-        			android:anyDensity="true" 
-        			android:largeScreens="true" 
-        			android:normalScreens="true" 
-        			android:smallScreens="true" />
+            <uses-permission android:name="com.android.vending.BILLING"/>
+            <supports-screens android:anyDensity="true"
+                android:largeScreens="true" android:normalScreens="true" android:smallScreens="true"/>
             <application>
                 <activity
                     android:configChanges="keyboardHidden|orientation"
@@ -61,14 +58,13 @@
                         <action android:name="android.intent.action.MAIN"/>
                         <category android:name="android.intent.category.LAUNCHER"/>
                     </intent-filter>
-                    <!-- SOASTA TOUCHTEST CODE BLOCK 1 of 2 in this module.  Uncomment the two blocks of code in this module and one block in app.js
+                    <!-- SOASTA TOUCHTEST CODE BLOCK 1 of 2 in this module.  Uncomment the two blocks of code in this module and one block in app.js 	-->
                     <intent-filter>
-	                    <data android:scheme="touchtest-3edd146f-e15f-4190-aabf-deb60a81c3cc"/>
-	                    <action android:name="android.intent.action.VIEW"/>
-	                    <category android:name="android.intent.category.BROWSABLE"/>
-	                    <category android:name="android.intent.category.DEFAULT"/>
-    	            </intent-filter>
-	-->
+                        <data android:scheme="touchtest-3edd146f-e15f-4190-aabf-deb60a81c3cc"/>
+                        <action android:name="android.intent.action.VIEW"/>
+                        <category android:name="android.intent.category.BROWSABLE"/>
+                        <category android:name="android.intent.category.DEFAULT"/>
+                    </intent-filter>
                 </activity>
                 <activity
                     android:configChanges="keyboardHidden|orientation"
@@ -106,32 +102,34 @@
         <module platform="iphone">ti.storekit</module>
         <module platform="iphone">facebook</module>
         <module platform="android">facebook</module>
+        <!--<module platform="android">com.soasta.touchtest</module>
+        <module platform="iphone">com.soasta.touchtest</module>-->
     </modules>
     <property name="ti.deploytype">test</property>
-    <!-- SOASTA TOUCHTEST CODE BLOCK 2 of 2 in this module.  Uncomment the two blocks of code in this module and one block in app.js
-    <property name="com-soasta-touchtest-version" type="string">6619.31</property>
+    <!-- SOASTA TOUCHTEST CODE BLOCK 2 of 2 in this module.  Uncomment the two blocks of code in this module and one block in app.js  -->
+   <!-- <property name="com-soasta-touchtest-version" type="string">6619.31</property>
     <ios>
-	    <plist>
-	        <dict>
-	            <key>CFBundleURLTypes</key>
-	            <array>
-	                <dict>
-	                    <key>CFBundleTypeRole</key>
-	                    <string>Editor</string>
-	                    <key>CFBundleURLName</key>
-	                    <string>com.utm</string>
-	                    <key>CFBundleURLSchemes</key>
-	                    <array>
-	                        <string>touchtest-3edd146f-e15f-4190-aabf-deb60a81c3cc</string>
-	                    </array>
-	                </dict>
-	            </array>
-	        </dict>
-	    </plist>
-	</ios>
-	<plugins>
-    	<plugin>com.soasta.touchtest.android</plugin>
-	</plugins>
-	<property name="com-soasta-touchtest-ios-appId" type="string">171318</property>
-   -->
+        <plist>
+            <dict>
+                <key>CFBundleURLTypes</key>
+                <array>
+                    <dict>
+                        <key>CFBundleTypeRole</key>
+                        <string>Editor</string>
+                        <key>CFBundleURLName</key>
+                        <string>com.utm</string>
+                        <key>CFBundleURLSchemes</key>
+                        <array>
+                            <string>touchtest-3edd146f-e15f-4190-aabf-deb60a81c3cc</string>
+                        </array>
+                    </dict>
+                </array>
+            </dict>
+        </plist>
+    </ios>
+    <plugins>
+        <plugin>com.soasta.touchtest.android</plugin>
+    </plugins>
+    <property name="com-soasta-touchtest-ios-appId" type="string">171318</property>
+    -->
 </ti:app>

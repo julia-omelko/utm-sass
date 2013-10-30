@@ -253,7 +253,8 @@ function messageDetail_window(_messageData,_curMode,utm) {
 		validatesSecureCertificate:utm.validatesSecureCertificate 
 		,onload: function()
 		{
-			Ti.App.fireEvent('app:refreshMessages', {showProgress:false});
+			//Ti.App.fireEvent('app:refreshMessages', {showProgress:false});
+			utm.messageWindow.refreshMessages();
 			
 		},		
 		onerror:function(e){
