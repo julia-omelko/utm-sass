@@ -652,6 +652,7 @@ function closeAllScreens(leaveLanding){
 	
 	
 		if(utm.myAccountWindow != undefined){	utm.navController.close(utm.myAccountWindow,{animated:false});}	
+		if(utm.setPinWindow != undefined){	utm.navController.close(utm.setPinWindow,{animated:false});}	
 		if(utm.myHortView != undefined){utm.navController.close(utm.myHortView,{animated:false});}
 		if(utm.myHortDetailWindow != undefined){utm.navController.close(utm.myHortDetailWindow,{animated:false});}
 		//RE ##421 - Ti App - Screen Blank on force login - some odd reason on close an error occures only in trace window only in DeBug mode
