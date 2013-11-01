@@ -17,10 +17,7 @@ var SetPin_window = function(utm) {
 		barColor : utm.barColor,
 		navBarHidden: (utm.Android ? true : false)
 	});
-	
-
-	
-	
+		
 	
 	var passwordDefault = {
 		color: '#000000',
@@ -79,7 +76,8 @@ var SetPin_window = function(utm) {
 	
 	var wrapperView = Ti.UI.createView({
 		layout: 'vertical'
-	})
+	});
+
 	win.add(wrapperView);
 	if (utm.Android) {
 		var my_navbar = Ti.UI.createLabel({
@@ -95,6 +93,24 @@ var SetPin_window = function(utm) {
 		wrapperView.add(my_navbar);
 	}
 	
+	//------------- Create Scrollable view for elements -----------
+	// set scroll context differently for platform
+	if(utm.Android){
+		var scrollingView = Ti.UI.createScrollView({
+		layout: 'vertical',
+		scrollType : 'vertical'
+		});
+	}
+	if(utm.iPhone || utm.iPad ){
+		var scrollingView = Ti.UI.createScrollView({
+		layout: 'vertical',
+		showVerticalScrollIndicator : true,
+		showHorizontalScrollIndicator : false
+		});
+	}
+	wrapperView.add(scrollingView);	
+	
+	
 	var pinLabel = Ti.UI.createLabel({
 		top: 10,
 		left: 3,
@@ -105,18 +121,18 @@ var SetPin_window = function(utm) {
 			fontWeight : 'bold'
 		}		
 	});
-	wrapperView.add(pinLabel);
+	scrollingView.add(pinLabel);
 	
 	var firstCode = Ti.UI.createView({
 		width: Ti.UI.FILL,
 		height: Math.round(Ti.Platform.displayCaps.platformWidth/6)+4,
 		top: 15
-	})
+	});
 	firstCode.add(password[0]);
 	firstCode.add(password[1]);
 	firstCode.add(password[2]);
 	firstCode.add(password[3]);
-	wrapperView.add(firstCode);	
+	scrollingView.add(firstCode);	
 		
 	var pinConfirmLabel = Ti.UI.createLabel({
 		text: 'Confirm your Unlock Code',
@@ -129,18 +145,18 @@ var SetPin_window = function(utm) {
 			fontWeight : 'bold'
 		}		
 	});	
-	wrapperView.add(pinConfirmLabel);
+	scrollingView.add(pinConfirmLabel);
 	
 	var secondCode = Ti.UI.createView({
 		width: Ti.UI.FILL,
 		height: Math.round(Ti.Platform.displayCaps.platformWidth/6)+4,
 		top:15
-	})
+	});
 	secondCode.add(password[4]);
 	secondCode.add(password[5]);
 	secondCode.add(password[6]);
 	secondCode.add(password[7]);
-	wrapperView.add(secondCode);	
+	scrollingView.add(secondCode);	
 	
 	win.add(passwordHiddenBox);
 		
@@ -149,7 +165,7 @@ var SetPin_window = function(utm) {
 	passwordHiddenBox.addEventListener('change',function(e) {	
 		if (e.value.length > 8) {
 			passwordHiddenBox.setValue(e.value.substring(8,1));
-			return
+			return;
 		}
 		for (var i=0;i<=7;i++) {
 			//password[i].setBorderColor(utm.barColor);
@@ -182,7 +198,7 @@ var SetPin_window = function(utm) {
 		width: Ti.UI.SIZE,
 		top:15,
 		layout: 'horizontal'
-	})
+	});
 	buttonWrapper.add(saveButton);
 	if( currentPin != null) {
 		if (Ti.Platform.osname === 'android') {
@@ -192,7 +208,7 @@ var SetPin_window = function(utm) {
 			win.setRightNavButton(clearButton);
 		}
 	}
-	wrapperView.add(buttonWrapper);
+	scrollingView.add(buttonWrapper);
 
 
 	clearButton.addEventListener('click', function(e) {
@@ -207,7 +223,7 @@ var SetPin_window = function(utm) {
  
 		alert.addEventListener('click', function(e) {
 	        if(e.index == 0) {
-	            utm.navController.close(utm.setPinWindow)
+	            utm.navController.close(utm.setPinWindow);
 	        }
 	    });
 	    
@@ -227,7 +243,7 @@ var SetPin_window = function(utm) {
 			alert('PIN failed to save to your KeyChain');
 			return;
 		}	
-		utm.navController.close(utm.setPinWindow)
+		utm.navController.close(utm.setPinWindow);
 	});
 	
 	
@@ -243,7 +259,7 @@ var SetPin_window = function(utm) {
 				enableSave=false;
 				alert('Your codes do not match, please try again');
 				passwordHiddenBox.setValue('');
-				passwordHiddenBox.fireEvent('change',{value:''})
+				passwordHiddenBox.fireEvent('change',{value:''});
 				
 			}
 		}
@@ -253,24 +269,12 @@ var SetPin_window = function(utm) {
 
 	function getPinNumberValue(){
 		return passwordHiddenBox.getValue().substring(0,4);
-	}
+	};
 	function getPinConfirmNumberValue(){
 		return passwordHiddenBox.getValue().substring(4);
-	}
+	};
 	
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	// set focus on passwordHiddenBox field
 	win.addEventListener('focus', function() {		
@@ -283,11 +287,11 @@ var SetPin_window = function(utm) {
 		win.addEventListener('open', function() {	
 			passwordHiddenBox.focus();
 		});
-	}
+	};
 	
 	
 	return win;
 
-}
+};
 module.exports = SetPin_window;
 
