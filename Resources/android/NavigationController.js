@@ -21,17 +21,20 @@ var NavigationController = function(utm) {
             self.rootWindow = windowToOpen;
         }
 		
-		function timeoutCompare(tempGuid){
-			if (tempGuid === utm.activityActive) {
+		function timeoutCompare(){
+			var d = new Date();
+			var n = d.getTime();
+			if (n-utm.activityActive-1000 >= utm.androidTimeout) {
 				Ti.App.fireEvent('resumed');
 			}
 		}
 		
 		function monitorGuid() {
-			var tempGuid = guid.generate();
-			utm.activityActive = tempGuid;
+			var d = new Date();
+			var n = d.getTime();
+			utm.activityActive = n;
 			setTimeout(function() {
-			    timeoutCompare(tempGuid);
+			    timeoutCompare();
 			}, utm.androidTimeout)
 		};
 
@@ -43,6 +46,12 @@ var NavigationController = function(utm) {
 		})
 		windowToOpen.addEventListener('blur', function(ev) {
 			monitorGuid();
+		})
+		windowToOpen.addEventListener('blur', function(ev) {
+			monitorGuid();
+		})
+		windowToOpen.addEventListener('focus', function(ev) {
+			timeoutCompare();
 		})
 	    
         windowToOpen.open();
