@@ -86,7 +86,7 @@ var TheLoginScreen_view = function(utm) {
 	var loginBtn = Ti.UI.createButton({
 		title:L('login'),
 		top:utm.Android ? '20dp' : 15,
-		width:100,
+		width: Ti.UI.SIZE,
 		borderRadius:1,
 		font:{fontFamily:'Arial',fontWeight:'bold',fontSize:'14dp'}
 	});
