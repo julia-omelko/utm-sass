@@ -51,7 +51,7 @@ var subscribe_window = function(utm) {
 					
 					var prodDescription = Ti.UI.createLabel({
 						width : 260,	
-						font: {fontSize:'11dp'},
+						font: {fontSize:'16dp'},
 						textAlign:'center',
 						text:storeProducts.products[i].description
 					});
