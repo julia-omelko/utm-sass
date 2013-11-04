@@ -24,12 +24,13 @@ var NavigationController = function(utm) {
 		function timeoutCompare(_n){
 			var d = new Date();
 			var n = d.getTime();
-			if (utm.activityActive === _n) {
+
+			if (utm.activityActive === _n) {alert('timeoutCompare 1');
 				Ti.App.fireEvent('resumed');
-			} else if (n-utm.activityActive-1000 >= utm.androidTimeout) {
-				Ti.App.fireEvent('resumed');
+			} else if (n-utm.activityActive >= utm.androidTimeout/2) {alert('timeoutCompare 2');
+				Ti.App.fireEvent('resumed'); 
 			} else {
-				monitorGuid();
+				//monitorGuid();
 			}
 		}
 		
