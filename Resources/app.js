@@ -186,6 +186,9 @@ function handleLoginSuccess(event) {
 	//Ti.App.removeEventListener('app:loginSuccess', handleLoginSuccess);
 //utm.User.userProfile.
 	utm.loggedIn = true;
+	var d = new Date();
+	var n = d.getTime();
+	utm.activityActive = n;
 	
 			
 	if(utm.User)
@@ -782,6 +785,9 @@ Ti.App.addEventListener("resumed", function(e){
 					backgroundColor: '#F66F00'				
 				},
 				correct: function() {  	
+					var d = new Date();
+					var n = d.getTime();
+					utm.activityActive = n;
 					utm.isInPinLock=false;			      	
 			    }
 			});	
