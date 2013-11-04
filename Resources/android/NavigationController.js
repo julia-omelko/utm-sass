@@ -25,9 +25,9 @@ var NavigationController = function(utm) {
 			var d = new Date();
 			var n = d.getTime();
 
-			if (utm.activityActive === _n) {alert('timeoutCompare 1');
+			if (utm.activityActive === _n) {
 				Ti.App.fireEvent('resumed');
-			} else if (n-utm.activityActive >= utm.androidTimeout/2) {alert('timeoutCompare 2');
+			} else if (n-utm.activityActive >= utm.androidTimeout/2) {
 				Ti.App.fireEvent('resumed'); 
 			} else {
 				//monitorGuid();
