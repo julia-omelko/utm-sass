@@ -41,13 +41,6 @@ utm.twitterConsumerSecret = ""; //'Qq0rth4MHGB70nh20nSzov2zz6GbVxuVndCh2IxkRWI';
 utm.facebookAppId = '494625050591800';
 utm.currentOpenWindow='';
 
-
-
-
-
-//TODO:this will need to be coming from the database in the future
-utm.products = ['com.youthisme.20for99', 'com.youthisme.500for1999'];
-
 var unlockWindow = null;
 
 utm.iPhone = false;
@@ -202,7 +195,9 @@ function handleLoginSuccess(event) {
 	utm.AuthToken = event.userData.UserProfile.AuthToken;
 	utm.twitterConsumerKey = event.userData.TwitterInfo.TwitterConsumerKey;
 	utm.twitterConsumerSecret = event.userData.TwitterInfo.TwitterConsumerSecret;
-	
+	//Product list is supplied as part of login return query form products table
+	utm.products = event.userData.AppleInAppProducts;
+	//Example  ['com.youthisme.20for99', 'com.youthisme.500for1999'];
 	//analytics.trackPageview('/login');
 	
 	utm.User.MyHorts = event.userData.MyHorts;
