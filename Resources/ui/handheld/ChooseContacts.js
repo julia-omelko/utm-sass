@@ -273,7 +273,11 @@ var ChooseContacts_window = function(utm) {
 			writeMessageButton.enabled=false;
 		}
 	}
-
+	
+	win.addEventListener('open',function(e){
+		Ti.App.fireEvent('app:getContacts');
+	})
+	
 	return win;
 };
 

@@ -269,7 +269,7 @@ function setMyHort(e) {
 	if(e.direct && !utm.Android) utm.chooseContactsView.setBackButtonTitle(L('back')); 
 
 	//Fire event to trigger call to get contacts
-	Ti.App.fireEvent('app:getContacts');
+	//Ti.App.fireEvent('app:getContacts');
 }
 
 Ti.App.addEventListener('app:contactsChoosen', setContactsChoosen);
