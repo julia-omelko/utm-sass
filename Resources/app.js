@@ -768,7 +768,7 @@ Ti.App.addEventListener("resumed", function(e){
 			// main properties for the module
 				configLockScreen: { // main properties for the module
 					passCode: _pass, // set the passcode (string)
-					attempts: 3, // zero for infinite attempts and no timeout (int)
+					attempts: 0, // zero for infinite attempts and no timeout (int)
 					timeOut: 5000, // time out in miliseconds after amount of incorrect attempts. Only when attempts is bigger then zero (int)
 					timeOutMultiplier: 2, // after each set of attempts the time out is multiplied with this property (int)
 					vibrateOnIncorrect: true, // vibrate phone on incorrect passcode input (bool)				
@@ -779,7 +779,7 @@ Ti.App.addEventListener("resumed", function(e){
 					textCorrect: 'Unlock Code Accepted',
 					textIncorrect: 'Wrong Unlock Code',
 					textColorCorrect: '#ffffff',
-					textColorIncorrect: '#ff0000',
+					textColorIncorrect: '#ffffff',
 					vibrateOnIncorrect: true,
 					borderColor: '#ffffff',
 					backgroundColor: '#F66F00'				

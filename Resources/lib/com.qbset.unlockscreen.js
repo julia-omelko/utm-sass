@@ -143,8 +143,21 @@ exports.layout = function(params) {
 		textAlign: params.timeOutBox.textAlign || 'center'
 	};
 	
-	var wrapper  = Ti.UI.createView(),
-		messageBox = Ti.UI.createLabel(messageBoxDefault),
+	if(utm.Android){
+		var wrapper = Ti.UI.createScrollView({
+		scrollType : 'vertical'
+		});
+	}
+	if(utm.iPhone || utm.iPad ){
+		var wrapper = Ti.UI.createScrollView({
+		showVerticalScrollIndicator : true,
+		showHorizontalScrollIndicator : false
+		});
+	}
+	
+	
+	//var wrapper  = Ti.UI.createView(),
+	var messageBox = Ti.UI.createLabel(messageBoxDefault),
 		password1 = Ti.UI.createTextField(passwordDefault),
 		password2 = Ti.UI.createTextField(passwordDefault),
 		password3 = Ti.UI.createTextField(passwordDefault),
@@ -311,7 +324,7 @@ exports.layout = function(params) {
 		passwordHiddenBox.focus();
 	});
 	password1.addEventListener('click', function() {		
-		alert(1);
+		passwordHiddenBox.focus();
 	});
 	if (Ti.Platform.osname === 'android') {
 		win.addEventListener('open', function() {		

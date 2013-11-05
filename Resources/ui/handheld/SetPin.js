@@ -186,23 +186,26 @@ var SetPin_window = function(utm) {
 	var saveButton = Ti.UI.createButton({
 		title : L('ok_button'),
 		width : 160,
-		enabled : false
+		enabled : false,
+		height: Ti.UI.SIZE
 	});
 
 	var clearButton = Ti.UI.createButton({
 		title : 'Clear',
-		width : 160
+		width : 160,
+		height: Ti.UI.SIZE
 	});
 
 	var buttonWrapper = Ti.UI.createView({
 		width: Ti.UI.SIZE,
+		height: Ti.UI.SIZE,
 		top:15,
-		layout: 'horizontal'
+		layout: 'vertical'
 	});
 	buttonWrapper.add(saveButton);
 	if( currentPin != null) {
 		if (Ti.Platform.osname === 'android') {
-			clearButton.setLeft(20);
+			//clearButton.setLeft(20);
 			buttonWrapper.add(clearButton);
 		} else {
 			win.setRightNavButton(clearButton);

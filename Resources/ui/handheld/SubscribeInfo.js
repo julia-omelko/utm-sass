@@ -9,6 +9,14 @@ var subscribe_window = function(utm) {
 	var message = '';	
 	var purchaseSuccess = false;
 	
+	
+	var scrollingView = Ti.UI.createScrollView({
+		layout: 'vertical',
+		scrollType : 'vertical'
+	});
+	win.add(scrollingView);
+	
+	
 	var instructionLbl = Ti.UI.createLabel({ 
 		top:10,
 		left:10,
@@ -17,7 +25,8 @@ var subscribe_window = function(utm) {
 		color:utm.textColor
 	});
 	
-	win.add(instructionLbl);
+	
+	scrollingView.add(instructionLbl);
 	
 	/*
 	 * removed due to load order and sometimes cant get ride of the loading message...
@@ -47,7 +56,7 @@ var subscribe_window = function(utm) {
 						padding : 5,
 						_product: storeProducts.products[i]
 					});	
-					win.add(productButton);
+					scrollingView.add(productButton);
 					
 					var prodDescription = Ti.UI.createLabel({
 						width : 260,	
@@ -56,7 +65,7 @@ var subscribe_window = function(utm) {
 						text:storeProducts.products[i].description
 					});
 					
-					win.add(prodDescription);
+					scrollingView.add(prodDescription);
 					
 					productButton.addEventListener('click', function(event){
 						utm.inSubscriptionMode = true;
@@ -74,7 +83,7 @@ var subscribe_window = function(utm) {
 						enabled : true,
 						padding : 5,
 					});	
-					win.add(cancelButton);
+					scrollingView.add(cancelButton);
 					
 					cancelButton.addEventListener('click', function(event){
 						closeWin();
@@ -88,7 +97,7 @@ var subscribe_window = function(utm) {
 					text : "There was an error loading the product list from the Apple App Store! Please try again later."
 				});
 				
-				win.add(errorLabel);	 
+				scrollingView.add(errorLabel);	 
 			}
 		});
 	}	
