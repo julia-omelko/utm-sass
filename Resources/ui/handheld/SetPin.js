@@ -109,7 +109,7 @@ var SetPin_window = function(utm) {
 	
 	
 	var pinLabel = Ti.UI.createLabel({
-		top: 10,
+		top: 5,
 		left: 3,
 		text: 'Enter Unlock Code used to unlock the screen',
 		width: '100%',
@@ -123,7 +123,7 @@ var SetPin_window = function(utm) {
 	var firstCode = Ti.UI.createView({
 		width: Ti.UI.FILL,
 		height: Math.round(Ti.Platform.displayCaps.platformWidth/6)+4,
-		top: 15
+		top: 5
 	});
 	firstCode.add(password[0]);
 	firstCode.add(password[1]);
@@ -134,7 +134,7 @@ var SetPin_window = function(utm) {
 	var pinConfirmLabel = Ti.UI.createLabel({
 		text: 'Confirm your Unlock Code',
 		textAlign: 'left',
-		top: 10,
+		top: 5,
 		left: 3,
 		width: '100%',
 		font: {
@@ -147,7 +147,7 @@ var SetPin_window = function(utm) {
 	var secondCode = Ti.UI.createView({
 		width: Ti.UI.FILL,
 		height: Math.round(Ti.Platform.displayCaps.platformWidth/6)+4,
-		top:15
+		top: 5
 	});
 	secondCode.add(password[4]);
 	secondCode.add(password[5]);
