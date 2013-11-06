@@ -16,7 +16,7 @@ var MyAccount_window = function(utm) {
 		var buyMessagesButton = Ti.UI.createButton({
 			title : L('buy_messages'),
 			top : 20,
-			width : 200,	
+			width : '200dp',	
 			enabled : true
 		});
 		myAccountWindow.add(buyMessagesButton);
@@ -55,8 +55,8 @@ var MyAccount_window = function(utm) {
 		var upgradeBtn = Ti.UI.createButton({
 			title:'Buy Messages',
 			top: 10,
-			width: 200,
-			height: 70
+			width: '200dp'
+
 		});
 		myAccountWindow.add(upgradeBtn);
 		upgradeBtn.addEventListener('click', function(){
@@ -67,7 +67,7 @@ var MyAccount_window = function(utm) {
 	var setPinLockButton = Ti.UI.createButton({
 		title : L('unlock_code'),
 		top : 20,
-		width : 200,	
+		width : '200dp',	
 		enabled : true
 	});
 	myAccountWindow.add(setPinLockButton);
@@ -81,7 +81,7 @@ var MyAccount_window = function(utm) {
 	var forgetMeButton = Ti.UI.createButton({
 		title : L('forget_me'),
 		top : 20,
-		width : 200,	
+		width : '200dp',	
 		enabled : true
 	});
 	
