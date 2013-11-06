@@ -22,8 +22,8 @@ var SetPin_window = function(utm) {
 	var passwordDefault = {
 		color: '#000000',
 		//top: 145,
-		width: Math.round(Ti.Platform.displayCaps.platformWidth/6),
-		height: Math.round(Ti.Platform.displayCaps.platformWidth/6),
+		width: Math.round(Ti.Platform.displayCaps.platformWidth/8),
+		height: Math.round(Ti.Platform.displayCaps.platformWidth/8),
 		//passwordMask: true,
 		font: {
 			fontFamily: 'Helvetica Neue',
@@ -49,10 +49,7 @@ var SetPin_window = function(utm) {
 		borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
 		keyboardType: Ti.UI.KEYBOARD_NUMBER_PAD,
 		returnKeyType: Ti.UI.RETURNKEY_DEFAULT
-	};
-	if (Ti.Platform.osname === 'android') {
-		passwordHiddenBoxDefault.softKeyboardOnFocus = Ti.UI.Android.SOFT_KEYBOARD_SHOW_ON_FOCUS;
-	}		
+	};	
 	
 	var password = new Array();
  	password[0] = Ti.UI.createLabel(passwordDefault);
@@ -112,10 +109,11 @@ var SetPin_window = function(utm) {
 	
 	
 	var pinLabel = Ti.UI.createLabel({
-		top: 10,
-		left: 3,
+		top: 5,
 		text: 'Enter Unlock Code used to unlock the screen',
-		width: '100%',
+		width: Ti.UI.FILL,
+		height: Ti.UI.SIZE,
+		textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
 		font: {
 			fontSize : '14dp',
 			fontWeight : 'bold'
@@ -125,8 +123,8 @@ var SetPin_window = function(utm) {
 	
 	var firstCode = Ti.UI.createView({
 		width: Ti.UI.FILL,
-		height: Math.round(Ti.Platform.displayCaps.platformWidth/6)+4,
-		top: 15
+		height: Math.round(Ti.Platform.displayCaps.platformWidth/8)+4,
+		top: 5
 	});
 	firstCode.add(password[0]);
 	firstCode.add(password[1]);
@@ -136,10 +134,10 @@ var SetPin_window = function(utm) {
 		
 	var pinConfirmLabel = Ti.UI.createLabel({
 		text: 'Confirm your Unlock Code',
-		textAlign: 'left',
-		top: 10,
-		left: 3,
-		width: '100%',
+		top: 5,
+		width: Ti.UI.FILL,
+		height: Ti.UI.SIZE,
+		textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
 		font: {
 			fontSize : '14dp',
 			fontWeight : 'bold'
@@ -149,8 +147,8 @@ var SetPin_window = function(utm) {
 	
 	var secondCode = Ti.UI.createView({
 		width: Ti.UI.FILL,
-		height: Math.round(Ti.Platform.displayCaps.platformWidth/6)+4,
-		top:15
+		height: Math.round(Ti.Platform.displayCaps.platformWidth/8)+4,
+		top: 5
 	});
 	secondCode.add(password[4]);
 	secondCode.add(password[5]);
@@ -245,7 +243,8 @@ var SetPin_window = function(utm) {
 		if(newPass !==pass){
 			alert('PIN failed to save to your KeyChain');
 			return;
-		}	
+		}
+		
 		utm.navController.close(utm.setPinWindow);
 	});
 	

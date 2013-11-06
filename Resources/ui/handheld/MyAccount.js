@@ -56,7 +56,7 @@ var MyAccount_window = function(utm) {
 			title:'Buy Messages',
 			top: 10,
 			width: 200,
-			height: 70
+			height: Ti.UI.SIZE
 		});
 		myAccountWindow.add(upgradeBtn);
 		upgradeBtn.addEventListener('click', function(){
@@ -68,7 +68,8 @@ var MyAccount_window = function(utm) {
 		title : L('unlock_code'),
 		top : 20,
 		width : 200,	
-		enabled : true
+		enabled : true,
+		height: Ti.UI.SIZE
 	});
 	myAccountWindow.add(setPinLockButton);
 
@@ -82,7 +83,8 @@ var MyAccount_window = function(utm) {
 		title : L('forget_me'),
 		top : 20,
 		width : 200,	
-		enabled : true
+		enabled : true,
+		height: Ti.UI.SIZE
 	});
 	
 	myAccountWindow.add(forgetMeButton);
@@ -126,7 +128,9 @@ var MyAccount_window = function(utm) {
 		},
 		timeout : utm.netTimeout
 	});
-
+	
+	
+	
 	return myAccountWindow;
 
 };
