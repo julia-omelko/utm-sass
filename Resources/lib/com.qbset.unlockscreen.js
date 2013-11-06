@@ -78,23 +78,23 @@ exports.layout = function(params) {
 		borderRadius: params.messageBox.borderRadius || 10,
 		borderColor: params.messageBox.borderColor || '#ffffff',
 		borderWidth: params.messageBox.borderWidth || 3,
-		height: params.messageBox.height || Ti.UI.SIZE,
+		height: params.messageBox.height || 65,
 		width: params.messageBox.width || platformWidth-20,
-		top: params.messageBox.top || 15,
+		top: params.messageBox.top || 35,
 		left: params.messageBox.left || 10,
 		backgroundColor: params.messageBox.backgroundColor || 'gray',
 		color: params.messageBox.color || '#ffffff',
 		font: params.messageBox.font || {
 			fontFamily: 'Helvetica Neue',
 			fontWeight: 'bold',
-			fontSize: '25dp'
+			fontSize: 25
 		},
 		textAlign: params.messageBox.textAlign || 'center'
 	};
 	
 	var passwordDefault = {
 		color: '#000000',
-		top: params.passwordBox.top || 55,
+		top: params.passwordBox.top || 145,
 		width: Math.round(Ti.Platform.displayCaps.platformWidth/6),
 		height: Math.round(Ti.Platform.displayCaps.platformWidth/6),
 		passwordMask: true,
