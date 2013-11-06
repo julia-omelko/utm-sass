@@ -1,4 +1,5 @@
 var MyAccount_window = function(utm) {
+	
 	utm.inSubscriptionMode = false;
 	var SetPinWindow = require('/ui/handheld/SetPin');
 	
