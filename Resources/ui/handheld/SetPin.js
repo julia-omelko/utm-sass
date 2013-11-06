@@ -291,7 +291,7 @@ var SetPin_window = function(utm) {
 		});
 	};
 	
-	
+	 
 	return win;
 
 };
