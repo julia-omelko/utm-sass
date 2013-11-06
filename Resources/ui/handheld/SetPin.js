@@ -49,10 +49,7 @@ var SetPin_window = function(utm) {
 		borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
 		keyboardType: Ti.UI.KEYBOARD_NUMBER_PAD,
 		returnKeyType: Ti.UI.RETURNKEY_DEFAULT
-	};
-	if (Ti.Platform.osname === 'android') {
-		passwordHiddenBoxDefault.softKeyboardOnFocus = Ti.UI.Android.SOFT_KEYBOARD_SHOW_ON_FOCUS;
-	}		
+	};	
 	
 	var password = new Array();
  	password[0] = Ti.UI.createLabel(passwordDefault);
