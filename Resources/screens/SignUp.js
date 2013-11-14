@@ -201,10 +201,22 @@ function signUp_window(utm) {
 					}else{
 						//Success
 						saveButton.enabled = false;
-						alert('Thank you for registering. Please check your email for a confirmation request with a link that will confirm your account. Once you click the link, your registration will be complete.'); 
-						if(utm.iPhone || utm.iPad ){
-							utm.navController.close(utm.signupView);
-						}			
+						var dialog = Ti.UI.createAlertDialog({
+						    message: 'Thank you for registering. Please check your email for a confirmation request with a link that will confirm your account. Once you click the link, your registration will be complete.',
+						    ok:'OK'
+						});
+						dialog.addEventListener('click', function(e){    
+							if (e.index === 0){
+						  		utm.navController.close(utm.signupView);
+						    }
+					  	});
+						dialog.show();
+						
+						
+						//alert('Thank you for registering. Please check your email for a confirmation request with a link that will confirm your account. Once you click the link, your registration will be complete.'); 
+						//if(utm.iPhone || utm.iPad ){
+						//	utm.navController.close(utm.signupView);
+						//}			
 					}
 							
 				}
