@@ -186,10 +186,21 @@ function inviteMyHortWindow(myHortInfo, utm) {
 		font: {fontSize:'16dp'},
 		keyboardType:Ti.UI.KEYBOARD_EMAIL,
 		autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
-		autocorrect: false
+		autocorrect: false,
+		//suppressReturn: true
 	});
 	view.add(emailsField);
-
+	
+	emailsField.addEventListener('return', function() {
+		if (emailsField.getValue().substring(emailsField.getValue().length-1) !== ',') {
+			emailsField.setValue(emailsField.getValue()+',');
+			emailsField.setSelection(emailsField.getValue().length,emailsField.getValue().length);
+		} else {
+			emailsField.setValue(emailsField.getValue().substring(0,emailsField.getValue().length-2));
+			emailsField.blur();
+		}
+	});
+	
 	emailsField.addEventListener('change', function() {
 		if (emailsField.value.length > 0) {
 			inviteButton.enabled = true;

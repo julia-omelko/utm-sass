@@ -1,5 +1,5 @@
 function createMyHortWindow(_myHortData, utm, _isOwner) {
-
+	
 	if (utm.iPhone || utm.iPad) {
 		var win = Ti.UI.createWindow({
 			backgroundColor : utm.backgroundColor,
@@ -36,10 +36,41 @@ function createMyHortWindow(_myHortData, utm, _isOwner) {
 		win.add(my_navbar);		
 	}
 	
+	// edit and done buttons
+	var editButton = Titanium.UI.createButton({
+		title : 'Edit'
+	});
+	editButton.addEventListener('click', function() {
+		if (utm.iPhone || utm.iPad) {
+			win.setRightNavButton(doneButton);
+			tableView.editing = true;
+		}		
+	});
+	var doneButton = Titanium.UI.createButton({
+		title : 'Done',
+		style : Titanium.UI.iPhone.SystemButtonStyle.DONE
+	});
+	doneButton.addEventListener('click', function() {
+		if (utm.iPhone || utm.iPad) {
+			win.setRightNavButton(editButton);
+		}
+		tableView.editing = false;
+	});
+	if (utm.iPhone || utm.iPad) {
+		win.setRightNavButton(editButton);
+	}
+	win.addEventListener('blur', function() {
+		if (utm.iPhone || utm.iPad) {
+			win.setRightNavButton(editButton);
+		}
+		tableView.editing = false;
+	});
+	
 	var colHeader = Ti.UI.createView({
-		layout:'horizontal',
-		height:'20dp',
-		top:5
+		layout: 'horizontal',
+		height: '20dp',
+		top: 5,
+		left: 15
 	});
 	win.add(colHeader);
 	
@@ -49,7 +80,9 @@ function createMyHortWindow(_myHortData, utm, _isOwner) {
 			fontWeight : 'bold',
 			fontSize : '16dp'
 		},
-		color : utm.color_org
+		color : utm.color_org,
+		width: '110dp',
+		height: Ti.UI.SIZE
 	})
 	colHeader.add(nickNameLbl);
 	
@@ -60,7 +93,9 @@ function createMyHortWindow(_myHortData, utm, _isOwner) {
 			fontSize : '16dp'
 		},
 		color : utm.color_org,
-		left:'30dp'		
+		//left:'30dp',
+		height: Ti.UI.SIZE,
+		width: '75dp'
 	})
 	colHeader.add(memberTypeLbl);
 	
@@ -71,12 +106,28 @@ function createMyHortWindow(_myHortData, utm, _isOwner) {
 			fontSize : '16dp'
 		},
 		color : utm.color_org,
-		left:'50dp'
+		//left:'50dp'
 	})
 	colHeader.add(acceptsLbl);
 
 	var tableView = Titanium.UI.createTableView({
 		height : '100%'
+	});
+	tableView.addEventListener('delete', function(e) {
+		var deleteUserFromMyHortHttp = Ti.Network.createHTTPClient({
+			validatesSecureCertificate : utm.validatesSecureCertificate,
+			onload : function() {
+				deleteUserFromMyHortHttp = null;
+			},
+			onerror : function(err) {
+				utm.log(err);
+				deleteUserFromMyHortHttp = null;
+			}
+		});
+		deleteUserFromMyHortHttp.open("GET", utm.serviceUrl + "MyHort/DeleteUserFromMyHort?myhortuserId=" + e.source.myHortMembersRowData.Id);
+		deleteUserFromMyHortHttp.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+		deleteUserFromMyHortHttp.setRequestHeader('Authorization-Token', utm.AuthToken);
+		deleteUserFromMyHortHttp.send();
 	});
 	win.add(tableView);
 
@@ -99,13 +150,13 @@ function createMyHortWindow(_myHortData, utm, _isOwner) {
 					row : clickName = 'row',
 					objName : 'row',
 					touchEnabled : false,
-					height : '55dp',
+					height : '40dp',
 					hasChild : false,
-					myHortMembersRowData : myHortMembersData[i]
+					myHortMembersRowData : myHortMembersData[i],
+					editable: ((utm.User.UserProfile.UserId === myHortMembersData[i].UserId) ? false : true)
 				});
 	
 				var hView = Ti.UI.createView({
-					layout : 'composite',
 					backgroundColor : '#fff',
 					objName : 'hView'
 				});
@@ -121,9 +172,9 @@ function createMyHortWindow(_myHortData, utm, _isOwner) {
 					text : myHortMembersData[i].NickName,
 					touchEnabled : false,
 					//top : 5,
-					left : 2,
+					left : '15dp',
 					width : '110dp',
-					height : '20dp',
+					height : Ti.UI.FILL,//'20dp',
 					ellipsize : false
 				});
 				hView.add(nickName);
@@ -134,8 +185,8 @@ function createMyHortWindow(_myHortData, utm, _isOwner) {
 					color : '#000',
 					objName : 'memberType',
 					touchEnabled : false,
-					left : '115dp',
-					height : '20dp',
+					left : '125dp',
+					height : Ti.UI.FILL,
 					font : {
 						fontSize : '14dp'
 					},
@@ -152,48 +203,48 @@ function createMyHortWindow(_myHortData, utm, _isOwner) {
 	
 				var iconView = Ti.UI.createView({
 					layout:'horizontal'
-					,left:utm.SCREEN_WIDTH - 100			
+					,left: '200dp'//utm.SCREEN_WIDTH - 100	,
 				});			
 				hView.add(iconView);
 				
 				if(myHortMembersData[i].HasMobile){}
 					var phoneIcon = Ti.UI.createImageView({
-							image :  '/images/phone_black.png',
-							width : myHortMembersData[i].HasMobile?14:0,
-							height : '24dp',
-							right:myHortMembersData[i].HasMobile?3:0,
-							top:15, 
-							visible:myHortMembersData[i].HasMobile
+						image:  '/images/phone_black.png',
+						width: myHortMembersData[i].HasMobile?'14dp':0,
+						top: '8dp',
+						height: '24dp',
+						right: myHortMembersData[i].HasMobile?3:0,
+						visible: myHortMembersData[i].HasMobile
 					});
 					iconView.add(phoneIcon);
 				myHortMembersData[i].HasMobile	
 				
 				var emailIcon = Ti.UI.createImageView({
 						image :  '/images/email_black.png',
-						width : myHortMembersData[i].HasEmail?24:0,
+						width : myHortMembersData[i].HasEmail?'24dp':0,
+						top: '12dp',
 						height : '16dp',
 						right:myHortMembersData[i].HasEmail?3:0,
-						top:15,
 						visible:myHortMembersData[i].HasEmail
 				});
 				iconView.add(emailIcon);
 				
 				var twitterIcon = Ti.UI.createImageView({
 						image :  '/images/twitter_black.png',
-						width : myHortMembersData[i].HasTwitter?24:0,
+						width : myHortMembersData[i].HasTwitter?'24dp':0,
+						top: '8dp',
 						height : '24dp',
 						right:myHortMembersData[i].HasTwitter?3:0,
-						top:15,
 						visible:myHortMembersData[i].HasTwitter
 				});
 				iconView.add(twitterIcon);
 				
 				var facebookIcon = Ti.UI.createImageView({
 						image :  '/images/facebook_black.png',
-						width : myHortMembersData[i].HasFaceBook?24:0,
+						width : myHortMembersData[i].HasFaceBook?'24dp':0,
+						top: '8dp',
 						height : '24dp',
 						right:myHortMembersData[i].HasFaceBook?3:0,
-						top:15,
 						visible:myHortMembersData[i].HasFaceBook
 				});
 				iconView.add(facebookIcon);

@@ -69,7 +69,7 @@ function createMyHortWindow(myHortId,utm) {
 				row : clickName = 'row',
 				objName : 'row',
 				touchEnabled : false,
-				height : '55dp',
+				height : '40dp',
 				hasChild : false,
 				myHortPendingData : myHortPendingData[i]
 			});
@@ -77,7 +77,9 @@ function createMyHortWindow(myHortId,utm) {
 			var hView = Ti.UI.createView({
 				layout : 'composite',
 				backgroundColor : '#fff',
-				objName : 'hView'
+				objName : 'hView',
+				height : '40dp',
+				width: Ti.UI.SIZE
 			});
 
 			var pendingEmail = Ti.UI.createLabel({
@@ -93,7 +95,10 @@ function createMyHortWindow(myHortId,utm) {
 				//top : 5,
 				left : '2dp',
 				width : '200dp',
-				ellipsize : false
+				ellipsize : false,
+				height: '40dp',
+				verticalAlign: Ti.UI.TEXT_VERTICAL_ALIGNMENT_CENTER
+				
 			});
 			hView.add(pendingEmail);
 
@@ -104,12 +109,14 @@ function createMyHortWindow(myHortId,utm) {
 				objName : 'memberType',
 				text : myHortPendingData[i].MemberType,
 				touchEnabled : false,
-				top : '5dp',
+				top : '0dp',
 				left : '205dp',
 				font:{
 					fontSize : '16dp'
 				},
-				ellipsize : false
+				ellipsize : false,
+				height: '20dp',
+				verticalAlign: Ti.UI.TEXT_VERTICAL_ALIGNMENT_CENTER
 			});
 			hView.add(memberType);
 
@@ -118,11 +125,13 @@ function createMyHortWindow(myHortId,utm) {
 				var expiredLbl = Ti.UI.createLabel({
 					color : '#000',
 					text : 'Expired',
-					top : '30dp',
+					top : '20dp',
 					font:{
 						fontSize : '16dp'
 					},
-					left : '205dp'
+					left : '205dp',
+					height: '20dp',
+					verticalAlign: Ti.UI.TEXT_VERTICAL_ALIGNMENT_CENTER
 				});
 				hView.add(expiredLbl);
 			}

@@ -31,7 +31,7 @@ var MyHorts_window = function(utm) {
 	});
 
 	var tableView = Titanium.UI.createTableView({
-		left : 2,
+		//left : 2,
 		editable : true,
 		allowsSelectionDuringEditing : true
 	});
@@ -95,26 +95,29 @@ var MyHorts_window = function(utm) {
 		for (var i = 0; i < myHortData.length; i++) {
 			var row = Ti.UI.createTableViewRow({
 				className : 'row',
-				row : clickName = 'row',
-				objName : 'row',
+				//row : clickName = 'row',
+				//objName : 'row',
 				touchEnabled : true,
-				height : '55dp',
+				height : '40dp',
 				hasChild : true,
 				myHortData : myHortData[i]
 			});
 
 			var hView = Ti.UI.createView({
-				layout : 'composite',
+				layout : 'horizontal',//'composite',
 				backgroundColor : '#fff',
-				objName : 'hView'
+				width: Ti.UI.FILL,
+				height: '40dp'
+				//objName : 'hView'
 			});
 
 			var icon = Ti.UI.createImageView({
 				image : myHortData[i].IsOwner ? '/images/ownerIcon.png' : '/images/memberIcon.png',
-				width : 20,
-				height : 20,
-				left : 3,
-				top : 15
+				width : '20dp',
+				height : '20dp',
+				left : 15, //3,
+				top : '10dp',//15
+				bottom: '10dp'
 			});
 			hView.add(icon);
 
@@ -129,10 +132,12 @@ var MyHorts_window = function(utm) {
 				text : myHortData[i].FriendlyName,
 				touchEnabled : true,
 				//top : 5,
-				left : 27,
-				width : utm.SCREEN_WIDTH - 100,
-				//height : 15,
-				ellipsize : true
+				left : 10,
+				right: 15,
+				width : Ti.UI.FILL,//utm.SCREEN_WIDTH - 100,
+				height : '40dp',
+				ellipsize : true,
+				verticalAlign: Ti.UI.TEXT_VERTICAL_ALIGNMENT_CENTER
 			});
 			hView.add(myHortName);
 			row.add(hView);
@@ -157,13 +162,58 @@ var MyHorts_window = function(utm) {
 		var s = e.section;
 
 		if (!e.rowData.myHortData.IsOwner) {
-			populateTable(utm.User.MyHorts);
-			alert('You can only delete MyHorts that you own.');
-			return;
+			confirmLeaveMyHort(e.rowData.myHortData.MyHortId, false);
+		} else {
+			confirmDeleteMyHort(e.rowData.myHortData.MyHortId, false);
 		}
 
-		confirmDeleteMyHort(e.rowData.myHortData.MyHortId, false)
 	});
+	
+	function confirmLeaveMyHort(myHortId) {
+		var dialog = Ti.UI.createAlertDialog({
+			cancel : 1,
+			buttonNames : ['Yes', L('cancel')],
+			message : 'You are about to leave this MyHort - do you want to continue? ',
+			title : 'Confirm',
+			myHortId : myHortId
+		});
+		dialog.addEventListener('click', function(e) {
+			if (e.index === 0) {
+				leaveMyHort(myHortId);
+			} else {
+				populateTable(utm.User.MyHorts);
+			}
+		});
+		dialog.show();
+	}
+	
+	
+	function leaveMyHort(myHortId) {
+		utm.log('Leave MyHort ' + myHortId);
+		utm.setActivityIndicator(win , 'Leaving MyHort...');	
+		var leaveMyHortHttp = Ti.Network.createHTTPClient({
+			validatesSecureCertificate : utm.validatesSecureCertificate,
+			onload : function() {
+				removeFromUsersList(myHortId);
+				utm.setActivityIndicator(win , '');
+				leaveMyHortHttp = null;
+			},
+			onerror : function() {
+				utm.setActivityIndicator(win , '');
+				utm.log('error');
+				leaveMyHortHttp = null;
+			}
+		});
+		leaveMyHortHttp.open("GET", utm.serviceUrl + "MyHort/LeaveMyHort?myhortId=" + myHortId);
+		leaveMyHortHttp.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+		leaveMyHortHttp.setRequestHeader('Authorization-Token', utm.AuthToken);
+		leaveMyHortHttp.send();
+	}
+
+
+	
+	
+	
 
 	function confirmDeleteMyHort(myHortId) {
 		var dialog = Ti.UI.createAlertDialog({

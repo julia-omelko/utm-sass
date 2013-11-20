@@ -59,6 +59,8 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		var topButtonBar = Titanium.UI.createButtonBar({
 			labels : buttons,
 			top : 3,
+			left: 3,
+			right: 3,
 			backgroundColor : '#336699',
 			style : Titanium.UI.iPhone.SystemButtonStyle.BAR//,
 			//height : isOwner? 40: 0,
@@ -76,8 +78,9 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 			topButtonBar.labels = buttons;
 		}
 
-
-		view.add(topButtonBar);
+		if (isOwner) {
+			view.add(topButtonBar);
+		}
 	}
 	//#################### Android Tab Bar #################### 
 	if (utm.Android) {
@@ -606,35 +609,48 @@ if(isOwner){
 	view.add(saveButton);
 			
 			
-	//----------Delete MyHort Button (Android Only)--------------------		
-	if (utm.Android) {
-		var deleteButton = Ti.UI.createButton({
-			title : isOwner ? 'Delete' : 'Leave this MyHort',
-			top : 20,
-			height:'40dp',
-			width:'100dp',
-			backgroundColor:'red',
-			enabled: true
-		});
-		
-		deleteButton.addEventListener('click', function() {
-
+	//----------Delete MyHort Button --------------------		
+	var deleteButton = Ti.UI.createButton({
+		title : isOwner ? 'Delete' : 'Leave this MyHort',
+		top : 20,
+		height:'40dp',
+		width: Ti.UI.SIZE,
+		//backgroundColor:'red',
+		enabled: true
+	});
+	
+	deleteButton.addEventListener('click', function() {
+		if (isOwner) {
 			var dialog = Ti.UI.createAlertDialog({
-					cancel : 1,
-					buttonNames : ['Yes', L('cancel')],
-					message : 'Delete this MyHort will delete all your information in this MyHort - do you want to continue? ',
-					title : 'Confirm Delete',
-					myHortId : _myHortData.MyHortId
-				});
-				dialog.addEventListener('click', function(e) {
-					if (e.index === 0) {
-						deleteMyHort(e.source.myHortId);
-					} 
-				});
-				dialog.show();
-		});
-		view.add(deleteButton);		
-	}
+				cancel : 1,
+				buttonNames : ['Yes', L('cancel')],
+				message : 'Delete this MyHort will delete all your information in this MyHort - do you want to continue? ',
+				title : 'Confirm Delete',
+				myHortId : _myHortData.MyHortId
+			});
+			dialog.addEventListener('click', function(e) {
+				if (e.index === 0) {
+					deleteMyHort(e.source.myHortId);
+				} 
+			});
+			dialog.show();
+		} else {
+			var dialog = Ti.UI.createAlertDialog({
+				cancel : 1,
+				buttonNames : ['Yes', L('cancel')],
+				message : 'You are about to leave this MyHort - do you want to continue?',
+				title : 'Confirm',
+				myHortId : _myHortData.MyHortId
+			});
+			dialog.addEventListener('click', function(e) {
+				if (e.index === 0) {
+					leaveMyHort(e.source.myHortId);
+				} 
+			});
+			dialog.show();
+		}
+	});
+	view.add(deleteButton);	
 	
 	function deleteMyHort(myHortId) {
 		utm.log('Deleting MyHort ' + myHortId);
@@ -645,11 +661,12 @@ if(isOwner){
 				utm.setActivityIndicator(view , '');
 				deleteMyHortDetailReq = null;
 				updateMyHortData();
-				utm.navController.close(utm.myHortDetailWindow,{animated:false});
+				utm.navController.close(utm.myHortDetailWindow);
 			},
 			onerror : function() {
 				utm.setActivityIndicator(view , '');
 				deleteMyHortDetailReq = null;
+				utm.navController.close(utm.myHortDetailWindow);
 			}
 		});
 		
@@ -659,7 +676,31 @@ if(isOwner){
 		deleteMyHortDetailReq.send();
 	}
 
-				
+	
+	function leaveMyHort(myHortId) {
+		utm.log('Leaving MyHort ' + myHortId);
+		utm.setActivityIndicator(view , 'Leaving MyHort...');
+		var leaveMyHortDetailReq = Ti.Network.createHTTPClient({
+			validatesSecureCertificate : utm.validatesSecureCertificate,
+			onload : function() {
+				utm.setActivityIndicator(view , '');
+				leaveMyHortDetailReq = null;
+				updateMyHortData();
+				utm.navController.close(utm.myHortDetailWindow);
+			},
+			onerror : function(e) {
+				utm.setActivityIndicator(view , '');
+				leaveMyHortDetailReq = null;
+				utm.navController.close(utm.myHortDetailWindow);
+			}
+		});
+		
+		leaveMyHortDetailReq.open("GET", utm.serviceUrl + "MyHort/LeaveMyHort?myhortId=" + myHortId);
+		leaveMyHortDetailReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+		leaveMyHortDetailReq.setRequestHeader('Authorization-Token', utm.AuthToken);
+		leaveMyHortDetailReq.send();
+	}
+		
 	function authTwitter() {
 		twitter.authorize();
 	}
