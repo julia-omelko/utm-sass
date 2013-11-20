@@ -92,9 +92,10 @@ function message_window(utm) {
 		my_navbar.add(refreshButton);
 
 		refreshButton.addEventListener('click', function() {
-			refreshMessages({
-				showProgress : true
-			});
+			//refreshMessages({
+			//	showProgress : true
+			//});
+			getMessages(curMode, true);
 		})
 		//create a view to contain Android tab buttons
 		var tabBar = Titanium.UI.createView({
@@ -495,32 +496,32 @@ function message_window(utm) {
 			color : "#576c89",
 			textAlign : "center",
 			font : {
-				fontSize : 13,
-				fontWeight : "bold"
+				fontSize : '13dp',
+				//fontWeight : "bold"
 			},
-			shadowColor : "#999",
-			shadowOffset : {
-				x : 0,
-				y : 1
-			}
+			//shadowColor : "#999",
+			//shadowOffset : {
+			//	x : 0,
+			//	y : 1
+			//}
 		});
 
 		var lastUpdatedLabel = Ti.UI.createLabel({
 			text : "Last Updated: " + formatDate(),
-			left : 55,
-			width : 200,
+			//left : 55,
+			width : Ti.UI.FILL,
 			bottom : 15,
-			height : "auto",
+			height : Ti.UI.SIZE,
 			color : "#576c89",
-			textAlign : "center",
+			textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
 			font : {
-				fontSize : 12
+				fontSize : '12dp'
 			},
-			shadowColor : "#999",
-			shadowOffset : {
-				x : 0,
-				y : 1
-			}
+			//shadowColor : "#999",
+			//shadowOffset : {
+			//	x : 0,
+			//	y : 1
+			//}
 		});
 
 		var actInd = Titanium.UI.createActivityIndicator({
