@@ -79,7 +79,7 @@ function createMyHortWindow(myHortId,utm) {
 				backgroundColor : '#fff',
 				objName : 'hView',
 				height : '40dp',
-				width: Ti.UI.SIZE
+				width: Ti.UI.FILL
 			});
 
 			var pendingEmail = Ti.UI.createLabel({
@@ -93,7 +93,7 @@ function createMyHortWindow(myHortId,utm) {
 				text : myHortPendingData[i].EmailAddress,
 				touchEnabled : false,
 				//top : 5,
-				left : '2dp',
+				left : '30dp',
 				width : '200dp',
 				ellipsize : false,
 				height: '40dp',

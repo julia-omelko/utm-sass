@@ -11,7 +11,7 @@ var WriteMessage_window =function(utm) {
 		   ,barColor:utm.barColor
 		});
 		//add activityIndicator to window
-		writeMessageWindow.add(utm.activityIndicator);		
+		//writeMessageWindow.add(utm.activityIndicator);		
 	}
 	
 	if(utm.Android){

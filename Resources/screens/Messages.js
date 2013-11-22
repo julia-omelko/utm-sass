@@ -174,7 +174,7 @@ function message_window(utm) {
 	}
 	//add activityIndicator to window
 	if (utm.iPhone || utm.iPad)
-		win.add(utm.activityIndicator);
+		//win.add(utm.activityIndicator);
 	
 	var tableView = Titanium.UI.createTableView({
 		left : 2,

@@ -267,8 +267,8 @@ var TheLoginScreen_view = function(utm) {
 			messageArea.show();	
 		}else{
 			messageArea.text='';
-			messageArea.height=0;
-			messageArea.hide();
+			//messageArea.height=0;
+			//messageArea.hide();
 		}
 	}
 	function fillInTestLogin(){

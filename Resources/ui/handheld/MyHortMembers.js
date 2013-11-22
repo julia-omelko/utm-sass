@@ -1,5 +1,6 @@
 function createMyHortWindow(_myHortData, utm, _isOwner) {
 	
+	
 	if (utm.iPhone || utm.iPad) {
 		var win = Ti.UI.createWindow({
 			backgroundColor : utm.backgroundColor,
@@ -117,6 +118,12 @@ function createMyHortWindow(_myHortData, utm, _isOwner) {
 		var deleteUserFromMyHortHttp = Ti.Network.createHTTPClient({
 			validatesSecureCertificate : utm.validatesSecureCertificate,
 			onload : function() {
+				for (var i=0;i<_myHortData.Members.length;i++) {
+					if (_myHortData.Members[i].Id === e.row.myHortMembersRowData.Id) {
+						_myHortData.Members.splice(i,1);
+						break;
+					}
+				}
 				deleteUserFromMyHortHttp = null;
 			},
 			onerror : function(err) {
@@ -124,7 +131,8 @@ function createMyHortWindow(_myHortData, utm, _isOwner) {
 				deleteUserFromMyHortHttp = null;
 			}
 		});
-		deleteUserFromMyHortHttp.open("GET", utm.serviceUrl + "MyHort/DeleteUserFromMyHort?myhortuserId=" + e.source.myHortMembersRowData.Id);
+		
+		deleteUserFromMyHortHttp.open("POST", utm.serviceUrl + "MyHort/DeleteUserFromMyHort?myhortMemberId=" + e.row.myHortMembersRowData.Id);
 		deleteUserFromMyHortHttp.setRequestHeader("Content-Type", "application/json; charset=utf-8");
 		deleteUserFromMyHortHttp.setRequestHeader('Authorization-Token', utm.AuthToken);
 		deleteUserFromMyHortHttp.send();
@@ -132,7 +140,7 @@ function createMyHortWindow(_myHortData, utm, _isOwner) {
 	win.add(tableView);
 
 	//Load list on focus event
-	win.addEventListener("focus", function() {
+	win.addEventListener("open", function() {
 		loadMembers();
 	});
 
@@ -263,6 +271,34 @@ function createMyHortWindow(_myHortData, utm, _isOwner) {
 		tableView.addEventListener('click', function(e) {
 			utm.MemberDetailsWindow = require('screens/MyHortMemberDetail');
 			utm.memberDetailsWindow = new utm.MemberDetailsWindow(e.rowData.myHortMembersRowData,utm);
+			if (utm.Android) {
+				utm.memberDetailsWindow.addEventListener('close',function(e){
+					// ##################### Call out to get myHort detail #####################
+					var getMyHortDetailReq = Ti.Network.createHTTPClient({
+						validatesSecureCertificate : utm.validatesSecureCertificate,
+						onload : function() {
+							if (this.status == 200) {
+								//Ti.API.info(JSON.stringify(_myHortData));
+								//Ti.API.info(this.responseText);
+								utm.myHortDetails = eval('(' + this.responseText + ')').myHort;
+								_myHortData = utm.myHortDetails;
+								loadMembers();
+							}
+						},
+						onerror : function(e) {
+							Ti.API.info(e);
+							utm.setActivityIndicator(win , '');
+						},
+						timeout : utm.netTimeout
+					});
+					var theUrl = utm.serviceUrl + "MyHort/GetMyHortDetails?myHortId=" + _myHortData.MyHortId;
+					Ti.API.info(JSON.stringify(theUrl));
+					getMyHortDetailReq.open("GET",theUrl);
+					getMyHortDetailReq.setRequestHeader('Authorization-Token', utm.AuthToken);
+					getMyHortDetailReq.send();
+	
+				});
+			}
 			utm.navController.open(utm.memberDetailsWindow);
 		});
 	}

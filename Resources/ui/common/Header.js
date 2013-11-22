@@ -9,7 +9,7 @@ function HeaderWindow(utm,_title,_backButtonTitle) {
 			, backButtonTitle : _backButtonTitle,
 		});
 		
-		mainWindow.add(utm.activityIndicator);
+		//mainWindow.add(utm.activityIndicator);
 	}
 	
 	if(utm.Android){

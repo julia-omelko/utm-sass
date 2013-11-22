@@ -204,7 +204,7 @@ var MyHorts_window = function(utm) {
 				leaveMyHortHttp = null;
 			}
 		});
-		leaveMyHortHttp.open("GET", utm.serviceUrl + "MyHort/LeaveMyHort?myhortId=" + myHortId);
+		leaveMyHortHttp.open("GET", utm.serviceUrl + "MyHort/LeaveMyHort?myHortId=" + myHortId);
 		leaveMyHortHttp.setRequestHeader("Content-Type", "application/json; charset=utf-8");
 		leaveMyHortHttp.setRequestHeader('Authorization-Token', utm.AuthToken);
 		leaveMyHortHttp.send();

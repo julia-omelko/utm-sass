@@ -79,7 +79,7 @@ var PreviewMessage_window = function(utm) {
 			rightNavButton:cameraButton
 		});			
 		//add activityIndicator to window
-		win.add(utm.activityIndicator);	
+		//win.add(utm.activityIndicator);	
 	}
 	
 	cameraButton.addEventListener('click', function(){

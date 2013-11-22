@@ -1,5 +1,7 @@
 function myHortDetail_window(_myHortData, utm, isOwner) {
-
+	
+	Ti.API.info(_myHortData);
+	
 	var InputField = require('ui/common/baseui/InputField');
 	var MyHortMembersWindow = require('ui/handheld/MyHortMembers');
 	var MyHortPendingWindow = require('ui/handheld/MyHortPending');
@@ -194,6 +196,20 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 			tab1.addEventListener('click', function() {
 				//Members
 				utm.myHortMembersWindow = new MyHortMembersWindow(_myHortData, utm, isOwner);
+				utm.myHortMembersWindow.addEventListener('close',function(e){
+					var getMyHortDetailReq = Ti.Network.createHTTPClient({
+						validatesSecureCertificate : utm.validatesSecureCertificate,
+						onload : function() {
+							if (this.status == 200) {
+								utm.myHortDetails = eval('(' + this.responseText + ')');
+								_myHortData = utm.myHortDetails;
+							}
+						},
+						onerror : function(e) {
+						},
+						timeout : utm.netTimeout
+					});
+				});
 				utm.navController.open(utm.myHortMembersWindow);
 			});
 			tab2.addEventListener('click', function() {
@@ -216,7 +232,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 	}
 	
 	//add activityIndicator to view
-	if (utm.iPhone || utm.iPad) view.add(utm.activityIndicator);
+	//if (utm.iPhone || utm.iPad) view.add(utm.activityIndicator);
 	
 	//handle backbutton
 	if(!utm.Android) {
@@ -694,8 +710,7 @@ if(isOwner){
 				utm.navController.close(utm.myHortDetailWindow);
 			}
 		});
-		
-		leaveMyHortDetailReq.open("GET", utm.serviceUrl + "MyHort/LeaveMyHort?myhortId=" + myHortId);
+		leaveMyHortDetailReq.open("POST", utm.serviceUrl + "MyHort/LeaveMyHort?myHortId=" + myHortId);
 		leaveMyHortDetailReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");
 		leaveMyHortDetailReq.setRequestHeader('Authorization-Token', utm.AuthToken);
 		leaveMyHortDetailReq.send();

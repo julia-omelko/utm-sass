@@ -11,7 +11,7 @@ var ChooseContacts_window = function(utm) {
 			barColor : utm.barColor
 		});
 		//add activityIndicator to window
-		win.add(utm.activityIndicator);	
+		//win.add(utm.activityIndicator);	
 	}
 	
 	if(utm.Android){

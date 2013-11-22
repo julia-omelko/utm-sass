@@ -196,7 +196,7 @@ function inviteMyHortWindow(myHortInfo, utm) {
 			emailsField.setValue(emailsField.getValue()+',');
 			emailsField.setSelection(emailsField.getValue().length,emailsField.getValue().length);
 		} else {
-			emailsField.setValue(emailsField.getValue().substring(0,emailsField.getValue().length-2));
+			emailsField.setValue(emailsField.getValue().substring(0,emailsField.getValue().length-1));
 			emailsField.blur();
 		}
 	});
@@ -289,6 +289,7 @@ function inviteMyHortWindow(myHortInfo, utm) {
 				inviteMyHortReq=null;
 			},
 			onerror : function(e) {
+				utm.setActivityIndicator(win , '');
 				inviteButton.enabled=true;
 				utm.handleError(e, this.status, this.responseText);
 				inviteMyHortReq=null;

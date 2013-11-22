@@ -9,7 +9,7 @@ function myHortDetail_window(_myHortMember, utm) {
 			barColor : utm.barColor,
 			title : 'Member Info'
 		});
-	}else	if(utm.Android){
+	}else if(utm.Android){
 		
 		//create the base screen and hid the Android navbar
 		var win = Titanium.UI.createWindow({
@@ -114,6 +114,37 @@ function myHortDetail_window(_myHortMember, utm) {
 		updateMyHortMemberData();
 	});
 	view.add(saveButton);
+	
+
+	if (utm.Android  && utm.User.UserProfile.UserId !== _myHortMember.UserId) {
+		var removeButton = Ti.UI.createButton({
+			title : 'Remove',
+			top : '30dp',
+			enabled : true
+		});
+		removeButton.addEventListener('click', function() {
+			var deleteUserFromMyHortHttp = Ti.Network.createHTTPClient({
+				validatesSecureCertificate : utm.validatesSecureCertificate,
+				onload : function() {
+					deleteUserFromMyHortHttp = null;
+					win.close();
+				},
+				onerror : function(err) {
+					utm.log(err);
+					deleteUserFromMyHortHttp = null;
+					win.close();
+				}
+			});
+			
+			deleteUserFromMyHortHttp.open("POST", utm.serviceUrl + "MyHort/DeleteUserFromMyHort?myhortMemberId=" + _myHortMember.Id);
+			deleteUserFromMyHortHttp.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+			deleteUserFromMyHortHttp.setRequestHeader('Authorization-Token', utm.AuthToken);
+			deleteUserFromMyHortHttp.send();
+		});
+		view.add(removeButton);
+	}
+	
+	
 
 	function updateMyHortMemberData() {
 		saveButton.enabled = false;
@@ -196,6 +227,7 @@ function myHortDetail_window(_myHortMember, utm) {
 
 			if (this.status == 200) {
 				utm.myHortDetails = response;
+				Ti.API.info(utm.myHortDetails)
 
 			} else if (this.status == 400) {
 				utm.recordError('Error')
