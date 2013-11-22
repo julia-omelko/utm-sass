@@ -19,7 +19,7 @@ function signUp_window(utm) {
 
 	var view = Ti.UI.createView({
 		top: 10,
-		height: 600,
+		height: Ti.UI.SIZE,
 		width:utm.SCREEN_WIDTH,
 		layout: 'vertical'
 	});
