@@ -133,7 +133,7 @@ var MyHorts_window = function(utm) {
 				touchEnabled : true,
 				//top : 5,
 				left : 10,
-				right: 15,
+				right: 20,
 				width : Ti.UI.FILL,//utm.SCREEN_WIDTH - 100,
 				height : '40dp',
 				ellipsize : true,

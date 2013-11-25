@@ -80,7 +80,7 @@ exports.layout = function(params) {
         borderWidth: params.messageBox.borderWidth || 3,
         height: params.messageBox.height || Ti.UI.SIZE,
         width: params.messageBox.width || platformWidth-20,
-        top: params.messageBox.top || 15,
+        top: params.messageBox.top || 40,
         left: params.messageBox.left || 10,
         backgroundColor: params.messageBox.backgroundColor || 'gray',
         color: params.messageBox.color || '#ffffff',
