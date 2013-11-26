@@ -198,13 +198,14 @@ var MyHorts_window = function(utm) {
 				utm.setActivityIndicator(win , '');
 				leaveMyHortHttp = null;
 			},
-			onerror : function() {
+			onerror : function(e) {
 				utm.setActivityIndicator(win , '');
-				utm.log('error');
+				utm.log(e);
 				leaveMyHortHttp = null;
 			}
 		});
-		leaveMyHortHttp.open("GET", utm.serviceUrl + "MyHort/LeaveMyHort?myHortId=" + myHortId);
+		
+		leaveMyHortHttp.open("POST", utm.serviceUrl + "MyHort/LeaveMyHort?myHortId=" + myHortId);
 		leaveMyHortHttp.setRequestHeader("Content-Type", "application/json; charset=utf-8");
 		leaveMyHortHttp.setRequestHeader('Authorization-Token', utm.AuthToken);
 		leaveMyHortHttp.send();
