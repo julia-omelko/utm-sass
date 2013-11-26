@@ -1,7 +1,6 @@
 var subscribe_window = function(utm) {
 	
 	var moment = require('lib/moment');
-	var Storekit = require('ti.storekit');
 
 	var Header = require('ui/common/Header');
 	var win = new Header(utm,L('account_info'), L('button_back'));
@@ -33,6 +32,23 @@ var subscribe_window = function(utm) {
 	 win.addEventListener('open', function() {
 		utm.setActivityIndicator(win,'Loading Products...');
 	});*/	
+	
+	if (utm.Android) {
+		
+		var upgradeBtn = Ti.UI.createButton({
+			title:'Buy Messages',
+			top: 10,
+			width: '200dp'
+
+		});
+		scrollingView.add(upgradeBtn);
+		upgradeBtn.addEventListener('click', function(){
+			  Ti.Platform.openURL(utm.webUrl +'/Store');
+		});	
+		
+		
+	} else {
+	var Storekit = require('ti.storekit');
 	
 	utm.setActivityIndicator(win, 'Connecting to iTunes...');		
 
@@ -182,6 +198,7 @@ var subscribe_window = function(utm) {
 				verifyReceipt.setRequestHeader('Authorization-Token', utm.AuthToken);
 				verifyReceipt.send(_receipt);
 		}
+	}
 	
 	win.updateMessage = function(){
 		message='';

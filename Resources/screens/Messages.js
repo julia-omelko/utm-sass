@@ -173,7 +173,7 @@ function message_window(utm) {
 		
 	}
 	//add activityIndicator to window
-	if (utm.iPhone || utm.iPad)
+	//if (utm.iPhone || utm.iPad)
 		//win.add(utm.activityIndicator);
 	
 	var tableView = Titanium.UI.createTableView({
@@ -181,7 +181,8 @@ function message_window(utm) {
 		editable : true,
 		allowsSelectionDuringEditing : true
 	});
-	win.add(tableView);
+	win.add(tableView);	
+	
 
 	//Add Click to Details for drilldown
 	tableView.addEventListener('click', function(e) {
