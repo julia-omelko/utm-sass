@@ -35,6 +35,7 @@ function inputField(utm,_label, _labelWidth,  _val, _valWidth, _keyboardType,_re
 	var fld = Ti.UI.createTextField({
 		color:utm.textFieldColor,	
 		passwordMask:_fldType === 'password'?true:false,	
+		value:_val,
 		width:_valWidth,
 		height:Ti.UI.SIZE, 
      	autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
