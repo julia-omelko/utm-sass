@@ -80,7 +80,7 @@ exports.layout = function(params) {
         borderWidth: params.messageBox.borderWidth || 3,
         height: params.messageBox.height || Ti.UI.SIZE,
         width: params.messageBox.width || platformWidth-20,
-        top: params.messageBox.top || 40,
+        top: params.messageBox.top || '30dp',
         left: params.messageBox.left || 10,
         backgroundColor: params.messageBox.backgroundColor || 'gray',
         color: params.messageBox.color || '#ffffff',
@@ -94,7 +94,7 @@ exports.layout = function(params) {
 
     var passwordDefault = {
         color: '#000000',
-        top: params.passwordBox.top || 55,
+        top: params.passwordBox.top || ('80dp'),
         width: Math.round(Ti.Platform.displayCaps.platformWidth/6),
         height: Math.round(Ti.Platform.displayCaps.platformWidth/6),
         passwordMask: true,
