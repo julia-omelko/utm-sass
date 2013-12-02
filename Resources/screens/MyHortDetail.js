@@ -56,7 +56,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 				top : 3,
 				left: 3,
 				right: 3,
-				bottom: 6,
+				//bottom: 6,
 				backgroundColor : '#336699',
 				style : Titanium.UI.iPhone.SystemButtonStyle.BAR
 			});

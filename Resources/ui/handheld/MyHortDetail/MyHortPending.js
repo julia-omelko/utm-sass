@@ -56,7 +56,7 @@ function myHortPending(_myHortId, utm, _win) {
 	
 
 	function populateTable(myHortPendingData) {
-		tableView.setData([]);
+		//tableView.setData([]);
 		var tableData = [];
 		for (var i = 0; i < myHortPendingData.length; i++) {
 			var row = Ti.UI.createTableViewRow({
@@ -133,6 +133,7 @@ function myHortPending(_myHortId, utm, _win) {
 		}
 
 		tableView.setData(tableData);
+		
 
 	}
 	
