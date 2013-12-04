@@ -122,7 +122,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		showHorizontalScrollIndicator : false,
 		contentWidth:'100%',
 		width: Ti.UI.FILL,
-		height: ((utm.Android) ? Ti.Platform.displayCaps.platformHeight - 114 : Ti.Platform.displayCaps.platformHeight - 64),
+		height: ((utm.Android) ? Ti.Platform.displayCaps.platformHeight - 114 : Ti.Platform.displayCaps.platformHeight - 94),
 	});
 	self.add(mainView);
 

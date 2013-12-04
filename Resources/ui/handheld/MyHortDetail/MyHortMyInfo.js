@@ -1,7 +1,5 @@
 function myHortMyInfoView(_myHortInfo, utm, _isOwner, _win) {
 	
-	Ti.API.info(_myHortInfo);
-	
 	var InputField = require('ui/common/baseui/InputField');
 	var Facebook = require('facebook');
 	var social = require("lib/social");
@@ -365,7 +363,7 @@ function myHortMyInfoView(_myHortInfo, utm, _isOwner, _win) {
 				buttonNames : ['Yes', L('cancel')],
 				message : 'Delete this MyHort will delete all your information in this MyHort - do you want to continue? ',
 				title : 'Confirm Delete',
-				myHortId : _myHortData.MyHortId
+				myHortId : _myHortInfo.MyHortId
 			});
 			dialog.addEventListener('click', function(e) {
 				if (e.index === 0) {
@@ -379,7 +377,7 @@ function myHortMyInfoView(_myHortInfo, utm, _isOwner, _win) {
 				buttonNames : ['Yes', L('cancel')],
 				message : 'You are about to leave this MyHort - do you want to continue?',
 				title : 'Confirm',
-				myHortId : _myHortData.MyHortId
+				myHortId : _myHortInfo.MyHortId
 			});
 			dialog.addEventListener('click', function(e) {
 				if (e.index === 0) {
@@ -538,19 +536,67 @@ function myHortMyInfoView(_myHortInfo, utm, _isOwner, _win) {
 	});
 	
 	function updateOwnerMemberDetails(){
-		for (x=0;x< _myHortData.Members.length;x++){
-			if (_myHortData.Members[x].MemberType == 'Primary'){
-				_myHortData.Members[x].HasEmail = email.getValue() !='';
-				_myHortData.Members[x].HasMobile = mobile.getValue() !='';
-				_myHortData.Members[x].HasTwitter = twitterSwitch.getValue();
-				_myHortData.Members[x].HasFaceBook = facebookSwitch.getValue();
+		for (x=0;x< _myHortInfo.Members.length;x++){
+			if (_myHortInfo.Members[x].MemberType == 'Primary'){
+				_myHortInfo.Members[x].HasEmail = email.getValue() !='';
+				_myHortInfo.Members[x].HasMobile = mobile.getValue() !='';
+				_myHortInfo.Members[x].HasTwitter = twitterSwitch.getValue();
+				_myHortInfo.Members[x].HasFaceBook = facebookSwitch.getValue();
 				break;
 			}
 		}
 		if( isOwner ) {
-			_myHortData.Prefix = keyWordPre.value;
-			_myHortData.Postfix = keyWordPost.value;
+			_myHortInfo.Prefix = keyWordPre.value;
+			_myHortInfo.Postfix = keyWordPost.value;
 		}
+	}
+	
+		function deleteMyHort(myHortId) {
+		utm.log('Deleting MyHort ' + myHortId);
+		utm.setActivityIndicator(_win , 'Deleting...');
+		var deleteMyHortDetailReq = Ti.Network.createHTTPClient({
+			validatesSecureCertificate : utm.validatesSecureCertificate,
+			onload : function() {
+				utm.setActivityIndicator(_win , '');
+				deleteMyHortDetailReq = null;
+				updateMyHortData();
+				utm.navController.close(utm.myHortDetailWindow);
+			},
+			onerror : function() {
+				utm.setActivityIndicator(_win , '');
+				deleteMyHortDetailReq = null;
+				utm.navController.close(utm.myHortDetailWindow);
+			}
+		});
+		
+		deleteMyHortDetailReq.open("GET", utm.serviceUrl + "MyHort/DeleteUsersMyHort?myhortId=" + myHortId);
+		deleteMyHortDetailReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+		deleteMyHortDetailReq.setRequestHeader('Authorization-Token', utm.AuthToken);
+		deleteMyHortDetailReq.send();
+	}
+
+	
+	function leaveMyHort(myHortId) {
+		utm.log('Leaving MyHort ' + myHortId);
+		utm.setActivityIndicator(_win , 'Leaving MyHort...');
+		var leaveMyHortDetailReq = Ti.Network.createHTTPClient({
+			validatesSecureCertificate : utm.validatesSecureCertificate,
+			onload : function() {
+				utm.setActivityIndicator(_win , '');
+				leaveMyHortDetailReq = null;
+				updateMyHortData();
+				utm.navController.close(utm.myHortDetailWindow);
+			},
+			onerror : function(e) {
+				utm.setActivityIndicator(_win , '');
+				leaveMyHortDetailReq = null;
+				utm.navController.close(utm.myHortDetailWindow);
+			}
+		});
+		leaveMyHortDetailReq.open("POST", utm.serviceUrl + "MyHort/LeaveMyHort?myHortId=" + myHortId);
+		leaveMyHortDetailReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+		leaveMyHortDetailReq.setRequestHeader('Authorization-Token', utm.AuthToken);
+		leaveMyHortDetailReq.send();
 	}
 	
 	return self;

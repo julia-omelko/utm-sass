@@ -9,9 +9,7 @@ var WriteMessage_window =function(utm) {
 			,title:'Write Message'
 			,backgroundColor:utm.backgroundColor
 		   ,barColor:utm.barColor
-		});
-		//add activityIndicator to window
-		//writeMessageWindow.add(utm.activityIndicator);		
+		});	
 	}
 	
 	if(utm.Android){
@@ -54,7 +52,9 @@ var WriteMessage_window =function(utm) {
 		font: { fontSize:'20dp' },
 		height:'30dp',
 		color : '#000',
-		textAlign:'left'
+		textAlign:'left',
+		left: 2,
+		top: 2
 	});
 	scrollableView.add(toLabel);
 	
@@ -68,6 +68,14 @@ var WriteMessage_window =function(utm) {
 	});
 	scrollableView.add(yourMessageLabel);
 	
+	if (utm.iPad) {
+		var textAreaHeight = '60%'
+	} else if (Ti.Platform.displayCaps.platformHeight <= 480) {
+		var textAreaHeight = 60
+	} else {
+		var textAreaHeight = 100
+	}
+	
 	var textArea = Ti.UI.createTextArea({
 	  borderWidth: 2, 
 	  borderColor: '#bbb',
@@ -79,7 +87,7 @@ var WriteMessage_window =function(utm) {
 	  textAlign: 'left',
 	  top: 5,
 	  width: '90%',
-	  height :  utm.iPad ? '60%' : 100
+	  height : textAreaHeight
 	}); 
 	scrollableView.add(textArea);
 	
