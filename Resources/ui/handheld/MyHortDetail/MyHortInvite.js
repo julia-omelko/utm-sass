@@ -297,7 +297,7 @@ function inviteMyHortView(_myHortInfo, utm, _win) {
 			
 		var myHortInviteModel = {
 			MyHortInfo : _myHortInfo,
-			UsersToInvite : emailsField.value,
+			UsersToInvite : emailsField.getValue().replace(' ',''),
 			InviteMessage : inviteMessageField.value,
 			FromNickName : primaryMemberNickName,
 			MemberType : memberType,
@@ -313,8 +313,8 @@ function inviteMyHortView(_myHortInfo, utm, _win) {
 		
 		for(i=0;i<emailList.length; i++ ){
 			
-			 if(reg.test(emailList[i]) == false) {
-			 	return emailList[i];
+			 if(reg.test(emailList[i].trim()) == false) {
+			 	return emailList[i].trim();
 			 }			
 		}
 		return '';

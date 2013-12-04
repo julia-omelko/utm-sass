@@ -551,7 +551,7 @@ function myHortMyInfoView(_myHortInfo, utm, _isOwner, _win) {
 		}
 	}
 	
-		function deleteMyHort(myHortId) {
+	function deleteMyHort(myHortId) {
 		utm.log('Deleting MyHort ' + myHortId);
 		utm.setActivityIndicator(_win , 'Deleting...');
 		var deleteMyHortDetailReq = Ti.Network.createHTTPClient({
