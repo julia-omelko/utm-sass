@@ -71,9 +71,9 @@ var WriteMessage_window =function(utm) {
 	if (utm.iPad) {
 		var textAreaHeight = '60%'
 	} else if (Ti.Platform.displayCaps.platformHeight <= 480) {
-		var textAreaHeight = 60
+		var textAreaHeight = '60dp'
 	} else {
-		var textAreaHeight = 100
+		var textAreaHeight = '100dp'
 	}
 	
 	var textArea = Ti.UI.createTextArea({
