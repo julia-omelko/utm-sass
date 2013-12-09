@@ -160,7 +160,6 @@ function myHortMembers(_myHortData, utm, _isOwner, _win) {
 	function populateTable(myHortMembersData) {
 		tableView.setData([]);
 		var tableData = [];
-		Ti.API.info(myHortMembersData);
 		for (var i = 0; i < myHortMembersData.length; i++) {
 			if( _isOwner || myHortMembersData[i].MemberType !=='Invisible'  || utm.User.UserProfile.UserId === myHortMembersData[i].UserId){
 				if ((!_isOwner && utm.User.UserProfile.UserId === myHortMembersData[i].UserId) || (_isOwner && utm.User.UserProfile.UserId !== myHortMembersData[i].UserId)) {
@@ -342,7 +341,22 @@ function myHortMembers(_myHortData, utm, _isOwner, _win) {
 	});
 	
 	loadMembers();
-
+	
+	
+	if (_isOwner && _myHortData.Members.length === 1) {
+		var inviteButton = Ti.UI.createButton({
+			title: 'Invite your 1st Member Now!',
+			//width: '50%',
+			top:5,
+			height: Ti.UI.SIZE
+		});
+		inviteButton.addEventListener('click',function(e){
+			_win.fireEvent('invite');
+		});
+		self.add(inviteButton);
+	}
+	
+	
 	return self;
 
 }

@@ -195,6 +195,11 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		}
 	}
 	
+	self.addEventListener('invite',function(e){
+		swapSubViews(2);
+	})
+	
+	
 	function displayMyHortData() {
 		myHortMembersView = new MyHortMembersView(_myHortData, utm, isOwner, self);
 		mainView.add(myHortMembersView);
