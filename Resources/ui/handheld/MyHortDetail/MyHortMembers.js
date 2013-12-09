@@ -277,6 +277,7 @@ function myHortMembers(_myHortData, utm, _isOwner, _win) {
 		}
 
 		tableView.setData(tableData);
+		tableView.setHeight(Ti.UI.FILL);
 
 	}
 	
@@ -328,17 +329,19 @@ function myHortMembers(_myHortData, utm, _isOwner, _win) {
 		loadMembers();
 	});
 	
-	self.addEventListener('focus',function(e) {
-		if (utm.iPhone || utm.iPad) {
-			_win.setRightNavButton(editButton);
-		}
-	});
-	self.addEventListener('blur', function() {
-		if (utm.iPhone || utm.iPad) {
-			_win.setRightNavButton(null);
-		}
-		tableView.editing = false;
-	});
+	if (_isOwner) {
+		self.addEventListener('focus',function(e) {
+			if (utm.iPhone || utm.iPad) {
+				_win.setRightNavButton(editButton);
+			}
+		});
+		self.addEventListener('blur', function() {
+			if (utm.iPhone || utm.iPad) {
+				_win.setRightNavButton(null);
+			}
+			tableView.editing = false;
+		});
+	}
 	
 	loadMembers();
 	
