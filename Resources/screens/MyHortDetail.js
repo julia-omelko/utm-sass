@@ -161,6 +161,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 	}
 	
 	function swapSubViews(_index){
+		mainView.scrollTo(0,0);
 		if (_index === 0) {
 			myHortMyInfoView.setVisible(false);
 			myHortInviteView.setVisible(false);
