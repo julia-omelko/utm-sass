@@ -22,27 +22,28 @@ function myHortMembers(_myHortData, utm, _isOwner, _win) {
 	self.add(titleLbl);
 
 
-	
-	// edit and done buttons
-	var editButton = Titanium.UI.createButton({
-		title : 'Edit'
-	});
-	editButton.addEventListener('click', function() {
-		if (utm.iPhone || utm.iPad) {
-			_win.setRightNavButton(doneButton);
-			tableView.editing = true;
-		}		
-	});
-	var doneButton = Titanium.UI.createButton({
-		title : 'Done',
-		style : Titanium.UI.iPhone.SystemButtonStyle.DONE
-	});
-	doneButton.addEventListener('click', function() {
-		if (utm.iPhone || utm.iPad) {
-			_win.setRightNavButton(editButton);
-		}
-		tableView.editing = false;
-	});
+	if (_isOwner) {
+		// edit and done buttons
+		var editButton = Titanium.UI.createButton({
+			title : 'Edit'
+		});
+		editButton.addEventListener('click', function() {
+			if (utm.iPhone || utm.iPad) {
+				_win.setRightNavButton(doneButton);
+				tableView.editing = true;
+			}		
+		});
+		var doneButton = Titanium.UI.createButton({
+			title : 'Done',
+			style : Titanium.UI.iPhone.SystemButtonStyle.DONE
+		});
+		doneButton.addEventListener('click', function() {
+			if (utm.iPhone || utm.iPad) {
+				_win.setRightNavButton(editButton);
+			}
+			tableView.editing = false;
+		});
+	}
 
 	var colHeader = Ti.UI.createView({
 		layout: 'horizontal',
@@ -105,13 +106,51 @@ function myHortMembers(_myHortData, utm, _isOwner, _win) {
 				deleteUserFromMyHortHttp = null;
 			}
 		});
+		if (_isOwner) {
+			deleteUserFromMyHortHttp.open("POST", utm.serviceUrl + "MyHort/DeleteUserFromMyHort?myhortMemberId=" + e.row.myHortMembersRowData.Id);
+		} else {
+			deleteUserFromMyHortHttp.open("POST", utm.serviceUrl + "MyHort/LeaveMyHort?myHortId=" + _myHortData.MyHortId);
+		}
 		
-		deleteUserFromMyHortHttp.open("POST", utm.serviceUrl + "MyHort/DeleteUserFromMyHort?myhortMemberId=" + e.row.myHortMembersRowData.Id);
 		deleteUserFromMyHortHttp.setRequestHeader("Content-Type", "application/json; charset=utf-8");
 		deleteUserFromMyHortHttp.setRequestHeader('Authorization-Token', utm.AuthToken);
 		deleteUserFromMyHortHttp.send();
 	});
 	self.add(tableView);
+
+
+	if (!_isOwner) {
+		var removeButton = Ti.UI.createButton({
+			title : 'Leave MyHort',
+			top : '30dp',
+			enabled : true
+		});
+		removeButton.addEventListener('click', function() {
+			var deleteUserFromMyHortHttp = Ti.Network.createHTTPClient({
+				validatesSecureCertificate : utm.validatesSecureCertificate,
+				onload : function() {
+					deleteUserFromMyHortHttp = null;
+					_win.close();
+				},
+				onerror : function(err) {
+					utm.log(err);
+					deleteUserFromMyHortHttp = null;
+					_win.close();
+				}
+			});
+			
+			deleteUserFromMyHortHttp.open("POST", utm.serviceUrl + "MyHort/LeaveMyHort?myHortId=" + _myHortData.MyHortId);
+			deleteUserFromMyHortHttp.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+			deleteUserFromMyHortHttp.setRequestHeader('Authorization-Token', utm.AuthToken);
+			deleteUserFromMyHortHttp.send();
+		});
+		self.add(removeButton);
+	}
+
+
+
+
+
 
 
 	function loadMembers() {
@@ -121,8 +160,14 @@ function myHortMembers(_myHortData, utm, _isOwner, _win) {
 	function populateTable(myHortMembersData) {
 		tableView.setData([]);
 		var tableData = [];
+		Ti.API.info(myHortMembersData);
 		for (var i = 0; i < myHortMembersData.length; i++) {
-			if( _isOwner || myHortMembersData[i].MemberType !=='Invisible'){
+			if( _isOwner || myHortMembersData[i].MemberType !=='Invisible'  || utm.User.UserProfile.UserId === myHortMembersData[i].UserId){
+				if ((!_isOwner && utm.User.UserProfile.UserId === myHortMembersData[i].UserId) || (_isOwner && utm.User.UserProfile.UserId !== myHortMembersData[i].UserId)) {
+					var isEditable = true;
+				} else {
+					var isEditable = false;
+				}
 				var row = Ti.UI.createTableViewRow({
 					className : 'row',
 					row : clickName = 'row',
@@ -131,7 +176,7 @@ function myHortMembers(_myHortData, utm, _isOwner, _win) {
 					height : '40dp',
 					hasChild : false,
 					myHortMembersRowData : myHortMembersData[i],
-					editable: ((utm.User.UserProfile.UserId === myHortMembersData[i].UserId) ? false : true)
+					editable: isEditable
 				});
 	
 				var hView = Ti.UI.createView({
