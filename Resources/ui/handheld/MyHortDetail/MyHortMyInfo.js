@@ -599,6 +599,10 @@ function myHortMyInfoView(_myHortInfo, utm, _isOwner, _win) {
 		leaveMyHortDetailReq.send();
 	}
 	
+	function authTwitter() {
+        twitter.authorize();
+    }
+	
 	return self;
 }
 
