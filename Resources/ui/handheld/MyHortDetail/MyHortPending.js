@@ -6,7 +6,7 @@ function myHortPending(_myHortId, utm, _win) {
 		visible: false,
 		layout: 'vertical',
 		top: 0
-	})
+	});
 
 	var titleLbl = Ti.UI.createLabel({
 		text : 'Pending Invites',
