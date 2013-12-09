@@ -6,7 +6,7 @@ function myHortPending(_myHortId, utm, _win) {
 		visible: false,
 		layout: 'vertical',
 		top: 0
-	})
+	});
 
 	var titleLbl = Ti.UI.createLabel({
 		text : 'Pending Invites',
@@ -22,7 +22,7 @@ function myHortPending(_myHortId, utm, _win) {
 
 	var tableView = Titanium.UI.createTableView({
 		top: 5,
-		height: Ti.UI.SIZE
+		height: Ti.UI.FILL
 	});
 	self.add(tableView);
 	
@@ -134,12 +134,14 @@ function myHortPending(_myHortId, utm, _win) {
 
 		tableView.setData(tableData);
 		
-
+		//Reset table hight after data seams to fix issue
+		//TEST #608 - Pendinging Invite List Blank sometime
+		tableView.height=Ti.UI.FILL;
 	}
 	
 	self.addEventListener('focus',function(e){
 		loadPending();
-	})
+	});
 	
 	return self;
 }

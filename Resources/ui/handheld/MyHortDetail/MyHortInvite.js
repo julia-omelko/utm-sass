@@ -268,6 +268,7 @@ function inviteMyHortView(_myHortInfo, utm, _win) {
 				utm.setActivityIndicator(_win , '');
 				inviteMyHortReq=null;
 				emailsField.setValue('');
+				alert('Your invitation has been sent.');
 			},
 			onerror : function(e) {
 				utm.setActivityIndicator(_win , '');
@@ -294,10 +295,20 @@ function inviteMyHortView(_myHortInfo, utm, _win) {
 			else 
 				var memberType = 'Secondary';
 		}
+		
+		//RE #585 - MyHort invitation email keyboard
+		//RE #607 - Comma at end of invite email causes error
+		//Cleanup the email list, remove trailing spaces and IF a last comma remove it
+		var emailInviteList=emailsField.getValue();
+		emailInviteList=emailInviteList.trim();
+		emailInviteList = emailInviteList.replace(/,$/,""); 
+		emailInviteList=emailInviteList.trim();
+		emailInviteList = emailInviteList.replace(/,$/,""); //just incase 2nd comma
+		emailInviteList=emailInviteList.trim(); //just incase another space
 			
 		var myHortInviteModel = {
 			MyHortInfo : _myHortInfo,
-			UsersToInvite : emailsField.getValue().replace(' ',''),
+			UsersToInvite : emailInviteList,
 			InviteMessage : inviteMessageField.value,
 			FromNickName : primaryMemberNickName,
 			MemberType : memberType,
@@ -313,7 +324,7 @@ function inviteMyHortView(_myHortInfo, utm, _win) {
 		
 		for(i=0;i<emailList.length; i++ ){
 			
-			 if(reg.test(emailList[i].trim()) == false) {
+			 if(emailList[i].trim() !='' && reg.test(emailList[i].trim()) == false) {
 			 	return emailList[i].trim();
 			 }			
 		}
