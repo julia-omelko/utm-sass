@@ -277,7 +277,7 @@ function myHortMembers(_myHortData, utm, _isOwner, _win) {
 		}
 
 		tableView.setData(tableData);
-		tableView.setHeight(Ti.UI.FILL);
+		tableView.setHeight(Ti.UI.SIZE);
 
 	}
 	
