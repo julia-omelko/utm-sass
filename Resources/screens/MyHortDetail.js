@@ -223,8 +223,10 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 	}
 	
 	self.addEventListener('invite',function(e){
-		button[0].backgroundColor = '#336699';
-		button[2].backgroundColor = '#6699CC';
+		if (UTM.Android) {
+			button[0].backgroundColor = '#336699';
+			button[2].backgroundColor = '#6699CC';
+		}
 		swapSubViews(2);
 	});
 	
