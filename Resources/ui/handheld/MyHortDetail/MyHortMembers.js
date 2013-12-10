@@ -3,8 +3,8 @@ function myHortMembers(_myHortData, utm, _isOwner, _win) {
 	var self = Ti.UI.createView({
 		backgroundColor : utm.backgroundColor,
 		layout : 'vertical',
-		height: Ti.UI.SIZE,
-		width: Ti.UI.FILL,
+		height: '100%',
+		width: '100%',
 		visible: true,
 		top:0
 	});
@@ -275,7 +275,7 @@ function myHortMembers(_myHortData, utm, _isOwner, _win) {
 				tableData.push(row);
 			}
 		}
-
+		
 		tableView.setData(tableData);
 		tableView.setHeight(Ti.UI.SIZE);
 
@@ -322,7 +322,8 @@ function myHortMembers(_myHortData, utm, _isOwner, _win) {
 	Ti.App.addEventListener('app:myHortMemberDetailReload', function(e){
 		for (i=0;i< _myHortData.Members.length;i++){
 			if(_myHortData.Members[i].Id === e.Id){
-				_myHortData.Members[i]=e;
+				Ti.API.info(e);
+				_myHortData.Members[i].NickName=e.NickName;
 				break;
 			}	
 		}
