@@ -100,6 +100,8 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 					},
 					i: i
 				});
+				button[0].backgroundColor = '#6699CC';  //Set first button color as default/first-time view
+				
 				button[i].addEventListener('click',function(e){
 					Ti.API.info(JSON.stringify(e));
 					for (var j=0;j<4;j++) {
@@ -197,8 +199,10 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 	}
 	
 	self.addEventListener('invite',function(e){
+		button[0].backgroundColor = '#336699';
+		button[2].backgroundColor = '#6699CC';
 		swapSubViews(2);
-	})
+	});
 	
 	
 	function displayMyHortData() {
