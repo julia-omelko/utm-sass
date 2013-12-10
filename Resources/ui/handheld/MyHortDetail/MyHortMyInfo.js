@@ -96,6 +96,7 @@ function myHortMyInfoView(_myHortInfo, utm, _isOwner, _win) {
 					utm.TwitterToken = '';
 					utm.TwitterTokenSecret = '';
 					twitter.deauthorize();
+					twitterEnabledForUser = false;
 				/*} else if (e.index === 1) {
 					twitter.deauthorize();*/
 				} else if (e.index === 2) {
@@ -466,7 +467,7 @@ function myHortMyInfoView(_myHortInfo, utm, _isOwner, _win) {
 
 
 		} else {
-			if (twitterEnabledForUser) {
+			if (!twitterEnabledForUser) {
 				utm.curMyHortDetails.TwitterToken = '';
 				utm.curMyHortDetails.TwitterSecret = '';
 			}
