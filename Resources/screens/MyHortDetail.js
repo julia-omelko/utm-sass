@@ -41,7 +41,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		var buttons = [{
 			title : 'Members'
 		}, {
-			title : 'My Info'
+			title : 'Settings'
 		}, {
 			title : 'Invite'
 		}, {
@@ -51,7 +51,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		var buttons = [{
 			title : 'Members'
 		}, {
-			title : 'My Info'
+			title : 'Settings'
 		}];
 	}
 
