@@ -82,11 +82,11 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		});
 		self.add(topButtonBar);
 		
-		var btnWidth = Math.floor((Ti.Platform.displayCaps.platformWidth-21) * 0.25);
+		var btnWidth = Math.floor((Ti.Platform.displayCaps.platformWidth-((buttons.length+3)*3)) * (1/buttons.length));
 		
 		var button = [];
 		var buttonLabel = [];
-		for (var i=0;i<4;i++) {
+		for (var i=0;i<buttons.length;i++) {
 			button[i] = Ti.UI.createView({
 				//top : 2,
 				width : btnWidth,
