@@ -2,11 +2,6 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 	
 	var MyHortMembersView = require('ui/handheld/MyHortDetail/MyHortMembers');
 	var MyHortMyInfoView = require('ui/handheld/MyHortDetail/MyHortMyInfo');
-	var MyHortInviteView = require('ui/handheld/MyHortDetail/MyHortInvite');
-	var MyHortPendingView = require('ui/handheld/MyHortDetail/MyHortPending');
-	
-	
-	
 
 	var self = Titanium.UI.createWindow({
 		layout : 'vertical',
@@ -40,6 +35,10 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 	
 
 	if (isOwner) {
+		//Only need these screens if you are the Owner
+		var MyHortInviteView = require('ui/handheld/MyHortDetail/MyHortInvite');
+		var MyHortPendingView = require('ui/handheld/MyHortDetail/MyHortPending');
+		
 		var buttons = [{
 			title : 'Members'
 		}, {
@@ -166,35 +165,52 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		mainView.scrollTo(0,0);
 		if (_index === 0) {
 			myHortMyInfoView.setVisible(false);
-			myHortInviteView.setVisible(false);
-			myHortPendingView.setVisible(false);
+			if (isOwner) {
+				myHortInviteView.setVisible(false);
+				myHortPendingView.setVisible(false);
+			}	
 			myHortMembersView.fireEvent('blur');
-			myHortPendingView.fireEvent('blur');
+			if (isOwner) {
+				myHortPendingView.fireEvent('blur');
+			}	
 			myHortMembersView.setVisible(true);
 			myHortMembersView.fireEvent('focus');
 		} else if (_index === 1) {
 			myHortMembersView.setVisible(false);
-			myHortInviteView.setVisible(false);
-			myHortPendingView.setVisible(false);
+			if (isOwner) {
+				myHortInviteView.setVisible(false);
+				myHortPendingView.setVisible(false);
+			}	
 			myHortMembersView.fireEvent('blur');
-			myHortPendingView.fireEvent('blur');
+			if (isOwner) {
+				myHortPendingView.fireEvent('blur');
+			}
 			myHortMyInfoView.setVisible(true);
 		} else if (_index === 2) {
 			myHortMembersView.setVisible(false);
 			myHortMyInfoView.setVisible(false);
-			myHortPendingView.setVisible(false);
+			if (isOwner) {
+				myHortPendingView.setVisible(false);
+			}	
 			myHortMembersView.fireEvent('blur');
-			myHortPendingView.fireEvent('blur');
-			myHortInviteView.setVisible(true);
-			myHortInviteView.fireEvent('focus');
+			if (isOwner) {
+				myHortPendingView.fireEvent('blur');
+				myHortInviteView.setVisible(true);
+				myHortInviteView.fireEvent('focus');
+			}	
+			
 		} else if (_index === 3) {
 			myHortMembersView.setVisible(false);
 			myHortMyInfoView.setVisible(false);
-			myHortInviteView.setVisible(false);
+			if (isOwner) {
+				myHortInviteView.setVisible(false);
+			}	
 			myHortMembersView.fireEvent('blur');
-			myHortInviteView.fireEvent('blur');
-			myHortPendingView.setVisible(true);
-			myHortPendingView.fireEvent('focus');
+			if (isOwner) {
+				myHortInviteView.fireEvent('blur');
+				myHortPendingView.setVisible(true);
+				myHortPendingView.fireEvent('focus');
+			}
 		}
 	}
 	
@@ -210,10 +226,13 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		mainView.add(myHortMembersView);
 		myHortMyInfoView = new MyHortMyInfoView(utm.curMyHortDetails, utm, isOwner, self);
 		mainView.add(myHortMyInfoView);
-		myHortInviteView = new MyHortInviteView(_myHortData, utm, self);
-		mainView.add(myHortInviteView);
-		myHortPendingView = new MyHortPendingView(_myHortData.MyHortId, utm, self);
-		mainView.add(myHortPendingView);
+		
+		if (isOwner) {
+			myHortInviteView = new MyHortInviteView(_myHortData, utm, self);
+			mainView.add(myHortInviteView);
+			myHortPendingView = new MyHortPendingView(_myHortData.MyHortId, utm, self);
+			mainView.add(myHortPendingView);
+		}
 		myHortMembersView.fireEvent('focus');
 		
 		
