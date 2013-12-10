@@ -33,7 +33,6 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		self.add(my_navbar);
 	}
 	
-
 	if (isOwner) {
 		//Only need these screens if you are the Owner
 		var MyHortInviteView = require('ui/handheld/MyHortDetail/MyHortInvite');
@@ -48,75 +47,84 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 		}, {
 			title : 'Pending'
 		}];
-		if (utm.iPhone || utm.iPad) {
+	}else{
+		var buttons = [{
+			title : 'Members'
+		}, {
+			title : 'My Info'
+		}];
+	}
 
-			var topButtonBar = Titanium.UI.createButtonBar({
-				labels : buttons,
-				top : 3,
-				left: 3,
-				right: 3,
-				//bottom: 6,
-				backgroundColor : '#336699',
-				style : Titanium.UI.iPhone.SystemButtonStyle.BAR
-			});
-			topButtonBar.addEventListener('click',function(e){
-				swapSubViews(e.index);
-			});
-			self.add(topButtonBar);
-		} else {
-			var topButtonBar = Ti.UI.createView({
-				top : 3,
+	
+	if (utm.iPhone || utm.iPad) {
+
+		var topButtonBar = Titanium.UI.createButtonBar({
+			labels : buttons,
+			top : 3,
+			left: 3,
+			right: 3,
+			//bottom: 6,
+			backgroundColor : '#336699',
+			style : Titanium.UI.iPhone.SystemButtonStyle.BAR
+		});
+		topButtonBar.addEventListener('click',function(e){
+			swapSubViews(e.index);
+		});
+		self.add(topButtonBar);
+	} else {
+		var topButtonBar = Ti.UI.createView({
+			top : 3,
+			left : 3,
+			right: 3,
+			layout : 'horizontal',
+			height : 55,
+			bottom: 6
+		});
+		self.add(topButtonBar);
+		
+		var btnWidth = Math.floor((Ti.Platform.displayCaps.platformWidth-21) * 0.25);
+		
+		var button = [];
+		var buttonLabel = [];
+		for (var i=0;i<4;i++) {
+			button[i] = Ti.UI.createView({
+				//top : 2,
+				width : btnWidth,
+				height : 50,
 				left : 3,
-				right: 3,
-				layout : 'horizontal',
-				height : 55,
-				bottom: 6
+				backgroundColor : '#336699',
+				borderColor : '#000000',
+				borderWidth : 1,
+				borderRadius : 2,
+				i: i
 			});
-			self.add(topButtonBar);
+			buttonLabel[i] = Ti.UI.createLabel({
+				text : buttons[i].title,
+				color : '#FFF',
+				font : {
+					fontFamily : 'Arial',
+					fontSize : '14dp'
+				},
+				i: i
+			});
+			button[0].backgroundColor = '#6699CC';  //Set first button color as default/first-time view
 			
-			var btnWidth = Math.floor((Ti.Platform.displayCaps.platformWidth-21) * 0.25);
-			
-			var button = [];
-			var buttonLabel = [];
-			for (var i=0;i<4;i++) {
-				button[i] = Ti.UI.createView({
-					//top : 2,
-					width : btnWidth,
-					height : 50,
-					left : 3,
-					backgroundColor : '#336699',
-					borderColor : '#000000',
-					borderWidth : 1,
-					borderRadius : 2,
-					i: i
-				});
-				buttonLabel[i] = Ti.UI.createLabel({
-					text : buttons[i].title,
-					color : '#FFF',
-					font : {
-						fontFamily : 'Arial',
-						fontSize : '14dp'
-					},
-					i: i
-				});
-				button[0].backgroundColor = '#6699CC';  //Set first button color as default/first-time view
-				
-				button[i].addEventListener('click',function(e){
-					Ti.API.info(JSON.stringify(e));
-					for (var j=0;j<4;j++) {
-						if (e.source.i === j) {
-							button[j].backgroundColor = '#6699CC';
-						} else {
-							button[j].backgroundColor = '#336699';
-						}
-						swapSubViews(e.source.i);
+			button[i].addEventListener('click',function(e){
+				Ti.API.info(JSON.stringify(e));
+				for (var j=0;j<4;j++) {
+					if (e.source.i === j) {
+						button[j].backgroundColor = '#6699CC';
+					} else {
+						button[j].backgroundColor = '#336699';
 					}
-				});
-				button[i].add(buttonLabel[i]);
-				topButtonBar.add(button[i]);
-			}
+					swapSubViews(e.source.i);
+				}
+			});
+			button[i].add(buttonLabel[i]);
+			topButtonBar.add(button[i]);
 		}
 	}
+
 	
 	var mainView = Ti.UI.createScrollView({
 		showVerticalScrollIndicator : true,
