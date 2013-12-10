@@ -229,7 +229,7 @@ function myHortMembers(_myHortData, utm, _isOwner, _win) {
 				});			
 				hView.add(iconView);
 				
-				if(myHortMembersData[i].HasMobile){}
+				if(myHortMembersData[i].HasMobile){
 					var phoneIcon = Ti.UI.createImageView({
 						image:  '/images/phone_black.png',
 						width: myHortMembersData[i].HasMobile?'14dp':0,
@@ -239,7 +239,8 @@ function myHortMembers(_myHortData, utm, _isOwner, _win) {
 						visible: myHortMembersData[i].HasMobile
 					});
 					iconView.add(phoneIcon);
-				myHortMembersData[i].HasMobile	
+				//myHortMembersData[i].HasMobile	
+				}
 				
 				var emailIcon = Ti.UI.createImageView({
 						image :  '/images/email_black.png',
