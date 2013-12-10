@@ -24,7 +24,7 @@ function myHortMyInfoView(_myHortInfo, utm, _isOwner, _win) {
 	});
 
 	var titleLbl = Ti.UI.createLabel({
-		text : 'Your Contact Information',
+		text : 'Your Settings',
 		top : 10,
 		color : utm.color_org,
 		height : Ti.UI.SIZE,
