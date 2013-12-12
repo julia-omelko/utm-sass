@@ -111,7 +111,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 			
 			button[i].addEventListener('click',function(e){
 				Ti.API.info(JSON.stringify(e));
-				for (var j=0;j<4;j++) {
+				for (var j=0;j<buttons.length;j++) {
 					if (e.source.i === j) {
 						button[j].backgroundColor = '#6699CC';
 					} else {
