@@ -76,13 +76,14 @@ var MyHorts_window = function(utm) {
 			utm.handleError(e, this.status, this.responseText);
 		},
 		onload : function(e) {
-			var response = eval('(' + this.responseText + ')');
-			Titanium.Analytics.featureEvent('user.viewed_myHorts');
 			if (this.status == 200) {
-
-				utm.log("MyHort data returned " + response.length + '  myHorts returned');
-				populateTable(response);
-				utm.User.MyHorts = response;
+				var response = eval('(' + this.responseText + ')');
+				if (response !== null) {
+					Titanium.Analytics.featureEvent('user.viewed_myHorts');
+					utm.log("MyHort data returned " + response.length + '  myHorts returned');
+					populateTable(response);
+					utm.User.MyHorts = response;
+				}
 			}
 			utm.setActivityIndicator(win , '');
 		},
