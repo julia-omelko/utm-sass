@@ -336,6 +336,9 @@ function myHortMembers(_myHortData, utm, _isOwner, _win) {
 			if (utm.iPhone || utm.iPad) {
 				_win.setRightNavButton(editButton);
 			}
+			if (_isOwner && _myHortData.Members.length === 1) {
+				getPending();
+			}
 		});
 		self.addEventListener('blur', function() {
 			if (utm.iPhone || utm.iPad) {
@@ -353,13 +356,45 @@ function myHortMembers(_myHortData, utm, _isOwner, _win) {
 			title: 'Invite your 1st Member Now!',
 			//width: '50%',
 			top:5,
-			height: Ti.UI.SIZE
+			height: Ti.UI.SIZE,
+			visible: false
 		});
 		inviteButton.addEventListener('click',function(e){
 			_win.fireEvent('invite');
 		});
 		self.add(inviteButton);
+	
+		function getPending() {
+			var getMyHortsPending = Ti.Network.createHTTPClient({
+				validatesSecureCertificate : utm.validatesSecureCertificate,
+				onload : function(e) {
+					var response = eval('('+this.responseText+')');
+					if (this.status == 200) {
+						showButton = true;
+						for (var i=0;i<response.length;i++) {
+							if (response[i].IsValid) {
+								showButton = false;
+								break;
+							}
+						}
+						Ti.API.info(response);
+						inviteButton.setVisible(showButton);
+					}
+					getMyHortsPending=null;
+				},
+				onerror : function(e) {
+					utm.handleError(e, this.status, this.responseText);
+					getMyHortsPending=null;
+				},
+				timeout : utm.netTimeout
+			});
+			getMyHortsPending.open("GET", utm.serviceUrl + "MyHort/Pending?myHortId=" + _myHortData.MyHortId + '&orderby=EmailAddress');
+			getMyHortsPending.setRequestHeader('Authorization-Token', utm.AuthToken);
+			getMyHortsPending.send();
+		}
+		getPending();
 	}
+	
 	
 	
 	return self;
