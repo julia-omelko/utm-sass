@@ -242,6 +242,7 @@ function inviteMyHortView(_myHortInfo, utm, _win) {
 
 	var inviteButton = Ti.UI.createButton({
 		title : 'Send',
+		top : 5,
 		enabled : false
 	});
 	self.add(inviteButton);
