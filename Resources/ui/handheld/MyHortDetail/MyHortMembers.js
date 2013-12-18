@@ -323,8 +323,10 @@ function myHortMembers(_myHortData, utm, _isOwner, _win) {
 	Ti.App.addEventListener('app:myHortMemberDetailReload', function(e){
 		for (i=0;i< _myHortData.Members.length;i++){
 			if(_myHortData.Members[i].Id === e.Id){
+				Ti.API.info(111);
 				Ti.API.info(e);
 				_myHortData.Members[i].NickName=e.NickName;
+				_myHortData.Members[i].MemberType=e.MemberType;
 				break;
 			}	
 		}
