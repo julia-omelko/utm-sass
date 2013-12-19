@@ -139,6 +139,13 @@ function messageDetail_window(_messageData,_curMode,utm) {
 				//Received text: [{"UserId":1004,"MyHortId":1003,"MemberType":"Primary","NickName":"Ant","HasMobile":true,"HasEmail":true,"HasFaceBook":false,"HasTwitter":false}]
 				
 				if(this.status == 200){					
+					
+					if(response.length ==0){
+						alert('Unable to send a message to this member, the member is no longer a member of this MyHort.');
+						return;
+					}
+					
+					
 					utm.log("data returned:"+response);
 					var data = [];
 					utm.curUserCurMyHortHasTwitter = false;
