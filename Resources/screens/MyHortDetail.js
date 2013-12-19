@@ -65,7 +65,8 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 			right: 3,
 			//bottom: 6,
 			backgroundColor : '#336699',
-			style : Titanium.UI.iPhone.SystemButtonStyle.BAR
+			style : Titanium.UI.iPhone.SystemButtonStyle.BAR,
+			visible: false
 		});
 		topButtonBar.addEventListener('click',function(e){
 			swapSubViews(e.index);
@@ -78,7 +79,8 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 			right: 3,
 			layout : 'horizontal',
 			height : 55,
-			bottom: 6
+			bottom: 6,
+			visible: false
 		});
 		self.add(topButtonBar);
 		
@@ -244,6 +246,7 @@ function myHortDetail_window(_myHortData, utm, isOwner) {
 			mainView.add(myHortPendingView);
 		}
 		myHortMembersView.fireEvent('focus');
+		topButtonBar.setVisible(true);
 		
 		
 		

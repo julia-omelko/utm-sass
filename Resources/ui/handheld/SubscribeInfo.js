@@ -104,6 +104,27 @@ var subscribe_window = function(utm) {
 					cancelButton.addEventListener('click', function(event){
 						closeWin();
 					});	
+					
+	/*	
+    var restoreCompletedTransactions = Ti.UI.createButton({
+        title: 'Restore Purchases',
+		top : 25,
+		height : 70,
+		width : 260,	
+		enabled : true,
+		padding : 5
+    });
+    restoreCompletedTransactions.addEventListener('click', function () {
+        restorePurchases();
+    });
+    function restorePurchases() {
+	    Storekit.restoreCompletedTransactions();
+	}
+	*/
+					
+					
+					
+					
 				
 				
 				utm.setActivityIndicator(win, '');		

@@ -690,32 +690,34 @@ var PreviewMessage_window = function(utm) {
 
 		for (var x = 0; x < e.sentToContactList.length; x++) {
 			sentToContactListString += e.sentToContactList[x].nickName + ',';
-
-			//Enable buttons if any one of the users do not have this feature.
-			if (e.sentToContactList[x].userData.HasMobile) {
-				smsButton.setEnabled(true);
-				smsButton.setChecked(true);
-				//default at least sms ...Could save pref of the user for next time...
-			}
-
-			if (e.sentToContactList[x].userData.HasEmail) {
-				emailButton.setEnabled(true);
-				//emailButton.setChecked(true);
-			}
-
-			//USE this if we care if the sender has twitter in current myHort
-			if (utm.curUserCurMyHortHasTwitter) {
+			
+			if (typeof e.sentToContactList[x].userData !== 'undefined') {
+				//Enable buttons if any one of the users do not have this feature.
+				if (typeof e.sentToContactList[x].userData.HasMobile !== 'undefined' && e.sentToContactList[x].userData.HasMobile) {
+					smsButton.setEnabled(true);
+					smsButton.setChecked(true);
+					//default at least sms ...Could save pref of the user for next time...
+				}
+	
+				if (typeof e.sentToContactList[x].userData.HasEmail !== 'undefined' && e.sentToContactList[x].userData.HasEmail) {
+					emailButton.setEnabled(true);
+					//emailButton.setChecked(true);
+				}
+	
+				//USE this if we care if the sender has twitter in current myHort
+				if (utm.curUserCurMyHortHasTwitter) {
+					twitterButton.setEnabled(true);
+					//twitterButton.setChecked(true);
+				}
+				/* USE this if we care if the reciever has twitter
+				if(e.sentToContactList[x].userData.HasTwitter){
 				twitterButton.setEnabled(true);
-				//twitterButton.setChecked(true);
-			}
-			/* USE this if we care if the reciever has twitter
-			if(e.sentToContactList[x].userData.HasTwitter){
-			twitterButton.setEnabled(true);
-			twitterButton.setChecked(true);
-			}*/
-
-			if(utm.curUserCurMyHortHasFacebook){
-				facebookButton.setEnabled(true);
+				twitterButton.setChecked(true);
+				}*/
+	
+				if(utm.curUserCurMyHortHasFacebook){
+					facebookButton.setEnabled(true);
+				}
 			}
 
 		}
