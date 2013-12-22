@@ -229,7 +229,8 @@ var TheLoginScreen_view = function(utm) {
 			var params = {
 				UserName: username.value,
 				Password: password.value,
-				RememberMe: true								
+				RememberMe: true,
+				Version:utm.appVersion.replace("Version:","")								
 			};
 			//loginReq.send(params);
 			sendLogin(params);
@@ -273,10 +274,10 @@ var TheLoginScreen_view = function(utm) {
 	}
 	function fillInTestLogin(){
 		utm.log('Ti.Platform.model = ' +Ti.Platform.model );
-		if (Ti.Platform.model === 'Simulator'  || Ti.Platform.model ===  'google_sdk') { 
- 			username.value='tim';
- 			password.value='*Arthur21';
-		}
+		/*if (Ti.Platform.model === 'Simulator'  || Ti.Platform.model ===  'google_sdk') { 
+ 			username.value='ad';
+ 			password.value='testtest1';
+		}*/
 	}
 	
 	versionLabel.addEventListener('longpress',function(e)
