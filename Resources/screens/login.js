@@ -224,13 +224,17 @@ var TheLoginScreen_view = function(utm) {
 		if (username.value != '' && password.value != '')
 		{	
 			utm.log(username.value +' is logging in to UTM');
-			//loginReq.open("POST",utm.serviceUrl+"Login");				
-
+			//loginReq.open("POST",utm.serviceUrl+"Login");			
+			
+			var shortVersionNum = Ti.App.version;
+			var shortVersionNumArray = shortVersionNum.split('.');
+			shortVersionNum= shortVersionNumArray[0]+'.'+shortVersionNumArray[1];
+				
 			var params = {
 				UserName: username.value,
 				Password: password.value,
 				RememberMe: true,
-				Version:utm.appVersion.replace("Version:","")								
+				Version:shortVersionNum								
 			};
 			//loginReq.send(params);
 			sendLogin(params);
