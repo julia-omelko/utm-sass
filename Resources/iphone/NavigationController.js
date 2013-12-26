@@ -2,16 +2,16 @@ var NavigationController = function() {
     var self = this;
 
     function createNavGroup(windowToOpen) {
-        self.navGroup = Ti.UI.iPhone.createNavigationGroup({
+        self.navGroup = Ti.UI.iOS.createNavigationWindow({
             window : windowToOpen
         });
-        
+        self.navGroup.open();
 		//var theTop = utm.iOS7 ? 20 : 0;
         
-        var containerWindow = Ti.UI.createWindow();
-        containerWindow.add(self.navGroup);
-        containerWindow.open();
-        containerWindow.add(utm.activityIndicator);
+        //var containerWindow = Ti.UI.createWindow();
+        //containerWindow.add(self.navGroup);
+        //containerWindow.open();
+        //containerWindow.add(utm.activityIndicator);
     };
 
     self.open = function(windowToOpen) {
@@ -19,7 +19,7 @@ var NavigationController = function() {
             createNavGroup(windowToOpen);
         }
         else {
-            self.navGroup.open(windowToOpen);
+            self.navGroup.openWindow(windowToOpen);
         }
     };
 
@@ -30,7 +30,7 @@ var NavigationController = function() {
 		if( thisWindow == "[object TiUIWindow]" ) {      
 	        if(self.navGroup) {
 	            
-	            self.navGroup.close(windowToClose);
+	            self.navGroup.closeWindow(windowToClose);
 	        }
        }
     };

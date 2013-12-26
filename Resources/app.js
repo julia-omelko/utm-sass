@@ -219,6 +219,8 @@ function handleLoginSuccess(event) {
 		utm.enableSendMessageButton=true;
 	}
 	
+	
+	Ti.App.fireEvent('App:startTransactionListener');
 	showLandingView();
 }
 
@@ -874,6 +876,18 @@ function setTimer(timetowait,context) {
 
 //After everything is loaded check if device is online.
 checkNetworkOnInit();
+
+
+
+
+/*
+	App.js is wicked long already and the StoreKit functionality has to be in the root context.  I'm just making
+	an include to isolate it a little and make it easier to maintain. - TV
+*/
+Ti.include('storekit.js');
+
+
+
 
 //SOASTA TOUCHTEST CODE
 //Un-comment this code block as well as 2 locations in tiapp.xml to make application "TouchTestable"
