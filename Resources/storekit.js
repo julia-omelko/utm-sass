@@ -41,7 +41,6 @@ var IOS7 = isIOS7Plus();
 Storekit.addEventListener('transactionState', function (evt) {
 	switch (evt.state) {
 		case Storekit.TRANSACTION_STATE_FAILED:
-		alert(1111)
 			if (evt.cancelled) {
 				//alert('Purchase cancelled');
 			} else {
@@ -50,7 +49,6 @@ Storekit.addEventListener('transactionState', function (evt) {
 			evt.transaction && evt.transaction.finish();
 			break;
 		case Storekit.TRANSACTION_STATE_PURCHASED:
-		alert(2222)
 			if (verifyingReceipts) {
 				if (IOS7) {
 					// iOS 7 Plus receipt validation is just as secure as pre iOS 7 receipt verification, but is done entirely on the device.
@@ -77,12 +75,9 @@ Storekit.addEventListener('transactionState', function (evt) {
 			evt.transaction && evt.transaction.finish();
 			break;
 		case Storekit.TRANSACTION_STATE_PURCHASING:
-		alert(3333)
 			//Ti.API.info('Purchasing ' + evt.productIdentifier);
 			break;
 		case Storekit.TRANSACTION_STATE_RESTORED:
-		alert(4444)
-			alert(evt);
 			// The complete list of restored products is sent with the `restoredCompletedTransactions` event
 			//Ti.API.info('Restored ' + evt.productIdentifier);
 			// Downloads that exist in a RESTORED state should not necessarily be downloaded immediately. Leave it up to the user.			
