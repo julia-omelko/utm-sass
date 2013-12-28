@@ -123,23 +123,36 @@ function myHortDetail_window(_myHortMember, utm) {
 			enabled : true
 		});
 		removeButton.addEventListener('click', function() {
-			var deleteUserFromMyHortHttp = Ti.Network.createHTTPClient({
-				validatesSecureCertificate : utm.validatesSecureCertificate,
-				onload : function() {
-					deleteUserFromMyHortHttp = null;
-					win.close();
-				},
-				onerror : function(err) {
-					utm.log(err);
-					deleteUserFromMyHortHttp = null;
-					win.close();
+			var dialog = Ti.UI.createAlertDialog({
+				cancel : 1,
+				buttonNames : [L('yes'), L('cancel')],
+				message : 'Are you sure you want to remove this member?',
+				title : L('Remove Member')
+			});
+			dialog.addEventListener('click', function(e) {
+				if (e.index === e.source.cancel) {
+					Ti.API.info('The cancel button was clicked');
+				} else {					
+					var deleteUserFromMyHortHttp = Ti.Network.createHTTPClient({
+						validatesSecureCertificate : utm.validatesSecureCertificate,
+						onload : function() {
+							deleteUserFromMyHortHttp = null;
+							win.close();
+						},
+						onerror : function(err) {
+							utm.log(err);
+							deleteUserFromMyHortHttp = null;
+							win.close();
+						}
+					});
+					
+					deleteUserFromMyHortHttp.open("POST", utm.serviceUrl + "MyHort/DeleteUserFromMyHort?myhortMemberId=" + _myHortMember.Id);
+					deleteUserFromMyHortHttp.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+					deleteUserFromMyHortHttp.setRequestHeader('Authorization-Token', utm.AuthToken);
+					deleteUserFromMyHortHttp.send();
 				}
 			});
-			
-			deleteUserFromMyHortHttp.open("POST", utm.serviceUrl + "MyHort/DeleteUserFromMyHort?myhortMemberId=" + _myHortMember.Id);
-			deleteUserFromMyHortHttp.setRequestHeader("Content-Type", "application/json; charset=utf-8");
-			deleteUserFromMyHortHttp.setRequestHeader('Authorization-Token', utm.AuthToken);
-			deleteUserFromMyHortHttp.send();
+			dialog.show();
 		});
 		view.add(removeButton);
 	}
