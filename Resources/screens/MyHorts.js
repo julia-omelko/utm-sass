@@ -33,6 +33,7 @@ var MyHorts_window = function(utm) {
 	var tableView = Titanium.UI.createTableView({
 		//left : 2,
 		editable : true,
+		scrollable : true,
 		allowsSelectionDuringEditing : true
 	});
 	win.add(tableView);
