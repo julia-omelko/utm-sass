@@ -126,32 +126,39 @@ function myHortMembers(_myHortData, utm, _isOwner, _win) {
 			enabled : true
 		});
 		removeButton.addEventListener('click', function() {
-			var deleteUserFromMyHortHttp = Ti.Network.createHTTPClient({
-				validatesSecureCertificate : utm.validatesSecureCertificate,
-				onload : function() {
-					deleteUserFromMyHortHttp = null;
-					_win.close();
-				},
-				onerror : function(err) {
-					utm.log(err);
-					deleteUserFromMyHortHttp = null;
-					_win.close();
+			var dialog = Ti.UI.createAlertDialog({
+				cancel : 1,
+				buttonNames : [L('yes'), L('cancel')],
+				message : 'Are you sure you want to leave this MyHort?',
+				title : L('Leave MyHort')
+			});
+			dialog.addEventListener('click', function(e) {
+				if (e.index === e.source.cancel) {
+					Ti.API.info('The cancel button was clicked');
+				} else {
+					var deleteUserFromMyHortHttp = Ti.Network.createHTTPClient({
+						validatesSecureCertificate : utm.validatesSecureCertificate,
+						onload : function() {
+							deleteUserFromMyHortHttp = null;
+							_win.close();
+						},
+						onerror : function(err) {
+							utm.log(err);
+							deleteUserFromMyHortHttp = null;
+							_win.close();
+						}
+					});
+					
+					deleteUserFromMyHortHttp.open("POST", utm.serviceUrl + "MyHort/LeaveMyHort?myHortId=" + _myHortData.MyHortId);
+					deleteUserFromMyHortHttp.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+					deleteUserFromMyHortHttp.setRequestHeader('Authorization-Token', utm.AuthToken);
+					deleteUserFromMyHortHttp.send();
 				}
 			});
-			
-			deleteUserFromMyHortHttp.open("POST", utm.serviceUrl + "MyHort/LeaveMyHort?myHortId=" + _myHortData.MyHortId);
-			deleteUserFromMyHortHttp.setRequestHeader("Content-Type", "application/json; charset=utf-8");
-			deleteUserFromMyHortHttp.setRequestHeader('Authorization-Token', utm.AuthToken);
-			deleteUserFromMyHortHttp.send();
+		dialog.show();
 		});
 		self.add(removeButton);
 	}
-
-
-
-
-
-
 
 	function loadMembers() {
 		populateTable(_myHortData.Members);

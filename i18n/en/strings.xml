@@ -42,6 +42,7 @@
 	<string name="cancel">Cancel</string>
 	<string name="help">Help</string>
 	<string name="done">Done</string>
+	<string name="yes">Yes</string>
 	
 	<string name="regenUTM">New UTM Message</string>
 	<string name="smsNote">NOTE: standard text messaging rates of other carrier charges may apply</string>
