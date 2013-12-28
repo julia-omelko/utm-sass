@@ -90,31 +90,46 @@ function myHortMembers(_myHortData, utm, _isOwner, _win) {
 		height : Ti.UI.SIZE
 	});
 	tableView.addEventListener('delete', function(e) {
-		var deleteUserFromMyHortHttp = Ti.Network.createHTTPClient({
-			validatesSecureCertificate : utm.validatesSecureCertificate,
-			onload : function() {
-				for (var i=0;i<_myHortData.Members.length;i++) {
-					if (_myHortData.Members[i].Id === e.row.myHortMembersRowData.Id) {
-						_myHortData.Members.splice(i,1);
-						break;
+		var dialog = Ti.UI.createAlertDialog({
+			cancel : 1,
+			buttonNames : [L('yes'), L('cancel')],
+			message : 'Are you sure you want to delete ' + e.row.myHortMembersRowData.NickName + ' from this MyHort?',
+			title : L('Delete Member')
+		});
+		dialog.addEventListener('click', function(e) {
+			if (e.index === e.source.cancel) {
+				Ti.API.info('The cancel button was clicked');
+				loadMembers();  //reload member that was removed from table when delete was selected
+			} else {
+
+				var deleteUserFromMyHortHttp = Ti.Network.createHTTPClient({
+					validatesSecureCertificate : utm.validatesSecureCertificate,
+					onload : function() {
+						for (var i=0;i<_myHortData.Members.length;i++) {
+							if (_myHortData.Members[i].Id === e.row.myHortMembersRowData.Id) {
+								_myHortData.Members.splice(i,1);
+								break;
+							}
+						}
+						deleteUserFromMyHortHttp = null;
+					},
+					onerror : function(err) {
+						utm.log(err);
+						deleteUserFromMyHortHttp = null;
 					}
+				});
+				if (_isOwner) {
+					deleteUserFromMyHortHttp.open("POST", utm.serviceUrl + "MyHort/DeleteUserFromMyHort?myhortMemberId=" + e.row.myHortMembersRowData.Id);
+				} else {
+					deleteUserFromMyHortHttp.open("POST", utm.serviceUrl + "MyHort/LeaveMyHort?myHortId=" + _myHortData.MyHortId);
 				}
-				deleteUserFromMyHortHttp = null;
-			},
-			onerror : function(err) {
-				utm.log(err);
-				deleteUserFromMyHortHttp = null;
+				
+				deleteUserFromMyHortHttp.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+				deleteUserFromMyHortHttp.setRequestHeader('Authorization-Token', utm.AuthToken);
+				deleteUserFromMyHortHttp.send();
 			}
 		});
-		if (_isOwner) {
-			deleteUserFromMyHortHttp.open("POST", utm.serviceUrl + "MyHort/DeleteUserFromMyHort?myhortMemberId=" + e.row.myHortMembersRowData.Id);
-		} else {
-			deleteUserFromMyHortHttp.open("POST", utm.serviceUrl + "MyHort/LeaveMyHort?myHortId=" + _myHortData.MyHortId);
-		}
-		
-		deleteUserFromMyHortHttp.setRequestHeader("Content-Type", "application/json; charset=utf-8");
-		deleteUserFromMyHortHttp.setRequestHeader('Authorization-Token', utm.AuthToken);
-		deleteUserFromMyHortHttp.send();
+		dialog.show();
 	});
 	self.add(tableView);
 
