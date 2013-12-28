@@ -884,7 +884,10 @@ checkNetworkOnInit();
 	App.js is wicked long already and the StoreKit functionality has to be in the root context.  I'm just making
 	an include to isolate it a little and make it easier to maintain. - TV
 */
-Ti.include('storekit.js');
+
+if(utm.iPhone || utm.iPad ){
+	Ti.include('storekit.js');
+}
 
 
 
