@@ -220,6 +220,28 @@ function handleLoginSuccess(event) {
 	}
 	
 	
+	//calculate subscription stuff
+	var d = utm.User.UserProfile.SubscriptionEnds;
+	var theYear = d.split('-')[0];
+	var theMonth = d.split('-')[1];
+	var theDay = d.split('-')[2].split('T')[0];
+	var theHour = d.split('-')[2].split('T')[1].split(':')[0];
+	var theMinute = d.split(':')[1];
+	var theSecond = d.split(':')[2].split('.')[0];
+	var theMilli = d.split('.')[1];
+	var expiresUtmDT = new Date(theYear, theMonth-1, theDay, theHour, theMinute, theSecond, theMilli);
+	var deviceDT = new Date();
+	var deviceUtmDT = new Date(deviceDT.getFullYear(), deviceDT.getMonth(), deviceDT.getDate(), deviceDT.getHours(), deviceDT.getMinutes(), 0, 0);
+	
+	if (expiresUtmDT < deviceUtmDT) {
+		//EXPIRED SUBSCRIPTION
+		utm.User.UserProfile.SubscriptionEnds = null;
+		utm.User.UserProfile.MessagesRemaining = 0;
+	} else {
+		
+	}
+	
+	
 	Ti.App.fireEvent('App:startTransactionListener');
 	showLandingView();
 }
@@ -507,7 +529,10 @@ Ti.App.addEventListener('app:getSubscriptionInfo', function (e){
 				var subDate = utm.User.UserProfile.SubscriptionEnds.substring(0,	10);
 				subDate=subDate.replace(/-/g, '/');
 				subDate = new Date(subDate);
-						
+				
+				
+				
+				
 				if(utm.User.UserProfile.MessagesRemaining < 1  || subDate < now){ 
 					showSubscriptionInstructions();				
 				}else{					

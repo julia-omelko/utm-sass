@@ -83,19 +83,9 @@ function requestProduct(identifier) {
 
 
 
-
-
-
-
-
-
-
-
-
-
 win.addEventListener('close',function(e){
 	utm.inSubscriptionMode = false;
-})
+});
 
 
 win.updateMessage = function(){
@@ -108,10 +98,14 @@ win.updateMessage = function(){
 		message = 'You have ' + utm.User.UserProfile.MessagesRemaining + ' messages remaining \n';
 	}
 	instructionLbl.text = message;
-}
+};
 win.updateMessage();
 	
-	
+Ti.App.addEventListener('updateMessageCount',function(e){
+	utm.User.UserProfile.MessagesRemaining = e.MessagesRemaining;
+	utm.User.UserProfile.SubscriptionEnds = e.SubscriptionEnds;
+	win.updateMessage();
+});
 	
 	return win;
 

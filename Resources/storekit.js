@@ -167,7 +167,10 @@ function verifyServerSideWithApple(_receipt,_productIdentifier){
 					} else {
 						alert("Thank you for subscribing.");
 					}
-					//win.updateMessage();
+					Ti.App.fireEvent('updateMessageCount',{
+						MessagesRemaining: response.Data.MessagesRemaining,
+						SubscriptionEnds: response.Data.SubscriptionEnds
+					});
 				}else{
 					alert("Your purchase was successful but will not be reflected right away.");
 				}
