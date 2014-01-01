@@ -165,11 +165,12 @@ function verifyServerSideWithApple(_receipt,_productIdentifier){
 					if (response.Data.SubscriptionEnds === null) {
 						alert("Thank you for your purchase, you now have "+ utm.User.UserProfile.MessagesRemaining + " messages remaining.");														
 					} else {
-						alert("Thank you for subscribing.");
+						alert("Thank you for your purchase.");
 					}
+
 					Ti.App.fireEvent('updateMessageCount',{
-						MessagesRemaining: response.Data.MessagesRemaining,
-						SubscriptionEnds: response.Data.SubscriptionEnds
+						MessagesRemaining: response.Data.SubscriptionInfo.MessagesRemaining,
+						SubscriptionEnds: ((_productIdentifier === 'com.youthisme.UnlimitedMessagesFor99') ? response.Data.SubscriptionInfo.SubscriptionEnds : null)
 					});
 				}else{
 					alert("Your purchase was successful but will not be reflected right away.");
