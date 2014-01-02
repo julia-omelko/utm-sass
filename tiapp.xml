@@ -18,7 +18,7 @@
     <sdk-version>3.1.3.GA</sdk-version>
     <id>com.utm</id>
     <name>UTM</name>
-    <version>1.29.2</version>
+    <version>1.30.0</version>
     <publisher>youthisme</publisher>
     <url>http://youthisme.com</url>
     <description>YouThisMe™ (UTM) is an innovative new technology that provides privacy in digital communications and postings on social media. The messages are hidden in plain sight and only the intended recipient(s) can decode them.</description>
@@ -99,7 +99,7 @@
         <module platform="commonjs" version="2.3.0">ti.cloud</module>
         <module platform="iphone">com.qbset.unlockscreen</module>
         <module platform="iphone">com.0x82.key.chain</module>
-        <module platform="iphone">ti.storekit</module>
+        <module platform="iphone" version="3.0.0">ti.storekit</module>
         <module platform="iphone">facebook</module>
         <module platform="android">facebook</module>
     </modules>
