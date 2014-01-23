@@ -397,13 +397,41 @@ function signUp_window(utm) {
 		}
 	}
 	
-	rouLabel.addEventListener('click', function(e) {
+	/*rouLabel.addEventListener('click', function(e) {
 	    Ti.Platform.openURL(utm.webUrl + '/Home/RulesOfUse');
+	});*/
+	
+	rouLabel.addEventListener('click', function(){
+		var closeButton = Titanium.UI.createButton({
+		    title:'Done'
+		    ,font:{fontFamily:'Arial',fontWeight:'bold',fontSize:'14dp'}
+		 });
+		closeButton.addEventListener('click', function() {
+		        navWin.close();
+		 });
+		
+		var rouWindow = Titanium.UI.createWindow({title:'Rules of Use'
+			, leftNavButton:closeButton
+			, backgroundColor:utm.backgroundColor
+			, barColor:utm.barColor
+		});
+		
+		var navWin = Ti.UI.iOS.createNavigationWindow({
+		    modal: true,
+		    window: rouWindow
+		});
+		navWin.open();
+		
+		var webview = Titanium.UI.createWebView({url:utm.webUrl  +'/Home/RulesOfUse' });
+		
+		rouWindow.add(webview);
+		navWin.open();
 	});
 	
 	function trimString(str) {
         return str.replace(/^\s+|\s+$/g,"");
 	}
+	
 		
 	return win;
 };

@@ -108,8 +108,48 @@ var TheLoginScreen_view = function(utm) {
 	}
 	
 	//Forgot Your Password?
-	var forgotPWLabel = createLink(L('login_forgot_password'), '/Account/PasswordReset');
+	//var forgotPWLabel = createLink(L('login_forgot_password'), '/Account/PasswordReset');
+	//view.add(forgotPWLabel);
+	
+	var forgotPWLabel = Ti.UI.createLabel({
+		 text:L('login_forgot_password'),
+		 color: utm.textColor,		
+		 textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+		 top:utm.Android ? '10dp' : 15,
+		 width:'auto',
+		 font: { fontSize:'20dp' }
+	});
+	
 	view.add(forgotPWLabel);
+	
+	forgotPWLabel.addEventListener('click', function(){
+		var closeButton = Titanium.UI.createButton({
+		    title:'Done'
+		    ,font:{fontFamily:'Arial',fontWeight:'bold',fontSize:'14dp'}
+		 });
+		closeButton.addEventListener('click', function() {
+		        navWin.close();
+		 });
+		
+		var forgotPWWindow = Titanium.UI.createWindow({title:L('login_forgot_password')
+			, leftNavButton:closeButton
+			, backgroundColor:utm.backgroundColor
+			, barColor:utm.barColor
+		});
+		
+		var navWin = Ti.UI.iOS.createNavigationWindow({
+		    modal: true,
+		    window: forgotPWWindow
+		});
+		navWin.open();
+		
+		var webview = Titanium.UI.createWebView({url:webUrl +'/Account/PasswordReset' });
+		
+		forgotPWWindow.add(webview);
+		navWin.open();
+	});
+	
+	
 
 		
 	//Want to sign up?
@@ -131,8 +171,46 @@ var TheLoginScreen_view = function(utm) {
 	});
 	
 	//About UTM
-	var tosLabel = createLink(L('login_about'), '/Home/WhoWeAre');
-	view.add(tosLabel);
+	//var tosLabel = createLink(L('login_about'), '/Home/WhoWeAre');
+	
+	var aboutUsLabel = Ti.UI.createLabel({
+		 text:L('login_about'),
+		 color: utm.textColor,		
+		 textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+		 top:utm.Android ? '10dp' : 15,
+		 width:'auto',
+		 font: { fontSize:'20dp' }
+	});
+	
+	view.add(aboutUsLabel);
+	
+	aboutUsLabel.addEventListener('click', function(){
+		var closeButton = Titanium.UI.createButton({
+		    title:'Done'
+		    ,font:{fontFamily:'Arial',fontWeight:'bold',fontSize:'14dp'}
+		 });
+		closeButton.addEventListener('click', function() {
+		        navWin.close();
+		 });
+		
+		var aboutWindow = Titanium.UI.createWindow({title:L('login_about')
+			, leftNavButton:closeButton
+			, backgroundColor:utm.backgroundColor
+			, barColor:utm.barColor
+		});
+		
+		var navWin = Ti.UI.iOS.createNavigationWindow({
+		    modal: true,
+		    window: aboutWindow
+		});
+		navWin.open();
+		
+		var webview = Titanium.UI.createWebView({url:webUrl +'/Home/WhoWeAre' });
+		
+		aboutWindow.add(webview);
+		navWin.open();
+	});
+	
 
 	//Version 0.12 Alpha	
 	var versionLabel = Ti.UI.createLabel({
@@ -309,15 +387,15 @@ var TheLoginScreen_view = function(utm) {
 	
 	win.setVersionLabel =function(){
 		versionLabel.text=utm.appVersion;// + '  ('+utm.envModePrefix +' DB)';
-	}
+	};
 	
 	win.enableLoginButton =function(_enabled){
 		loginBtn.enabled=_enabled;
-	}
+	};
 	
 	win.setWebUrl = function(_webUrl){
 		webUrl=_webUrl;
-	}
+	};
 	
 	
 	fillInTestLogin();
