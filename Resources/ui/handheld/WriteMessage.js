@@ -69,11 +69,11 @@ var WriteMessage_window =function(utm) {
 	scrollableView.add(yourMessageLabel);
 	
 	if (utm.iPad) {
-		var textAreaHeight = '60%'
+		var textAreaHeight = '60%';
 	} else if (Ti.Platform.displayCaps.platformHeight <= 480) {
-		var textAreaHeight = '60dp'
+		var textAreaHeight = '60dp';
 	} else {
-		var textAreaHeight = '100dp'
+		var textAreaHeight = '100dp';
 	}
 	
 	var textArea = Ti.UI.createTextArea({
@@ -87,7 +87,8 @@ var WriteMessage_window =function(utm) {
 	  textAlign: 'left',
 	  top: 5,
 	  width: '90%',
-	  height : textAreaHeight
+	  height : textAreaHeight,
+	  autocapitalization : Titanium.UI.TEXT_AUTOCAPITALIZATION_SENTENCES
 	}); 
 	scrollableView.add(textArea);
 	
@@ -109,7 +110,7 @@ var WriteMessage_window =function(utm) {
 			utm.log('disable it');
 			previewButton.enabled =false;
 		}
-	})
+	});
 	
 	previewButton.addEventListener('click',function()
 	{	textArea.blur();	
@@ -140,19 +141,19 @@ var WriteMessage_window =function(utm) {
 		textArea.value='';
 		replyMode=false;
 		previewButton.enabled=false;
-	}
+	};
 	
 	writeMessageWindow.setMode=function(_theMode){
 		if(_theMode ==='reply')
 			replyMode=true;
 		else
 			replyMode=false;	
-	}
+	};
 	
 	writeMessageWindow.setMessageData=function(_messageData){
 		messageData=_messageData;
 		toLabel.text ='Reply to: '+  messageData.FromUserName;
-	}
+	};
 	
 	Ti.App.addEventListener('app:showChooseMyHortWindow', showChooseMyHortWindow);
 	function showChooseMyHortWindow() {
@@ -161,9 +162,8 @@ var WriteMessage_window =function(utm) {
 		previewButton.enabled=false;	
 	}
 	
-	
 	return writeMessageWindow;
 	
 	
-}
+};
 module.exports = WriteMessage_window;
