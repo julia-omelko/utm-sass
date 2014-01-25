@@ -127,7 +127,10 @@ var ChooseContacts_window = function(utm) {
 
 	writeMessageButton.addEventListener('click', function() {
 		selectedContacts = [];
-
+		
+		//Re Ticket #644 - "Draft" (unsent) messages are preserved
+		utm.writeMessageView.restForm();
+		
 		var checkRows = tableview.data[0].rows;
 		for (var ii = 0; ii < checkRows.length; ii++) {
 			var curRow = checkRows[ii];
