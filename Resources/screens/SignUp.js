@@ -407,7 +407,11 @@ function signUp_window(utm) {
 		    ,font:{fontFamily:'Arial',fontWeight:'bold',fontSize:'14dp'}
 		 });
 		closeButton.addEventListener('click', function() {
-		        navWin.close();
+		          if(utm.Android){
+			        utm.navController.close(rouWindow);
+			    }else{
+			    		navWin.close();
+			    }
 		 });
 		
 		var rouWindow = Titanium.UI.createWindow({title:'Rules of Use'
@@ -415,17 +419,20 @@ function signUp_window(utm) {
 			, backgroundColor:utm.backgroundColor
 			, barColor:utm.barColor
 		});
-		
-		var navWin = Ti.UI.iOS.createNavigationWindow({
-		    modal: true,
-		    window: rouWindow
-		});
-		navWin.open();
-		
+				
 		var webview = Titanium.UI.createWebView({url:utm.webUrl  +'/Home/RulesOfUse' });
-		
 		rouWindow.add(webview);
-		navWin.open();
+		
+		if(utm.Android){			
+			utm.navController.open(rouWindow);
+		}else{
+			var navWin = Ti.UI.iOS.createNavigationWindow({
+			    modal: true,
+			    window: rouWindow
+			});
+			navWin.open();
+		}		
+		
 	});
 	
 	function trimString(str) {
