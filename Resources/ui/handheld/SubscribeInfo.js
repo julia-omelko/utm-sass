@@ -24,18 +24,22 @@ scrollingView.add(instructionLbl);
  
  if(utm.Android){
  	var message='';
+
 	if(utm.User.UserProfile.MessagesRemaining <1){
 		message= 'You have no more messages available \n';
 	}
 	
-	var now = new Date();		
-	var subDate = utm.User.UserProfile.SubscriptionEnds.substring(0,10);
-	subDate=subDate.replace(/-/g, '/');
-	subDate = new Date(subDate);
-
-	if( subDate < now){			
-		message+='\nYour subscription has run out as of '  + 	utm.User.UserProfile.SubscriptionEnds.substring(0,	10) +'\n';			
-	}	
+	
+	if( utm.User.UserProfile.SubscriptionEnds != null){
+		var now = new Date();	
+		var subDate = utm.User.UserProfile.SubscriptionEnds.substring(0,10);
+		subDate=subDate.replace(/-/g, '/');
+		subDate = new Date(subDate);
+		if( subDate < now){			
+			message+='\nYour subscription has run out as of '  + 	utm.User.UserProfile.SubscriptionEnds.substring(0,	10) +'\n';			
+		}	
+	}
+	
 	
 	message+='\nTo update - go to www.youthisme.com and login in to update your subscription';
 	
