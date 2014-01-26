@@ -128,7 +128,11 @@ var TheLoginScreen_view = function(utm) {
 		    ,font:{fontFamily:'Arial',fontWeight:'bold',fontSize:'14dp'}
 		 });
 		closeButton.addEventListener('click', function() {
-		        navWin.close();
+		       if(utm.Android){
+			        utm.navController.close(forgotPWWindow);
+			    }else{
+			    		navWin.close();
+			    }
 		 });
 		
 		var forgotPWWindow = Titanium.UI.createWindow({title:L('login_forgot_password')
@@ -137,16 +141,18 @@ var TheLoginScreen_view = function(utm) {
 			, barColor:utm.barColor
 		});
 		
-		var navWin = Ti.UI.iOS.createNavigationWindow({
-		    modal: true,
-		    window: forgotPWWindow
-		});
-		navWin.open();
-		
-		var webview = Titanium.UI.createWebView({url:webUrl +'/Account/PasswordReset' });
-		
+		var webview = Titanium.UI.createWebView({url:webUrl +'/Account/PasswordReset' });		
 		forgotPWWindow.add(webview);
-		navWin.open();
+		
+		if(utm.Android){
+			utm.navController.open(forgotPWWindow);
+		}else{
+			var navWin = Ti.UI.iOS.createNavigationWindow({
+			    modal: true,
+			    window: forgotPWWindow
+			});
+			navWin.open();
+		}		
 	});
 	
 	
@@ -190,7 +196,11 @@ var TheLoginScreen_view = function(utm) {
 		    ,font:{fontFamily:'Arial',fontWeight:'bold',fontSize:'14dp'}
 		 });
 		closeButton.addEventListener('click', function() {
-		        navWin.close();
+			if(utm.Android){
+		        utm.navController.close(aboutWindow);
+		    }else{
+		    		navWin.close();
+		    }
 		 });
 		
 		var aboutWindow = Titanium.UI.createWindow({title:L('login_about')
@@ -199,16 +209,19 @@ var TheLoginScreen_view = function(utm) {
 			, barColor:utm.barColor
 		});
 		
-		var navWin = Ti.UI.iOS.createNavigationWindow({
-		    modal: true,
-		    window: aboutWindow
-		});
-		navWin.open();
-		
 		var webview = Titanium.UI.createWebView({url:webUrl +'/Home/WhoWeAre' });
-		
 		aboutWindow.add(webview);
-		navWin.open();
+		
+		if(utm.Android){			
+			utm.navController.open(aboutWindow);
+		}else{
+			var navWin = Ti.UI.iOS.createNavigationWindow({
+			    modal: true,
+			    window: aboutWindow
+			});
+			navWin.open();	
+		}
+
 	});
 	
 
@@ -379,6 +392,7 @@ var TheLoginScreen_view = function(utm) {
 				}else if (e.index === 3) {
 					utm.setEnvModePrefix("prod");
 				}
+				
 				versionLabel.text=utm.appVersion ;//+ '  ('+utm.envModePrefix +' DB)';
 				
 			});
