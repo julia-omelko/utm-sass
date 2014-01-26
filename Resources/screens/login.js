@@ -277,11 +277,12 @@ var TheLoginScreen_view = function(utm) {
 		}
 	}
 	function fillInTestLogin(){
+		
 		utm.log('Ti.Platform.model = ' +Ti.Platform.model );
-		/*if (Ti.Platform.model === 'Simulator'  || Ti.Platform.model ===  'google_sdk') { 
- 			username.value='ad';
- 			password.value='testtest1';
-		}*/
+		if (Ti.Platform.model === 'Simulator'  || Ti.Platform.model ===  'google_sdk' || Ti.Platform.model ===  'sdk') { 
+ 			username.value='tim';
+ 			password.value='*Arthur21';
+		}
 	}
 	
 	versionLabel.addEventListener('longpress',function(e)

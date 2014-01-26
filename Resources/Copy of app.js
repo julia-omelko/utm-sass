@@ -1,231 +1,3 @@
-
-
-//utm is the js namespace for this app
-utm = {};
-utm.iPhone = false;
-utm.iPad = false;
-utm.Android = false;
-utm.setEnvModePrefix = function (env){
-	utm.envModePrefix = env;
-	if (env === 'dev' || env === 'test') {
-		utm.serviceUrl = 'https://' + env + '.youthisme.com/api/v1/';
-		utm.webUrl = 'https://' + env + '.youthisme.com';
-	} else if(env === 'prod') {
-		utm.serviceUrl = 'https://prod.youthisme.com/api/v1/';
-		utm.webUrl ='https://www.youthisme.com';
-	}	
-};
-if (Ti.Platform.osname == 'iphone') {
-	utm.iPhone = true;
-} else if(Ti.Platform.osname == 'ipad') {
-	utm.iPad = true;
-} else if(Ti.Platform.osname == 'android') {
-	utm.Android = true;
-};
-if (Ti.Platform.model === 'Simulator' || Ti.Platform.model ===  'google_sdk' || Ti.Platform.model ===  'sdk') { 
-	utm.setEnvModePrefix("dev");
-	utm.validatesSecureCertificate = false;
-} else {
-	utm.setEnvModePrefix("prod");
-	utm.validatesSecureCertificate = true;
-}	
-utm.netTimeout = 18000;
-
-utm.color_org = '#F29737';
-utm.barColor = '#22ACF5';
-utm.androidBarColor = '#22ACF5';
-utm.backgroundColor = '#F2F2F2';
-utm.textColor = '#000000';
-utm.secondaryTextColor = '#858585';
-utm.textFieldColor='#000000';
-utm.textErrorColor='#800000';
-utm.buttonColor = '#F27100';
-utm.androidTitleFontSize = 25;
-utm.androidTitleFontWeight = 'bold';
-utm.androidLabelFontSize = 25;
-if (utm.Android) {
-	utm.fontFamily = 'Titillium-Light';
-} else {
-	utm.fontFamily = 'Titillium';
-}
-
-//Note 2 diff controllers based on platform folders
-var NavigationController = require('NavigationController');
-utm.navController = new NavigationController(utm);
-
-utm.twitterConsumerKey = ""; //'8qiy2PJv3MpVyzuhfNXkOw';
-utm.twitterConsumerSecret = ""; //'Qq0rth4MHGB70nh20nSzov2zz6GbVxuVndCh2IxkRWI';
-utm.facebookAppId = '494625050591800';
-
-(function() {
-	var osname = Ti.Platform.osname,
-		version = Ti.Platform.version,
-		height = Ti.Platform.displayCaps.platformHeight,
-		width = Ti.Platform.displayCaps.platformWidth;
-	
-	
-	var Login = require('ui/common/login');
-	var loginView = new Login();
-	utm.navController.open(loginView);
-	
-	
-	
-	//var ApplicationTabGroup = require('ui/common/ApplicationTabGroup');
-	//var tabGroup = new ApplicationTabGroup();
-	//var SplashWin = require('ui/common/Splash');
-	//var splashWin = new SplashWin(tabGroup);
-	
-	//splashWin.open();
-	//tabGroup.open();
-	
-
-	
-	
-
-})();
-
-// handle login
-Ti.App.addEventListener('app:loginSuccess', handleLoginSuccess);
-function handleLoginSuccess(event) {
-	var msg = 'Login Success';
-	utm.loggedIn = true;
-	var d = new Date();
-	var n = d.getTime();
-	utm.activityActive = n;
-	
-			
-	if (utm.User) {
-		utm.User.MyHorts =[];
-	}
-	utm.User = event.userData;
-	utm.AuthToken = event.userData.UserProfile.AuthToken;
-	utm.twitterConsumerKey = event.userData.TwitterInfo.TwitterConsumerKey;
-	utm.twitterConsumerSecret = event.userData.TwitterInfo.TwitterConsumerSecret;
-	utm.products = event.userData.AppleInAppProducts;
-	
-	utm.User.MyHorts = event.userData.MyHorts;
-
-	//utm.recordAnalytics('login succes', utm.User.UserProfile.UserName );
-	utm.enableSendMessageButton=true;
-	
-	isSubscriptionValid(utm.User.UserProfile.SubscriptionEnds);
-	//Ti.App.fireEvent('App:startTransactionListener');
-	openTabGroup();
-}
-
-// check if the user's subscription is up to date
-function isSubscriptionValid(subscriptionEnds) {
-	if (subscriptionEnds !== null) {
-		var d = subscriptionEnds;
-		var theYear = d.split('-')[0];
-		var theMonth = d.split('-')[1];
-		var theDay = d.split('-')[2].split('T')[0];
-		var theHour = d.split('-')[2].split('T')[1].split(':')[0];
-		var theMinute = d.split(':')[1];
-		var theSecond = d.split(':')[2].split('.')[0];
-		var theMilli = d.split('.')[1];
-		var expiresUtmDT = new Date(theYear, theMonth-1, theDay, theHour, theMinute, theSecond, theMilli);
-		var deviceDT = new Date();
-		var deviceUtmDT = new Date(deviceDT.getFullYear(), deviceDT.getMonth(), deviceDT.getDate(), deviceDT.getHours(), deviceDT.getMinutes(), 0, 0);
-		
-		if (expiresUtmDT < deviceUtmDT && utm.User.UserProfile.HasSubscription) {
-			// expired subscription
-			utm.User.UserProfile.SubscriptionEnds = null;
-			utm.User.UserProfile.MessagesRemaining = 0;
-			return false;
-		} else {
-			// valid subscription
-			return true;
-		}
-	} else {
-		// no subscription
-		return false;
-	}
-}
-
-function openTabGroup() {
-	var ApplicationTabGroup = require('ui/common/ApplicationTabGroup');
-	var tabGroup = new ApplicationTabGroup();
-	tabGroup.open();
-}
-
-moment = require('lib/moment');
-function getDateTimeFormat(dateSent){
-	var sent = moment(dateSent);
-	var hours = sent.fromNow();
-	var now = moment();
-
-	diff = now.diff(sent, 'days'); // 1
-			
-	if (diff > 0) {
-		return sent.format("M/D/YY");
-	} else {
-		var sToSubtract = 0;
-		if (now.milliseconds() << sent.milliseconds()) {
-			var sToSubtract = 30;
-		}
-		return  formattedDateSent = sent.subtract('seconds', sToSubtract).fromNow();
-	}
-}
-
-if (utm.iPhone || utm.iPad ) {
-	Ti.include('storekit.js');
-}
-
-
-
-
-
-Ti.App.addEventListener('app:logout', callLogoutService);
-function showLoginView() {
-	if(utm.loggedIn){
-		callLogoutService();
-		utm.loggedIn=false;
-	}	
-	utm.User =null;
-		
-	closeAllScreens(false);
-	//utm.navController.open(utm.loginView);	
-	//#421 - Ti App - Screen Blank on force login
-	//Due to internal IOS issue causing NavController is closing a proxy. Delaying this close call 
-	// we now have a 1 second timer that is used to bring the login screen to front/open
-	// else the screen goes blank 
-	setTimer(1, 'delayShowLoginView');
-	
-}
-
-function callLogoutService(){
-	var logoutReq = Ti.Network.createHTTPClient({
-		validatesSecureCertificate:utm.validatesSecureCertificate, 
-		timeout:utm.netTimeout,
-		onload : function() {
-			var response = eval('('+this.responseText+')');
-		},
-		onerror : function(e) {},
-		timeout:utm.netTimeout
-	});
-
-	logoutReq.open("POST", utm.serviceUrl + "Logout");
-	logoutReq.setRequestHeader('Authorization-Token', utm.AuthToken);
-	logoutReq.send();
-	
-}
-
-
-
-
-
-
-
-
-
-
-
-/*
-
-
-
-
 //utm is the js namespace for this app
 var utm = {};
 utm.loggedIn = false;
@@ -353,7 +125,10 @@ utm.setEnvModePrefix= function (env){
 
 appInit();
 
-
+/*utm.navGroup = Ti.UI.iPhone.createNavigationGroup({
+	window : utm.loginView
+});
+*/
 //utm.mainWindow.add(utm.navGroup);
 //utm.mainWindow.open();
 
@@ -503,7 +278,15 @@ Ti.App.addEventListener('app:contactsChoosen', setContactsChoosen);
 function setContactsChoosen(e) {
 	utm.log('setContactsChoosen() fired sentToContactList=' + e.sentToContactList);
 	utm.sentToContactList = e.sentToContactList;
+	/*utm.sentToContactListString='To:';
 
+	 for (var x=0;x<utm.sentToContactList.length;x++)
+	 {
+	 utm.sentToContactListString+= utm.sentToContactList[x] +',';
+	 }
+	 previewMessageView.sentToContactListString=utm.sentToContactListString;
+	 utm.sentToContactListString=utm.sentToContactListString.slice(0, - 1);
+	 */
 	utm.currentOpenWindow=utm.writeMessageView;
 	utm.navController.open(utm.writeMessageView);
 
@@ -707,7 +490,59 @@ function callLogoutService(){
 	
 }
 
+Ti.App.addEventListener('app:getSubscriptionInfo', function (e){
 
+	utm.subscriptionInfoReq = Ti.Network.createHTTPClient({
+		validatesSecureCertificate:utm.validatesSecureCertificate, 
+		timeout:utm.netTimeout,
+		onload : function() {
+			var response = eval('('+this.responseText+')');
+	
+			if (this.status == 200) {		
+				
+				utm.User.UserProfile.MessagesRemaining = response.MessagesRemaining;
+				utm.User.UserProfile.SubscriptionEnds = response.SubscriptionEnds;
+				utm.User.UserProfile.HasSubscription = response.HasSubscription;
+				if (utm.User.UserProfile.HasSubscription === false) {
+					utm.User.UserProfile.SubscriptionEnds = null;
+				}
+				
+				if (!isSubscriptionValid(utm.User.UserProfile.SubscriptionEnds) && utm.User.UserProfile.MessagesRemaining < 1) { 
+					showSubscriptionInstructions();				
+				}else{					
+					//Subscription is ok so fire the callback to allow send or reply to continue
+					fn = eval(e.callBack);
+					if(e.fromUserId){
+						fn.call(null,e.fromUserId);						
+					}else{
+						fn.call();
+					}	
+				}			
+			}else{
+				utm.handleError(e, this.status, this.responseText);
+				//utm.recordError("Status="+this.status + "   Message:"+this.responseText);
+			}
+		},
+		onerror : function(e) {		
+			utm.handleError(e, this.status, this.responseText);
+		}
+		,timeout:utm.netTimeout
+	});
+	
+	utm.subscriptionInfoReq.open("GET", utm.serviceUrl + "SubscriptionInfo");
+	utm.subscriptionInfoReq.setRequestHeader('Authorization-Token', utm.AuthToken);
+	utm.subscriptionInfoReq.send();
+});
+
+function showSubscriptionInstructions(){
+	
+	utm.subscribeInfoView=null;	
+	utm.SubscribeInfoView = require('/ui/handheld/SubscribeInfo');
+	utm.subscribeInfoView = new utm.SubscribeInfoView(utm);
+	
+	utm.navController.open(utm.subscribeInfoView);
+	utm.subscribeInfoView.updateMessage();
+}
 
 utm.setActivityIndicator =function (_curWindow, _message) {
 	
@@ -971,7 +806,23 @@ Ti.App.addEventListener("resumed", function(e){
 });
 
 
+/*
+Ti.App.addEventListener('app:networkChange',
+	function () {
 
+		if (Titanium.Network.networkType == Titanium.Network.NETWORK_NONE) {
+			utm.log('Check Connection');
+		  	utm.loginView.setMessageArea('No Internet Connection Available- the UTM Application requires that you have a Internet Connection.');			  	
+		  	utm.loginView.enableLoginButton(false);
+		} else {
+		   	utm.loginView.setMessageArea('');
+		   	utm.loginView.enableLoginButton(true);
+		}
+			
+	 	return Titanium.Network.online;
+	}
+
+);*/
 
 function getDateTimeFormat(dateSent){
 	var sent =  moment(dateSent);
@@ -1057,16 +908,16 @@ checkNetworkOnInit();
 
 
 
-
-//	App.js is wicked long already and the StoreKit functionality has to be in the root context.  I'm just making
-//	an include to isolate it a little and make it easier to maintain. - TV
-
+/*
+	App.js is wicked long already and the StoreKit functionality has to be in the root context.  I'm just making
+	an include to isolate it a little and make it easier to maintain. - TV
+*/
 
 if(utm.iPhone || utm.iPad ){
 	Ti.include('storekit.js');
 }
 
-*/
+
 
 
 //SOASTA TOUCHTEST CODE

@@ -1,15 +1,11 @@
-function CameraView(_win,_imagePreview) {
+function CameraView(_previewView) {
 	var resizedImage;
-	//var imageForPreview;
 	
-	var CameraView = Titanium.UI.createView({
+	var CameraView = Ti.UI.createView({
         layout: 'horizontal',
         visible:false
 	});
 
-	_imagePreview.addEventListener('click',function(e){
-		askDelete();
-	});
 
 	CameraView.captureImage= function(){
 		resizedImage = null;
@@ -22,46 +18,47 @@ function CameraView(_win,_imagePreview) {
 			destrutive:2
 		});
 		
-		photoDialog.addEventListener('click', function(e){
-			
+		photoDialog.addEventListener('click', function(e) {			
 			resizedImage = null;
-			
 			if (e.cancel === e.index || e.cancel === true) {
+				_previewView.setHeight(46);
+				_previewView.setWidth(46);
+				_previewView.setImage('/images/icons/camera.png');
 				return;
-			} else if (e.index === 0){
-				Titanium.Media.showCamera({
-					saveToPhotoGallery:false,//NOTE this is important to be set to FALSE
-					mediaTypes:[Ti.Media.MEDIA_TYPE_PHOTO],  //, Ti.Media.MEDIA_TYPE_VIDEO this will need work to get video working
-					success:function(event) {
-						
-						processImage(event);
-						
+			} else if (e.index === 0) {
+				Ti.Media.showCamera({
+					saveToPhotoGallery: false,
+					mediaTypes:[Ti.Media.MEDIA_TYPE_PHOTO],
+					success:function(e) {
+						processImage(e);
 					},
-		        	cancel:function(){
+		        	cancel:function() {
+						_previewView.setHeight(46);
+						_previewView.setWidth(46);
+						_previewView.setImage('/images/icons/camera.png');
 						return;
 		        	},
-		        	error:function(error){
-		            	if (error.code == Titanium.Media.NO_CAMERA){
+		        	error:function(error) {
+		            	if (error.code == Ti.Media.NO_CAMERA) {
 		            		alert('Device does not have camera capabilities');
 		            	}else{
-		                	alert('Unable to access camera! \nPlease use a picture from the gallery.');
-		                	// Ti.API.error(JSON.stringify(error));
+		                	alert('Unable to access camera.\nPlease use a picture from the gallery.');
 		            	}
 		            }
 				});
-			} else if (e.index === 1){
+			} else if (e.index === 1) {
 				Ti.Media.openPhotoGallery({
-					
-					success:function(event) {
-						
-						processImage(event);
-						
+					success:function(e) {
+						processImage(e);
 					},
 		        	cancel:function(){
+						_previewView.setHeight(46);
+						_previewView.setWidth(46);
+						_previewView.setImage('/images/icons/camera.png');
 						return;
 		        	},
 		        	error:function(error){
-		            	if (error.code == Titanium.Media.NO_CAMERA){
+		            	if (error.code == Ti.Media.NO_CAMERA){
 		            		alert('Device does not have camera capabilities');
 		            	}else{
 		                	//alert('Unexpected error: ' + error.code);
@@ -70,55 +67,32 @@ function CameraView(_win,_imagePreview) {
 				});
 			}
 		});
-		
 		photoDialog.show();
-		
 	};
 	
-	function processImage(event){
-		
-		if(utm.Android){
-			resizedImage = event.media.imageAsResized(event.media.width/6,event.media.height/6);
-		}else{
-			resizedImage = event.media.imageAsResized(event.media.width/3,event.media.height/3);
+	function processImage(e){
+		if (utm.Android) {
+			resizedImage = e.media.imageAsResized(e.media.width/6,e.media.height/6);
+		} else {
+			resizedImage = e.media.imageAsResized(e.media.width/3,e.media.height/3);
 		}	
 		
-		_imagePreview.setImage(resizedImage);
-		_imagePreview.visible=true;
+		_previewView.setVisible(false);
+		_previewView.setHeight(80);
+		_previewView.setWidth(80);
+		_previewView.setImage(resizedImage);
+		_previewView.setVisible(true);
 		
 	}
-	
-	function askDelete(){
-		
-		var deleteDialog = Ti.UI.createOptionDialog({
-			title:'Do you want to remove the attach file?',
-			options:['Yes','Cancel'],
-			cancel:1,
-			selectedIndex:0,
-			destrutive:1
-		});
-		
-		deleteDialog.addEventListener('click', function(e){
-			if (e.cancel === e.index || e.cancel === true) {
-				return;
-			} else if (e.index === 0){
-				_imagePreview.setVisible(false);
-				resizedImage=null;				
-			}		
-		});		
-		deleteDialog.show();
-	}
-	
 	
 	CameraView.getImage = function(){
 		return resizedImage;
 	};
 	
 	CameraView.reset = function(){
-		_imagePreview.setVisible(false);
+		_previewView.setVisible(false);
 		resizedImage = null;	
 	};
-	
 
 	return CameraView;
 };

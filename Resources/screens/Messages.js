@@ -217,9 +217,7 @@ function message_window(utm) {
 	});
 
 	function deleteMessage(messageId, theRow) {
-
 		if (curMode == 'sent') {
-
 			var dialog = Ti.UI.createAlertDialog({
 				cancel : 1,
 				buttonNames : ['Delete Message?', 'Super Delete Message?', L('cancel')],

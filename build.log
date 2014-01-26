@@ -1,245 +1,191 @@
 Logfile initialized
+[DEBUG] /Users/timvarney/Library/Application Support/Titanium/mobilesdk/osx/3.1.3.GA/android/builder.py simulator UTM /Users/timvarney/.android /Users/timvarney/Documents/Titanium_Studio_Workspace/utm com.utm 1 WVGA854
 [INFO] logfile = /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build.log
-[DEBUG] /Users/timvarney/Library/Application Support/Titanium/mobilesdk/osx/3.1.3.GA/android/builder.py install UTM /Users/timvarney/Library/Application Support/Titanium /Users/timvarney/Documents/Titanium_Studio_Workspace/utm com.utm 4
+[DEBUG] /Users/timvarney/Library/Application Support/Titanium/mobilesdk/osx/3.1.3.GA/android/builder.py emulator UTM /Users/timvarney/.android /Users/timvarney/Documents/Titanium_Studio_Workspace/utm com.utm 1 WVGA854 armeabi
+[INFO] Building UTM for Android ... one moment
+[INFO] Launching Android emulator...one moment
+[DEBUG] From: /Users/timvarney/.android/tools/emulator
+[DEBUG] SDCard: /Users/timvarney/.titanium/android2.sdcard
+[DEBUG] AVD ID: 1
+[DEBUG] AVD Skin: WVGA854
+[DEBUG] AVD ABI: armeabi
+[DEBUG] SDK: /Users/timvarney/.android
 [INFO] Titanium SDK version: 3.1.3 (09/18/13 12:00 222f4d1)
 [DEBUG] Waiting for device to be ready ...
+[TRACE] adb devices returned 0 devices/emulators
+[DEBUG] /Users/timvarney/.android/tools/emulator -avd titanium_1_WVGA854_armeabi -port 5560 -sdcard /Users/timvarney/.titanium/titanium_1_WVGA854_armeabi.sdcard -logcat *:d,*,TiAPI:V -no-boot-anim -partition-size 128
 [TRACE] adb devices returned 1 devices/emulators
-[DEBUG] Device connected... (waited 0 seconds)
-[DEBUG] waited 0.015888 seconds on emulator to get ready
-[DEBUG] com.utm installed? False
+[TRACE] adb devices returned 1 devices/emulators
+[TRACE] adb devices returned 1 devices/emulators
+[TRACE] adb devices returned 1 devices/emulators
+[TRACE] adb devices returned 1 devices/emulators
+[DEBUG] Device connected... (waited 25 seconds)
+[DEBUG] waited 25.175337 seconds on emulator to get ready
+[INFO] Waiting for the Android Emulator to become available
+[DEBUG] com.utm installed? True
+[INFO] Fastdev server running, deploying in Fastdev mode
 [INFO] Copying CommonJS modules...
 [INFO] Copying project resources..
-[TRACE] COPYING MODIFIED FILE: /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/Resources/lib/com.qbset.unlockscreen.js => /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/bin/assets/Resources/lib/com.qbset.unlockscreen.js
 [DEBUG] LiveView not enabled
-[TRACE] Generating Java Classes
+[INFO] Tiapp.xml unchanged, skipping class generation
 [DEBUG] Processing Android resource drawables
 [INFO] Copying platform-specific files for 'Facebook' module
-[DEBUG] copying app icon: /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/bin/assets/Resources/appicon.png
-[DEBUG] generating theme.xml
+[DEBUG] Removed duplicate string [welcome_message] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [label_user_name] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [label_password] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [login] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [logout] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [login_forgot_password] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [login_signup] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [login_tos] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [login_about] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [login_privacy] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [forget_me] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [buy_messages] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [unlock_code] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [account_info] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [landing_view_messages] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [landing_send_messages] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [landing_my_account] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [user_name_password_req] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [invalid_login] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [button_back] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [messages_recieved] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [messages_sent] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [messages_message_deleted] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [send_choose_myhort] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [send_choose_contacts] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [send_select_recipient] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [send_write_your_message] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [send_your_message] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [send_start_your_message_here] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [send_preview_your_message] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [send_your_original_message] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [send_preview_how_encrypted] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [send_utm_message] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [send_UTM_message_now] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [send_our_message_was_sent] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [ok_button] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [send_delete_on_read] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [edit] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [cancel] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [help] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [done] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [regenUTM] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [smsNote] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [yes] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_dialogloginactivity_ok_button] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_loginview_log_out_button] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_loginview_log_in_button] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_loginview_logged_in_as] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_loginview_logged_in_using_facebook] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_loginview_log_out_action] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_loginview_cancel_action] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_logo_content_description] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_usersettingsfragment_log_in_button] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_usersettingsfragment_logged_in] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_usersettingsfragment_not_logged_in] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_placepicker_subtitle_format] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_placepicker_subtitle_catetory_only_format] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_placepicker_subtitle_were_here_only_format] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_picker_done_button_text] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_choose_friends] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_nearby] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_loading] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_internet_permission_error_title] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_internet_permission_error_message] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_requesterror_web_login] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_requesterror_relogin] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_requesterror_password_changed] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_requesterror_reconnect] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_requesterror_permissions] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-es/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_loginview_log_out_button] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-he/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_loginview_log_in_button] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-he/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_loginview_logged_in_as] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-he/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_loginview_logged_in_using_facebook] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-he/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_loginview_log_out_action] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-he/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_loginview_cancel_action] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-he/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_logo_content_description] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-he/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_usersettingsfragment_log_in_button] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-he/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_usersettingsfragment_logged_in] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-he/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_usersettingsfragment_not_logged_in] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-he/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_placepicker_subtitle_format] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-he/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_placepicker_subtitle_catetory_only_format] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-he/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_placepicker_subtitle_were_here_only_format] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-he/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_picker_done_button_text] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-he/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_choose_friends] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-he/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_nearby] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-he/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_loading] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-he/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_internet_permission_error_title] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-he/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_internet_permission_error_message] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-he/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_requesterror_web_login] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-he/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_requesterror_relogin] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-he/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_requesterror_password_changed] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-he/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_requesterror_reconnect] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-he/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_requesterror_permissions] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-he/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_dialogloginactivity_ok_button] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-he/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_loginview_log_out_button] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-iw/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_loginview_log_in_button] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-iw/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_loginview_logged_in_as] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-iw/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_loginview_logged_in_using_facebook] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-iw/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_loginview_log_out_action] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-iw/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_loginview_cancel_action] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-iw/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_logo_content_description] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-iw/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_usersettingsfragment_log_in_button] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-iw/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_usersettingsfragment_logged_in] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-iw/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_usersettingsfragment_not_logged_in] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-iw/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_placepicker_subtitle_format] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-iw/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_placepicker_subtitle_catetory_only_format] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-iw/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_placepicker_subtitle_were_here_only_format] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-iw/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_picker_done_button_text] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-iw/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_choose_friends] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-iw/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_nearby] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-iw/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_loading] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-iw/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_internet_permission_error_title] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-iw/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_internet_permission_error_message] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-iw/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_requesterror_web_login] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-iw/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_requesterror_relogin] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-iw/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_requesterror_password_changed] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-iw/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_requesterror_reconnect] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-iw/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_requesterror_permissions] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-iw/strings.xml
+[DEBUG] Removed duplicate string [com_facebook_dialogloginactivity_ok_button] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values-iw/strings.xml
+[DEBUG] Removed duplicate node [com_facebook_picker_fragment] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values/attrs.xml
+[DEBUG] Removed duplicate node [com_facebook_friend_picker_fragment] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values/attrs.xml
+[DEBUG] Removed duplicate node [com_facebook_place_picker_fragment] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values/attrs.xml
+[DEBUG] Removed duplicate node [com_facebook_login_view] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values/attrs.xml
+[DEBUG] Removed duplicate node [com_facebook_profile_picture_view] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values/attrs.xml
+[DEBUG] Removed duplicate node [com_facebook_blue] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values/styles.xml
+[DEBUG] Removed duplicate node [com_facebook_usersettingsfragment_connected_text_color] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values/styles.xml
+[DEBUG] Removed duplicate node [com_facebook_usersettingsfragment_connected_shadow_color] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values/styles.xml
+[DEBUG] Removed duplicate node [com_facebook_usersettingsfragment_not_connected_text_color] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values/styles.xml
+[DEBUG] Removed duplicate node [com_facebook_loginview_text_color] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values/styles.xml
+[DEBUG] Removed duplicate node [com_facebook_usersettingsfragment_profile_picture_width] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values/styles.xml
+[DEBUG] Removed duplicate node [com_facebook_usersettingsfragment_profile_picture_height] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values/styles.xml
+[DEBUG] Removed duplicate node [com_facebook_loginview_padding_left] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values/styles.xml
+[DEBUG] Removed duplicate node [com_facebook_loginview_padding_right] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values/styles.xml
+[DEBUG] Removed duplicate node [com_facebook_loginview_padding_top] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values/styles.xml
+[DEBUG] Removed duplicate node [com_facebook_loginview_padding_bottom] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values/styles.xml
+[DEBUG] Removed duplicate node [com_facebook_loginview_width] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values/styles.xml
+[DEBUG] Removed duplicate node [com_facebook_loginview_height] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values/styles.xml
+[DEBUG] Removed duplicate node [com_facebook_loginview_text_size] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values/styles.xml
+[DEBUG] Removed duplicate node [com_facebook_profilepictureview_preset_size_small] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values/styles.xml
+[DEBUG] Removed duplicate node [com_facebook_profilepictureview_preset_size_normal] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values/styles.xml
+[DEBUG] Removed duplicate node [com_facebook_profilepictureview_preset_size_large] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values/styles.xml
+[DEBUG] Removed duplicate node [com_facebook_loginview_default_style] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values/styles.xml
+[DEBUG] Removed duplicate node [com_facebook_loginview_silver_style] from /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/values/styles.xml
 [DEBUG] found drawable-long-land-hdpi splash screen at /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/Resources/android/images/res-long-land-hdpi/default.png
-[DEBUG] copying /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/Resources/android/images/res-long-land-hdpi/default.png splash screen to /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/drawable-long-land-hdpi/background.png
 [DEBUG] found drawable-long-land-ldpi splash screen at /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/Resources/android/images/res-long-land-ldpi/default.png
-[DEBUG] copying /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/Resources/android/images/res-long-land-ldpi/default.png splash screen to /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/drawable-long-land-ldpi/background.png
 [DEBUG] found drawable-long-port-hdpi splash screen at /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/Resources/android/images/res-long-port-hdpi/default.png
-[DEBUG] copying /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/Resources/android/images/res-long-port-hdpi/default.png splash screen to /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/drawable-long-port-hdpi/background.png
 [DEBUG] found drawable-long-port-ldpi splash screen at /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/Resources/android/images/res-long-port-ldpi/default.png
-[DEBUG] copying /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/Resources/android/images/res-long-port-ldpi/default.png splash screen to /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/drawable-long-port-ldpi/background.png
 [DEBUG] found drawable-notlong-land-hdpi splash screen at /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/Resources/android/images/res-notlong-land-hdpi/default.png
-[DEBUG] copying /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/Resources/android/images/res-notlong-land-hdpi/default.png splash screen to /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/drawable-notlong-land-hdpi/background.png
 [DEBUG] found drawable-notlong-land-ldpi splash screen at /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/Resources/android/images/res-notlong-land-ldpi/default.png
-[DEBUG] copying /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/Resources/android/images/res-notlong-land-ldpi/default.png splash screen to /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/drawable-notlong-land-ldpi/background.png
 [DEBUG] found drawable-notlong-land-mdpi splash screen at /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/Resources/android/images/res-notlong-land-mdpi/default.png
-[DEBUG] copying /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/Resources/android/images/res-notlong-land-mdpi/default.png splash screen to /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/drawable-notlong-land-mdpi/background.png
 [DEBUG] found drawable-notlong-port-hdpi splash screen at /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/Resources/android/images/res-notlong-port-hdpi/default.png
-[DEBUG] copying /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/Resources/android/images/res-notlong-port-hdpi/default.png splash screen to /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/drawable-notlong-port-hdpi/background.png
 [DEBUG] found drawable-notlong-port-ldpi splash screen at /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/Resources/android/images/res-notlong-port-ldpi/default.png
-[DEBUG] copying /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/Resources/android/images/res-notlong-port-ldpi/default.png splash screen to /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/drawable-notlong-port-ldpi/background.png
 [DEBUG] found drawable-notlong-port-mdpi splash screen at /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/Resources/android/images/res-notlong-port-mdpi/default.png
-[DEBUG] copying /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/Resources/android/images/res-notlong-port-mdpi/default.png splash screen to /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/res/drawable-notlong-port-mdpi/background.png
-[DEBUG] found splash screen at /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/bin/assets/Resources/default.png
-[TRACE] Writing out AndroidManifest.xml
-[DEBUG] adding /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/gen/com/utm/R.java to javac build list
-[DEBUG] adding /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/gen/com/utm/UtmActivity.java to javac build list
-[DEBUG] adding /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/gen/com/utm/UtmAppInfo.java to javac build list
-[DEBUG] adding /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/gen/com/utm/UtmApplication.java to javac build list
-[DEBUG] Building Java Sources: "/Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/gen/com/utm/R.java" "/Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/gen/com/utm/UtmActivity.java" "/Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/gen/com/utm/UtmAppInfo.java" "/Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/gen/com/utm/UtmApplication.java"
-[INFO] Compiling Android Resources... This could take some time
-[DEBUG] Android classes.dex built
-[DEBUG] creating unsigned apk: /Users/timvarney/Documents/Titanium_Studio_Workspace/utm/build/android/bin/app-unsigned.apk
-[DEBUG] from resource zip => assets/Resources/images/camera-ip.png
-[DEBUG] from resource zip => assets/Resources/images/checkbox-checked.png
-[DEBUG] from resource zip => assets/Resources/images/checkbox.png
-[DEBUG] from resource zip => assets/Resources/images/circle_blue.png
-[DEBUG] from resource zip => assets/Resources/images/email.png
-[DEBUG] from resource zip => assets/Resources/images/email_black.png
-[DEBUG] from resource zip => assets/Resources/images/email_disabled.png
-[DEBUG] from resource zip => assets/Resources/images/email_selected.png
-[DEBUG] from resource zip => assets/Resources/images/facebook.jpeg
-[DEBUG] from resource zip => assets/Resources/images/facebook.png
-[DEBUG] from resource zip => assets/Resources/images/facebook_black.png
-[DEBUG] from resource zip => assets/Resources/images/facebook_disabled.png
-[DEBUG] from resource zip => assets/Resources/images/facebook_selected.png
-[DEBUG] from resource zip => assets/Resources/images/greenCheck.jpeg
-[DEBUG] from resource zip => assets/Resources/images/iosContacts.jpeg
-[DEBUG] from resource zip => assets/Resources/images/memberIcon.png
-[DEBUG] from resource zip => assets/Resources/images/ownerIcon.png
-[DEBUG] from resource zip => assets/Resources/images/phone_black.png
-[DEBUG] from resource zip => assets/Resources/images/refresh.gif
-[DEBUG] from resource zip => assets/Resources/images/sms.png
-[DEBUG] from resource zip => assets/Resources/images/sms_disabled.png
-[DEBUG] from resource zip => assets/Resources/images/sms_selected.png
-[DEBUG] from resource zip => assets/Resources/images/splash.png
-[DEBUG] from resource zip => assets/Resources/images/twitter.png
-[DEBUG] from resource zip => assets/Resources/images/twitter_black.png
-[DEBUG] from resource zip => assets/Resources/images/twitter_disabled.png
-[DEBUG] from resource zip => assets/Resources/images/twitter_selected.png
-[DEBUG] from resource zip => assets/Resources/images/whiteArrow.png
-[DEBUG] from resource zip => assets/Resources/images/ytm_Narrow.png
-[DEBUG] from resource zip => assets/Resources/lib/Camera.js
-[DEBUG] from resource zip => assets/Resources/lib/PasswordStrengthMeter.js
-[DEBUG] from resource zip => assets/Resources/lib/androidkeychain.js
-[DEBUG] from resource zip => assets/Resources/lib/com.qbset.unlockscreen.js
-[DEBUG] from resource zip => assets/Resources/lib/guid.js
-[DEBUG] from resource zip => assets/Resources/lib/moment.js
-[DEBUG] from resource zip => assets/Resources/lib/social.js
-[DEBUG] from resource zip => assets/Resources/model/User
-[DEBUG] from resource zip => assets/Resources/screens/MainWindow.js
-[DEBUG] from resource zip => assets/Resources/screens/MessageDetail.js
-[DEBUG] from resource zip => assets/Resources/screens/Messages.js
-[DEBUG] from resource zip => assets/Resources/screens/MyHortDetail.js
-[DEBUG] from resource zip => assets/Resources/screens/MyHortMemberDetail.js
-[DEBUG] from resource zip => assets/Resources/screens/MyHorts.js
-[DEBUG] from resource zip => assets/Resources/screens/SignUp.js
-[DEBUG] from resource zip => assets/Resources/screens/Splash.js
-[DEBUG] from resource zip => assets/Resources/screens/landing.js
-[DEBUG] from resource zip => assets/Resources/screens/login.js
-[DEBUG] from resource zip => assets/Resources/ui/common/baseui/CheckBox.js
-[DEBUG] from resource zip => assets/Resources/ui/common/baseui/InputField.js
-[DEBUG] from resource zip => assets/Resources/ui/common/baseui/table_view_basic.js
-[DEBUG] from resource zip => assets/Resources/ui/common/AddWindow.js
-[DEBUG] from resource zip => assets/Resources/ui/common/Header.js
-[DEBUG] from resource zip => assets/Resources/ui/common/checkButton.js
-[DEBUG] from resource zip => assets/Resources/ui/handheld/ChooseContacts.js
-[DEBUG] from resource zip => assets/Resources/ui/handheld/ChooseMyHort.js
-[DEBUG] from resource zip => assets/Resources/ui/handheld/Copy of SetPin.js
-[DEBUG] from resource zip => assets/Resources/ui/handheld/CreateMyHort.js
-[DEBUG] from resource zip => assets/Resources/ui/handheld/MyAccount.js
-[DEBUG] from resource zip => assets/Resources/ui/handheld/MyHortInvite.js
-[DEBUG] from resource zip => assets/Resources/ui/handheld/MyHortMembers.js
-[DEBUG] from resource zip => assets/Resources/ui/handheld/MyHortPending.js
-[DEBUG] from resource zip => assets/Resources/ui/handheld/PreviewMessage.js
-[DEBUG] from resource zip => assets/Resources/ui/handheld/SetPin.js
-[DEBUG] from resource zip => assets/Resources/ui/handheld/SubscribeInfo.js
-[DEBUG] from resource zip => assets/Resources/ui/handheld/WriteMessage.js
-[DEBUG] from resource zip => assets/Resources/Default.png
-[DEBUG] from resource zip => assets/Resources/KS_nav_ui.png
-[DEBUG] from resource zip => assets/Resources/KS_nav_views.png
-[DEBUG] from resource zip => assets/Resources/NavigationController.js
-[DEBUG] from resource zip => assets/Resources/Ti.Google.Analytics.js
-[DEBUG] from resource zip => assets/Resources/app.js
-[DEBUG] from resource zip => assets/Resources/appicon.png
-[DEBUG] from resource zip => assets/Resources/ti.cloud.js
-[DEBUG] from resource zip => assets/app.json
-[DEBUG] from resource zip => assets/index.json
-[DEBUG] from resource zip => res/drawable/appicon.png
-[DEBUG] from resource zip => res/drawable/background.png
-[DEBUG] from resource zip => res/drawable/btn_check_buttonless_on_64.png
-[DEBUG] from resource zip => res/drawable/btn_more_64.png
-[DEBUG] from resource zip => res/drawable/com_facebook_button_check.xml
-[DEBUG] from resource zip => res/drawable/com_facebook_button_check_off.png
-[DEBUG] from resource zip => res/drawable/com_facebook_button_check_on.png
-[DEBUG] from resource zip => res/drawable/com_facebook_button_grey_focused.9.png
-[DEBUG] from resource zip => res/drawable/com_facebook_button_grey_normal.9.png
-[DEBUG] from resource zip => res/drawable/com_facebook_button_grey_pressed.9.png
-[DEBUG] from resource zip => res/drawable/com_facebook_close.png
-[DEBUG] from resource zip => res/drawable/com_facebook_icon.png
-[DEBUG] from resource zip => res/drawable/com_facebook_list_divider.9.png
-[DEBUG] from resource zip => res/drawable/com_facebook_list_section_header_background.9.png
-[DEBUG] from resource zip => res/drawable/com_facebook_loginbutton_blue.xml
-[DEBUG] from resource zip => res/drawable/com_facebook_loginbutton_blue_focused.png
-[DEBUG] from resource zip => res/drawable/com_facebook_loginbutton_blue_normal.png
-[DEBUG] from resource zip => res/drawable/com_facebook_loginbutton_blue_pressed.png
-[DEBUG] from resource zip => res/drawable/com_facebook_loginbutton_silver.xml
-[DEBUG] from resource zip => res/drawable/com_facebook_logo.png
-[DEBUG] from resource zip => res/drawable/com_facebook_picker_item_background.xml
-[DEBUG] from resource zip => res/drawable/com_facebook_picker_list_focused.9.png
-[DEBUG] from resource zip => res/drawable/com_facebook_picker_list_longpressed.9.png
-[DEBUG] from resource zip => res/drawable/com_facebook_picker_list_pressed.9.png
-[DEBUG] from resource zip => res/drawable/com_facebook_picker_list_selector.xml
-[DEBUG] from resource zip => res/drawable/com_facebook_picker_list_selector_background_transition.xml
-[DEBUG] from resource zip => res/drawable/com_facebook_picker_list_selector_disabled.9.png
-[DEBUG] from resource zip => res/drawable/com_facebook_picker_top_button.xml
-[DEBUG] from resource zip => res/drawable/com_facebook_place_default_icon.png
-[DEBUG] from resource zip => res/drawable/com_facebook_profile_default_icon.png
-[DEBUG] from resource zip => res/drawable/com_facebook_profile_picture_blank_portrait.png
-[DEBUG] from resource zip => res/drawable/com_facebook_profile_picture_blank_square.png
-[DEBUG] from resource zip => res/drawable/com_facebook_top_background.xml
-[DEBUG] from resource zip => res/drawable/com_facebook_top_button.xml
-[DEBUG] from resource zip => res/drawable/com_facebook_usersettingsfragment_background_gradient.xml
-[DEBUG] from resource zip => res/drawable/disclosure_64.png
-[DEBUG] from resource zip => res/drawable/titanium_facebook_login.png
-[DEBUG] from resource zip => res/drawable/titanium_facebook_login_down.png
-[DEBUG] from resource zip => res/drawable/titanium_facebook_login_wide.png
-[DEBUG] from resource zip => res/drawable/titanium_facebook_login_wide_down.png
-[DEBUG] from resource zip => res/drawable/titanium_facebook_logout.png
-[DEBUG] from resource zip => res/drawable/titanium_facebook_logout_down.png
-[DEBUG] from resource zip => res/layout/com_facebook_friendpickerfragment.xml
-[DEBUG] from resource zip => res/layout/com_facebook_login_activity_layout.xml
-[DEBUG] from resource zip => res/layout/com_facebook_picker_activity_circle_row.xml
-[DEBUG] from resource zip => res/layout/com_facebook_picker_checkbox.xml
-[DEBUG] from resource zip => res/layout/com_facebook_picker_image.xml
-[DEBUG] from resource zip => res/layout/com_facebook_picker_list_row.xml
-[DEBUG] from resource zip => res/layout/com_facebook_picker_list_section_header.xml
-[DEBUG] from resource zip => res/layout/com_facebook_picker_search_box.xml
-[DEBUG] from resource zip => res/layout/com_facebook_picker_title_bar.xml
-[DEBUG] from resource zip => res/layout/com_facebook_picker_title_bar_stub.xml
-[DEBUG] from resource zip => res/layout/com_facebook_placepickerfragment.xml
-[DEBUG] from resource zip => res/layout/com_facebook_placepickerfragment_list_row.xml
-[DEBUG] from resource zip => res/layout/com_facebook_usersettingsfragment.xml
-[DEBUG] from resource zip => res/layout/titanium_tabgroup.xml
-[DEBUG] from resource zip => res/layout/titanium_ui_list_header_or_footer.xml
-[DEBUG] from resource zip => res/layout/titanium_ui_list_item.xml
-[DEBUG] from resource zip => AndroidManifest.xml
-[DEBUG] from resource zip => resources.arsc
-[DEBUG] from resource zip => res/drawable-hdpi/com_facebook_button_grey_focused.9.png
-[DEBUG] from resource zip => res/drawable-hdpi/com_facebook_button_grey_normal.9.png
-[DEBUG] from resource zip => res/drawable-hdpi/com_facebook_button_grey_pressed.9.png
-[DEBUG] from resource zip => res/drawable-hdpi/com_facebook_close.png
-[DEBUG] from resource zip => res/drawable-hdpi/com_facebook_icon.png
-[DEBUG] from resource zip => res/drawable-hdpi/com_facebook_loginbutton_blue_focused.png
-[DEBUG] from resource zip => res/drawable-hdpi/com_facebook_loginbutton_blue_normal.png
-[DEBUG] from resource zip => res/drawable-hdpi/com_facebook_loginbutton_blue_pressed.png
-[DEBUG] from resource zip => res/drawable-hdpi/com_facebook_logo.png
-[DEBUG] from resource zip => res/drawable-ldpi/com_facebook_close.png
-[DEBUG] from resource zip => res/drawable-ldpi/com_facebook_icon.png
-[DEBUG] from resource zip => res/drawable-xhdpi/com_facebook_button_grey_focused.9.png
-[DEBUG] from resource zip => res/drawable-xhdpi/com_facebook_button_grey_normal.9.png
-[DEBUG] from resource zip => res/drawable-xhdpi/com_facebook_button_grey_pressed.9.png
-[DEBUG] from resource zip => res/drawable-xhdpi/com_facebook_close.png
-[DEBUG] from resource zip => res/drawable-xhdpi/com_facebook_loginbutton_blue_focused.png
-[DEBUG] from resource zip => res/drawable-xhdpi/com_facebook_loginbutton_blue_normal.png
-[DEBUG] from resource zip => res/drawable-xhdpi/com_facebook_loginbutton_blue_pressed.png
-[DEBUG] from resource zip => res/drawable-xhdpi/com_facebook_logo.png
-[DEBUG] from resource zip => res/drawable-long-land-hdpi/background.png
-[DEBUG] from resource zip => res/drawable-long-land-ldpi/background.png
-[DEBUG] from resource zip => res/drawable-long-port-hdpi/background.png
-[DEBUG] from resource zip => res/drawable-long-port-ldpi/background.png
-[DEBUG] from resource zip => res/drawable-notlong-land-hdpi/background.png
-[DEBUG] from resource zip => res/drawable-notlong-land-ldpi/background.png
-[DEBUG] from resource zip => res/drawable-notlong-land-mdpi/background.png
-[DEBUG] from resource zip => res/drawable-notlong-port-hdpi/background.png
-[DEBUG] from resource zip => res/drawable-notlong-port-ldpi/background.png
-[DEBUG] from resource zip => res/drawable-notlong-port-mdpi/background.png
-[DEBUG] from JAR /Users/timvarney/Library/Application Support/Titanium/mobilesdk/osx/3.1.3.GA/android/titanium.jar => org/appcelerator/titanium/build.properties
-[DEBUG] from JAR /Users/timvarney/Library/Application Support/Titanium/mobilesdk/osx/3.1.3.GA/android/titanium.jar => org/appcelerator/titanium/res/drawable/background.png
-[DEBUG] from JAR /Users/timvarney/Library/Application Support/Titanium/mobilesdk/osx/3.1.3.GA/android/titanium.jar => org/appcelerator/titanium/res/drawable/btn_check_buttonless_on.png
-[DEBUG] from JAR /Users/timvarney/Library/Application Support/Titanium/mobilesdk/osx/3.1.3.GA/android/titanium.jar => org/appcelerator/titanium/res/drawable/btn_check_buttonless_on_18.png
-[DEBUG] from JAR /Users/timvarney/Library/Application Support/Titanium/mobilesdk/osx/3.1.3.GA/android/titanium.jar => org/appcelerator/titanium/res/drawable/btn_check_buttonless_on_48.png
-[DEBUG] from JAR /Users/timvarney/Library/Application Support/Titanium/mobilesdk/osx/3.1.3.GA/android/titanium.jar => org/appcelerator/titanium/res/drawable/btn_check_buttonless_on_64.png
-[DEBUG] from JAR /Users/timvarney/Library/Application Support/Titanium/mobilesdk/osx/3.1.3.GA/android/titanium.jar => org/appcelerator/titanium/res/drawable/btn_more.png
-[DEBUG] from JAR /Users/timvarney/Library/Application Support/Titanium/mobilesdk/osx/3.1.3.GA/android/titanium.jar => org/appcelerator/titanium/res/drawable/btn_more_18.png
-[DEBUG] from JAR /Users/timvarney/Library/Application Support/Titanium/mobilesdk/osx/3.1.3.GA/android/titanium.jar => org/appcelerator/titanium/res/drawable/btn_more_48.png
-[DEBUG] from JAR /Users/timvarney/Library/Application Support/Titanium/mobilesdk/osx/3.1.3.GA/android/titanium.jar => org/appcelerator/titanium/res/drawable/btn_more_64.png
-[DEBUG] from JAR /Users/timvarney/Library/Application Support/Titanium/mobilesdk/osx/3.1.3.GA/android/titanium.jar => org/appcelerator/titanium/res/drawable/btn_picker_normal.9.png
-[DEBUG] from JAR /Users/timvarney/Library/Application Support/Titanium/mobilesdk/osx/3.1.3.GA/android/titanium.jar => org/appcelerator/titanium/res/drawable/btn_picker_pressed.9.png
-[DEBUG] from JAR /Users/timvarney/Library/Application Support/Titanium/mobilesdk/osx/3.1.3.GA/android/titanium.jar => org/appcelerator/titanium/res/drawable/btn_picker_selected.9.png
-[DEBUG] from JAR /Users/timvarney/Library/Application Support/Titanium/mobilesdk/osx/3.1.3.GA/android/titanium.jar => org/appcelerator/titanium/res/drawable/default_icon.png
-[DEBUG] from JAR /Users/timvarney/Library/Application Support/Titanium/mobilesdk/osx/3.1.3.GA/android/titanium.jar => org/appcelerator/titanium/res/drawable/photoDefault.png
-[DEBUG] from JAR /Users/timvarney/Library/Application Support/Titanium/mobilesdk/osx/3.1.3.GA/android/modules/titanium-ui.jar => ti/modules/titanium/ui/widget/webview/binding.js
-[DEBUG] from JAR /Users/timvarney/Library/Application Support/Titanium/mobilesdk/osx/3.1.3.GA/android/modules/titanium-ui.jar => ti/modules/titanium/ui/widget/webview/binding.min.js
-[DEBUG] from JAR /Users/timvarney/Library/Application Support/Titanium/mobilesdk/osx/3.1.3.GA/android/modules/titanium-ui.jar => ti/modules/titanium/ui/widget/webview/json2.js
-[DEBUG] from JAR /Users/timvarney/Library/Application Support/Titanium/mobilesdk/osx/3.1.3.GA/android/modules/titanium-ui.jar => ti/modules/titanium/ui/widget/webview/polling.js
-[DEBUG] from JAR /Users/timvarney/Library/Application Support/Titanium/mobilesdk/osx/3.1.3.GA/android/modules/titanium-ui.jar => ti/modules/titanium/ui/widget/webview/polling.min.js
-[DEBUG] from JAR /Users/timvarney/Library/Application Support/Titanium/mobilesdk/osx/3.1.3.GA/android/thirdparty.jar => org/apache/Commons-NOTICE.txt
-[DEBUG] from JAR /Users/timvarney/Library/Application Support/Titanium/mobilesdk/osx/3.1.3.GA/android/thirdparty.jar => org/apache/HttpComponents-NOTICE.txt
-[DEBUG] from JAR /Users/timvarney/Library/Application Support/Titanium/mobilesdk/osx/3.1.3.GA/android/thirdparty.jar => org/apache/mime4j-NOTICE.txt
-[DEBUG] installing native lib: /Users/timvarney/Library/Application Support/Titanium/modules/android/facebook/3.0.1/libs/armeabi/libfacebook.so
-[DEBUG] installing native lib: /Users/timvarney/Library/Application Support/Titanium/modules/android/facebook/3.0.1/libs/armeabi-v7a/libfacebook.so
-[DEBUG] installing native lib: /Users/timvarney/Library/Application Support/Titanium/modules/android/facebook/3.0.1/libs/x86/libfacebook.so
-[DEBUG] installing native SDK libs
-[DEBUG] Waiting for device to be ready ...
-[TRACE] adb devices returned 1 devices/emulators
-[DEBUG] Device connected... (waited 0 seconds)
-[DEBUG] waited 0.017071 seconds on emulator to get ready
-[INFO] Installing application on device
-[INFO] Application installed. Launch from drawer on Home Screen
+[INFO] Waiting for SDCard to become available..
+[INFO] Re-launching application ... UTM
+[INFO] Launching application ... UTM
+[TRACE] Launch output: Starting: Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10200000 cmp=com.utm/.UtmActivity }
+
+[INFO] Android Emulator has exited
