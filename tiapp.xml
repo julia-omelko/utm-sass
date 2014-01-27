@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ti:app xmlns:ti="http://ti.appcelerator.org">
+<?xml version="1.0" encoding="UTF-8"?><ti:app xmlns:ti="http://ti.appcelerator.org">
     <property name="acs-oauth-secret-production" type="string">XbPKERaMoJfff62gYF9kCfxO7t7DYIiv</property>
     <property name="acs-oauth-key-production" type="string">GgRLC2knR79k4Bmx8PaUKDZQRXQNdEKZ</property>
     <property name="acs-api-key-production" type="string">F80xpsGgm2Yyf2cPLtXumHzoeVi1j1bP</property>
@@ -47,44 +46,39 @@
     <android xmlns:android="http://schemas.android.com/apk/res/android">
         <manifest android:installLocation="auto" android:versionCode="5" android:versionName="1.28.2">
             <uses-permission android:name="com.android.vending.BILLING"/>
-            <supports-screens android:anyDensity="true"
-                android:largeScreens="true" android:normalScreens="true" android:smallScreens="true"/>
+            <supports-screens android:anyDensity="true" android:largeScreens="true" android:normalScreens="true" android:smallScreens="true"/>
             <application>
-                <activity
-                    android:configChanges="keyboardHidden|orientation"
-                    android:label="UTM" android:name=".UtmActivity"
-                    android:screenOrientation="portrait" android:theme="@style/Theme.Titanium">
+                <activity android:configChanges="keyboardHidden|orientation" android:label="UTM" android:name=".UtmActivity" android:screenOrientation="portrait" android:theme="@style/Theme.Titanium">
                     <intent-filter>
                         <action android:name="android.intent.action.MAIN"/>
                         <category android:name="android.intent.category.LAUNCHER"/>
                     </intent-filter>
-                    <!-- SOASTA TOUCHTEST CODE BLOCK 1 of 2 in this module.  Uncomment the two blocks of code in this module and one block in app.js 	-->
+<!-- SOASTA TOUCHTEST CODE BLOCK 1 of 4 in this module.  Uncomment the 5 blocks of code in this module and one block in app.js
                     <intent-filter>
-                        <data android:scheme="touchtest-3edd146f-e15f-4190-aabf-deb60a81c3cc"/>
-                        <action android:name="android.intent.action.VIEW"/>
-                        <category android:name="android.intent.category.BROWSABLE"/>
-                        <category android:name="android.intent.category.DEFAULT"/>
-                    </intent-filter>
-                </activity>
-                <activity
-                    android:configChanges="keyboardHidden|orientation"
-                    android:name="ti.modules.titanium.media.TiCameraActivity"
-                    android:screenOrientation="portrait" android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"/>
-                <activity
-                    android:configChanges="keyboardHidden|orientation"
-                    android:name="org.appcelerator.titanium.TiActivity" android:screenOrientation="portrait"/>
-                <activity
-                    android:configChanges="keyboardHidden|orientation"
-                    android:name="org.appcelerator.titanium.TiTranslucentActivity"
-                    android:screenOrientation="portrait" android:theme="@android:style/Theme.Translucent"/>
-                <activity
-                    android:name="ti.modules.titanium.ui.android.TiPreferencesActivity" android:screenOrientation="portrait"/>
+	                    <data android:scheme="touchtest-f4008570-145a-4039-90e5-49c7a5e8c1b8"/>
+	                    <action android:name="android.intent.action.VIEW"/>
+	                    <category android:name="android.intent.category.BROWSABLE"/>
+	                    <category android:name="android.intent.category.DEFAULT"/>
+                	</intent-filter>
+-->
+            	</activity>
+                <activity android:configChanges="keyboardHidden|orientation" android:name="ti.modules.titanium.media.TiCameraActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"/>
+                <activity android:configChanges="keyboardHidden|orientation" android:name="org.appcelerator.titanium.TiActivity" android:screenOrientation="portrait"/>
+                <activity android:configChanges="keyboardHidden|orientation" android:name="org.appcelerator.titanium.TiTranslucentActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.Translucent"/>
+                <activity android:name="ti.modules.titanium.ui.android.TiPreferencesActivity" android:screenOrientation="portrait"/>
                 <uses-permission android:name="android.permission.CAMERA"/>
                 <uses-permission android:name="android.permission.READ_CONTACTS"/>
                 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
                 <uses-permission android:name="android.permission.INTERNET"/>
                 <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+ <!-- SOASTA TOUCHTEST CODE BLOCK 2 of 4 in this module.  Uncomment the 4 blocks of code in this module and one block in app.js               
+                <service android:enabled="true" android:exported="false" android:name="com.soasta.android.touchtest.TouchTestService"/>
+-->
             </application>
+                <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+                <uses-permission android:name="android.permission.BLUETOOTH"/>
+                <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+                <uses-permission android:name="android.permission.GET_TASKS"/>
         </manifest>
     </android>
     <mobileweb>
@@ -102,11 +96,16 @@
         <module platform="iphone" version="3.0.0">ti.storekit</module>
         <module platform="iphone">facebook</module>
         <module platform="android">facebook</module>
+<!-- SOASTA TOUCHTEST CODE BLOCK 3 of 4 in this module.  Uncomment the 4 blocks of code in this module and one block in app.js        
+        <module platform="iphone" version="1.0">com.soasta.touchtest</module>
+        <module platform="android" version="1.0">com.soasta.touchtest</module>
+-->
     </modules>
     <property name="ti.deploytype">test</property>
-    <!-- SOASTA TOUCHTEST CODE BLOCK 2 of 2 in this module.  Uncomment the two blocks of code in this module and one block in app.js  -->
-    <!-- <property name="com-soasta-touchtest-version" type="string">6619.31</property>
-    <ios>
+
+<!-- SOASTA TOUCHTEST CODE BLOCK 4 of 4 in this module.  Uncomment the 4 blocks of code in this module and one block in app.js
+    <property name="com-soasta-touchtest-version" type="string">6656.155</property>
+        <ios>
         <plist>
             <dict>
                 <key>CFBundleURLTypes</key>
@@ -118,7 +117,7 @@
                         <string>com.utm</string>
                         <key>CFBundleURLSchemes</key>
                         <array>
-                            <string>touchtest-3edd146f-e15f-4190-aabf-deb60a81c3cc</string>
+                            <string>touchtest-f4008570-145a-4039-90e5-49c7a5e8c1b8</string>
                         </array>
                     </dict>
                 </array>
@@ -128,6 +127,6 @@
     <plugins>
         <plugin>com.soasta.touchtest.android</plugin>
     </plugins>
-    <property name="com-soasta-touchtest-ios-appId" type="string">171318</property>
-    -->
-</ti:app>
+    <property name="com-soasta-touchtest-ios-appId" type="string">313303</property>
+-->
+    </ti:app>

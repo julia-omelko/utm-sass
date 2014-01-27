@@ -40,7 +40,7 @@ var NavigationController = function(utm) {
 			utm.activityActive = n;
 			setTimeout(function(n) {
 			    timeoutCompare();
-			}, utm.androidTimeout)
+			}, utm.androidTimeout);
 		};
 
 		windowToOpen.addEventListener('open', function(ev) {
@@ -48,13 +48,13 @@ var NavigationController = function(utm) {
 		});
 		windowToOpen.addEventListener('close', function(ev) {
 			monitorGuid();
-		})
+		});
 		windowToOpen.addEventListener('blur', function(ev) {
 			monitorGuid();
-		})
+		});
 		windowToOpen.addEventListener('focus', function(ev) {
 			timeoutCompare();
-		})
+		});
 	    
         windowToOpen.open();
     };

@@ -58,8 +58,12 @@ var ChooseMyHort_window =function(utm) {
 	function populateMyHortPicker(){	
 		var data = [];
 
+		// Clear picker contents so that next time through new content is not being appended to contents already loaded in picker
 		if(utm.iPhone || utm.iPad){
 			myHortPicker.columns = [];
+		}else if(utm.Android){  
+			 var emptyPickerColumn = Ti.UI.createPickerColumn();
+			 myHortPicker.setColumns(emptyPickerColumn);
 		}
 		
 		var intOption = 0, intOptionLen = utm.User.MyHorts.length;
@@ -107,5 +111,5 @@ var ChooseMyHort_window =function(utm) {
 	return chooseMyHortView;
 	
 	
-}
+};
 module.exports = ChooseMyHort_window;

@@ -98,6 +98,9 @@ var TheLandingScreen_view = function(utm) {
 	
 	
 	win.allowSendMessage = function(){		
+		//Re Ticket #644 - "Draft" (unsent) messages are preserved
+		utm.writeMessageView.restForm();
+		
 		if(utm.User.MyHorts.length==1){
 			Ti.App.fireEvent("app:myHortChoosen", {myHortId:utm.User.MyHorts[0].MyHortId, direct:true});	//Direct tells us we need to setBackButtonTitle()
 		}else{

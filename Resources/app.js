@@ -1066,11 +1066,16 @@ if(utm.iPhone || utm.iPad ){
 	Ti.include('storekit.js');
 }
 
+<<<<<<< HEAD
 */
 
 
 //SOASTA TOUCHTEST CODE
 //Un-comment this code block as well as 2 locations in tiapp.xml to make application "TouchTestable"
+
+//SOASTA TOUCHTEST CODE Block 1 of 1.  Uncomment this 1 block of code in this module and 4 blocks in tiapp.xml
+
+
 /*
 if (Ti.Platform.osname === 'iphone' || Ti.Platform.osname === 'ipad')
 {
@@ -1100,5 +1105,5 @@ if (Ti.Platform.osname === 'iphone' || Ti.Platform.osname === 'ipad')
       touchTestModule && touchTestModule.initTouchTest(cloudTestURL);
     }
   });
-}	
+}
 */
