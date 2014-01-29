@@ -86,7 +86,7 @@ var MessagesWin = function(_tabGroup) {
 	var tableView = Titanium.UI.createTableView({
 		editable: false,
 		allowsSelectionDuringEditing: true,
-		height: utm.viewableArea - 111,
+		height: utm.viewableArea - 27,
 		top: 27
 	});
 	self.add(tableView);	

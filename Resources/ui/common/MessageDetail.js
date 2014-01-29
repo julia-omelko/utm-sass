@@ -2,13 +2,6 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 	
 	var StandardWindow = require('ui/common/StandardWindow');
 	var self = new StandardWindow('Message', true);
-
-	var trashButton = Ti.UI.createImageView({
-		image: '/images/icons/trash.png',
-		height: 22,
-		width: 22
-	});
-	self.setRightNavButton(trashButton);
 	
 	var backButton = Ti.UI.createLabel({
 		text: 'back',
@@ -148,11 +141,11 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 					if (!_messageData.WasRead) {
 						setMessageAsRead(_messageData.Id);
 					}
+					self.hideAi();
 				} 	
 				
 				originalMessage.setText(response.Message);
 				replyBtn.setVisible(true);
-				self.hideAi();
 
 			} else {
 				utm.handleHttpError(e, this.status, this.responseText);
@@ -242,6 +235,73 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 		getMembersReq.send();			
 	};
 	
+	function callOutToGetAttachments(_messageData) {
+		var getAttachmentsReq = Ti.Network.createHTTPClient({
+			validatesSecureCertificate:utm.validatesSecureCertificate, 
+			onload: function(){
+				var response = eval('('+this.responseText+')');
+				
+				if(this.status == 200){
+					showAttachment(response);
+					
+					if (!_messageData.WasRead) {
+						setMessageAsRead(_messageData.Id);
+					}
+				}
+				getAttachmentsReq = null;	
+			},		
+			onerror:function(e){
+				utm.handleError(e,this.status,this.responseText); 		
+				getAttachmentsReq = null;
+			},
+			timeout:utm.netTimeout
+		});	
+								
+		getAttachmentsReq.open("GET",utm.serviceUrl + "Attachment/" + _messageData.Attachments[0].Id);	
+		getAttachmentsReq.setRequestHeader('Authorization-Token', utm.AuthToken);	
+		getAttachmentsReq.send();				
+		
+	}
+	
+	function showAttachment(_attachmentData) {
+		var imageSrc = _attachmentData.Attachment;	
+		var image = Ti.Utils.base64decode(imageSrc);
+
+		var previewView = Ti.UI.createView({
+			top: 15,
+			height: 80,
+			width: 80,
+			borderRadius: 20,
+			backgroundColor: utm.barColor,
+			borderColor: utm.barColor
+		});
+		var previewImage = Ti.UI.createImageView({
+			image: image,
+			height: 80,
+			width: 80
+		});
+		previewView.addEventListener('click',function(e){
+			var AttachmentPreviewWin = require('/ui/common/AttachmentPreview');
+			var attachmentPreviewWin = new AttachmentPreviewWin(self, image);
+			if (utm.Android) {
+				attachmentPreviewWin.open({modal: true});
+			} else {
+				navWin = Ti.UI.iOS.createNavigationWindow({
+	    			modal: true,
+					window: attachmentPreviewWin
+				});
+				navWin.open();
+			}
+		});
+		self.addEventListener('closeAttachmentPreview',function(e) {
+			if (utm.iPhone || utm.iPad) {
+				navWin.close();
+			}
+		});
+		previewView.add(previewImage);
+		scrollingView.add(previewView);
+		self.hideAi();
+	}
 	
 	
 	return self;

@@ -396,13 +396,14 @@ var PreviewWin = function(_tabGroup,_message) {
 			
 		if (_message.attachment != null) {		
 			try {
-				var sendImageSrc = Ti.Utils.base64encode(theImage);
+				var sendImageSrc = Ti.Utils.base64encode(_message.attachment);
 				var attachments = [{
 					Attachment: sendImageSrc.toString(),
-					MimeType:theImage.mimeType,
-					WasVirusScanned:true
+					MimeType: _message.attachment.mimeType,
+					WasVirusScanned: true
 				}];	
 			} catch(err) {
+				alert(err);
 				if (utm.Android) {
 					alert("An error occured handling the photo.  Some Android phones don't support attaching photos directly form the camera.  Try attaching an image from a album.");
 				} else {

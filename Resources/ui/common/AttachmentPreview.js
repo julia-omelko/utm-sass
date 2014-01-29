@@ -1,7 +1,7 @@
 var AttachmentPreviewWin = function(_win,_attachment) {
 	
 	var StandardWindow = require('ui/common/StandardWindow');
-	var self = new StandardWindow('Attachment Preview', '');
+	var self = new StandardWindow('Attachment', '');
 
 
 	
