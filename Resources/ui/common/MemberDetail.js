@@ -1,17 +1,7 @@
 var MemberDetailWin = function(_tabGroup,_memberData) {
 	
 	var StandardWindow = require('ui/common/StandardWindow');
-	var self = new StandardWindow('Member Detail', '');
-
-	var trashButton = Ti.UI.createImageView({
-		image: '/images/icons/trash.png',
-		height: 22,
-		width: 22
-	});
-	trashButton.addEventListener('click',function(e){
-		alert('delete member');
-	});
-	self.setRightNavButton(trashButton);
+	var self = new StandardWindow('Member Detail', true);
 	
 	var backButton = Ti.UI.createLabel({
 		text: 'back',
@@ -24,11 +14,12 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 	self.setLeftNavButton(backButton);
 	
 	var scrollingView = Ti.UI.createScrollView({
-		width:'100%',
-		height:'100%',
-		showVerticalScrollIndicator:true,
-		contentHeight:'auto',
-		layout:'vertical'
+		top: 0,
+		width: Ti.UI.FILL,
+		height: utm.viewableArea - 69,
+		showVerticalScrollIndicator: true,
+		contentHeight: 'auto',
+		layout: 'vertical'
 	});
 	self.add(scrollingView);
 	
@@ -42,7 +33,7 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 	var avatar = Ti.UI.createImageView({
 		top: 25,
 		left: 0,
-		image: '/images/avatar/1.png',
+		image: '/images/avatar/' + _memberData.Avatar + '.png',
 		width: 80,
 		height: 80,
 		backgroundColor: 'white',
@@ -120,7 +111,7 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 	
 	var saveButton = Ti.UI.createButton({
 		title: 'Save',
-		top: 25,
+		bottom: 15,
 		width: (Ti.Platform.displayCaps.platformWidth-50),
 		height: 40,
 		borderRadius: 20,
@@ -129,9 +120,96 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 		color: 'white'
 	});	
 	saveButton.addEventListener('click', function() {
-		alert('save'); 
+		saveMemberData();
 	});	
-	scrollingView.add(saveButton);
+	self.add(saveButton);
+	
+	var deleteButton = Ti.UI.createButton({
+		title: 'Delete member',
+		bottom: 60,
+		width: (Ti.Platform.displayCaps.platformWidth-50),
+		height: 40,
+		borderRadius: 20,
+		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
+		backgroundColor: utm.barColor,
+		color: 'white'
+	});
+	deleteButton.addEventListener('click',function(e){
+		confirmDeleteMember();
+	});
+	self.add(deleteButton);
+	
+	function saveMemberData() {
+		_memberData.NickName = nicknameField.getValue();
+		
+		var updateMemberReq = Ti.Network.createHTTPClient({
+			validatesSecureCertificate : utm.validatesSecureCertificate,
+			onload : function() {
+				var json = this.responseData;
+				if (this.status === 200) {
+					self.close();
+				} else {
+					utm.handleHttpError({}, this.status, this.responseText);
+				}
+				updateMemberReq = null;
+			},
+			onerror : function(e) {
+				utm.handleHttpError(e, this.status, this.responseText);
+				updateMemberReq = null;
+			},
+			timeout : utm.netTimeout
+		});
+		
+		updateMemberReq.open("POST", utm.serviceUrl + "MyHort/UpdateMyHortMember");
+		updateMemberReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+		updateMemberReq.setRequestHeader('Authorization-Token', utm.AuthToken);
+		updateMemberReq.send(JSON.stringify(_memberData));
+	}
+	
+	
+	
+	function confirmDeleteMember() {
+		var dialog = Ti.UI.createAlertDialog({
+			cancel: 1,
+			buttonNames: ['Yes', L('cancel')],
+			message: 'This will remove this member.  Do you want to continue?',
+			title: 'Confirm delete'
+		});
+		dialog.addEventListener('click', function(e) {
+			if (e.index === 0) {
+				deleteMember();
+			}
+		});
+		dialog.show();
+	};
+	
+	function deleteMember() {
+		var deleteMemberReq = Ti.Network.createHTTPClient({
+			validatesSecureCertificate : utm.validatesSecureCertificate,
+			onload : function() {
+				var json = this.responseData;
+				if (this.status === 200) {
+					self.close();
+				} else {
+					utm.handleHttpError({}, this.status, this.responseText);
+				}
+				deleteMyHortReq = null;
+			},
+			onerror : function(e) {
+				utm.handleHttpError(e, this.status, this.responseText);
+				deleteMyHortReq = null;
+			},
+			timeout : utm.netTimeout
+		});
+		
+		deleteMemberReq.open("POST", utm.serviceUrl + "MyHort/DeleteUserFromMyHort?myhortMemberId=" + _memberData.Id);
+		deleteMemberReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+		deleteMemberReq.setRequestHeader('Authorization-Token', utm.AuthToken);
+		deleteMemberReq.send();
+	}
+	
+	
+	
 	
 	function populateTable(_groups) {
 		for (var i=0; i<_groups.length; i++) {
@@ -147,6 +225,7 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 			}
 		}
 		tableView.setData(tableData);
+		self.hideAi();
 	}
 	
 	function loadMyHorts() {
@@ -156,14 +235,16 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 				if (this.status === 200) {
 					var response = eval('(' + this.responseText + ')');
 					if (response !== null) {
-						//Ti.API.info(response);
-						//Ti.API.info("MyHort data returned " + response.length + '  myHorts returned');
 						populateTable(response);
 					}
+				} else {
+					utm.handleHttpError({}, this.status, this.responseText);
 				}
+				getMyHortsReq = null;
 			},
 			onerror : function(e) {
-				//utm.handleError(e, this.status, this.responseText);
+				utm.handleHttpError(e, this.status, this.responseText);
+				getMyHortsReq = null;
 			},
 			timeout : utm.netTimeout
 		});

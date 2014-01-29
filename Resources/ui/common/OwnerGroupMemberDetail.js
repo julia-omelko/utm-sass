@@ -14,7 +14,7 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData) {
 	self.setLeftNavButton(backButton);
 		
 	var settingsView = Ti.UI.createScrollView ({
-		height: 454 - 110,
+		height: utm.viewableArea - 110,
 		top: 0,
 		showVerticalScrollIndicator:true,
 		contentHeight:'auto',
@@ -148,12 +148,14 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData) {
 			onload : function() {
 				var json = this.responseData;
 				if (this.status === 200) {
-				
+					self.close();
+				} else {
+					utm.handleHttpError({}, this.status, this.responseText);
 				}
-				self.close();
 				updateMemberDetailReq = null;
 			},
 			onerror : function(e) {
+				utm.handleHttpError(e, this.status, this.responseText);
 				updateMemberDetailReq = null;
 			},
 			timeout : utm.netTimeout
@@ -182,9 +184,10 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData) {
 						self.close();
 					},
 					onerror : function(err) {
+						utm.handleHttpError({}, this.status, this.responseText);
 						deleteUserFromMyHortHttp = null;
-						win.close();
-					}
+					},
+					timeout : utm.netTimeout
 				});
 				deleteUserFromMyHortHttp.open("POST", utm.serviceUrl + "MyHort/DeleteUserFromMyHort?myhortMemberId=" + _memberData.Id);
 				deleteUserFromMyHortHttp.setRequestHeader("Content-Type", "application/json; charset=utf-8");

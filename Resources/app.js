@@ -17,8 +17,10 @@ utm.setEnvModePrefix = function (env){
 };
 if (Ti.Platform.osname == 'iphone') {
 	utm.iPhone = true;
+	utm.viewableArea = Ti.Platform.displayCaps.platformHeight - 114;
 } else if(Ti.Platform.osname == 'ipad') {
 	utm.iPad = true;
+	utm.viewableArea = Ti.Platform.displayCaps.platformHeight - 114;
 } else if(Ti.Platform.osname == 'android') {
 	utm.Android = true;
 };
@@ -30,6 +32,7 @@ if (Ti.Platform.model === 'Simulator' || Ti.Platform.model ===  'google_sdk' || 
 	utm.validatesSecureCertificate = true;
 }	
 utm.netTimeout = 18000;
+utm.screenLockTime = 5000;
 
 utm.color_org = '#F29737';
 utm.barColor = '#22ACF5';
@@ -57,30 +60,31 @@ utm.twitterConsumerKey = ""; //'8qiy2PJv3MpVyzuhfNXkOw';
 utm.twitterConsumerSecret = ""; //'Qq0rth4MHGB70nh20nSzov2zz6GbVxuVndCh2IxkRWI';
 utm.facebookAppId = '494625050591800';
 
+utm.showSplashScreenOnPause = true;
+utm.inSubscriptionMode = false;
+utm.loggedIn = false;
+utm.isInPinLock = false;
+utm.appPauseTime = new Date();
+
+var unpinLockScreen = require('/lib/com.qbset.unlockscreen');
+if(utm.iPhone || utm.iPad ){
+	var keychain = require("com.0x82.key.chain");
+} else {
+	var keychain = require("/lib/androidkeychain");
+}
+
+
+
+
 (function() {
 	var osname = Ti.Platform.osname,
 		version = Ti.Platform.version,
 		height = Ti.Platform.displayCaps.platformHeight,
 		width = Ti.Platform.displayCaps.platformWidth;
 	
-	
 	var Login = require('ui/common/login');
 	var loginView = new Login();
 	utm.navController.open(loginView);
-	
-	
-	
-	//var ApplicationTabGroup = require('ui/common/ApplicationTabGroup');
-	//var tabGroup = new ApplicationTabGroup();
-	//var SplashWin = require('ui/common/Splash');
-	//var splashWin = new SplashWin(tabGroup);
-	
-	//splashWin.open();
-	//tabGroup.open();
-	
-
-	
-	
 
 })();
 
@@ -93,7 +97,6 @@ function handleLoginSuccess(event) {
 	var n = d.getTime();
 	utm.activityActive = n;
 	
-			
 	if (utm.User) {
 		utm.User.MyHorts =[];
 	}
@@ -145,8 +148,8 @@ function isSubscriptionValid(subscriptionEnds) {
 
 function openTabGroup() {
 	var ApplicationTabGroup = require('ui/common/ApplicationTabGroup');
-	var tabGroup = new ApplicationTabGroup();
-	tabGroup.open();
+	utm.tabGroup = new ApplicationTabGroup();
+	utm.tabGroup.open();
 }
 
 moment = require('lib/moment');
@@ -177,21 +180,16 @@ if (utm.iPhone || utm.iPad ) {
 
 
 Ti.App.addEventListener('app:logout', callLogoutService);
+function showLoginScreenLockView() {
+	showLoginView();
+}
 function showLoginView() {
-	if(utm.loggedIn){
+	if (utm.loggedIn) {
+		utm.tabGroup.close();
 		callLogoutService();
-		utm.loggedIn=false;
+		utm.loggedIn = false;
 	}	
-	utm.User =null;
-		
-	closeAllScreens(false);
-	//utm.navController.open(utm.loginView);	
-	//#421 - Ti App - Screen Blank on force login
-	//Due to internal IOS issue causing NavController is closing a proxy. Delaying this close call 
-	// we now have a 1 second timer that is used to bring the login screen to front/open
-	// else the screen goes blank 
-	setTimer(1, 'delayShowLoginView');
-	
+	utm.User = null;
 }
 
 function callLogoutService(){
@@ -200,8 +198,12 @@ function callLogoutService(){
 		timeout:utm.netTimeout,
 		onload : function() {
 			var response = eval('('+this.responseText+')');
+			logoutReq = null;
 		},
-		onerror : function(e) {},
+		onerror : function(e) {
+			utm.handleHttpError(e, this.status, this.responseText);
+			logoutReq = null;
+		},
 		timeout:utm.netTimeout
 	});
 
@@ -211,14 +213,135 @@ function callLogoutService(){
 	
 }
 
+// Note: this does not work in the simulator
+var SplashView = require('ui/common/Splash');
+var splashView = new SplashView();
+Ti.App.addEventListener('pause', function(e){
+	if (utm.loggedIn) {
+		utm.appPauseTime = new Date();
+		splashView.open();
+	}
+});
+
+Ti.App.addEventListener("resumed", function(e){
+	splashView.close();
+		
+	if (!utm.loggedIn || utm.inSubscriptionMode) {
+		return;
+	}
+	
+	var curDate = new Date();
+	var curMil = curDate.valueOf() ;
+	var pauseMil = utm.appPauseTime.valueOf();
+	var diff = curMil - pauseMil;
+	if (diff > utm.screenLockTime) {
+		var pass = keychain.getPasswordForService('utm', 'lockscreen');
+		if (pass == null) {
+			showLoginScreenLockView();
+		}else{
+			showPinLockScreen(pass);		
+		}
+	}		
+});
+
+function showPinLockScreen(_pass) {
+	if(_pass == null || utm.isInPinLock) {
+		return;	
+	}
+	utm.isInPinLock = true;
+	unlockWindow = unpinLockScreen.loadWindow({
+		// main properties for the module
+		configLockScreen: { // main properties for the module
+			passCode: _pass, // set the passcode (string)
+			attempts: 0, // zero for infinite attempts and no timeout (int)
+			timeOut: 5000, // time out in miliseconds after amount of incorrect attempts. Only when attempts is bigger then zero (int)
+			timeOutMultiplier: 2, // after each set of attempts the time out is multiplied with this property (int)
+			vibrateOnIncorrect: true, // vibrate phone on incorrect passcode input (bool)				
+		},
+		// properties for the messageBox
+		messageBox: {
+			text: 'Enter Unlock Code',
+			textCorrect: 'Unlock Code Accepted',
+			textIncorrect: 'Wrong Unlock Code',
+			textColorCorrect: '#ffffff',
+			textColorIncorrect: '#ffffff',
+			vibrateOnIncorrect: true,
+			borderColor: '#ffffff',
+			backgroundColor: '#F66F00'				
+			},
+		correct: function() {  	
+			var d = new Date();
+			var n = d.getTime();
+			utm.activityActive = n;
+			utm.isInPinLock = false;			      	
+	    }
+	});	
+}
+
+// this event fires when a user clicks to compose or reply to a message.
+Ti.App.addEventListener('app:getSubscriptionInfo', function (e){
+	var subscriptionInfoReq = Ti.Network.createHTTPClient({
+		validatesSecureCertificate:utm.validatesSecureCertificate, 
+		timeout:utm.netTimeout,
+		onload : function() {
+			var response = eval('('+this.responseText+')');
+			if (this.status == 200) {		
+				utm.User.UserProfile.MessagesRemaining = response.MessagesRemaining;
+				utm.User.UserProfile.SubscriptionEnds = response.SubscriptionEnds;
+				utm.User.UserProfile.HasSubscription = response.HasSubscription;
+				if (utm.User.UserProfile.HasSubscription === false) {
+					utm.User.UserProfile.SubscriptionEnds = null;
+				}
+				
+				if (!isSubscriptionValid(utm.User.UserProfile.SubscriptionEnds) && utm.User.UserProfile.MessagesRemaining < 1) { 
+					// user must subscribe
+					SubscribeInfoWin = require('/ui/common/Subscribe');
+					subscribeInfoWin = new SubscribeInfoWin(utm.tabGroup);
+					utm.tabGroup.getActiveTab().open(subscribeInfoWin);
+					alert('You have no more messages available.');
+				} else {
+					//Subscription is ok so fire the callback
+					Ti.App.fireEvent(e.callBack);
+				}
+			} else {
+				utm.handleHttpError({}, this.status, this.responseText);
+			}
+			subscriptionInfoReq = null;
+		},
+		onerror : function(e) {		
+			utm.handleHttpError(e, this.status, this.responseText);
+			subscriptionInfoReq = null;
+		}
+	});
+	
+	subscriptionInfoReq.open("GET", utm.serviceUrl + "SubscriptionInfo");
+	subscriptionInfoReq.setRequestHeader('Authorization-Token', utm.AuthToken);
+	subscriptionInfoReq.send();
+});
 
 
-
-
-
-
-
-
+utm.handleHttpError = function (e,status,responseText) {	
+	var err = JSON.parse(responseText);
+	var message = 'Error Unknown';
+	
+	if (status == 403) {
+		message = 'Your session is no longer valid. Please log back in.';		
+		utm.tabGroup.close();
+		showLoginView();	
+	} else if (err  != 'undefined' & err !=null ) {
+		message = err.Message;	
+ 	} else if (e.error != 'undefined' & e.error.indexOf('timed out') > 0) {
+		message = 'Your connection may be slow. Please try again.';	
+ 	} else if (e.error != undefined || err.Message != undefined) {
+		message = 'Error:';
+		message += e.error != undefined ? e.error : err.Message;
+		if ( message.indexOf("ASIHTTPRequestErrorDomain Code=1") !== 0 ) {
+			message = "Your network has had an error. Please try again.";	
+		}
+ 	}
+ 	
+ 	alert(message);         
+};
 
 
 /*

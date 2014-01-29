@@ -7,7 +7,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	}
 	
 	var StandardWindow = require('ui/common/StandardWindow');
-	var self = new StandardWindow('Add Members to Group', '');
+	var self = new StandardWindow('Add Members to Group', true);
 
 	var backButton = Ti.UI.createLabel({
 		text: 'back',
@@ -20,7 +20,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	self.setLeftNavButton(backButton);
 	
 	var tableView = Ti.UI.createTableView({
-		height: 454 - 60 - 40,
+		height: utm.viewableArea - 60 - 40,
 		top: 0
 	});
 	self.add(tableView);
@@ -33,17 +33,19 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 			validatesSecureCertificate : utm.validatesSecureCertificate,
 			onload : function() {
 				var response = eval('(' + this.responseText + ')');
-				if (this.status == 200) {
+				if (this.status === 200) {
 					Ti.API.info(response);
 					myHortData = response;
 					displayMyHortData(response);
+				} else {
+					utm.handleHttpError({}, this.status, this.responseText);
 				}
 			},
 			onerror : function(e) {
 				if (this.status != undefined && this.status === 404) {
-					alert('The myHort you are looking for does not exist.');
+					alert('The group you are looking for does not exist.');
 				} else {
-					//utm.handleError(e, this.status, this.responseText);
+					utm.handleHttpError(e, this.status, this.responseText);
 				}
 			},
 			timeout : utm.netTimeout
@@ -94,6 +96,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 			}
 		}
 		tableView.setData(tableData);
+		self.hideAi();
 	}
 	
 	var sort_by = function(field, reverse, primer) {
@@ -147,7 +150,6 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	self.add(saveButton);
 	
 	function inviteMyHort() {
-
 		if (invisibleSwitch.getValue()) {
 			var memberType = 'Invisible';
 		} else { 
@@ -185,8 +187,10 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 				self.close();
 			},
 			onerror : function(e) {
+				utm.handleHttpError(e, this.status, this.responseText);
 				inviteMyHortReq = null;
-			}
+			},
+			timeout : utm.netTimeout
 		});
 		inviteMyHortReq.open("POST", utm.serviceUrl + "MyHort/Invite");
 		inviteMyHortReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");

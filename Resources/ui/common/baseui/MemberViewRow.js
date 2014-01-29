@@ -9,7 +9,7 @@ function MemberTableRow(rowData){
 	var avatar = Ti.UI.createImageView({
 		left: 10,
 		top: 5,
-		image: '/images/avatar/1.png',
+		image: '/images/avatar/'+ rowData.Avatar +'.png',
 		width: 30,
 		height: 30,
 		backgroundColor: 'white',

@@ -2,7 +2,7 @@ var MessageMembersWin = function(_tabGroup) {
 	var myHortId = 3312;
 	
 	var StandardWindow = require('ui/common/StandardWindow');
-	var self = new StandardWindow('Group Detail', '');
+	var self = new StandardWindow('Group Detail', true);
 
 	var backButton = Ti.UI.createLabel({
 		text: 'back',
@@ -71,7 +71,7 @@ var MessageMembersWin = function(_tabGroup) {
 	
 	
 	var memberTableView = Ti.UI.createTableView({
-		height: 454 - 86,
+		height: utm.viewableArea - 86,
 		top: 27
 	});
 	self.add(memberTableView);
@@ -80,12 +80,13 @@ var MessageMembersWin = function(_tabGroup) {
 	});
 	
 	var groupTableView = Ti.UI.createTableView({
-		height: 454 - 27,
+		height: utm.viewableArea - 27,
 		top: 27
 	});
 	groupTableView.addEventListener('click',function(e){
 		var MessageGroupMembersWin = require('/ui/common/MessageGroupMembers');
 		var messageGroupMembersWin = new MessageGroupMembersWin(_tabGroup, e.rowData.groupData);
+		utm.winStack.push(messageGroupMembersWin);
 		_tabGroup.getActiveTab().open(messageGroupMembersWin);
 	});
 
@@ -108,18 +109,21 @@ var MessageMembersWin = function(_tabGroup) {
 			validatesSecureCertificate : utm.validatesSecureCertificate,
 			onload : function() {
 				var response = eval('(' + this.responseText + ')');
-				if (this.status == 200) {
-					Ti.API.info(response);
+				if (this.status === 200) {
 					myHortData = response;
 					displayMyHortData(response);
+				} else {
+					utm.handleHttpError({}, this.status, this.responseText);
 				}
+				getMyHortDetailReq = null;
 			},
 			onerror : function(e) {
 				if (this.status != undefined && this.status === 404) {
-					alert('The myHort you are looking for does not exist.');
+					alert('The group you are looking for does not exist.');
 				} else {
-					//utm.handleError(e, this.status, this.responseText);
+					utm.handleHttpError(e, this.status, this.responseText);
 				}
+				getMyHortDetailReq = null;
 			},
 			timeout : utm.netTimeout
 		});
@@ -169,6 +173,7 @@ var MessageMembersWin = function(_tabGroup) {
 			}
 		}
 		memberTableView.setData(tableData);
+		self.hideAi();
 	}
 	
 	function loadMyHorts() {
@@ -180,10 +185,14 @@ var MessageMembersWin = function(_tabGroup) {
 					if (response !== null) {
 						populateTable(response);
 					}
+				} else {
+					utm.handleHttpError({}, this.status, this.responseText);
 				}
+				getMyHortsReq = null;
 			},
 			onerror : function(e) {
-				//utm.handleError(e, this.status, this.responseText);
+				utm.handleHttpError(e, this.status, this.responseText);
+				getMyHortsReq = null;
 			},
 			timeout : utm.netTimeout
 		});
@@ -234,6 +243,7 @@ var MessageMembersWin = function(_tabGroup) {
 
 		var ComposeWin = require('/ui/common/Compose');
 		var composeWin = new ComposeWin(_tabGroup,selectedContacts,'Send');
+		utm.winStack.push(composeWin);
 		_tabGroup.getActiveTab().open(composeWin);
 	});	
 	self.add(composeButton);

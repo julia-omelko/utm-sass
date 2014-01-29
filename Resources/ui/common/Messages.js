@@ -1,7 +1,7 @@
 var MessagesWin = function(_tabGroup) {
 	
 	var StandardWindow = require('ui/common/StandardWindow');
-	var self = new StandardWindow('Messages', '');
+	var self = new StandardWindow('Messages', true);
 
 	var editButton = Ti.UI.createLabel({
 		text: 'edit',
@@ -20,8 +20,12 @@ var MessagesWin = function(_tabGroup) {
 		width: 22
 	});
 	composeButton.addEventListener('click',function(e){
+		Ti.App.fireEvent('app:getSubscriptionInfo',{callBack:'app:composeMessage'});
+	});
+	Ti.App.addEventListener('app:composeMessage',function(e){
 		var MessageMembersWin = require('/ui/common/MessageMembers');
 		var messageMembersWin = new MessageMembersWin(_tabGroup);
+		utm.winStack.push(messageMembersWin);
 		_tabGroup.getActiveTab().open(messageMembersWin);
 	});
 	self.setRightNavButton(composeButton);
@@ -65,6 +69,7 @@ var MessagesWin = function(_tabGroup) {
 		receivedButton.setColor(utm.textColor);
 		sentButton.setBackgroundColor(utm.backgroundColor);
 		sentButton.setColor(utm.secondaryTextColor);
+		self.showAi();
 		getMessages('received');
 		currentMode = 'received';
 	});
@@ -73,6 +78,7 @@ var MessagesWin = function(_tabGroup) {
 		sentButton.setColor(utm.textColor);
 		receivedButton.setBackgroundColor(utm.backgroundColor);
 		receivedButton.setColor(utm.secondaryTextColor);
+		self.showAi();
 		getMessages('sent');
 		currentMode = 'sent';
 	});
@@ -80,7 +86,7 @@ var MessagesWin = function(_tabGroup) {
 	var tableView = Titanium.UI.createTableView({
 		editable: false,
 		allowsSelectionDuringEditing: true,
-		height: 427,
+		height: utm.viewableArea - 111,
 		top: 27
 	});
 	self.add(tableView);	
@@ -98,12 +104,10 @@ var MessagesWin = function(_tabGroup) {
 			validatesSecureCertificate: utm.validatesSecureCertificate,
 			onload: function() {
 				var response = eval('(' + this.responseText + ')');
-				Ti.API.info(response);
 				var tableData = [];
 				
 				Ti.Analytics.featureEvent('user.viewed_messages');
 				if (this.status === 200) {
-					Ti.API.info("message data returned " + response.length + '  messages');
 					
 					for (var i=0; i < response.length; i++) {
 						response[i].mode = mode;
@@ -112,15 +116,14 @@ var MessagesWin = function(_tabGroup) {
 					}
 
 					tableView.setData(tableData);
-				} else if (this.status == 400) {
-					utm.recordError("Error:" + this.responseText);
+					self.hideAi();
 				} else {
-					utm.recordError("error");
+					utm.handleHttpError({}, this.status, this.responseText);
 				}
 				getMessagesReq = null;
 			},
 			onerror : function(e) {
-				//utm.handleError(e, this.status, this.responseText);
+				utm.handleHttpError(e, this.status, this.responseText);
 				getMessagesReq = null;
 			},
 			timeout : utm.netTimeout

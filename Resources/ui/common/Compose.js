@@ -20,7 +20,7 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageID) {
 	
 	var scrollingView = Ti.UI.createScrollView({
 		width: '100%',
-		height: 380,
+		height: utm.viewableArea - 74,
 		showVerticalScrollIndicator: true,
 		contentHeight: 'auto',
 		layout: 'vertical',

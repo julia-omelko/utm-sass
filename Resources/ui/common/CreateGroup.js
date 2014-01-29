@@ -15,7 +15,7 @@ var CreateGroupWin = function(_tabGroup) {
 	self.setLeftNavButton(backButton);
 		
 	var settingsView = Ti.UI.createScrollView ({
-		height: 454 - 60,
+		height: utm.viewableArea - 60,
 		top: 0,
 		showVerticalScrollIndicator:true,
 		contentHeight:'auto',
@@ -94,6 +94,7 @@ var CreateGroupWin = function(_tabGroup) {
 				self.close();
 			},
 			onerror: function(e){
+				utm.handleHttpError(e, this.status, this.responseText);
 				createMyHortReq = null;
 			}		
 		});

@@ -9,7 +9,7 @@ function MessageTableRow(rowData){
 	var avatar = Ti.UI.createImageView({
 		left: 10,
 		top: 10,
-		image: '/images/avatar/1.png',
+		image: '/images/avatar/' + rowData.FromUsersAvatar + '.png',
 		width: 60,
 		height: 60,
 		backgroundColor: 'white',
@@ -32,14 +32,20 @@ function MessageTableRow(rowData){
 	});
 	self.add(fromLabel);
 	
+	
+	var dateText = getDateTimeFormat(rowData.DateSent);
+	dateText = dateText.replace(' minutes','m');
+	dateText = dateText.replace(' hours','h');
+	dateText = dateText.replace('an hour','1h');
+	dateText = dateText.replace('a minute','1m');
 	var dateLabel = Ti.UI.createLabel({
-		text: getDateTimeFormat(rowData.DateSent),
+		text: dateText,
 		font: {fontFamily: utm.fontFamily},
 		color: utm.secondaryTextColor,
 		wordWrap: false,
 		ellipsize: true,
 		height: Ti.UI.SIZE,
-		width: 60,
+		width: 80,
 		left: 230,
 		top: 11
 	});

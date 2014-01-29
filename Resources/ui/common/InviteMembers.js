@@ -6,7 +6,7 @@ var InviteMembersWin = function(_tabGroup,_myHortInfo) {
 	
 	
 	var StandardWindow = require('ui/common/StandardWindow');
-	var self = new StandardWindow('Invite', '');
+	var self = new StandardWindow('Invite', false);
 	
 	var backButton = Ti.UI.createLabel({
 		text: 'back',
@@ -20,7 +20,7 @@ var InviteMembersWin = function(_tabGroup,_myHortInfo) {
 	
 	var scrollingView = Ti.UI.createScrollView({
 		width: '100%',
-		height: 380,
+		height: utm.viewableArea - 74,
 		showVerticalScrollIndicator: true,
 		contentHeight: 'auto',
 		layout: 'vertical',
@@ -241,6 +241,7 @@ var InviteMembersWin = function(_tabGroup,_myHortInfo) {
 		color: 'white'
 	});	
 	sendBtn.addEventListener('click', function() {
+		self.showAi();
 		inviteMyHort();
 	});	
 	scrollingView.add(sendBtn);
@@ -249,6 +250,7 @@ var InviteMembersWin = function(_tabGroup,_myHortInfo) {
 		var invalidEmail = validateEmails(emailField.value);
 		if (invalidEmail !== '') {
 			alert(invalidEmail + ' is not a valid email.');
+			self.hideAi();
 			return;
 		}
 		
@@ -270,12 +272,14 @@ var InviteMembersWin = function(_tabGroup,_myHortInfo) {
 			validatesSecureCertificate : utm.validatesSecureCertificate,
 			onload: function() {
 				emailField.setValue('');
+				self.hideAi();
 				alert('Your invitation has been sent.');
 				inviteMyHortReq = null;
 			},
 			onerror : function(e) {
 				inviteMyHortReq = null;
-			}
+			},
+			timeout:utm.netTimeout
 		});
 		inviteMyHortReq.open("POST", utm.serviceUrl + "MyHort/Invite");
 		inviteMyHortReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");

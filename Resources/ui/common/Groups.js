@@ -1,7 +1,7 @@
 var GroupsWin = function(_tabGroup) {
 	
 	var StandardWindow = require('ui/common/StandardWindow');
-	var self = new StandardWindow('Groups', '');
+	var self = new StandardWindow('Groups', true);
 	
 	var scrollView = Ti.UI.createScrollView({
 		scrollType : 'vertical',
@@ -31,6 +31,7 @@ var GroupsWin = function(_tabGroup) {
 		var CreateGroupWin = require('/ui/common/CreateGroup');
 		var createGroupWin = new CreateGroupWin(_tabGroup);
 		createGroupWin.addEventListener('close',function(e){
+			self.showAi();
 			loadMyHorts();
 		});
 		_tabGroup.getActiveTab().open(createGroupWin);
@@ -42,7 +43,7 @@ var GroupsWin = function(_tabGroup) {
 		editable: false,
 		moveable: false,
 		allowsSelectionDuringEditing: true,
-		height: 454,
+		height: utm.viewableArea,
 		top: 0
 	});
 	self.add(tableView);
@@ -55,6 +56,7 @@ var GroupsWin = function(_tabGroup) {
 		}
 		var groupDetailWin = new GroupDetail(_tabGroup,e.rowData.groupData);
 		groupDetailWin.addEventListener('close',function(e){
+			self.showAi();
 			loadMyHorts();
 		});
 		_tabGroup.getActiveTab().open(groupDetailWin);
@@ -68,14 +70,16 @@ var GroupsWin = function(_tabGroup) {
 				if (this.status === 200) {
 					var response = eval('(' + this.responseText + ')');
 					if (response !== null) {
-						Ti.Analytics.featureEvent('user.viewed_myHorts');
-						Ti.API.info("MyHort data returned " + response.length + '  myHorts returned');
 						populateTable(response);
 					}
+				} else {
+					utm.handleHttpError({}, this.status, this.responseText);
 				}
+				getMyHortsReq = null;
 			},
 			onerror : function(e) {
-				//utm.handleError(e, this.status, this.responseText);
+				utm.handleHttpError(e, this.status, this.responseText);
+				getMyHortsReq = null;
 			},
 			timeout : utm.netTimeout
 		});
@@ -93,6 +97,7 @@ var GroupsWin = function(_tabGroup) {
 		}
 
 		tableView.setData(tableData);
+		self.hideAi();
 	}
 
 	tableView.addEventListener('delete', function(e) {
@@ -128,8 +133,10 @@ var GroupsWin = function(_tabGroup) {
 				leaveMyHortHttp = null;
 			},
 			onerror : function(e) {
+				utm.handleHttpError(e, this.status, this.responseText);
 				leaveMyHortHttp = null;
-			}
+			},
+			timeout:utm.netTimeout
 		});
 		
 		leaveMyHortHttp.open("POST", utm.serviceUrl + "MyHort/LeaveMyHort?myHortId=" + _myHortId);
@@ -159,9 +166,13 @@ var GroupsWin = function(_tabGroup) {
 		var deleteMyHortDetailReq = Ti.Network.createHTTPClient({
 			validatesSecureCertificate : utm.validatesSecureCertificate,
 			onload : function() {
+				deleteMyHortDetailReq = null;
 			},
 			onerror : function() {
-			}
+				utm.handleHttpError(e, this.status, this.responseText);
+				deleteMyHortDetailReq = null;
+			},
+			timeout:utm.netTimeout
 		});
 		deleteMyHortDetailReq.open("GET", utm.serviceUrl + "MyHort/DeleteUsersMyHort?myhortId=" + _myHortId);
 		deleteMyHortDetailReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");

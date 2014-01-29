@@ -28,7 +28,7 @@
 
 // Private vars & layouts
 var txtColor = '#ffffff',
-    winDefault = { backgroundColor: 'gray' };
+    winDefault = { backgroundColor: utm.backgroundColor };
 
 /**
  * Load the module
@@ -74,38 +74,35 @@ exports.layout = function(params) {
     var gapWidth = params.passwordBox.gapWidth || 20;
 
     var messageBoxDefault = {
-        text: params.messageBox.text || 'Enter Unlock Code',
-        borderRadius: params.messageBox.borderRadius || 10,
-        borderColor: params.messageBox.borderColor || '#ffffff',
-        borderWidth: params.messageBox.borderWidth || 3,
-        height: params.messageBox.height || Ti.UI.SIZE,
-        width: params.messageBox.width || platformWidth-20,
-        top: params.messageBox.top || '30dp',
-        left: params.messageBox.left || 10,
-        backgroundColor: params.messageBox.backgroundColor || 'gray',
-        color: params.messageBox.color || '#ffffff',
-        font: params.messageBox.font || {
-            fontFamily: 'Helvetica Neue',
+        text: 'Enter unlock code',
+        height: Ti.UI.SIZE,
+        width: Ti.UI.SIZE,
+        top: 30,
+        color: utm.barColor,
+        font: {
+            fontFamily: utm.fontFamily,
             fontWeight: 'bold',
             fontSize: '25dp'
         },
-        textAlign: params.messageBox.textAlign || 'center'
+        textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER
     };
 
     var passwordDefault = {
         color: '#000000',
-        top: params.passwordBox.top || ('80dp'),
+        top: 15,
         width: Math.round(Ti.Platform.displayCaps.platformWidth/6),
         height: Math.round(Ti.Platform.displayCaps.platformWidth/6),
         passwordMask: true,
         font: {
-            fontFamily: 'Helvetica Neue',
+            fontFamily: utm.fontFamily,
             fontWeight: 'bold',
             fontSize: 25
         },
         textAlign: 'center',
         touchEnabled: true,
-        borderRadius: 5,
+        borderRadius: 4,
+        borderWidth: 1,
+        borderColor: utm.barColor,
         keyboardType: Ti.UI.KEYBOARD_NUMBER_PAD,
         borderStyle: ((Ti.Platform.osname === 'android') ? null : Ti.UI.INPUT_BORDERSTYLE_ROUNDED)
     };
@@ -135,7 +132,7 @@ exports.layout = function(params) {
         left: params.timeOutBox.left || 10,
         color: params.timeOutBox.color || '#ffffff',
         font: params.timeOutBox.font || {
-            fontFamily: 'Helvetica Neue',
+            fontFamily: utm.fontFamily,
             fontWeight: 'bold',
             fontSize: 25
         },
@@ -145,18 +142,26 @@ exports.layout = function(params) {
 
     if(utm.Android){
         var wrapper = Ti.UI.createScrollView({
-        scrollType : 'vertical'
+        scrollType: 'vertical',
+        layout: 'vertical'
         });
     }
     if(utm.iPhone || utm.iPad ){
         var wrapper = Ti.UI.createScrollView({
-        showVerticalScrollIndicator : true,
-        showHorizontalScrollIndicator : false
+	        showVerticalScrollIndicator : true,
+	        showHorizontalScrollIndicator : false,
+	        layout: 'vertical'
         });
     }
 
-
-    //var wrapper  = Ti.UI.createView(),
+	var utmLogo = Ti.UI.createImageView({
+		image:'/images/ytm_Narrow.png',
+		width:'275dp',
+		height:'71dp',
+		top: 55
+	});
+	
+	
     var messageBox = Ti.UI.createLabel(messageBoxDefault),
         password1 = Ti.UI.createTextField(passwordDefault),
         password2 = Ti.UI.createTextField(passwordDefault),
@@ -170,13 +175,21 @@ exports.layout = function(params) {
     password3.left = (platformWidth/2)+(gapWidth/2);
     password4.left = (platformWidth/2)+(gapWidth/2+gapWidth)+passwordDefault.width;
 
+    wrapper.add(utmLogo);
     wrapper.add(messageBox);
-    wrapper.add(passwordHiddenBox);
-    wrapper.add(password1);
-    wrapper.add(password2);
-    wrapper.add(password3);
-    wrapper.add(password4);
-    wrapper.add(timeOutBox);
+    
+    var passwordView = Ti.UI.createView({
+    	height: Ti.UI.SIZE,
+    	weight: Ti.UI.SIZE
+    });
+    wrapper.add(passwordView);
+    
+    passwordView.add(passwordHiddenBox);
+    passwordView.add(password1);
+    passwordView.add(password2);
+    passwordView.add(password3);
+    passwordView.add(password4);
+    passwordView.add(timeOutBox);
 
     // get password code from hidden field
     passwordHiddenBox.addEventListener('change',function(e) {

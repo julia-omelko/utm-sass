@@ -3,7 +3,7 @@ var SettingsWin = function(_tabGroup) {
 	Ti.API.info(utm.products);
 	
 	var StandardWindow = require('ui/common/StandardWindow');
-	var self = new StandardWindow('Buy Messages', '');
+	var self = new StandardWindow('Buy Messages', true);
 	
 	var backButton = Ti.UI.createLabel({
 		text: 'back',
@@ -18,7 +18,8 @@ var SettingsWin = function(_tabGroup) {
 	
 	var scrollingView = Ti.UI.createScrollView({
 		layout : 'vertical',
-		height: Ti.UI.FILL
+		height: Ti.UI.FILL,
+		width: Ti.UI.FILL
 	});
 	self.add(scrollingView);
 
@@ -48,7 +49,7 @@ var SettingsWin = function(_tabGroup) {
 function productReturned(_product) {
 	if (_product.identifier === 'com.youthisme.unlimited') {
 		var theButton = 'Unlimited messages for 99 cents per month';
-		var theDesc = 'Send as many UTM messages as you\'d like for 99 cents per month.  This is an autorenewing subscription.';
+		var theDesc = 'Send as many UTM messages as you\'d like for 99 cents per month.  This is an auto-renewing subscription.';
 	} else if (_product.identifier === 'com.youthisme.20for99') {
 		var theButton = '20 messages for 99 cents';
 		var theDesc = 'Send 20 UTM messages for 99 cents.  These messages never expire.';
@@ -56,9 +57,18 @@ function productReturned(_product) {
 		var theButton = _product.title;
 		var theDesc = _product.description;
 	}
+	var productDesc = Ti.UI.createLabel({
+		width: (Ti.Platform.displayCaps.platformWidth-50),
+		height: Ti.UI.SIZE,
+		top: 35,
+		font: {fontFamily: utm.fontFamily, fontSize:'16dp'},
+		textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+		text: theDesc
+	});
+	scrollingView.add(productDesc);
 	var productButton = Ti.UI.createButton({
 		title: theButton,
-		top: 35,
+		top: 10,
 		width: (Ti.Platform.displayCaps.platformWidth-50),
 		height: 40,
 		borderRadius: 20,
@@ -73,15 +83,6 @@ function productReturned(_product) {
 		});
 	});
 	scrollingView.add(productButton);
-	var productDesc = Ti.UI.createLabel({
-		width: (Ti.Platform.displayCaps.platformWidth-50),
-		height: Ti.UI.SIZE,
-		top: 10,
-		font: {fontFamily: utm.fontFamily, fontSize:'16dp'},
-		textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
-		text: theDesc
-	});
-	scrollingView.add(productDesc);
 };
 
 
@@ -102,6 +103,7 @@ function requestProduct(identifier) {
 		} else {
 			productReturned(evt.products[0]);
 		}
+		self.hideAi();
 	});
 }
 
@@ -143,7 +145,8 @@ Ti.App.addEventListener('updateMessageCount',function(e){
 	});
 	tableData[0].addEventListener('click', function(e){
 		var WebView = require('/ui/common/WebView');
-		var webView = new WebView('Privacy Policy', 'privacy');
+		//var webView = new WebView('Privacy Policy', 'privacy');
+		var webView = new WebView('Privacy Policy', utm.webUrl + '/Home/Privacy');
 		_tabGroup.getActiveTab().open(webView);
 	});
 	tableData[1] = Ti.UI.createTableViewRow({
@@ -156,7 +159,8 @@ Ti.App.addEventListener('updateMessageCount',function(e){
 	});
 	tableData[1].addEventListener('click', function(e){
 		var WebView = require('/ui/common/WebView');
-		var webView = new WebView('Rules of Use', 'rules');
+		//var webView = new WebView('Rules of Use', 'rules'); 
+		var webView = new WebView('Rules of Use', utm.webUrl + '/Home/RulesOfUse');
 		_tabGroup.getActiveTab().open(webView);
 	});
 	

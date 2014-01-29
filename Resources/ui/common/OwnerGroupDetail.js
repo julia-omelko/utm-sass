@@ -9,7 +9,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	}
 		
 	var StandardWindow = require('ui/common/StandardWindow');
-	var self = new StandardWindow('Group Detail', '');
+	var self = new StandardWindow('Group Detail', true);
 
 	var backButton = Ti.UI.createLabel({
 		text: 'back',
@@ -101,7 +101,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	
 	
 	var tableView = Ti.UI.createTableView({
-		height: 454 - 137,
+		height: utm.viewableArea - 137,
 		top: 27
 	});
 	self.add(tableView);
@@ -119,7 +119,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	});
 	
 	var settingsView = Ti.UI.createScrollView ({
-		height: 454 - 137,
+		height: utm.viewableArea - 137,
 		top: 27,
 		showVerticalScrollIndicator:true,
 		contentHeight:'auto',
@@ -533,12 +533,8 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		for (var i=0; i<aAlpha.length; i++) {
 			tableData[i] = new  MemberViewSection(aAlpha[i],aMember[i]);
 		}
-		//for (var i=0; i<tableData.length; i++) {
-		//	for (var j=0; j<tableData[i].rows.length; j++) {
-		//		tableData[i].rows[j].setHasChild(false);
-		//	}
-		//}
 		tableView.setData(tableData);
+		self.hideAi();
 	}
 	
 	var sort_by = function(field, reverse, primer) {
@@ -572,23 +568,26 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 				var response = eval('(' + this.responseText + ')');
 				_myHortDetails = response;
 
-				Ti.API.info(response);
-				if (this.status == 200) {
+				if (this.status === 200) {
 					if (response.IsOwner) {
 						_memberData = response.PrimaryUser;
 					} else {
 						_memberData = response.MyInformation;
 					}
 					populateSettings(_memberData);
-					getPendingMembers(response.myHort.Members);
+					displayMemberData(response.myHort.Members);
+				} else {
+					utm.handleHttpError({}, this.status, this.responseText);
 				}
+				getMyHortDetailReq = null;
 			},
 			onerror : function(e) {
 				if (this.status != undefined && this.status === 404) {
 					alert('The group you are looking for does not exist.');
 				} else {
-					
+					utm.handleHttpError(e, this.status, this.responseText);
 				}
+				getMyHortDetailReq = null;
 			},
 			timeout : utm.netTimeout
 		});
@@ -672,13 +671,16 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 			onload : function() {
 				var json = this.responseData;
 				//alert(json);
-				if (this.status == 200) {
+				if (this.status === 200) {
 					self.close();
-				} else if (this.status == 400) {
 				} else {
+					utm.handleHttpError({}, this.status, this.responseText);
 				}
+				updateMyHortDetailReq = null;
 			},
 			onerror : function(e) {
+				utm.handleHttpError(e, this.status, this.responseText);
+				updateMyHortDetailReq = null;
 			},
 			timeout : utm.netTimeout
 		});
@@ -711,14 +713,16 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 			validatesSecureCertificate : utm.validatesSecureCertificate,
 			onload : function() {
 				var json = this.responseData;
-				if (this.status == 200) {
+				if (this.status === 200) {
 					self.close();
-				} else if (this.status == 400) {
 				} else {
+					utm.handleHttpError({}, this.status, this.responseText);
 				}
+				deleteMyHortReq = null;
 			},
 			onerror : function(e) {
-
+				utm.handleHttpError(e, this.status, this.responseText);
+				deleteMyHortReq = null;
 			},
 			timeout : utm.netTimeout
 		});
@@ -729,39 +733,6 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		deleteMyHortReq.send();
 	}
 	
-
-	function getPendingMembers(_members) {
-		var getMyHortPendingReq = Ti.Network.createHTTPClient({
-			validatesSecureCertificate : utm.validatesSecureCertificate,
-			onload : function() {
-				var response = eval('(' + this.responseText + ')');
-				//Ti.API.info(response);
-				//alert(response);
-				if (this.status == 200) {
-					for (var i=0; i<response.length; i++) {
-						response[i].NickName = response[i].EmailAddress;
-					}
-					_members = _members.concat(response);
-					displayMemberData(_members);
-				}
-			},
-			onerror : function(e) {
-				if (this.status != undefined && this.status === 404) {
-					alert('The group you are looking for does not exist.');
-				} else {
-					
-				}
-			},
-			timeout : utm.netTimeout
-		});
-		getMyHortPendingReq.open("GET", utm.serviceUrl + "MyHort/Pending?myHortId=" + _groupData.MyHortId);
-		getMyHortPendingReq.setRequestHeader('Authorization-Token', utm.AuthToken);
-		getMyHortPendingReq.send();
-		
-	}
-
-
-
 	
 	return self;
 };

@@ -1,7 +1,7 @@
 var MessageDetailWin = function(_tabGroup,_messageData) {
 	
 	var StandardWindow = require('ui/common/StandardWindow');
-	var self = new StandardWindow('Message', '');
+	var self = new StandardWindow('Message', true);
 
 	var trashButton = Ti.UI.createImageView({
 		image: '/images/icons/trash.png',
@@ -23,7 +23,7 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 	var scrollingView = Ti.UI.createScrollView({
 		width:'100%',
 		height:'100%',
-		showVerticalScrollIndicator:true,
+		showVerticalScrollIndicator: true,
 		contentHeight:'auto',
 		layout:'vertical'
 	});
@@ -39,7 +39,7 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 	var avatar = Ti.UI.createImageView({
 		top: 25,
 		left: 0,
-		image: '/images/avatar/1.png',
+		image: '/images/avatar/' + _messageData.FromUsersAvatar + '.png',
 		width: 80,
 		height: 80,
 		backgroundColor: 'white',
@@ -123,11 +123,16 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 		borderRadius: 20,
 		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
 		backgroundColor: utm.buttonColor,
-		color: 'white'
+		color: 'white',
+		visible: false
 	});	
+	scrollingView.add(replyBtn);
 	replyBtn.addEventListener('click', function() {
-		getSubscriptionInfo('getReplyToUserData', _messageData.FromUserId); 
+		Ti.App.fireEvent('app:getSubscriptionInfo',{callBack:'app:replyToMessage'});
 	});	
+	Ti.App.addEventListener('app:replyToMessage',function(e){
+		getReplyToUserData(_messageData.FromUserId);
+	});
 	
 	
 	var getMessageDetailReq = Ti.Network.createHTTPClient({
@@ -136,32 +141,29 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 			var response = eval('('+this.responseText+')');
 			
 			if (this.status === 200) {
-				//Ti.API.info("message data returned:" + JSON.stringify(response));
-				
 				if (_messageData.HasAttachments) {
 					callOutToGetAttachments(_messageData);
 				} else {
 					//Mark Message as Read
-					//utm.log('Mark Message as Read (no attachments):' + !_messageData.WasRead);
 					if (!_messageData.WasRead) {
 						setMessageAsRead(_messageData.Id);
 					}
 				} 	
 				
 				originalMessage.setText(response.Message);
-				scrollingView.add(replyBtn);
+				replyBtn.setVisible(true);
+				self.hideAi();
 
 			} else {
-				//utm.recordError(response.Message);
+				utm.handleHttpError(e, this.status, this.responseText);
 			}	
 			getMessageDetailReq = null;
 		},		
 		onerror:function(e){	
 			if (this.status != undefined && this.status === 404) {
 				alert('The message you are looking for does not exist.');	
-				Ti.App.fireEvent('app:refreshMessages', {showProgress:false});
-			}else{
-         		utm.handleError(e,this.status,this.responseText);
+			} else {
+				utm.handleHttpError(e, this.status, this.responseText);
          	}  
 			getMessageDetailReq = null;       			
 		},
@@ -180,10 +182,11 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 		var getMarkMessageAsReadReq = Ti.Network.createHTTPClient({
 			validatesSecureCertificate:utm.validatesSecureCertificate,
 			onload: function() {
-				//utm.messageWindow.refreshMessages();
+				getMarkMessageAsReadReq = null;
 			},		
 			onerror:function(e) {
-				//utm.handleError(e,this.status,this.responseText); 			
+				utm.handleHttpError(e,this.status,this.responseText); 	
+				getMarkMessageAsReadReq = null;		
 			}
 			,timeout:utm.netTimeout
 		});	
@@ -192,70 +195,21 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 		getMarkMessageAsReadReq.send();		
 	}
 	
-	function getSubscriptionInfo(_callback,_fromUserId) {
-		var subscriptionInfoReq = Ti.Network.createHTTPClient({
-			validatesSecureCertificate:utm.validatesSecureCertificate, 
-			onload : function() {
-				var response = eval('('+this.responseText+')');
-		
-				if (this.status == 200) {		
-					utm.User.UserProfile.MessagesRemaining = response.MessagesRemaining;
-					utm.User.UserProfile.SubscriptionEnds = response.SubscriptionEnds;
-					utm.User.UserProfile.HasSubscription = response.HasSubscription;
-					if (utm.User.UserProfile.HasSubscription === false) {
-						utm.User.UserProfile.SubscriptionEnds = null;
-					}
-					
-					if (!isSubscriptionValid(utm.User.UserProfile.SubscriptionEnds) && utm.User.UserProfile.MessagesRemaining < 1) { 
-						showSubscriptionInstructions();				
-					} else {					
-						//Subscription is ok so fire the callback to allow send or reply to continue
-						fn = eval(_callback);
-						if (_fromUserId) {
-							fn.call(null,_fromUserId);						
-						} else {
-							fn.call();
-						}	
-					}			
-				} else {
-					utm.handleError(e, this.status, this.responseText);
-					//utm.recordError("Status="+this.status + "   Message:"+this.responseText);
-				}
-			},
-			onerror : function(e) {		
-				utm.handleError(e, this.status, this.responseText);
-			},
-			timeout:utm.netTimeout
-		});
-		
-		subscriptionInfoReq.open("GET", utm.serviceUrl + "SubscriptionInfo");
-		subscriptionInfoReq.setRequestHeader('Authorization-Token', utm.AuthToken);
-		subscriptionInfoReq.send();
-	};
-	
-	function showSubscriptionInstructions(){
-		var SubscriptionInfoWin = require('/ui/handheld/SubscribeInfo');
-		subscriptionInfoWin = new SubscriptionInfoWin();
-		
-		subscriptionInfoWin.open();
-		subscriptionInfoWin.updateMessage();
-	}
 	
 	function getReplyToUserData(replyingToUserId) {
 
 		var getMembersReq = Ti.Network.createHTTPClient({
 		    validatesSecureCertificate:utm.validatesSecureCertificate, 
 			onload : function(e) {
-		        
 				var response = eval('('+this.responseText+')');
 				
-				if (this.status == 200) {					
+				if (this.status === 200) {					
 					if (response.length === 0) {
-						alert('Unable to send a message to this member, the member is no longer a member of this MyHort.');
+						alert('You are unable to send a message to this member as they are no longer a member of this group.');
+						getMembersReq = null;
 						return;
 					}
 					
-					//utm.log("data returned:"+response);
 					var data = [];
 					utm.curUserCurMyHortHasTwitter = false;
 					utm.curUserCurMyHortHasFacebook = false;
@@ -264,8 +218,6 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 					var selectedContacts = [];
 					
 					selectedContacts.push({
-						//userId: response[0].UserId, 
-						//nickName: response[0].NickName,
 						userData: response[0]
 					});
 					
@@ -273,27 +225,15 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 					var composeWin = new ComposeWin(_tabGroup,selectedContacts,'Reply',_messageData.Id);
 					utm.winStack.push(composeWin);
 					_tabGroup.getActiveTab().open(composeWin);
-					
-					
-					//Ti.App.fireEvent("app:contactsChoosen", {
-				    //    sentToContactList: selectedContacts
-				    //});	
-					
-			    	//Ti.App.fireEvent("app:showWriteMessageView", {mode:'reply', messageData: _messageData});
-					
-				} else if (this.status == 400) {				
-					utm.recordError(response.Message+ ' ExceptionMessage:' + response.ExceptionMessage);			
-				} else {
-					utm.log("error");				
+											
+				} else {	
+					utm.handleHttpError(e, this.status, this.responseText);		
 				}		
-				
 				getMembersReq = null;
 		     },
-		     // function called when an error occurs, including a timeout
-		     onerror : function(e) {		        
-		     	alert(e);
-		        	utm.handleError(e,this.status,this.responseText); 
-		        	getMembersReq = null;
+		     onerror : function(e) {		
+		        utm.handleError(e,this.status,this.responseText); 
+		        getMembersReq = null;
 		     }
 		     ,timeout:utm.netTimeout
 		});	

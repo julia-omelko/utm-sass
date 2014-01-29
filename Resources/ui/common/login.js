@@ -15,20 +15,12 @@ var LoginWin = function() {
 		layout: 'vertical'
 	});
 	scrollView.add(view);
-
-	var messageArea = Ti.UI.createLabel({
-	  color: utm.textColor,
-	  text: '',
-	  textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
-	  width: 'auto', height: 'auto'
-	});
-	view.add(messageArea);
 		
 	var utmLogo = Ti.UI.createImageView({
 		image: '/images/ytm_Narrow.png',
 		width: '275dp',
 		height: '71dp',
-		top: Math.round(Ti.Platform.displayCaps.platformWidth*0.15)
+		top: Math.round(Ti.Platform.displayCaps.platformHeight*0.095)
 	});
 	view.add(utmLogo);
 	
@@ -123,7 +115,10 @@ var LoginWin = function() {
 	});
 	
 	forgotPassword.addEventListener('click', function(e) {
-	    Ti.Platform.openURL(utm.webUrl + '/Account/PasswordReset');
+	    //Ti.Platform.openURL(utm.webUrl + '/Account/PasswordReset');
+		var WebView = require('/ui/common/WebView');
+		var webView = new WebView('Password Reset', utm.webUrl + '/Account/PasswordReset');
+		utm.navController.open(webView);
 	});
 	view.add(forgotPassword);
 	
@@ -132,7 +127,7 @@ var LoginWin = function() {
 		font: {fontFamily: utm.fontFamily, fontSize:'14dp' },
 		text: Ti.App.version,
 		textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
-		top: 15,
+		top: 10,
 		width: Ti.UI.SIZE, 
 	  	height: Ti.UI.SIZE
 	});
@@ -184,8 +179,8 @@ var LoginWin = function() {
 	});
 	tableData[1].addEventListener('click', function(e){
 		var WebView = require('/ui/common/WebView');
-		var webView = new WebView('Who We Are', 'about');
-		//var webView = new WebView('Who We Are', utm.webUrl + '/Home/WhoWeAre');
+		//var webView = new WebView('Who We Are', 'about');
+		var webView = new WebView('Who We Are', utm.webUrl + '/Home/WhoWeAre');
 		utm.navController.open(webView);
 	});
 	tableData[2] = Ti.UI.createTableViewRow({
@@ -198,8 +193,8 @@ var LoginWin = function() {
 	});
 	tableData[2].addEventListener('click', function(e){
 		var WebView = require('/ui/common/WebView');
-		var webView = new WebView('Privacy Policy', 'privacy');
-		//var webView = new WebView('Privacy Policy', utm.webUrl + '/Home/Privacy');
+		//var webView = new WebView('Privacy Policy', 'privacy');
+		var webView = new WebView('Privacy Policy', utm.webUrl + '/Home/Privacy');
 		utm.navController.open(webView);
 	});
 	tableData[3] = Ti.UI.createTableViewRow({
@@ -212,8 +207,8 @@ var LoginWin = function() {
 	});
 	tableData[3].addEventListener('click', function(e){
 		var WebView = require('/ui/common/WebView');
-		var webView = new WebView('Rules of Use', 'rules');
-		//var webView = new WebView('Privacy Policy', utm.webUrl + '/Home/RulesOfUse');
+		//var webView = new WebView('Rules of Use', 'rules');
+		var webView = new WebView('Rules of Use', utm.webUrl + '/Home/RulesOfUse');
 		utm.navController.open(webView);
 	});
 	
@@ -228,7 +223,6 @@ var LoginWin = function() {
 	loginBtn.addEventListener('click',function(e) {
 		username.blur();
 		password.blur();
-		messageArea.setText('');
 
 		if (username.value !== '' && password.value !== '') {	
 			var shortVersionNum = Ti.App.version;
@@ -254,35 +248,23 @@ var LoginWin = function() {
 			tlsVersion: Ti.Network.TLS_VERSION_1_2,
 			onload : function() {
 				var response = eval('('+this.responseText+')');
-				Ti.API.info('Login Service Returned');
 				if (this.status === 200) {
 					password.setValue('');
 					Ti.App.fireEvent("app:loginSuccess", {
 				        userData: response
 				    });
-				    Ti.Analytics.featureEvent('user.logged_in');
-				    //self.close();
-					
 				} else {
-					Ti.API.info('Login Error');
-					messageArea.setText('Error in Service');
+					utm.handleHttpError({},this.status,this.responseText);
 				}
 				loginReq = null;
-				
 			},
 			onerror:function(e) {
 				password.setValue('');
-				//username.value="";
 				if (this.status === 401) {
 					var err = JSON.parse(this.responseText);
 					alert(err.Message);
-					//TODO come up with error number system so we can internationalize errors
-					//setMessageArea(L("invalid_login"));
-					//Too many tries - Account is locked for 1 hour.
-					//Invalid UserName/Password
-					Ti.Analytics.featureEvent('user.logged_in_invalid');
-				}else{
-				  	utm.handleError(e,this.status,this.responseText);
+				} else {
+				  	utm.handleHttpError(e,this.status,this.responseText);
 				}
 				loginReq = null;
 			},

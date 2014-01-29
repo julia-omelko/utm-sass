@@ -15,7 +15,7 @@ var CreateAccountWin = function() {
 	
 	var scrollingView = Ti.UI.createScrollView({
 		width: '100%',
-		height: 507,
+		height: Ti.Platform.displayCaps.platformHeight - 22,
 		showVerticalScrollIndicator: true,
 		contentHeight: 'auto',
 		layout: 'vertical',
@@ -49,7 +49,7 @@ var CreateAccountWin = function() {
 	for (var i=0; i<12; i++) {
 		aAvatar[i] = Ti.UI.createImageView({
 			left: 10 + (80*i),
-			image: '/images/avatar/'+ (i+1) +'.png',
+			image: '/images/avatar/'+ i +'.png',
 			width: 70,
 			height: 70,
 			backgroundColor: 'white',
@@ -264,7 +264,8 @@ var CreateAccountWin = function() {
 	
 	rulesLabel.addEventListener('click',function(e){
 		var WebView = require('/ui/common/WebView');
-		var webView = new WebView('Rules of Use', 'rules');
+		//var webView = new WebView('Rules of Use', 'rules');
+		var webView = new WebView('Privacy Policy', utm.webUrl + '/Home/RulesOfUse');
 		utm.navController.open(webView);
 	});
 	
@@ -303,7 +304,8 @@ var CreateAccountWin = function() {
 				checkUserNameRquest = null;
 			},
 			onerror:  function(e) {
-
+				utm.handleHttpError(e, this.status, this.responseText);
+				checkUserNameRquest = null;
 			},
 			timeout : utm.netTimeout
 		});
@@ -373,7 +375,7 @@ var CreateAccountWin = function() {
 			validatesSecureCertificate : utm.validatesSecureCertificate,
 			onload : function() {
 				var response = eval('(' + this.responseText + ')');
-				if (this.status == 200) {
+				if (this.status === 200) {
 					if (this.responseData) {
 						if (response.Status ==='Error'){
 							if (response.Message === "DuplicateEmail") {
@@ -395,7 +397,7 @@ var CreateAccountWin = function() {
 						}
 					}
 				} else {
-				
+					utm.handleHttpError({}, this.status, this.responseText);
 				}
 			},
 			onerror : function(e) {
@@ -406,14 +408,15 @@ var CreateAccountWin = function() {
 						errorString+=error.Data[e];
 					}
 					alert(errorString);
-				} else if (this.status != undefined && this.status === 404) {
-					alert('An error occured durring the registration.');
 				} else {
 					utm.handleError(e, this.status, this.responseText);
 				}
 			},
 			timeout : utm.netTimeout
 		});
+		
+		Ti.API.info(curReg);
+		Ti.API.info(utm.serviceUrl + "Account/Create?returnUrl=/Account/Verify");
 		
 		getSignUpReq.open("POST", utm.serviceUrl + "Account/Create?returnUrl=/Account/Verify");
 		getSignUpReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");

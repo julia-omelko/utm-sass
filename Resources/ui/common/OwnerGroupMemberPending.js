@@ -14,7 +14,7 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData) {
 	self.setLeftNavButton(backButton);
 		
 	var scrollingView = Ti.UI.createScrollView ({
-		height: 454 - 110,
+		height: utm.viewableArea - 110,
 		top: 0,
 		showVerticalScrollIndicator:true,
 		contentHeight:'auto',
@@ -135,12 +135,15 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData) {
 			validatesSecureCertificate : utm.validatesSecureCertificate,
 			onload : function() {
 				var response = eval('(' + this.responseText + ')');
-				if (this.status == 200) {
+				if (this.status === 200) {
 					self.close();
+				} else {
+					utm.handleHttpError({}, this.status, this.responseText);
 				}
 				deletePendingReq = null;
 			},
 			onerror : function(e) {
+				utm.handleHttpError(e, this.status, this.responseText);
 				deletePendingReq = null;
 			},
 			timeout : utm.netTimeout

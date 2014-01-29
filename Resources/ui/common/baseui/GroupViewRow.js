@@ -6,10 +6,17 @@ function GroupTableRow(_groupData){
 		groupData: _groupData
 	});
 	
+	var primaryAvatar = 0;
+	for (var i=0; i<_groupData.Members.length; i++) {
+		if (_groupData.Members[i].MemberType === 'Primary') {
+			primaryAvatar = _groupData.Members[i].Avatar;
+			break;
+		}
+	}
 	var avatar = Ti.UI.createImageView({
 		left: 10,
 		top: 10,
-		image: '/images/avatar/1.png',
+		image: '/images/avatar/' + primaryAvatar + '.png',
 		width: 60,
 		height: 60,
 		backgroundColor: 'white',
@@ -46,7 +53,7 @@ function GroupTableRow(_groupData){
 			aMembers[aMembers.length] = Ti.UI.createImageView({
 				left: 80 + (aMembers.length*40),
 				top: 40,
-				image: '/images/avatar/2.png',
+				image: '/images/avatar/' + _groupData.Members[i].Avatar + '.png',
 				width: 30,
 				height: 30,
 				backgroundColor: 'white',

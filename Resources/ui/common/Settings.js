@@ -5,7 +5,8 @@ var SettingsWin = function(_tabGroup) {
 	
 	var scrollView = Ti.UI.createScrollView({
 		layout : 'vertical',
-		height: Ti.UI.FILL
+		height: Ti.UI.FILL,
+		width: Ti.UI.FILL
 	});
 	self.add(scrollView);
 
@@ -104,13 +105,13 @@ var SettingsWin = function(_tabGroup) {
 		var forgetMeReq = Ti.Network.createHTTPClient({
 			validatesSecureCertificate : utm.validatesSecureCertificate,
 			onload : function(e) {
-				//utm.log('USER Was Forgotten');
 				alert("You have been removed from YouThisMe.");
 				Ti.App.fireEvent("app:logout", {});
+				forgetMeReq = null;
 			},
 			onerror : function(e) {
-				//Ti.App.fireEvent("app:logout", {});
-				//utm.handleError(e, this.status, this.responseText);
+				utm.handleHttpError(e, this.status, this.responseText);
+				forgetMeReq = null;
 			},
 			timeout : utm.netTimeout
 		});

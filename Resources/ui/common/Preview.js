@@ -34,7 +34,7 @@ var PreviewWin = function(_tabGroup,_message) {
 	}
 	
 	var StandardWindow = require('ui/common/StandardWindow');
-	var self = new StandardWindow('Preview', '');
+	var self = new StandardWindow('Preview', true);
 	
 	var backButton = Ti.UI.createLabel({
 		text: 'back',
@@ -48,7 +48,7 @@ var PreviewWin = function(_tabGroup,_message) {
 	
 	var scrollingView = Ti.UI.createScrollView({
 		width: '100%',
-		height: 380,
+		height: utm.viewableArea - 74,
 		showVerticalScrollIndicator: true,
 		contentHeight: 'auto',
 		layout: 'vertical',
@@ -85,7 +85,7 @@ var PreviewWin = function(_tabGroup,_message) {
 	var sendToIds = [];
 	for (var i=0; i<_message.selectedContacts.length; i++) {
 		sendTo[i] = _message.selectedContacts[i].userData.NickName;
-		sendToIds[i] = _message.selectedContacts[i].userData.Id;
+		sendToIds[i] = _message.selectedContacts[i].userData.UserId;
 	}
 	sendTo = sendTo.join(', ');
 	var sendLabel = Ti.UI.createLabel({
@@ -185,6 +185,7 @@ var PreviewWin = function(_tabGroup,_message) {
 		backgroundColor: utm.buttonColor,
 	});
 	utmRefresh.addEventListener('click',function(e){
+		self.showAi();
 		getUtmMessage();
 	});
 	scrollingView.add(utmRefresh);	
@@ -255,8 +256,9 @@ var PreviewWin = function(_tabGroup,_message) {
 			onload : function() {
 				var response = eval('(' + this.responseText + ')');
 				
-				if (this.status == 200) {
+				if (this.status === 200) {
 					utmMessage.setText(response.UtmText);
+					self.hideAi();
 					deliveryOptions.curRjCrypt = response.RjCrypt;
 					/*if (signMessagesSwitchWasOnButTurnedff !== 'none') {
 						if (signMessagesSwitchWasOnButTurnedff) {
@@ -299,11 +301,12 @@ var PreviewWin = function(_tabGroup,_message) {
 					
 					*/
 				} else {
-					//utm.recordError(response.Message + ' ExceptionMessag:' + response.ExceptionMessage);
+					utm.handleHttpError({}, this.status, this.responseText);
 				}
 				getMessagesPreviewReq = null;
 			},
 			onerror : function(e) {
+				utm.handleHttpError(e, this.status, this.responseText);
 				getMessagesPreviewReq = null;
 			},
 			timeout : utm.netTimeout
@@ -339,6 +342,7 @@ var PreviewWin = function(_tabGroup,_message) {
 
 		} else {
 			//imagePreview.visible=false;
+			self.showAi();
 			sendMessages(messageType);
 		}
 
@@ -389,7 +393,6 @@ var PreviewWin = function(_tabGroup,_message) {
 	}
 	
 	function sendMessages(messageType) {
-		alert(_message);		
 			
 		if (_message.attachment != null) {		
 			try {
@@ -413,7 +416,7 @@ var PreviewWin = function(_tabGroup,_message) {
 		
 
 		var params = {
-			MyHortId: _message.MyHortId,
+			MyHortId: _message.selectedContacts[0].userData.MyHortId,
 			PlainText: _message.message,
 			UtmText:  utmMessage.getText(),
 			DeleteOnRead: deliveryOptions.deleteOnRead,
@@ -432,7 +435,7 @@ var PreviewWin = function(_tabGroup,_message) {
 			validatesSecureCertificate : utm.validatesSecureCertificate,
 			onload : function() {
 				var response = eval('(' + this.responseText + ')');
-				alert(response);
+				self.hideAi();
 				if (this.status === 200 && response.Status === 'Success') {
 					alert('Your message has been sent.');
 					for(var i=0; i<utm.winStack.length; i++) {
@@ -448,16 +451,16 @@ var PreviewWin = function(_tabGroup,_message) {
 					utm.winStack = [];
 					self.close();
 				} else {
-					alert(response);
 					alert('An error occured while sending your message.  One of the message services is down or not available.  Please try again.');
 				}
 				sendMessageReq = null;
 	
 			},
 			onerror : function(e) {
+				utm.handleHttpError(e, this.status, this.responseText);
 				sendMessageReq = null;
 			},
-			timeout : 10000 //seems like send can take longer so override this timeout.
+			timeout : utm.netTimeout
 		});
 		sendMessageReq.open("POST", utm.serviceUrl + "SendMessage");
 		sendMessageReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");

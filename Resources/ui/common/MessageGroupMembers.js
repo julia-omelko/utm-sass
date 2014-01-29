@@ -1,7 +1,7 @@
 var MessageGroupMembersWin = function(_tabGroup,_myHortData) {
 	
 	var StandardWindow = require('ui/common/StandardWindow');
-	var self = new StandardWindow('Group Detail', '');
+	var self = new StandardWindow('Group Detail', true);
 
 	var backButton = Ti.UI.createLabel({
 		text: 'back',
@@ -18,7 +18,7 @@ var MessageGroupMembersWin = function(_tabGroup,_myHortData) {
 	
 	
 	var memberTableView = Ti.UI.createTableView({
-		height: 454 - 59,
+		height: utm.viewableArea - 59,
 		top: 0
 	});
 	self.add(memberTableView);
@@ -45,18 +45,22 @@ var MessageGroupMembersWin = function(_tabGroup,_myHortData) {
 			validatesSecureCertificate : utm.validatesSecureCertificate,
 			onload : function() {
 				var response = eval('(' + this.responseText + ')');
-				if (this.status == 200) {
+				if (this.status === 200) {
 					Ti.API.info(response);
 					myHortData = response;
 					displayMyHortData(response);
+				} else {
+					utm.handleHttpError({}, this.status, this.responseText);
 				}
+				getMyHortDetailReq = null;
 			},
 			onerror : function(e) {
 				if (this.status != undefined && this.status === 404) {
-					alert('The myHort you are looking for does not exist.');
+					alert('The group you are looking for does not exist.');
 				} else {
-					//utm.handleError(e, this.status, this.responseText);
+					utm.handleHttpError(e, this.status, this.responseText);
 				}
+				getMyHortDetailReq = null;
 			},
 			timeout : utm.netTimeout
 		});
@@ -66,9 +70,7 @@ var MessageGroupMembersWin = function(_tabGroup,_myHortData) {
 	}
 	
 	function displayMyHortData(myHortData) {
-		Ti.API.info(myHortData);
 		myHortData.sort(sort_by('NickName', true, function(a){return a.toUpperCase();}));
-		
 		
 		for (var i=0; i<myHortData.length; i++) {
 			if (myHortData[i].UserId === utm.User.UserProfile.UserId) {
@@ -107,6 +109,7 @@ var MessageGroupMembersWin = function(_tabGroup,_myHortData) {
 			}
 		}
 		memberTableView.setData(tableData);
+		self.hideAi();
 	}
 	
 	
@@ -138,6 +141,7 @@ var MessageGroupMembersWin = function(_tabGroup,_myHortData) {
 
 		var ComposeWin = require('/ui/common/Compose');
 		var composeWin = new ComposeWin(_tabGroup,selectedContacts,'Send');
+		utm.winStack.push(composeWin);
 		_tabGroup.getActiveTab().open(composeWin);
 	});	
 	self.add(composeButton);

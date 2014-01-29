@@ -1,4 +1,4 @@
-function StandardWindow(_title,_backButtonTitle) {
+function StandardWindow(_title,_showAi) {
 
 	if (utm.iPhone || utm.iPad) {
 		var titleControl = Ti.UI.createLabel({
@@ -10,8 +10,7 @@ function StandardWindow(_title,_backButtonTitle) {
 			//layout: 'vertical',
 			titleControl: titleControl,
 			backgroundColor: utm.backgroundColor,
-			barColor: utm.barColor,
-			backButtonTitle: _backButtonTitle
+			barColor: utm.barColor
 		});
 		
 	} else if (utm.Android) {
@@ -33,6 +32,74 @@ function StandardWindow(_title,_backButtonTitle) {
 		});
  		self.add(my_navbar);
 	};
+	
+	
+	var ai = Ti.UI.createView({
+		height: Ti.UI.FILL,
+		width: Ti.UI.FILL,
+		visible: _showAi,
+		zIndex: 1
+	});
+	var images = [
+		'/images/ai/0.png',
+		'/images/ai/1.png',
+		'/images/ai/2.png',
+		'/images/ai/3.png',
+		'/images/ai/4.png',
+		'/images/ai/5.png',
+		'/images/ai/6.png',
+		'/images/ai/7.png',
+		'/images/ai/8.png',
+		'/images/ai/9.png',
+		'/images/ai/10.png',
+		'/images/ai/11.png'
+	];
+	var imageView = Titanium.UI.createImageView({
+		images: images,
+		duration: 83,
+		repeatCount: 0,
+		top: 150,
+		width: 50,
+		height: 50
+	});
+	ai.add(imageView);
+	imageView.start();
+	self.add(ai);
+	
+	var timerId;
+	self.showAi = function() {
+		ai.setVisible(true);
+		timerId = setTimeout(function(){
+			self.hideAi();
+		}, 8000);
+	};
+	self.hideAi = function() {
+		ai.setVisible(false);
+		clearTimeout(timerId);
+	};
+	
+	if (_showAi) {
+		timerId = setTimeout(function(){
+			self.hideAi();
+		}, 8000);
+	}
+	
+	/*
+	var ai = require('/ui/common/baseui/ActivityIndicator');
+	var indicator = ai.createIndicatorWindow();
+	self.showAi = function() {
+		indicator.openIndicator();
+	};
+	self.hideAi = function() {
+		indicator.closeIndicator();
+	};
+	
+	if (_showAi === true) {
+		self.addEventListener('open',function(e){
+			self.showAi();
+		});
+	}
+	*/
 	
 	return self;
 } 

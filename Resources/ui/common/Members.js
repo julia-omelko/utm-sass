@@ -3,7 +3,7 @@ var MembersWin = function(_tabGroup) {
 	var myHortData = {};
 	
 	var StandardWindow = require('ui/common/StandardWindow');
-	var self = new StandardWindow('Members', '');
+	var self = new StandardWindow('Members', true);
 	
 	var scrollView = Ti.UI.createScrollView({
 		scrollType : 'vertical',
@@ -28,14 +28,17 @@ var MembersWin = function(_tabGroup) {
 	newButton.addEventListener('click',function(e){
 		var InviteWin = require('/ui/common/InviteMembers');
 		var inviteWin = new InviteWin(_tabGroup,myHortData);
+		inviteWin.addEventListener('close',function(e){
+			loadMyHortDetail();
+		});
 		_tabGroup.getActiveTab().open(inviteWin);
 	});
 	self.setRightNavButton(newButton);
 
-	var tableView = Titanium.UI.createTableView({
+	var tableView = Ti.UI.createTableView({
 		editable: true,
 		allowsSelectionDuringEditing: true,
-		height: 454,
+		height: utm.viewableArea,
 		top: 0
 	});
 	self.add(tableView);
@@ -43,28 +46,31 @@ var MembersWin = function(_tabGroup) {
 	tableView.addEventListener('click',function(e){
 		var MemberDetailWin = require('/ui/common/MemberDetail');
 		var memberDetailWin = new MemberDetailWin(_tabGroup, e.rowData.memberData);
+		memberDetailWin.addEventListener('close',function(e){
+			loadMyHortDetail();
+		});
 		_tabGroup.getActiveTab().open(memberDetailWin);
 	});
 
 
 
 	function loadMyHortDetail() {
+		self.showAi();
 		var getMyHortDetailReq = Ti.Network.createHTTPClient({
 			validatesSecureCertificate : utm.validatesSecureCertificate,
 			onload : function() {
 				var response = eval('(' + this.responseText + ')');
-				if (this.status == 200) {
-					Ti.API.info(response);
+				if (this.status === 200) {
 					myHortData = response;
-					displayMyHortData(response);
+					getPendingMembers(response.myHort.Members);
+				} else {
+					utm.handleHttpError({}, this.status, this.responseText);
 				}
+				getMyHortDetailReq = null;
 			},
 			onerror : function(e) {
-				if (this.status != undefined && this.status === 404) {
-					alert('The myHort you are looking for does not exist.');
-				} else {
-					//utm.handleError(e, this.status, this.responseText);
-				}
+				utm.handleHttpError(e, this.status, this.responseText);
+				getMyHortDetailReq = null;
 			},
 			timeout : utm.netTimeout
 		});
@@ -73,13 +79,13 @@ var MembersWin = function(_tabGroup) {
 		getMyHortDetailReq.send();
 	}
 	
-	function displayMyHortData(myHortData) {
-		myHortData.myHort.Members.sort(sort_by('NickName', true, function(a){return a.toUpperCase();}));
+	function displayMyHortData(_members) {
+		_members.sort(sort_by('NickName', true, function(a){return a.toUpperCase();}));
 		var aAlpha = [];
 		var aMember = [];
 		var letter = '';
-		for (var i=0; i<myHortData.myHort.Members.length; i++) {
-			var letter2 = myHortData.myHort.Members[i].NickName.charAt(0).toUpperCase();
+		for (var i=0; i<_members.length; i++) {
+			var letter2 = _members[i].NickName.charAt(0).toUpperCase();
 			if (letter !== letter2) {
 				aAlpha[aAlpha.length] = letter2;
 				letter = letter2;
@@ -87,10 +93,10 @@ var MembersWin = function(_tabGroup) {
 		}
 		for (var i=0; i<aAlpha.length; i++) {
 			aMember[i] = [];
-			for (var j=0; j<myHortData.myHort.Members.length; j++) {
-				var letter = myHortData.myHort.Members[j].NickName.charAt(0).toUpperCase();
+			for (var j=0; j<_members.length; j++) {
+				var letter = _members[j].NickName.charAt(0).toUpperCase();
 				if (aAlpha[i] === letter) {
-					aMember[i][aMember[i].length] = myHortData.myHort.Members[j];
+					aMember[i][aMember[i].length] = _members[j];
 				}
 			}
 		}
@@ -100,6 +106,7 @@ var MembersWin = function(_tabGroup) {
 			tableData[i] = new  MemberViewSection(aAlpha[i],aMember[i]);
 		}
 		tableView.setData(tableData);
+		self.hideAi();
 	}
 	
 	var sort_by = function(field, reverse, primer) {
@@ -110,6 +117,37 @@ var MembersWin = function(_tabGroup) {
 	   }; 
 	};
 	
+	function getPendingMembers(_members) {
+		var getMyHortPendingReq = Ti.Network.createHTTPClient({
+			validatesSecureCertificate : utm.validatesSecureCertificate,
+			onload : function() {
+				var response = eval('(' + this.responseText + ')');
+				if (this.status === 200) {
+					for (var i=0; i<response.length; i++) {
+						response[i].NickName = response[i].EmailAddress.split('@')[0];
+						response[i].Avatar = 0;
+					}
+					_members = _members.concat(response);
+					displayMyHortData(_members);
+					getMyHortPendingReq = null;
+				} else {
+					utm.handleHttpError({}, this.status, this.responseText);
+					getMyHortPendingReq = null;
+				}
+			},
+			onerror : function(e) {
+				if (this.status != undefined && this.status === 404) {
+					alert('The group you are looking for does not exist.');
+				} else {
+					utm.handleHttpError(e, this.status, this.responseText);
+				}
+			},
+			timeout : utm.netTimeout
+		});
+		getMyHortPendingReq.open("GET", utm.serviceUrl + "MyHort/Pending?myHortId=" + myHortId);
+		getMyHortPendingReq.setRequestHeader('Authorization-Token', utm.AuthToken);
+		getMyHortPendingReq.send();	
+	}
 	
 	
 	loadMyHortDetail();

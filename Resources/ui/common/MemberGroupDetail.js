@@ -1,5 +1,7 @@
 var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	
+	var _myHortDetails = {};
+	
 	for (var i=0; i<_groupData.Members.length; i++) {
 		if (_groupData.Members[i].UserId === utm.User.UserProfile.UserId) {
 			_memberData = _groupData.Members[i];
@@ -10,7 +12,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	
 	
 	var StandardWindow = require('ui/common/StandardWindow');
-	var self = new StandardWindow('Group Detail', '');
+	var self = new StandardWindow('Group Detail', true);
 
 	var backButton = Ti.UI.createLabel({
 		text: 'back',
@@ -88,13 +90,13 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	});
 	
 	var tableView = Ti.UI.createTableView({
-		height: 454 - 137,
+		height: utm.viewableArea - 137,
 		top: 27
 	});
 	self.add(tableView);
 	
 	var settingsView = Ti.UI.createView({
-		height: 454 - 137,
+		height: utm.viewableArea - 137,
 		top: 27,
 		layout: 'vertical'
 	});
@@ -353,6 +355,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 			}
 		}
 		tableView.setData(tableData);
+		self.hideAi();
 	}
 	
 	var sort_by = function(field, reverse, primer) {
@@ -383,22 +386,22 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 			validatesSecureCertificate : utm.validatesSecureCertificate,
 			onload : function() {
 				var response = eval('(' + this.responseText + ')');
-				utm.myHortDetails = response;
-				if (this.status == 200) {
-					if (response.IsOwner) {
-						_memberData = utm.myHortDetails.PrimaryUser;
-					} else {
-						_memberData = utm.myHortDetails.MyInformation;
-					}
+				_myHortDetails = response;
+				if (this.status === 200) {
+					_memberData = _myHortDetails.MyInformation;
 					populateSettings(_memberData);
+				} else {
+					utm.handleHttpError({}, this.status, this.responseText);
 				}
+				getMyHortDetailReq = null;
 			},
 			onerror : function(e) {
 				if (this.status != undefined && this.status === 404) {
 					alert('The group you are looking for does not exist.');
 				} else {
-					utm.handleError(e, this.status, this.responseText);
+					utm.handleHttpError(e, this.status, this.responseText);
 				}
+				getMyHortDetailReq = null;
 			},
 			timeout : utm.netTimeout
 		});
@@ -436,7 +439,6 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		color: 'white'
 	});	
 	saveButton.addEventListener('click', function() {
-		alert('save'); 
 		updateMyHortData();
 	});	
 	self.add(saveButton);
@@ -464,15 +466,16 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 			validatesSecureCertificate : utm.validatesSecureCertificate,
 			onload : function() {
 				var json = this.responseData;
-				if (this.status == 200) {
+				if (this.status === 200) {
 					self.close();
-				} else if (this.status == 400) {
 				} else {
+					utm.handleHttpError({}, this.status, this.responseText);
 				}
+				leaveMyHortReq = null;
 			},
 			onerror : function(e) {
-				alert(e);
-
+				utm.handleHttpError(e, this.status, this.responseText);
+				leaveMyHortReq = null;
 			},
 			timeout : utm.netTimeout
 		});
@@ -494,10 +497,10 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 			TwitterSecret: '',
 			FaceBook: '',
 			Id: _memberData.Id,
-			userId: utm.User.UserProfile.UserId,
-			myHortId: _groupData.MyHortId
+			UserId: utm.User.UserProfile.UserId,
+			MyHortId: _groupData.MyHortId
 		};
-		Ti.API.info(_userSettings);
+
 		if (twitterSwitch.getValue()) {
 			if (!twitter.isAuthorized()) {
 				authTwitter();
@@ -509,27 +512,30 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 			Facebook.authorize();
 			_userSettings.FaceBook = Facebook.getAccessToken();
 		}
+		_myHortDetails.MyInformation =  _userSettings;
 		
 		var updateMyHortDetailReq = Ti.Network.createHTTPClient({
 			validatesSecureCertificate : utm.validatesSecureCertificate,
 			onload : function() {
 				var json = this.responseData;
-				alert(json);
-				if (this.status == 200) {
+				if (this.status === 200) {
 					self.close();
-				} else if (this.status == 400) {
 				} else {
+					utm.handleHttpError({}, this.status, this.responseText);
 				}
+				updateMyHortDetailReq = null;
 			},
 			onerror : function(e) {
+				utm.handleHttpError(e, this.status, this.responseText);
+				updateMyHortDetailReq = null;
 			},
 			timeout : utm.netTimeout
 		});
 		
-		updateMyHortDetailReq.open("POST", utm.serviceUrl + "MyHort/UpdateMyHortMember");
+		updateMyHortDetailReq.open("POST", utm.serviceUrl + "MyHort/UpdateMyHortDetails");
 		updateMyHortDetailReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");
 		updateMyHortDetailReq.setRequestHeader('Authorization-Token', utm.AuthToken);
-		updateMyHortDetailReq.send(JSON.stringify(_userSettings));
+		updateMyHortDetailReq.send(JSON.stringify(_myHortDetails));
 	}
 	
 	

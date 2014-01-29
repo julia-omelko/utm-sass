@@ -176,15 +176,17 @@ function verifyServerSideWithApple(_receipt,_productIdentifier){
 					alert("Your purchase was successful but will not be reflected right away.");
 				}
 			} else {
-				utm.handleError(e, this.status, this.responseText);
+				utm.handleHttpError({}, this.status, this.responseText);
 			}
+			verifyReceipt = null;
 		},
 		onerror : function(e) {		
-			utm.handleError(e, this.status, this.responseText);
+			utm.handleHttpError(e, this.status, this.responseText);
 			resultMessage = "There was an error processing your request!";
 			utm.inSubscriptionMode = false;
-		}
-		,timeout:utm.netTimeout
+			verifyReceipt = null;
+		},
+		timeout:utm.netTimeout
 	});
 	var theUrl = utm.serviceUrl + "VerifyAppleReceipt";
 	verifyReceipt.open("POST", theUrl);
