@@ -35,10 +35,12 @@ function StandardWindow(_title,_showAi) {
 	
 	
 	var ai = Ti.UI.createView({
-		height: Ti.UI.FILL,
-		width: Ti.UI.FILL,
+		height: utm.viewableArea,
+		width: '100%',
 		visible: _showAi,
-		zIndex: 1
+		zIndex: 1,
+		top: 0,
+		left: 0
 	});
 	var images = [
 		'/images/ai/0.png',

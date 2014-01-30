@@ -73,7 +73,6 @@ var MessagesWin = function(_tabGroup) {
 		receivedButton.setColor(utm.textColor);
 		sentButton.setBackgroundColor(utm.backgroundColor);
 		sentButton.setColor(utm.secondaryTextColor);
-		self.showAi();
 		getMessages('received');
 		currentMode = 'received';
 	});
@@ -82,16 +81,24 @@ var MessagesWin = function(_tabGroup) {
 		sentButton.setColor(utm.textColor);
 		receivedButton.setBackgroundColor(utm.backgroundColor);
 		receivedButton.setColor(utm.secondaryTextColor);
-		self.showAi();
 		getMessages('sent');
 		currentMode = 'sent';
 	});
 	
+	var refreshing = false;
+	var refreshControl = Ti.UI.createRefreshControl({
+		tintColor: utm.color_org
+	});
 	var tableView = Titanium.UI.createTableView({
 		editable: false,
 		allowsSelectionDuringEditing: true,
 		height: utm.viewableArea - 27,
-		top: 27
+		top: 27,
+		refreshControl: refreshControl
+	});
+	refreshControl.addEventListener('refreshstart',function(e){
+		refreshing = true;
+		getMessages(currentMode);
 	});
 	self.add(tableView);	
 	
@@ -107,7 +114,9 @@ var MessagesWin = function(_tabGroup) {
 	
 	var MessageTableRow = require('/ui/common/baseui/MessageViewRow');
 	function getMessages(mode) {
-		self.showAi();
+		if (refreshing === false) {
+			self.showAi();
+		}
 		var getMessagesReq = Ti.Network.createHTTPClient({
 			validatesSecureCertificate: utm.validatesSecureCertificate,
 			onload: function() {
@@ -125,6 +134,8 @@ var MessagesWin = function(_tabGroup) {
 
 					tableView.setData(tableData);
 					self.hideAi();
+        			refreshControl.endRefreshing();
+        			refreshing = false;
 				} else {
 					utm.handleHttpError({}, this.status, this.responseText);
 				}
