@@ -18,10 +18,25 @@ var AttachmentPreviewWin = function(_win,_attachment) {
 	});
 	self.setRightNavButton(backButton);
 	
-	attachmentPreview = Ti.UI.createImageView({
-		image: _attachment
+	var scrollView = Ti.UI.createScrollView({
+		contentWidth:'auto',
+		contentHeight:'auto',
+		top:0,
+		bottom:0,	
+		showVerticalScrollIndicator:true,
+		showHorizontalScrollIndicator:true,
+		maxZoomScale:4,
+		minZoomScale:1, 
+		zoomScale:1
 	});
-	self.add(attachmentPreview);
+	self.add(scrollView);
+	
+	var attachmentPreview = Ti.UI.createImageView({
+		image: _attachment,
+    	enableZoomControls: true,
+    	width: '100%'
+	});
+	scrollView.add(attachmentPreview);
 	
 	return self;
 };

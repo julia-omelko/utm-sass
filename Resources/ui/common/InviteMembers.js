@@ -1,5 +1,5 @@
 var InviteMembersWin = function(_tabGroup,_myHortInfo) {
-	var _myHortId = _myHortInfo.myHort.MyHortId;
+	var _myHortId = utm.User.UserProfile.PrimaryMyHort;
 	var primaryMemberNickName = '';
 	var primaryMember = getPrimaryMember(_myHortInfo.myHort.Members);
 	var primaryMemberNickName = primaryMember.NickName;

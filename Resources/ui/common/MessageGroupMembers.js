@@ -1,7 +1,7 @@
 var MessageGroupMembersWin = function(_tabGroup,_myHortData) {
 	
 	var StandardWindow = require('ui/common/StandardWindow');
-	var self = new StandardWindow('Group Detail', true);
+	var self = new StandardWindow('New Message', true);
 
 	var backButton = Ti.UI.createLabel({
 		text: 'back',
@@ -12,9 +12,6 @@ var MessageGroupMembersWin = function(_tabGroup,_myHortData) {
 		self.close();
 	});
 	self.setLeftNavButton(backButton);
-	
-
-	Ti.API.info(_myHortData);
 	
 	
 	var memberTableView = Ti.UI.createTableView({
@@ -138,11 +135,15 @@ var MessageGroupMembersWin = function(_tabGroup,_myHortData) {
 				}
 			}
 		}
-
-		var ComposeWin = require('/ui/common/Compose');
-		var composeWin = new ComposeWin(_tabGroup,selectedContacts,'Send');
-		utm.winStack.push(composeWin);
-		_tabGroup.getActiveTab().open(composeWin);
+		
+		if (selectedContacts.length) {
+			var ComposeWin = require('/ui/common/Compose');
+			var composeWin = new ComposeWin(_tabGroup,selectedContacts,'Send');
+			utm.winStack.push(composeWin);
+			_tabGroup.getActiveTab().open(composeWin);
+		} else {
+			alert('No members have been selected.');
+		}
 	});	
 	self.add(composeButton);
 	

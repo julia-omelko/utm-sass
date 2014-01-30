@@ -14,8 +14,9 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 	self.setLeftNavButton(backButton);
 	
 	var scrollingView = Ti.UI.createScrollView({
-		width:'100%',
-		height:'100%',
+		width: Ti.UI.FILL,
+		height: utm.viewableArea - 60,
+		top: 0,
 		showVerticalScrollIndicator: true,
 		contentHeight:'auto',
 		layout:'vertical'
@@ -110,21 +111,24 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 	
 	var replyBtn = Ti.UI.createButton({
 		title: 'Reply',
-		top: 25,
+		bottom: 25,
 		width: (Ti.Platform.displayCaps.platformWidth-50),
 		height: 40,
 		borderRadius: 20,
 		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
 		backgroundColor: utm.buttonColor,
 		color: 'white',
-		visible: false
 	});	
-	scrollingView.add(replyBtn);
+	self.add(replyBtn);
 	replyBtn.addEventListener('click', function() {
 		Ti.App.fireEvent('app:getSubscriptionInfo',{callBack:'app:replyToMessage'});
 	});	
-	Ti.App.addEventListener('app:replyToMessage',function(e){
+	var replyToMessage = function() {
 		getReplyToUserData(_messageData.FromUserId);
+	};
+	Ti.App.addEventListener('app:replyToMessage',replyToMessage);
+	self.addEventListener('close',function(e){
+		Ti.App.removeEventListener('app:replyToMessage',replyToMessage);
 	});
 	
 	
@@ -142,10 +146,8 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 						setMessageAsRead(_messageData.Id);
 					}
 					self.hideAi();
-				} 	
-				
+				}
 				originalMessage.setText(response.Message);
-				replyBtn.setVisible(true);
 
 			} else {
 				utm.handleHttpError(e, this.status, this.responseText);

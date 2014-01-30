@@ -5,10 +5,11 @@ var LoginWin = function() {
 	self.setNavBarHidden(true);
 	
 	var scrollView = Ti.UI.createScrollView({
+		top: 20,
 		scrollType : 'vertical',
 		showVerticalScrollIndicator : true,
 		showHorizontalScrollIndicator : false,
-		height: Ti.Platform.displayCaps.platformHeight
+		height: Ti.Platform.displayCaps.platformHeight-20
 	});
 	self.add(scrollView);
 	var view = Ti.UI.createView({
@@ -20,7 +21,7 @@ var LoginWin = function() {
 		image: '/images/ytm_Narrow.png',
 		width: '275dp',
 		height: '71dp',
-		top: Math.round(Ti.Platform.displayCaps.platformHeight*0.095)
+		top: (Ti.Platform.displayCaps.platformHeight-160-280)/2 //Math.round(Ti.Platform.displayCaps.platformHeight*0.055)
 	});
 	view.add(utmLogo);
 	

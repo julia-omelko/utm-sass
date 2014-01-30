@@ -19,14 +19,18 @@ var MessagesWin = function(_tabGroup) {
 		height: 22,
 		width: 22
 	});
-	composeButton.addEventListener('click',function(e){
-		Ti.App.fireEvent('app:getSubscriptionInfo',{callBack:'app:composeMessage'});
-	});
-	Ti.App.addEventListener('app:composeMessage',function(e){
+	var composeMessage = function() {
 		var MessageMembersWin = require('/ui/common/MessageMembers');
 		var messageMembersWin = new MessageMembersWin(_tabGroup);
 		utm.winStack.push(messageMembersWin);
 		_tabGroup.getActiveTab().open(messageMembersWin);
+	};
+	composeButton.addEventListener('click',function(e){
+		Ti.App.fireEvent('app:getSubscriptionInfo',{callBack:'app:composeMessage'});
+	});
+	Ti.App.addEventListener('app:composeMessage',composeMessage);
+	self.addEventListener('close',function(e){
+		Ti.App.removeEventListener('app:composeMessage',composeMessage);
 	});
 	self.setRightNavButton(composeButton);
 	
@@ -94,12 +98,16 @@ var MessagesWin = function(_tabGroup) {
 	tableView.addEventListener('click', function(e) {
 		var DetailWin = require('/ui/common/MessageDetail');
 		var detailWin = new DetailWin(_tabGroup,e.rowData.messageData);
+		detailWin.addEventListener('close',function(e){
+			getMessages(currentMode);
+		});
 		utm.winStack.push(detailWin);
 		_tabGroup.getActiveTab().open(detailWin);
 	});
 	
 	var MessageTableRow = require('/ui/common/baseui/MessageViewRow');
 	function getMessages(mode) {
+		self.showAi();
 		var getMessagesReq = Ti.Network.createHTTPClient({
 			validatesSecureCertificate: utm.validatesSecureCertificate,
 			onload: function() {

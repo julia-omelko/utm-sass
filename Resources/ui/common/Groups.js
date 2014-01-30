@@ -70,6 +70,8 @@ var GroupsWin = function(_tabGroup) {
 				if (this.status === 200) {
 					var response = eval('(' + this.responseText + ')');
 					if (response !== null) {
+						Ti.API.info(response);
+						Ti.API.info(utm.User.UserProfile.PrimaryMyHort);
 						populateTable(response);
 					}
 				} else {
@@ -92,8 +94,10 @@ var GroupsWin = function(_tabGroup) {
 	function populateTable(myHortData) {
 		var tableData = [];
 		for (var i=0; i<myHortData.length; i++) {
-			var row = new GroupTableRow(myHortData[i]);
-			tableData.push(row);
+			if (myHortData[i].MyHortId !== utm.User.UserProfile.PrimaryMyHort) {
+				var row = new GroupTableRow(myHortData[i]);
+				tableData.push(row);
+			}
 		}
 
 		tableView.setData(tableData);

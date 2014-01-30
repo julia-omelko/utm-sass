@@ -20,7 +20,7 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageID) {
 	
 	var scrollingView = Ti.UI.createScrollView({
 		width: '100%',
-		height: utm.viewableArea - 74,
+		height: utm.viewableArea - 60,
 		showVerticalScrollIndicator: true,
 		contentHeight: 'auto',
 		layout: 'vertical',
@@ -149,7 +149,7 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageID) {
 	
 	var previewBtn = Ti.UI.createButton({
 		title: 'Preview',
-		bottom: 25,
+		bottom: 10,
 		width: (Ti.Platform.displayCaps.platformWidth-50),
 		height: 40,
 		borderRadius: 20,

@@ -1,15 +1,8 @@
-var MemberGroupDetailWin = function(_tabGroup,_groupData) {
-	var _myHortDetails = {};
+var PrimaryGroupDetailWin = function(_tabGroup) {
+	var _Id;
 	
-	for (var i=0; i<_groupData.Members.length; i++) {
-		if (_groupData.Members[i].UserId === utm.User.UserProfile.UserId) {
-			_memberData = _groupData.Members[i];
-			break;
-		}
-	}
-		
 	var StandardWindow = require('ui/common/StandardWindow');
-	var self = new StandardWindow('Group Detail', true);
+	var self = new StandardWindow('Account Settings', true);
 
 	var backButton = Ti.UI.createLabel({
 		text: 'back',
@@ -21,67 +14,9 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	});
 	self.setLeftNavButton(backButton);
 	
-	var addButton = Ti.UI.createImageView({
-		image: '/images/icons/add.png',
-		height: 22,
-		width: 22
-	});
-	addButton.addEventListener('click',function(e){
-		var AddToGroupWin = require('/ui/common/AddMembersToGroup');
-		var addToGroupWin = new AddToGroupWin(_tabGroup,_groupData);
-		_tabGroup.getActiveTab().open(addToGroupWin);
-	});
-	self.setRightNavButton(addButton);
+
 	
-	var mode = 'members';
-	var tabBar = Titanium.UI.createView({
-		layout : 'horizontal',
-		width : '100%',
-		height : 27,
-		top: 0
-	});
-	self.add(tabBar);
-	var membersButton = Ti.UI.createLabel({
-		text: 'members',
-		width: Math.round(Ti.Platform.displayCaps.platformWidth * 0.5),
-		height: Ti.UI.FILL,
-		backgroundColor: 'white',
-		borderColor: '#D4D4D4',
-		borderWidth: 1,
-		font: {fontFamily: utm.fontFamily},
-		color: utm.textColor,
-	    textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER
-	});
-	tabBar.add(membersButton);
-	var settingsButton = Ti.UI.createLabel({
-		text: 'settings',
-		width: Math.round(Ti.Platform.displayCaps.platformWidth * 0.5),
-		height: Ti.UI.FILL,
-		backgroundColor: utm.backgroundColor,
-		borderColor: '#D4D4D4',
-		borderWidth: 1,
-		font: {fontFamily: utm.fontFamily},
-		color: utm.secondaryTextColor,
-		textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER
-	});
-	tabBar.add(settingsButton);
 	
-	membersButton.addEventListener('click', function(e){
-		membersButton.setBackgroundColor('white');
-		membersButton.setColor(utm.textColor);
-		settingsButton.setBackgroundColor(utm.backgroundColor);
-		settingsButton.setColor(utm.secondaryTextColor);
-		self.remove(settingsView);
-		self.add(tableView);
-	});
-	settingsButton.addEventListener('click', function(e){
-		settingsButton.setBackgroundColor('white');
-		settingsButton.setColor(utm.textColor);
-		membersButton.setBackgroundColor(utm.backgroundColor);
-		membersButton.setColor(utm.secondaryTextColor);
-		self.remove(tableView);
-		self.add(settingsView);
-	});
 	
 	
 	
@@ -100,31 +35,16 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	
 	
 	
-	var tableView = Ti.UI.createTableView({
-		height: utm.viewableArea - 137,
-		top: 27
-	});
-	self.add(tableView);
-	tableView.addEventListener('click',function(e){
-		if (e.rowData.memberData.InviteCode != null) {
-			var OwnerGroupMemberDetail = require('/ui/common/OwnerGroupMemberPending');
-		} else {
-			var OwnerGroupMemberDetail = require('/ui/common/OwnerGroupMemberDetail');
-		}
-		var ownerGroupMemberDetail = new OwnerGroupMemberDetail(_tabGroup, e.rowData.memberData);
-		ownerGroupMemberDetail.addEventListener('close',function(e){
-			loadMyHortDetail();
-		});
-		_tabGroup.getActiveTab().open(ownerGroupMemberDetail);	
-	});
+	
 	
 	var settingsView = Ti.UI.createScrollView ({
-		height: utm.viewableArea - 137,
-		top: 27,
+		height: utm.viewableArea - 60,
+		top: 0,
 		showVerticalScrollIndicator:true,
 		contentHeight:'auto',
 		layout: 'vertical'
 	});
+	self.add(settingsView);
 	
 	var focused = Ti.UI.createView({
 		width: Ti.UI.FILL,
@@ -133,44 +53,6 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		bottom: 0
 	});
 	
-	var groupLabel = Ti.UI.createLabel({
-		text: 'Group name',
-		font: {fontFamily: utm.fontFamily, fontSize: 18},
-		color: utm.barColor,
-		wordWrap: false,
-		ellipsize: true,
-		height: Ti.UI.SIZE,
-		width: Ti.UI.SIZE,
-		left: 25,
-		top: 10
-	});
-	settingsView.add(groupLabel);
-	
-	var groupField = Ti.UI.createTextField({
-		value: _groupData.FriendlyName,
-		color: utm.textFieldColor,		
-		width: (Ti.Platform.displayCaps.platformWidth-50),
-		height: 30,
-		left: 25,
-		autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
-		autocorrect: false,
-		keyboardType: Ti.UI.KEYBOARD_DEFAULT,
-		returnKeyType: Ti.UI.RETURNKEY_DEFAULT,
-		top: 5,
-		borderColor: '#D4D4D4',
-		borderRadius: 2,
-		borderWidth: 1,
-		backgroundColor: 'white',
-		paddingLeft: 7,
-		font: {fontFamily: utm.fontFamily, fontSize: 16}
-	});
-	groupField.addEventListener('focus', function() {
-		groupField.add(focused);
-	});
-	groupField.addEventListener('blur', function() { 
-		groupField.remove(focused);
-	});
-	settingsView.add(groupField);
 	
 	var premessageLabel = Ti.UI.createLabel({
 		text: 'Premessage',
@@ -186,7 +68,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	settingsView.add(premessageLabel);
 	
 	var premessageField = Ti.UI.createTextField({
-		value: _groupData.Prefix,
+		value: '',
 		color: utm.textFieldColor,		
 		width: (Ti.Platform.displayCaps.platformWidth-50),
 		height: 30,
@@ -225,7 +107,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	settingsView.add(postmessageLabel);
 	
 	var postmessageField = Ti.UI.createTextField({
-		value: _groupData.Postfix,
+		value: '',
 		color: utm.textFieldColor,		
 		width: (Ti.Platform.displayCaps.platformWidth-50),
 		height: 30,
@@ -437,7 +319,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	});
 	var fbSwitch = Ti.UI.createSwitch({
 		right: 25,
-		value: ((_groupData.FaceBook != null) ? true : false)
+		value: false
 	});
 	fbRow.add(fbIcon);
 	fbRow.add(fbSwitch);
@@ -503,47 +385,14 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	tableDataSettings.push(additionalSection);
 	tableViewSettings.setData(tableDataSettings);
 	
-	
-	
-	function displayMemberData(_members) {
-		_members.sort(sort_by('NickName', true, function(a){return a.toUpperCase();}));
-		var aAlpha = [];
-		var aMember = [];
-		var letter = '';
-		for (var i=0; i<_members.length; i++) {
-			var letter2 = _members[i].NickName.charAt(0).toUpperCase();
-			if (letter !== letter2) {
-				aAlpha[aAlpha.length] = letter2;
-				letter = letter2;
-			}
-		}
-		for (var i=0; i<aAlpha.length; i++) {
-			aMember[i] = [];
-			for (var j=0; j<_members.length; j++) {
-				var letter = _members[j].NickName.charAt(0).toUpperCase();
-				if (aAlpha[i] === letter) {
-					aMember[i][aMember[i].length] = _members[j];
-				}
-			}
-		}
-		var MemberViewSection = require('/ui/common/baseui/MemberViewSection');
-		var tableData = [];
-		for (var i=0; i<aAlpha.length; i++) {
-			tableData[i] = new  MemberViewSection(aAlpha[i],aMember[i]);
-		}
-		tableView.setData(tableData);
-		self.hideAi();
-	}
-	
-	var sort_by = function(field, reverse, primer) {
-	   var key = primer ? function(x) {return primer(x[field]);} : function(x) {return x[field];};
-	   reverse = [-1, 1][+!!reverse];
-	   return function (a, b) {
-	       return a = key(a), b = key(b), reverse * ((a > b) - (b > a));
-	   }; 
-	};
 
-	var populateSettings = function(_memberData) {
+
+	var populateSettings = function(_primaryData) {
+		var _memberData = _primaryData.PrimaryUser;
+		_Id = _memberData.Id;
+		
+		premessageField.setValue(_primaryData.Prefix);
+		postmessageField.setValue(_primaryData.Postfix);
 		emailField.setValue(_memberData.Email);
 		nicknameField.setValue(_memberData.NickName);
 		mobileField.setValue(_memberData.Mobile);
@@ -556,6 +405,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		if (_memberData.AddNicknameToUtms) {
 			signSwitch.setValue(true);
 		}
+		self.hideAi();
 	};
 
 
@@ -567,13 +417,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 				_myHortDetails = response;
 
 				if (this.status === 200) {
-					if (response.IsOwner) {
-						_memberData = response.PrimaryUser;
-					} else {
-						_memberData = response.MyInformation;
-					}
-					populateSettings(_memberData);
-					displayMemberData(response.myHort.Members);
+					populateSettings(response);
 				} else {
 					utm.handleHttpError({}, this.status, this.responseText);
 				}
@@ -589,27 +433,13 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 			},
 			timeout : utm.netTimeout
 		});
-		getMyHortDetailReq.open("GET", utm.serviceUrl + "MyHort/GetMyHortDetails?myHortId=" + _groupData.MyHortId);
+		getMyHortDetailReq.open("GET", utm.serviceUrl + "MyHort/GetMyHortDetails?myHortId=" + utm.User.UserProfile.PrimaryMyHort);
 		getMyHortDetailReq.setRequestHeader('Authorization-Token', utm.AuthToken);
 		getMyHortDetailReq.send();
 	}
 	
 	loadMyHortDetail();
 	
-	var deleteButton = Ti.UI.createButton({
-		title: 'Delete group',
-		bottom: 60,
-		width: (Ti.Platform.displayCaps.platformWidth-50),
-		height: 40,
-		borderRadius: 20,
-		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
-		backgroundColor: utm.barColor,
-		color: 'white'
-	});
-	deleteButton.addEventListener('click',function(e){
-		confirmDeleteMyHort();
-	});
-	self.add(deleteButton);
 	
 	var saveButton = Ti.UI.createButton({
 		title: 'Save',
@@ -636,7 +466,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 			TwitterToken: '',
 			TwitterSecret: '',
 			FaceBook: '',
-			Id: _memberData.Id
+			Id: _Id
 		};
 		if (twitterSwitch.getValue()) {
 			if (!twitter.isAuthorized()) {
@@ -650,18 +480,12 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 			_userSettings.FaceBook = Facebook.getAccessToken();
 		}
 		
-		if (_myHortDetails.IsOwner) {
-			_myHortDetails.PrimaryUser = _userSettings;
-			_myHortDetails.MyInformation = '';
+		_myHortDetails.PrimaryUser = _userSettings;
+		_myHortDetails.MyInformation = '';
 
-			_myHortDetails.myHort.Prefix = premessageField.getValue();
-			_myHortDetails.myHort.Postfix = postmessageField.getValue();
-			_myHortDetails.myHort.FriendlyName = groupField.getValue();
+		_myHortDetails.myHort.Prefix = premessageField.getValue();
+		_myHortDetails.myHort.Postfix = postmessageField.getValue();
 			
-		} else {
-			_myHortDetails.MyInformation = _userSettings;
-			_myHortDetails.PrimaryUser = '';
-		}
 		delete _myHortDetails['MyInformation'];
 		delete _myHortDetails.myHort['Members'];
 		
@@ -669,7 +493,6 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 			validatesSecureCertificate : utm.validatesSecureCertificate,
 			onload : function() {
 				var json = this.responseData;
-				//alert(json);
 				if (this.status === 200) {
 					self.close();
 				} else {
@@ -691,50 +514,9 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		updateMyHortDetailReq.send(JSON.stringify(_myHortDetails));
 	}
 	
-	function confirmDeleteMyHort() {
-		var dialog = Ti.UI.createAlertDialog({
-			cancel: 1,
-			buttonNames: ['Yes', L('cancel')],
-			message: 'This will delete all information in this group.  Do you want to continue?',
-			title: 'Confirm delete'
-		});
-		dialog.addEventListener('click', function(e) {
-			if (e.index === 0) {
-				deleteMyHort();
-			}
-		});
-		dialog.show();
-	};
-	
-	
-	function deleteMyHort() {
-		var deleteMyHortReq = Ti.Network.createHTTPClient({
-			validatesSecureCertificate : utm.validatesSecureCertificate,
-			onload : function() {
-				var json = this.responseData;
-				if (this.status === 200) {
-					self.close();
-				} else {
-					utm.handleHttpError({}, this.status, this.responseText);
-				}
-				deleteMyHortReq = null;
-			},
-			onerror : function(e) {
-				utm.handleHttpError(e, this.status, this.responseText);
-				deleteMyHortReq = null;
-			},
-			timeout : utm.netTimeout
-		});
-		
-		deleteMyHortReq.open("GET", utm.serviceUrl + "MyHort/DeleteUsersMyHort?myhortId=" + _groupData.MyHortId);
-		deleteMyHortReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");
-		deleteMyHortReq.setRequestHeader('Authorization-Token', utm.AuthToken);
-		deleteMyHortReq.send();
-	}
-	
 	
 	return self;
 };
 
-module.exports = MemberGroupDetailWin;
+module.exports = PrimaryGroupDetailWin;
 

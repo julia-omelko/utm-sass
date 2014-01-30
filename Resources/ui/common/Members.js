@@ -1,5 +1,5 @@
 var MembersWin = function(_tabGroup) {
-	var myHortId = 3312;
+	var myHortId = utm.User.UserProfile.PrimaryMyHort;
 	var myHortData = {};
 	
 	var StandardWindow = require('ui/common/StandardWindow');
@@ -17,6 +17,10 @@ var MembersWin = function(_tabGroup) {
 		text: 'edit',
 		font: {fontFamily: utm.fontFamily},
 		color: 'white'
+	});
+	editButton.addEventListener('click', function(e){
+		tableView.setEditing(!tableView.getEditing());
+		editButton.setText((tableView.getEditing() ? 'done' : 'edit'));
 	});
 	self.setLeftNavButton(editButton);
 	
@@ -36,7 +40,7 @@ var MembersWin = function(_tabGroup) {
 	self.setRightNavButton(newButton);
 
 	var tableView = Ti.UI.createTableView({
-		editable: true,
+		editable: false,
 		allowsSelectionDuringEditing: true,
 		height: utm.viewableArea,
 		top: 0
@@ -44,14 +48,73 @@ var MembersWin = function(_tabGroup) {
 	self.add(tableView);
 	
 	tableView.addEventListener('click',function(e){
-		var MemberDetailWin = require('/ui/common/MemberDetail');
+		if (e.rowData.memberData.InviteCode != null) {
+			var MemberDetailWin = require('/ui/common/MemberPending');
+			var memberDetailWin = new MemberDetailWin(_tabGroup, e.rowData.memberData, myHortData.myHort);
+		} else {
+			var MemberDetailWin = require('/ui/common/MemberDetail');
 		var memberDetailWin = new MemberDetailWin(_tabGroup, e.rowData.memberData);
+		}
 		memberDetailWin.addEventListener('close',function(e){
 			loadMyHortDetail();
 		});
 		_tabGroup.getActiveTab().open(memberDetailWin);
 	});
-
+	
+	tableView.addEventListener('delete', function(e) {
+		if (e.rowData.memberData.InviteCode != null) {
+			deletePending(e.rowData.memberData);
+		} else {
+			deleteMember(e.rowData.memberData);
+		}
+	});
+	
+	
+	function deleteMember(_memberData) {
+		var deleteMemberReq = Ti.Network.createHTTPClient({
+			validatesSecureCertificate : utm.validatesSecureCertificate,
+			onload : function() {
+				var json = this.responseData;
+				if (this.status === 200) {
+				} else {
+					utm.handleHttpError({}, this.status, this.responseText);
+				}
+				deleteMyHortReq = null;
+			},
+			onerror : function(e) {
+				utm.handleHttpError(e, this.status, this.responseText);
+				deleteMyHortReq = null;
+			},
+			timeout : utm.netTimeout
+		});
+		
+		deleteMemberReq.open("POST", utm.serviceUrl + "MyHort/DeleteUserFromMyHort?myhortMemberId=" + _memberData.Id);
+		deleteMemberReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+		deleteMemberReq.setRequestHeader('Authorization-Token', utm.AuthToken);
+		deleteMemberReq.send();
+	}
+	
+	function deletePending(_memberData) {
+		var deletePendingReq = Ti.Network.createHTTPClient({
+			validatesSecureCertificate : utm.validatesSecureCertificate,
+			onload : function() {
+				var response = eval('(' + this.responseText + ')');
+				if (this.status === 200) {
+				} else {
+					utm.handleHttpError({}, this.status, this.responseText);
+				}
+				deletePendingReq = null;
+			},
+			onerror : function(e) {
+				utm.handleHttpError(e, this.status, this.responseText);
+				deletePendingReq = null;
+			},
+			timeout : utm.netTimeout
+		});
+		deletePendingReq.open("DELETE", utm.serviceUrl + "MyHort/DeleteInvite/" + _memberData.Id);
+		deletePendingReq.setRequestHeader('Authorization-Token', utm.AuthToken);
+		deletePendingReq.send();
+	}
 
 
 	function loadMyHortDetail() {

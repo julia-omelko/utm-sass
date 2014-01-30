@@ -1,8 +1,8 @@
 var MessageMembersWin = function(_tabGroup) {
-	var myHortId = 3312;
+	var myHortId = utm.User.UserProfile.PrimaryMyHort;
 	
 	var StandardWindow = require('ui/common/StandardWindow');
-	var self = new StandardWindow('Group Detail', true);
+	var self = new StandardWindow('New Message', true);
 
 	var backButton = Ti.UI.createLabel({
 		text: 'back',
@@ -135,7 +135,6 @@ var MessageMembersWin = function(_tabGroup) {
 	function displayMyHortData(myHortData) {
 		myHortData.myHort.Members.sort(sort_by('NickName', true, function(a){return a.toUpperCase();}));
 		
-		
 		for (var i=0; i<myHortData.myHort.Members.length; i++) {
 			if (myHortData.myHort.Members[i].UserId === utm.User.UserProfile.UserId) {
 				myHortData.myHort.Members.splice(i, 1);
@@ -205,8 +204,10 @@ var MessageMembersWin = function(_tabGroup) {
 	function populateTable(myHortData) {
 		var tableData = [];
 		for (var i=0; i<myHortData.length; i++) {
-			var row = new GroupTableRow(myHortData[i]);
-			tableData.push(row);
+			if (myHortData[i].MyHortId !== utm.User.UserProfile.PrimaryMyHort) {
+				var row = new GroupTableRow(myHortData[i]);
+				tableData.push(row);
+			}
 		}
 
 		groupTableView.setData(tableData);
@@ -240,11 +241,15 @@ var MessageMembersWin = function(_tabGroup) {
 				}
 			}
 		}
-
-		var ComposeWin = require('/ui/common/Compose');
-		var composeWin = new ComposeWin(_tabGroup,selectedContacts,'Send');
-		utm.winStack.push(composeWin);
-		_tabGroup.getActiveTab().open(composeWin);
+		
+		if (selectedContacts.length) {
+			var ComposeWin = require('/ui/common/Compose');
+			var composeWin = new ComposeWin(_tabGroup,selectedContacts,'Send');
+			utm.winStack.push(composeWin);
+			_tabGroup.getActiveTab().open(composeWin);
+		} else {
+			alert('No members have been selected.');
+		}
 	});	
 	self.add(composeButton);
 	

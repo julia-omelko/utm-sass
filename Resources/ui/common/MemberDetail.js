@@ -209,18 +209,18 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 	}
 	
 	
-	
-	
 	function populateTable(_groups) {
 		for (var i=0; i<_groups.length; i++) {
 			for (var j=0; j<_groups[i].Members.length; j++) {
 				if (_groups[i].Members[j].UserId === _memberData.UserId) {
-					tableData[tableData.length] = Ti.UI.createTableViewRow({
-						title: _groups[i].FriendlyName,
-						height: 40,
-						font: {fontFamily: utm.fontFamily}
-					});
-					break;
+					if (_groups[i].MyHortId !== utm.User.UserProfile.PrimaryMyHort) {
+						tableData[tableData.length] = Ti.UI.createTableViewRow({
+							title: _groups[i].FriendlyName,
+							height: 40,
+							font: {fontFamily: utm.fontFamily}
+						});
+						break;
+					}
 				}
 			}
 		}

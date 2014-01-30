@@ -1,4 +1,5 @@
-var MemberGroupMemberDetailWin = function(_tabGroup,_memberData) {
+var MemberGroupMemberDetailWin = function(_tabGroup,_memberData,_myHortData) {
+	var _myHortId = utm.User.UserProfile.PrimaryMyHort;
 	
 	var StandardWindow = require('ui/common/StandardWindow');
 	var self = new StandardWindow('Member Detail', '');
@@ -22,27 +23,10 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData) {
 	});
 	self.add(scrollingView);
 	
-	var userView = Ti.UI.createView({
-		width: Ti.Platform.displayCaps.platformWidth-50,
-		left: 25,
-		height: Ti.UI.SIZE
-	});
-	scrollingView.add(userView);
 	
-	var avatar = Ti.UI.createImageView({
-		top: 25,
-		left: 0,
-		image: '/images/avatar/1.png',
-		width: 80,
-		height: 80,
-		backgroundColor: 'white',
-		borderColor: '#D4D4D4',
-		borderWidth: 1,
-		borderRadius: 2
-	});
-	userView.add(avatar);
+
 	
-	var nicknameLabel = Ti.UI.createLabel({
+	var emailLabel = Ti.UI.createLabel({
 		text: 'Email',
 		font: {fontFamily: utm.fontFamily, fontSize: 18},
 		color: utm.barColor,
@@ -50,21 +34,21 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData) {
 		ellipsize: true,
 		height: Ti.UI.SIZE,
 		width: Ti.UI.SIZE,
-		left: 100,
-		top: 30
+		left: 25,
+		top: 25
 	});
-	userView.add(nicknameLabel);
+	scrollingView.add(emailLabel);
 	
-	var nicknameField = Ti.UI.createLabel({
+	var emailField = Ti.UI.createLabel({
 		text: _memberData.EmailAddress,
 		color: utm.textFieldColor,		
 		width: Ti.UI.SIZE,
 		height: Ti.UI.SIZE,
-		left: 115,
-		top: 50,
+		left: 35,
+		top: 10,
 		font: {fontFamily: utm.fontFamily, fontSize: 16}
 	});
-	userView.add(nicknameField);
+	scrollingView.add(emailField);
 	
 	var inviteLabel = Ti.UI.createLabel({
 		text: 'Invite expiration date',
@@ -74,21 +58,21 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData) {
 		ellipsize: true,
 		height: Ti.UI.SIZE,
 		width: Ti.UI.SIZE,
-		left: 100,
-		top: 75
+		left: 25,
+		top: 15
 	});
-	userView.add(inviteLabel);
+	scrollingView.add(inviteLabel);
 	
 	var inviteDateText = Ti.UI.createLabel({
 		text: getDateTimeFormat(_memberData.ExpireDate),
 		color: utm.textFieldColor,		
 		width: Ti.UI.SIZE,
 		height: Ti.UI.SIZE,
-		left: 115,
-		top: 95,
+		left: 35,
+		top: 10,
 		font: {fontFamily: utm.fontFamily, fontSize: 16}
 	});
-	userView.add(inviteDateText);
+	scrollingView.add(inviteDateText);
 	
 
 
@@ -113,7 +97,7 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData) {
 	});
 	self.add(deleteButton);
 	
-	var saveButton = Ti.UI.createButton({
+	var reinviteButton = Ti.UI.createButton({
 		title: 'Reinvite',
 		bottom: 10,
 		width: (Ti.Platform.displayCaps.platformWidth-50),
@@ -123,10 +107,10 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData) {
 		backgroundColor: utm.buttonColor,
 		color: 'white'
 	});	
-	saveButton.addEventListener('click', function() {
-		alert('reinvite');
+	reinviteButton.addEventListener('click', function() {
+		reinviteMyHort();
 	});	
-	self.add(saveButton);
+	self.add(reinviteButton);
 
 
 
@@ -153,6 +137,43 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData) {
 		deletePendingReq.send();
 	}
 
+	function reinviteMyHort() {
+		
+		var inviteMyHortReq = Ti.Network.createHTTPClient({
+			validatesSecureCertificate : utm.validatesSecureCertificate,
+			onload: function() {
+				var json = this.responseData;
+				self.hideAi();
+				alert('Your invitation has been sent.');
+				self.close();
+				inviteMyHortReq = null;
+			},
+			onerror : function(e) {
+				inviteMyHortReq = null;
+			},
+			timeout:utm.netTimeout
+		});
+		inviteMyHortReq.open("POST", utm.serviceUrl + "MyHort/Invite");
+		inviteMyHortReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+		inviteMyHortReq.setRequestHeader('Authorization-Token', utm.AuthToken);
+		var myHortInviteModel = {
+			MyHortInfo: _myHortData,
+			UsersToInvite: _memberData.EmailAddress,
+			InviteMessage: 'You have been reinvited to YouThisMe.',
+			FromNickName: utm.User.UserProfile.UserName,
+			MemberType: _memberData.MemberType,
+			InviteCode: 'autogen'
+		};
+		inviteMyHortReq.send(JSON.stringify(myHortInviteModel));
+	}
+	
+	function getPrimaryMember(_members) {
+		for (var ii=0; ii<_members.length; ii++) {
+			if (_members[ii].MemberType === 'Primary') {
+				return _members[ii];
+			}
+		}
+	}
 
 	
 	return self;

@@ -40,7 +40,7 @@ var SettingsWin = function(_tabGroup) {
 		height: 40,
 		borderRadius: 20,
 		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
-		backgroundColor: utm.buttonColor,
+		backgroundColor: utm.barColor,
 		color: 'white'
 	});
 	scrollView.add(setPinLockButton);
@@ -58,7 +58,7 @@ var SettingsWin = function(_tabGroup) {
 		height: 40,
 		borderRadius: 20,
 		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
-		backgroundColor: utm.buttonColor,
+		backgroundColor: utm.barColor,
 		color: 'white'
 	});
 	scrollView.add(avatarButton);
@@ -67,6 +67,24 @@ var SettingsWin = function(_tabGroup) {
 		var AvatarWin = require('/ui/common/Avatar');
 		var avatarWin = new AvatarWin();	
 		_tabGroup.getActiveTab().open(avatarWin);	
+	});
+
+	var accountButton = Ti.UI.createButton({
+		title : 'Account settings',
+		top: 25,
+		width: (Ti.Platform.displayCaps.platformWidth-50),
+		height: 40,
+		borderRadius: 20,
+		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
+		backgroundColor: utm.barColor,
+		color: 'white'
+	});
+	scrollView.add(accountButton);
+
+	accountButton.addEventListener('click', function() {
+		var AccountWin = require('/ui/common/PrimaryGroupDetail');
+		var accountWin = new AccountWin();	
+		_tabGroup.getActiveTab().open(accountWin);	
 	});
 
 
@@ -78,7 +96,7 @@ var SettingsWin = function(_tabGroup) {
 		height: 40,
 		borderRadius: 20,
 		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
-		backgroundColor: utm.buttonColor,
+		backgroundColor: utm.barColor,
 		color: 'white'
 	});
 	scrollView.add(forgetMeButton);

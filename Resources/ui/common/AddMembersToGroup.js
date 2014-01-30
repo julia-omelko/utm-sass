@@ -1,5 +1,5 @@
 var MemberGroupDetailWin = function(_tabGroup,_groupData) {
-	var myHortId = 3312;
+	var myHortId = utm.User.UserProfile.PrimaryMyHort;
 	
 	var aExisting = [];
 	for (var i=0; i<_groupData.Members.length; i++) {

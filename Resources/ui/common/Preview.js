@@ -1,8 +1,9 @@
 var PreviewWin = function(_tabGroup,_message) {
-	
+	_myHortId = _message.selectedContacts[0].userData.MyHortId;
+	_nickname = '';
 	var deliveryOptions = {
 		sms: false,
-		email: false,
+		email: true,
 		twitter: false,
 		facebook: false,
 		signMessage: false,
@@ -11,27 +12,70 @@ var PreviewWin = function(_tabGroup,_message) {
 	};
 	var deliveryEnabled = {
 		sms: false,
-		email: false,
+		email: true,
 		twitter: false,
 		facebook: false
 	};
+	
+	function loadMyHortDetail() {
+		var getMyHortDetailReq = Ti.Network.createHTTPClient({
+			validatesSecureCertificate : utm.validatesSecureCertificate,
+			onload : function() {
+				var response = eval('(' + this.responseText + ')');
+				if (this.status === 200) {
+					myHortData = response;
+					if (myHortData.PrimaryUser.FaceBook !== '') {
+						deliveryEnabled.facebook = true;
+					}
+					if (myHortData.PrimaryUser.TwitterSecret !== '') {
+						deliveryEnabled.twitter = true;
+					}
+					if (myHortData.PrimaryUser.Mobile) {
+						deliveryEnabled.sms = true;
+					}
+					deliveryOptions.signMessage = myHortData.PrimaryUser.AddNicknameToUtms;
+										
+					_nickname = myHortData.PrimaryUser.NickName;
+					getUtmMessage();
+					
+				} else {
+					utm.handleHttpError({}, this.status, this.responseText);
+				}
+				getMyHortDetailReq = null;
+			},
+			onerror : function(e) {
+				utm.handleHttpError(e, this.status, this.responseText);
+				getMyHortDetailReq = null;
+			},
+			timeout : utm.netTimeout
+		});
+		getMyHortDetailReq.open("GET", utm.serviceUrl + "MyHort/GetMyHortDetails?myHortId=" + _myHortId);
+		getMyHortDetailReq.setRequestHeader('Authorization-Token', utm.AuthToken);
+		getMyHortDetailReq.send();
+	}
+	
+	loadMyHortDetail();
+	
+	
+	
+
 	for (var i=0; i<_message.selectedContacts.length; i++) {
 		if (typeof _message.selectedContacts[i].userData !== 'undefined') {
 			if (typeof _message.selectedContacts[i].userData.HasMobile !== 'undefined' && _message.selectedContacts[i].userData.HasMobile) {
-				deliveryEnabled.sms = true;
 				deliveryOptions.sms = true;
+				deliveryEnabled.sms = true;
 			}
-			if (typeof _message.selectedContacts[i].userData.HasEmail !== 'undefined' && _message.selectedContacts[i].userData.HasEmail) {
-				deliveryEnabled.email = true;
+			if (typeof _message.selectedContacts[i].userData.HasTwitter !== 'undefined' && _message.selectedContacts[i].userData.HasTwitter) {
+				deliveryOptions.twitter = true;
+				deliveryEnabled.twitter = true;
+			}
+			if (typeof _message.selectedContacts[i].userData.HasFacebook !== 'undefined' && _message.selectedContacts[i].userData.HasFacebook) {
+				deliveryOptions.facebook = true;
+				deliveryEnabled.facebook = true;
 			}
 		}
 	}
-	if (utm.curUserCurMyHortHasTwitter) {
-		deliveryEnabled.twitter = true;
-	}
-	if (utm.curUserCurMyHortHasFacebook){
-		deliveryEnabled.facebook = true;
-	}
+
 	
 	var StandardWindow = require('ui/common/StandardWindow');
 	var self = new StandardWindow('Preview', true);
@@ -48,7 +92,7 @@ var PreviewWin = function(_tabGroup,_message) {
 	
 	var scrollingView = Ti.UI.createScrollView({
 		width: '100%',
-		height: utm.viewableArea - 74,
+		height: utm.viewableArea - 110,
 		showVerticalScrollIndicator: true,
 		contentHeight: 'auto',
 		layout: 'vertical',
@@ -167,7 +211,7 @@ var PreviewWin = function(_tabGroup,_message) {
 		text: '',
 		top: 10,
 		left: 25,
-		height: 50,
+		height: 75,
 		width: Ti.Platform.displayCaps.platformWidth-50,
 		font: {fontFamily: utm.fontFamily},
 		verticalAlign: Ti.UI.TEXT_VERTICAL_ALIGNMENT_TOP,
@@ -198,12 +242,11 @@ var PreviewWin = function(_tabGroup,_message) {
 	
 	
 	
-	getUtmMessage();
 	
 	
 	var optionsBtn = Ti.UI.createButton({
 		title: 'Delivery options',
-		bottom: 75,
+		bottom: 60,
 		width: (Ti.Platform.displayCaps.platformWidth-50),
 		height: 40,
 		borderRadius: 20,
@@ -226,6 +269,11 @@ var PreviewWin = function(_tabGroup,_message) {
 	});
 	self.addEventListener('closeDeliveryOptions',function(e) {
 		deliveryOptions = e.options;
+		if (deliveryOptions.signMessage && utmMessage.getText().indexOf('\n- ' + _nickname) === -1) {
+			utmMessage.setText(utmMessage.getText() + '\n- ' + _nickname);
+		} else if (!deliveryOptions.signMessage){
+			utmMessage.setText(utmMessage.getText().replace('\n- ' + _nickname,''));
+		}
 		if (utm.iPhone || utm.iPad) {
 			navWin.close();
 		}
@@ -234,7 +282,7 @@ var PreviewWin = function(_tabGroup,_message) {
 	
 	var sendButton = Ti.UI.createButton({
 		title: 'Send message',
-		bottom: 25,
+		bottom: 10,
 		width: (Ti.Platform.displayCaps.platformWidth-50),
 		height: 40,
 		borderRadius: 20,
@@ -255,51 +303,15 @@ var PreviewWin = function(_tabGroup,_message) {
 			validatesSecureCertificate : utm.validatesSecureCertificate,
 			onload : function() {
 				var response = eval('(' + this.responseText + ')');
-				
 				if (this.status === 200) {
-					utmMessage.setText(response.UtmText);
-					self.hideAi();
+					var utmText = response.UtmText;
+					if (deliveryOptions.signMessage) {
+						utmText = utmText + '\n- ' + _nickname;
+					}
+					utmMessage.setText(utmText.trim());
 					deliveryOptions.curRjCrypt = response.RjCrypt;
-					/*if (signMessagesSwitchWasOnButTurnedff !== 'none') {
-						if (signMessagesSwitchWasOnButTurnedff) {
-							//Strip off Signature now
-							response.UtmText = response.UtmText.replace('\n\r-' + utm.curUserCurMyHortNickName, '');
-						} else {
-							response.UtmText = response.UtmText+ '\n\r-' + utm.curUserCurMyHortNickName;
-						}
-					}
+					self.hideAi();
 					
-					if (endsWith(response.UtmText, '\n\r-' + utm.curUserCurMyHortNickName)) {
-						signMessagesSwitch.value = true;
-					} else {
-						signMessagesSwitch.value = false;
-					}
-					
-					if(!signMessagesSwitchEventListnerAdded){
-						signMessagesSwitch.addEventListener('change', function(){
-							//Handle the turn on an off of signature
-							if(signMessagesSwitch.value){
-								signMessagesSwitchWasOnButTurnedff=false;
-								if(! endsWith(customUtmMessage.value , '\n\r-'+ utm.curUserCurMyHortNickName)){
-									//Turned on and not found so Add Signature of nickname
-									customUtmMessage.value = customUtmMessage.value+ '\n\r-'+utm.curUserCurMyHortNickName;
-								}
-							}else{
-								signMessagesSwitchWasOnButTurnedff=true;
-								if(endsWith(customUtmMessage.value , '\n\r-'+utm.curUserCurMyHortNickName)){
-									//Turned off so remove signature
-									customUtmMessage.value = customUtmMessage.value.replace('\n\r-'+utm.curUserCurMyHortNickName, "");
-								}
-							}
-							
-						});
-						signMessagesSwitchEventListnerAdded=true;
-					}
-					
-					customUtmMessage.value = response.UtmText;
-					yourOrgMessageValue.value = response.PlainText;
-					
-					*/
 				} else {
 					utm.handleHttpError({}, this.status, this.responseText);
 				}
