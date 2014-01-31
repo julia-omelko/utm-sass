@@ -29,6 +29,9 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	addButton.addEventListener('click',function(e){
 		var AddToGroupWin = require('/ui/common/AddMembersToGroup');
 		var addToGroupWin = new AddToGroupWin(_tabGroup,_groupData);
+		addToGroupWin.addEventListener('close',function(e){
+			loadMyHortDetail();
+		});
 		_tabGroup.getActiveTab().open(addToGroupWin);
 	});
 	self.setRightNavButton(addButton);

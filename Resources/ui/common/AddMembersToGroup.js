@@ -20,7 +20,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	self.setLeftNavButton(backButton);
 	
 	var tableView = Ti.UI.createTableView({
-		height: utm.viewableArea - 60 - 40,
+		height: utm.viewableArea - 60,
 		top: 0
 	});
 	self.add(tableView);
@@ -111,7 +111,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	loadMyHortDetail();
 
 	
-	var invisibleView = Ti.UI.createView({
+	/*var invisibleView = Ti.UI.createView({
 		height: 30,
 		width: Ti.UI.FILL,
 		bottom: 60,
@@ -131,7 +131,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		value: true
 	});
 	invisibleView.add(invisibleSwitch);
-	self.add(invisibleView);
+	self.add(invisibleView);*/
 	
 	
 	var saveButton = Ti.UI.createButton({
@@ -150,11 +150,11 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	self.add(saveButton);
 	
 	function inviteMyHort() {
-		if (invisibleSwitch.getValue()) {
+		/*if (invisibleSwitch.getValue()) {
 			var memberType = 'Invisible';
 		} else { 
 			var memberType = 'Secondary';
-		}
+		}*/
 		
 		var sections = tableView.getData();
 		var aInvites = [];
@@ -166,23 +166,14 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 			}
 		}
 		
-		var primaryMemberNickName = '';
-		var primaryMember = getPrimaryMember(_groupData.Members);
-		var primaryMemberNickName = primaryMember.NickName;
-		
 		var myHortInviteModel = {
-			MyHortInfo: _groupData,
-			UsersToInvite: aInvites.join(','),
-			InviteMessage: '',
-			FromNickName: primaryMemberNickName,
-			MemberType: memberType,
-			InviteCode: 'autogen'
+  			UserIds: aInvites,
+			MyHortId: _groupData.MyHortId
 		};
 		
 		var inviteMyHortReq = Ti.Network.createHTTPClient({
 			validatesSecureCertificate : utm.validatesSecureCertificate,
 			onload: function() {
-				alert('Your invitation has been sent.');
 				inviteMyHortReq = null;
 				self.close();
 			},
@@ -192,7 +183,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 			},
 			timeout : utm.netTimeout
 		});
-		inviteMyHortReq.open("POST", utm.serviceUrl + "MyHort/Invite");
+		inviteMyHortReq.open("POST", utm.serviceUrl + "MyHort/AddUserIdsToMyhort");
 		inviteMyHortReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");
 		inviteMyHortReq.setRequestHeader('Authorization-Token', utm.AuthToken);
 		inviteMyHortReq.send(JSON.stringify(myHortInviteModel));
