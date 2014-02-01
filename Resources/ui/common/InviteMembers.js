@@ -136,7 +136,7 @@ var InviteMembersWin = function(_tabGroup,_myHortInfo) {
 		Ti.Contacts.requestAuthorization(requestPermission);
 	});
 
-	var invisibleView = Ti.UI.createView({
+	/*var invisibleView = Ti.UI.createView({
 		width: Ti.UI.FILL,
 		height: Ti.UI.SIZE,
 		top: 25
@@ -153,7 +153,7 @@ var InviteMembersWin = function(_tabGroup,_myHortInfo) {
 		value: true,
 		right: 25
 	});
-	invisibleView.add(invisibilitySwitch);
+	invisibleView.add(invisibilitySwitch);*/
 
 
 
@@ -167,9 +167,9 @@ var InviteMembersWin = function(_tabGroup,_myHortInfo) {
 	
 	 var getContacts = function() {
 		var parms = {
-			animated : true,
-			fields : ['email'],
-			selectedProperty : function(e) {
+			animated: true,
+			fields: ['email'],
+			selectedProperty: function(e) {
 				if (emailField.value.length > 0) {
 					emailField.value = emailField.value + ',' + e.value;
 				} else {
@@ -180,7 +180,7 @@ var InviteMembersWin = function(_tabGroup,_myHortInfo) {
 		
 		if (utm.iPhone || utm.iPad ) {
 			Ti.Contacts.showContacts(parms);
-		}else{
+		} else {
 			Titanium.Contacts.showContacts({
 		        selectedPerson: function(e) {
 	        		if (e.person.email == undefined) {
@@ -197,7 +197,7 @@ var InviteMembersWin = function(_tabGroup,_myHortInfo) {
 					    }                       
 					}
                 		
-            		if(emailChoices.length==0){
+            		if (emailChoices.length==0) {
             			alert('No emails found for selected contact.');
             			return;
             		}
@@ -214,7 +214,7 @@ var InviteMembersWin = function(_tabGroup,_myHortInfo) {
 					 
 					// DIALOG EVENT CLICK
 					dialog.addEventListener('click',function(e){
-						if(emailField.value===''){
+						if (emailField.value === '') {
 							emailField.value =  emailChoices[e.index];
 						}else{
 							emailField.value = emailField.value + ',' + emailChoices[e.index];
@@ -238,7 +238,8 @@ var InviteMembersWin = function(_tabGroup,_myHortInfo) {
 		borderRadius: 20,
 		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
 		backgroundColor: utm.buttonColor,
-		color: 'white'
+		color: 'white',
+		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
 	});	
 	sendBtn.addEventListener('click', function() {
 		self.showAi();
@@ -254,11 +255,11 @@ var InviteMembersWin = function(_tabGroup,_myHortInfo) {
 			return;
 		}
 		
-		if (invisibilitySwitch.getValue()) {
+		/*if (invisibilitySwitch.getValue()) {
 			var memberType = 'Invisible';
 		} else { 
 			var memberType = 'Secondary';
-		}
+		}*/
 		
 		var emailInviteList = emailField.getValue();
 		emailInviteList = emailInviteList.trim();
@@ -289,7 +290,7 @@ var InviteMembersWin = function(_tabGroup,_myHortInfo) {
 			UsersToInvite: emailInviteList,
 			InviteMessage: inviteMessageField.getValue(),
 			FromNickName: primaryMemberNickName,
-			MemberType: memberType,
+			MemberType: 'Secondary',
 			InviteCode: 'autogen'
 		};
 		inviteMyHortReq.send(JSON.stringify(myHortInviteModel));

@@ -90,7 +90,8 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData,_myHortData) {
 		borderRadius: 20,
 		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
 		backgroundColor: utm.barColor,
-		color: 'white'
+		color: 'white',
+		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
 	});
 	deleteButton.addEventListener('click',function(e){
 		deleteInvite();
@@ -105,7 +106,8 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData,_myHortData) {
 		borderRadius: 20,
 		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
 		backgroundColor: utm.buttonColor,
-		color: 'white'
+		color: 'white',
+		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
 	});	
 	reinviteButton.addEventListener('click', function() {
 		reinviteMyHort();

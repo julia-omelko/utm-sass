@@ -74,7 +74,8 @@ function productReturned(_product) {
 		borderRadius: 20,
 		font: {fontFamily: utm.fontFamily, fontSize:'14dp'},
 		backgroundColor: utm.buttonColor,
-		color: 'white'
+		color: 'white',
+		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
 	});	
 	productButton.addEventListener('click', function () {
 		Storekit.purchase({

@@ -1,5 +1,4 @@
 
-
 //utm is the js namespace for this app
 utm = {};
 utm.iPhone = false;
@@ -54,7 +53,7 @@ if (utm.Android) {
 
 //Note 2 diff controllers based on platform folders
 var NavigationController = require('NavigationController');
-utm.navController = new NavigationController(utm);
+utm.navController = new NavigationController();
 
 utm.twitterConsumerKey = ""; //'8qiy2PJv3MpVyzuhfNXkOw';
 utm.twitterConsumerSecret = ""; //'Qq0rth4MHGB70nh20nSzov2zz6GbVxuVndCh2IxkRWI';
@@ -339,7 +338,7 @@ utm.handleHttpError = function (e,status,responseText) {
 			message = "Your network has had an error. Please try again.";	
 		}
  	}
+ 	alert(message);
  	
- 	alert(message);         
 };
 

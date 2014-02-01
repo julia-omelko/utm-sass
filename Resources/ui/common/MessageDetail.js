@@ -118,6 +118,7 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
 		backgroundColor: utm.buttonColor,
 		color: 'white',
+		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
 	});	
 	self.add(replyBtn);
 	replyBtn.addEventListener('click', function() {

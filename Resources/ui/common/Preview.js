@@ -2,8 +2,8 @@ var PreviewWin = function(_tabGroup,_message) {
 	_myHortId = _message.selectedContacts[0].userData.MyHortId;
 	_nickname = '';
 	var deliveryOptions = {
-		sms: false,
-		email: true,
+		sms: true,
+		email: false,
 		twitter: false,
 		facebook: false,
 		signMessage: false,
@@ -252,7 +252,8 @@ var PreviewWin = function(_tabGroup,_message) {
 		borderRadius: 20,
 		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
 		backgroundColor: utm.barColor,
-		color: 'white'
+		color: 'white',
+		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
 	});	
 	optionsBtn.addEventListener('click', function() {
 		var DeliveryOptionsWin = require('/ui/common/DeliveryOptions');
@@ -288,7 +289,8 @@ var PreviewWin = function(_tabGroup,_message) {
 		borderRadius: 20,
 		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
 		backgroundColor: utm.buttonColor,
-		color: 'white'
+		color: 'white',
+		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
 	});	
 	self.add(sendButton);
 	

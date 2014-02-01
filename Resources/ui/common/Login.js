@@ -100,7 +100,8 @@ var LoginWin = function() {
 		borderRadius: 20,
 		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
 		backgroundColor: utm.buttonColor,
-		color: 'white'
+		color: 'white',
+		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
 	});
 	view.add(loginBtn);
 	
@@ -254,6 +255,9 @@ var LoginWin = function() {
 					Ti.App.fireEvent("app:loginSuccess", {
 				        userData: response
 				    });
+				    Ti.API.info(111);
+				    Ti.API.info(response);
+				    Ti.API.info(222);
 				} else {
 					utm.handleHttpError({},this.status,this.responseText);
 				}

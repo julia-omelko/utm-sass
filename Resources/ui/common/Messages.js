@@ -86,19 +86,21 @@ var MessagesWin = function(_tabGroup) {
 	});
 	
 	var refreshing = false;
-	var refreshControl = Ti.UI.createRefreshControl({
-		tintColor: utm.color_org
-	});
+	if (utm.iPad || utm.iPhone) {
+		var refreshControl = Ti.UI.createRefreshControl({
+			tintColor: utm.color_org
+		});
+		refreshControl.addEventListener('refreshstart',function(e){
+			refreshing = true;
+			getMessages(currentMode);
+		});
+	}
 	var tableView = Titanium.UI.createTableView({
 		editable: false,
 		allowsSelectionDuringEditing: true,
 		height: utm.viewableArea - 27,
 		top: 27,
-		refreshControl: refreshControl
-	});
-	refreshControl.addEventListener('refreshstart',function(e){
-		refreshing = true;
-		getMessages(currentMode);
+		refreshControl: ((utm.iPad || utm.iPhone) ? refreshControl : null)
 	});
 	self.add(tableView);	
 	

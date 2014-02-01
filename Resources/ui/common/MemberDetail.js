@@ -117,7 +117,8 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 		borderRadius: 20,
 		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
 		backgroundColor: utm.buttonColor,
-		color: 'white'
+		color: 'white',
+		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
 	});	
 	saveButton.addEventListener('click', function() {
 		saveMemberData();
@@ -132,7 +133,8 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 		borderRadius: 20,
 		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
 		backgroundColor: utm.barColor,
-		color: 'white'
+		color: 'white',
+		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
 	});
 	deleteButton.addEventListener('click',function(e){
 		confirmDeleteMember();
@@ -141,11 +143,13 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 	
 	function saveMemberData() {
 		_memberData.NickName = nicknameField.getValue();
+		_memberData.MemberType = 'Secondary';
 		
 		var updateMemberReq = Ti.Network.createHTTPClient({
 			validatesSecureCertificate : utm.validatesSecureCertificate,
 			onload : function() {
 				var json = this.responseData;
+				Ti.API.info(_memberData);
 				if (this.status === 200) {
 					self.close();
 				} else {

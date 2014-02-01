@@ -155,7 +155,8 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageID) {
 		borderRadius: 20,
 		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
 		backgroundColor: utm.buttonColor,
-		color: 'white'
+		color: 'white',
+		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
 	});	
 	previewBtn.addEventListener('click', function() {
 		var message = {

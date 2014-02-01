@@ -1,6 +1,4 @@
 var PrimaryGroupDetailWin = function(_tabGroup) {
-	var _Id;
-	
 	var StandardWindow = require('ui/common/StandardWindow');
 	var self = new StandardWindow('Account Settings', true);
 
@@ -54,83 +52,6 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 	});
 	
 	
-	var premessageLabel = Ti.UI.createLabel({
-		text: 'Premessage',
-		font: {fontFamily: utm.fontFamily, fontSize: 18},
-		color: utm.barColor,
-		wordWrap: false,
-		ellipsize: true,
-		height: Ti.UI.SIZE,
-		width: Ti.UI.SIZE,
-		left: 25,
-		top: 10
-	});
-	settingsView.add(premessageLabel);
-	
-	var premessageField = Ti.UI.createTextField({
-		value: '',
-		color: utm.textFieldColor,		
-		width: (Ti.Platform.displayCaps.platformWidth-50),
-		height: 30,
-		left: 25,
-		autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
-		autocorrect: false,
-		keyboardType: Ti.UI.KEYBOARD_DEFAULT,
-		returnKeyType: Ti.UI.RETURNKEY_DEFAULT,
-		top: 5,
-		borderColor: '#D4D4D4',
-		borderRadius: 2,
-		borderWidth: 1,
-		backgroundColor: 'white',
-		paddingLeft: 7,
-		font: {fontFamily: utm.fontFamily, fontSize: 16}
-	});
-	premessageField.addEventListener('focus', function() {
-		premessageField.add(focused);
-	});
-	premessageField.addEventListener('blur', function() { 
-		premessageField.remove(focused);
-	});
-	settingsView.add(premessageField);
-	
-	var postmessageLabel = Ti.UI.createLabel({
-		text: 'Postmessage',
-		font: {fontFamily: utm.fontFamily, fontSize: 18},
-		color: utm.barColor,
-		wordWrap: false,
-		ellipsize: true,
-		height: Ti.UI.SIZE,
-		width: Ti.UI.SIZE,
-		left: 25,
-		top: 10
-	});
-	settingsView.add(postmessageLabel);
-	
-	var postmessageField = Ti.UI.createTextField({
-		value: '',
-		color: utm.textFieldColor,		
-		width: (Ti.Platform.displayCaps.platformWidth-50),
-		height: 30,
-		left: 25,
-		autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
-		autocorrect: false,
-		keyboardType: Ti.UI.KEYBOARD_DEFAULT,
-		returnKeyType: Ti.UI.RETURNKEY_DEFAULT,
-		top: 5,
-		borderColor: '#D4D4D4',
-		borderRadius: 2,
-		borderWidth: 1,
-		backgroundColor: 'white',
-		paddingLeft: 7,
-		font: {fontFamily: utm.fontFamily, fontSize: 16}
-	});
-	postmessageField.addEventListener('focus', function() {
-		postmessageField.add(focused);
-	});
-	postmessageField.addEventListener('blur', function() { 
-		postmessageField.remove(focused);
-	});
-	settingsView.add(postmessageField);
 	
 	var emailLabel = Ti.UI.createLabel({
 		text: 'Email',
@@ -141,7 +62,7 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 		height: Ti.UI.SIZE,
 		width: Ti.UI.SIZE,
 		left: 25,
-		top: 10
+		top: 25
 	});
 	settingsView.add(emailLabel);
 	
@@ -389,10 +310,7 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 
 	var populateSettings = function(_primaryData) {
 		var _memberData = _primaryData.PrimaryUser;
-		_Id = _memberData.Id;
-		
-		premessageField.setValue(_primaryData.Prefix);
-		postmessageField.setValue(_primaryData.Postfix);
+
 		emailField.setValue(_memberData.Email);
 		nicknameField.setValue(_memberData.NickName);
 		mobileField.setValue(_memberData.Mobile);
@@ -449,7 +367,8 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 		borderRadius: 20,
 		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
 		backgroundColor: utm.buttonColor,
-		color: 'white'
+		color: 'white',
+		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
 	});	
 	saveButton.addEventListener('click', function() {
 		updateMyHortData();
@@ -459,15 +378,18 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 
 	function updateMyHortData() {
 		var _userSettings = {
+			UserId: utm.User.UserProfile.UserId,
+			MyHortId: utm.User.UserProfile.PrimaryMyHort,
+			MemberType: 'Primary',
 			NickName: nicknameField.getValue(),
 			Email: emailField.getValue(),
-			Mobile: mobileField.getValue(),
-			AddNicknameToUtms: signSwitch.getValue(),
 			TwitterToken: '',
 			TwitterSecret: '',
 			FaceBook: '',
-			Id: _Id
+			Mobile: mobileField.getValue(),
+			AddNickNameToUtms: signSwitch.getValue()
 		};
+		
 		if (twitterSwitch.getValue()) {
 			if (!twitter.isAuthorized()) {
 				authTwitter();
@@ -479,20 +401,13 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 			Facebook.authorize();
 			_userSettings.FaceBook = Facebook.getAccessToken();
 		}
-		
-		_myHortDetails.PrimaryUser = _userSettings;
-		_myHortDetails.MyInformation = '';
-
-		_myHortDetails.myHort.Prefix = premessageField.getValue();
-		_myHortDetails.myHort.Postfix = postmessageField.getValue();
-			
-		delete _myHortDetails['MyInformation'];
-		delete _myHortDetails.myHort['Members'];
+		Ti.API.info(_userSettings);
 		
 		var updateMyHortDetailReq = Ti.Network.createHTTPClient({
 			validatesSecureCertificate : utm.validatesSecureCertificate,
 			onload : function() {
 				var json = this.responseData;
+				Ti.API.info(json);
 				if (this.status === 200) {
 					self.close();
 				} else {
@@ -507,8 +422,7 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 			timeout : utm.netTimeout
 		});
 		
-		
-		updateMyHortDetailReq.open("POST", utm.serviceUrl + "MyHort/UpdateMyHortDetails");
+		updateMyHortDetailReq.open("POST", utm.serviceUrl + "MyHort/UpdatePrimaryContactInfo");
 		updateMyHortDetailReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");
 		updateMyHortDetailReq.setRequestHeader('Authorization-Token', utm.AuthToken);
 		updateMyHortDetailReq.send(JSON.stringify(_myHortDetails));

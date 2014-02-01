@@ -421,7 +421,8 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		borderRadius: 20,
 		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
 		backgroundColor: utm.barColor,
-		color: 'white'
+		color: 'white',
+		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
 	});
 	leaveButton.addEventListener('click',function(e){
 		confirmLeaveMyHort();
@@ -436,7 +437,8 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		borderRadius: 20,
 		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
 		backgroundColor: utm.buttonColor,
-		color: 'white'
+		color: 'white',
+		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
 	});	
 	saveButton.addEventListener('click', function() {
 		updateMyHortData();

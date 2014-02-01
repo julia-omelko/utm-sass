@@ -1,0 +1,9 @@
+android/ATTR_PROJECT_NAME=utm
+android/abi=armeabi
+android/distribute_path=/Users/timvarney/Documents/Titanium_Studio_Workspace/utm/Releases/Android
+android/keystore_alias=UTM
+android/keystore_password=*Arthur21
+android/keystore_path=/Users/timvarney/Documents/Titanium_Studio_Workspace/utm/Releases/Android/utm.keystore
+android/recent_output=/Users/timvarney/Documents/Titanium_Studio_Workspace/utm/Releases/Android
+android/sdk_version=2.3.3
+eclipse.preferences.version=1

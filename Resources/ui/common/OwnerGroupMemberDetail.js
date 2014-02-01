@@ -111,7 +111,8 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData) {
 		borderRadius: 20,
 		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
 		backgroundColor: utm.barColor,
-		color: 'white'
+		color: 'white',
+		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
 	});
 	deleteButton.addEventListener('click',function(e){
 		removeFromGroup();
@@ -126,7 +127,8 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData) {
 		borderRadius: 20,
 		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
 		backgroundColor: utm.buttonColor,
-		color: 'white'
+		color: 'white',
+		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
 	});	
 	saveButton.addEventListener('click', function() {
 		updateMyHortMemberData();
@@ -146,7 +148,6 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData) {
 		var updateMemberDetailReq = Ti.Network.createHTTPClient({
 			validatesSecureCertificate : utm.validatesSecureCertificate,
 			onload : function() {
-				var json = this.responseData;
 				if (this.status === 200) {
 					self.close();
 				} else {

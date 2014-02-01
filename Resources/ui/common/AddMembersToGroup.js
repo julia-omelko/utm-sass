@@ -20,7 +20,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	self.setLeftNavButton(backButton);
 	
 	var tableView = Ti.UI.createTableView({
-		height: utm.viewableArea - 60,
+		height: utm.viewableArea - 100,
 		top: 0
 	});
 	self.add(tableView);
@@ -111,10 +111,10 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	loadMyHortDetail();
 
 	
-	/*var invisibleView = Ti.UI.createView({
-		height: 30,
+	var invisibleView = Ti.UI.createView({
+		height: 50,
 		width: Ti.UI.FILL,
-		bottom: 60,
+		bottom: 50,
 		backgroundColor: utm.backgroundColor,
 		font: {fontFamily: utm.fontFamily},
 		color: utm.textColor
@@ -131,7 +131,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		value: true
 	});
 	invisibleView.add(invisibleSwitch);
-	self.add(invisibleView);*/
+	self.add(invisibleView);
 	
 	
 	var saveButton = Ti.UI.createButton({
@@ -142,7 +142,8 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		borderRadius: 20,
 		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
 		backgroundColor: utm.buttonColor,
-		color: 'white'
+		color: 'white',
+		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
 	});	
 	saveButton.addEventListener('click', function() {
 		inviteMyHort();
@@ -150,11 +151,11 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	self.add(saveButton);
 	
 	function inviteMyHort() {
-		/*if (invisibleSwitch.getValue()) {
+		if (invisibleSwitch.getValue()) {
 			var memberType = 'Invisible';
 		} else { 
 			var memberType = 'Secondary';
-		}*/
+		}
 		
 		var sections = tableView.getData();
 		var aInvites = [];
@@ -168,7 +169,8 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		
 		var myHortInviteModel = {
   			UserIds: aInvites,
-			MyHortId: _groupData.MyHortId
+			MyHortId: _groupData.MyHortId,
+			MemberType: memberType
 		};
 		
 		var inviteMyHortReq = Ti.Network.createHTTPClient({
@@ -178,6 +180,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 				self.close();
 			},
 			onerror : function(e) {
+				alert(e);
 				utm.handleHttpError(e, this.status, this.responseText);
 				inviteMyHortReq = null;
 			},
