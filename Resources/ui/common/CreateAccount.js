@@ -410,7 +410,7 @@ var CreateAccountWin = function() {
 					}
 					alert(errorString);
 				} else {
-					utm.handleError(e, this.status, this.responseText);
+					utm.handleHttpError(e, this.status, this.responseText);
 				}
 			},
 			timeout : utm.netTimeout

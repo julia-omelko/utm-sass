@@ -251,7 +251,7 @@ exports.layout = function(params) {
                     params.incorrect();
                 }
 
-                messageBox.color = params.messageBox.textColorIncorrect || '#000000';
+                messageBox.color = utm.color_org;
                 messageBox.text = params.messageBox.textIncorrect || 'Wrong Unlock Code';
 
                 // vibrate on incorrect password

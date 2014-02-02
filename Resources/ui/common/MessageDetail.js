@@ -109,28 +109,30 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 	});
 	scrollingView.add(originalMessage);
 	
-	var replyBtn = Ti.UI.createButton({
-		title: 'Reply',
-		bottom: 25,
-		width: (Ti.Platform.displayCaps.platformWidth-50),
-		height: 40,
-		borderRadius: 20,
-		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
-		backgroundColor: utm.buttonColor,
-		color: 'white',
-		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
-	});	
-	self.add(replyBtn);
-	replyBtn.addEventListener('click', function() {
-		Ti.App.fireEvent('app:getSubscriptionInfo',{callBack:'app:replyToMessage'});
-	});	
-	var replyToMessage = function() {
-		getReplyToUserData(_messageData.FromUserId);
-	};
-	Ti.App.addEventListener('app:replyToMessage',replyToMessage);
-	self.addEventListener('close',function(e){
-		Ti.App.removeEventListener('app:replyToMessage',replyToMessage);
-	});
+	if (_messageData.mode !== 'sent') {
+		var replyBtn = Ti.UI.createButton({
+			title: 'Reply',
+			bottom: 25,
+			width: (Ti.Platform.displayCaps.platformWidth-50),
+			height: 40,
+			borderRadius: 20,
+			font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
+			backgroundColor: utm.buttonColor,
+			color: 'white',
+			style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
+		});	
+		self.add(replyBtn);
+		replyBtn.addEventListener('click', function() {
+			Ti.App.fireEvent('app:getSubscriptionInfo',{callBack:'app:replyToMessage'});
+		});	
+		var replyToMessage = function() {
+			getReplyToUserData(_messageData.FromUserId);
+		};
+		Ti.App.addEventListener('app:replyToMessage',replyToMessage);
+		self.addEventListener('close',function(e){
+			Ti.App.removeEventListener('app:replyToMessage',replyToMessage);
+		});
+	}
 	
 	
 	var getMessageDetailReq = Ti.Network.createHTTPClient({
@@ -222,13 +224,13 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 					utm.winStack.push(composeWin);
 					_tabGroup.getActiveTab().open(composeWin);
 											
-				} else {	
+				} else {
 					utm.handleHttpError(e, this.status, this.responseText);		
 				}		
 				getMembersReq = null;
 		     },
 		     onerror : function(e) {		
-		        utm.handleError(e,this.status,this.responseText); 
+		        utm.handleHttpError(e,this.status,this.responseText); 
 		        getMembersReq = null;
 		     }
 		     ,timeout:utm.netTimeout
@@ -254,7 +256,7 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 				getAttachmentsReq = null;	
 			},		
 			onerror:function(e){
-				utm.handleError(e,this.status,this.responseText); 		
+				utm.handleHttpError(e,this.status,this.responseText); 		
 				getAttachmentsReq = null;
 			},
 			timeout:utm.netTimeout

@@ -38,7 +38,7 @@ function MemberTableRow(rowData){
 	});
 	self.add(memberNote);
 	
-	if (rowData.MemberType === 'Invisible') {
+	if (rowData.MyHortId !== utm.User.UserProfile.PrimaryMyHort && rowData.MemberType === 'Invisible') {
 		var invisibleText = Ti.UI.createLabel({
 			text: 'Invisible',
 			font: {fontFamily: utm.fontFamily},

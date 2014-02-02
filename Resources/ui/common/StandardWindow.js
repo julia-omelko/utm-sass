@@ -73,7 +73,7 @@ function StandardWindow(_title,_showAi) {
 		ai.setVisible(true);
 		timerId = setTimeout(function(){
 			self.hideAi();
-		}, 8000);
+		}, utm.netTimeout);
 	};
 	self.hideAi = function() {
 		ai.setVisible(false);
@@ -83,7 +83,7 @@ function StandardWindow(_title,_showAi) {
 	if (_showAi) {
 		timerId = setTimeout(function(){
 			self.hideAi();
-		}, 8000);
+		}, utm.netTimeout);
 	}
 	
 	/*

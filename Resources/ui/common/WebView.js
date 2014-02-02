@@ -16,7 +16,8 @@ var WebViewWin = function(_title,_url) {
 	var webView = Ti.UI.createWebView({
 		height: '100%',
 		width: '100%',
-		url: _url
+		url: _url,
+		backgroundColor: '#ED5C00'
 	});
 	self.add(webView);
 	

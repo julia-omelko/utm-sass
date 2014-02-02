@@ -425,7 +425,7 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 		updateMyHortDetailReq.open("POST", utm.serviceUrl + "MyHort/UpdatePrimaryContactInfo");
 		updateMyHortDetailReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");
 		updateMyHortDetailReq.setRequestHeader('Authorization-Token', utm.AuthToken);
-		updateMyHortDetailReq.send(JSON.stringify(_myHortDetails));
+		updateMyHortDetailReq.send(JSON.stringify(_userSettings));
 	}
 	
 	
