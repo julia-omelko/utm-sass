@@ -60,7 +60,7 @@ utm.twitterConsumerSecret = ""; //'Qq0rth4MHGB70nh20nSzov2zz6GbVxuVndCh2IxkRWI';
 utm.facebookAppId = '494625050591800';
 
 utm.showSplashScreenOnPause = true;
-utm.inSubscriptionMode = false;
+utm.screenWillLock = true;
 utm.loggedIn = false;
 utm.isInPinLock = false;
 utm.appPauseTime = new Date();
@@ -199,6 +199,7 @@ function callLogoutService(){
 		timeout:utm.netTimeout,
 		onload : function() {
 			var response = eval('('+this.responseText+')');
+			utm.loggedIn = false;
 			logoutReq = null;
 		},
 		onerror : function(e) {
@@ -227,7 +228,7 @@ Ti.App.addEventListener('pause', function(e){
 Ti.App.addEventListener("resumed", function(e){
 	splashView.close();
 		
-	if (!utm.loggedIn || utm.inSubscriptionMode) {
+	if (!utm.loggedIn || !utm.screenWillLock) {
 		return;
 	}
 	

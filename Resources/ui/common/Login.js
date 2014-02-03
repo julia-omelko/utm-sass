@@ -33,7 +33,6 @@ var LoginWin = function() {
 		utmLogo.setTop(utmLogo.getTop()-80);
 	}
 	view.add(utmLogo);
-	alert(4);
 	
 	var username = Ti.UI.createTextField({
 		color: utm.textFieldColor,		

@@ -1,6 +1,5 @@
 var SettingsWin = function(_tabGroup) {
-	
-	Ti.API.info(utm.products);
+	utm.screenWillLock = false;
 	
 	var StandardWindow = require('ui/common/StandardWindow');
 	var self = new StandardWindow('Buy Messages', true);
@@ -112,7 +111,7 @@ function requestProduct(identifier) {
 
 
 self.addEventListener('close',function(e){
-	utm.inSubscriptionMode = false;
+	utm.screenWillLock = true;
 });
 
 

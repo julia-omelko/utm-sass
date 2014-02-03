@@ -10,8 +10,6 @@ var NavigationController = function() {
         windowToClose = null;
     };
 	
-	alert(0);
-	
     return self;
 };
 

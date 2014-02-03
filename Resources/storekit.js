@@ -153,7 +153,7 @@ function verifyServerSideWithApple(_receipt,_productIdentifier){
 		validatesSecureCertificate:utm.validatesSecureCertificate, 
 		timeout:utm.netTimeout,
 		onload : function(e) {
-			utm.inSubscriptionMode = true;
+			//utm.inSubscriptionMode = true;
 			if (this.status == 200) {		
 				var response = eval('('+this.responseText+')');
 				if(response.Status ==='Sucess'){
@@ -183,7 +183,7 @@ function verifyServerSideWithApple(_receipt,_productIdentifier){
 		onerror : function(e) {		
 			utm.handleHttpError(e, this.status, this.responseText);
 			resultMessage = "There was an error processing your request!";
-			utm.inSubscriptionMode = false;
+			//utm.inSubscriptionMode = false;
 			verifyReceipt = null;
 		},
 		timeout:utm.netTimeout
