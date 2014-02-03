@@ -1,7 +1,13 @@
 var MessageDetailWin = function(_tabGroup,_messageData) {
 	
+	if (_messageData.mode === 'received') {
+		var winTitle = 'Message Received';
+	} else {
+		var winTitle = 'Message Sent';
+	}
+	
 	var StandardWindow = require('ui/common/StandardWindow');
-	var self = new StandardWindow('Message', true);
+	var self = new StandardWindow(winTitle, true);
 	
 	var backButton = Ti.UI.createLabel({
 		text: 'back',
@@ -43,18 +49,25 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 	});
 	userView.add(avatar);
 	
+	var userSubView = Ti.UI.createView({
+		left: 100,
+		top: 30,
+		width: (Ti.Platform.displayCaps.platformWidth-100-25),
+		height: Ti.UI.SIZE,
+		layout: 'vertical'
+	});
+	userView.add(userSubView);
+	
 	var fromLabel = Ti.UI.createLabel({
 		text: ((_messageData.mode === 'received') ? _messageData.FromUserName : _messageData.ToHeader),
 		font: {fontFamily: utm.fontFamily, fontWeight: 'bold'},
 		color: utm.barColor,
-		wordWrap: false,
-		ellipsize: true,
 		height: Ti.UI.SIZE,
-		width: (Ti.Platform.displayCaps.platformWidth-100-25),
-		left: 100,
-		top: 30
+		width: Ti.UI.SIZE,
+		left: 0,
+		top: 0
 	});
-	userView.add(fromLabel);
+	userSubView.add(fromLabel);
 	
 	var dateLabel = Ti.UI.createLabel({
 		text: getDateTimeFormat(_messageData.DateSent),
@@ -64,10 +77,10 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 		ellipsize: true,
 		height: Ti.UI.SIZE,
 		width: (Ti.Platform.displayCaps.platformWidth-100-25),
-		left: 100,
-		top: 50
+		left: 0,
+		top: 10
 	});
-	userView.add(dateLabel);
+	userSubView.add(dateLabel);
 	
 	var utmMessageHeader = Ti.UI.createLabel({
 		text: 'UTM message',
