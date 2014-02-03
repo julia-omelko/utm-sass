@@ -196,6 +196,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		left: 25,
 		autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
 		autocorrect: false,
+		maxLength: 16,
 		keyboardType: Ti.UI.KEYBOARD_DEFAULT,
 		returnKeyType: Ti.UI.RETURNKEY_DEFAULT,
 		top: 5,
@@ -235,6 +236,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		left: 25,
 		autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
 		autocorrect: false,
+		maxLength: 16,
 		keyboardType: Ti.UI.KEYBOARD_DEFAULT,
 		returnKeyType: Ti.UI.RETURNKEY_DEFAULT,
 		top: 5,
@@ -684,6 +686,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 				updateMyHortDetailReq = null;
 			},
 			onerror : function(e) {
+				alert(e);
 				utm.handleHttpError(e, this.status, this.responseText);
 				updateMyHortDetailReq = null;
 			},
