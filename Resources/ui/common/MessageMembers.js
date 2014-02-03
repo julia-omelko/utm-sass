@@ -2,7 +2,7 @@ var MessageMembersWin = function(_tabGroup) {
 	var myHortId = utm.User.UserProfile.PrimaryMyHort;
 	
 	var StandardWindow = require('ui/common/StandardWindow');
-	var self = new StandardWindow('New Message', true);
+	var self = new StandardWindow('Choose Recipients', true);
 
 	var backButton = Ti.UI.createLabel({
 		text: 'back',
