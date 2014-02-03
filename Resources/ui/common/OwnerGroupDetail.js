@@ -493,8 +493,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		text: 'Sign message',
 		width: Ti.UI.SIZE,
 		left: 25,
-		font: {fontFamily: utm.fontFamily},
-		color: utm.barColor	
+		font: {fontFamily: utm.fontFamily}
 	});
 	var signSwitch = Ti.UI.createSwitch({
 		right: 25,

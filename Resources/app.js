@@ -72,6 +72,8 @@ if(utm.iPhone || utm.iPad ){
 	var keychain = require("/lib/androidkeychain");
 }
 
+utm.keyboardHeight = 0;
+
 
 
 

@@ -280,7 +280,9 @@ var LoginWin = function() {
 		loginReq.send(params);
 	};
 
-
+	Ti.App.addEventListener('keyboardframechanged',function(e){
+		utm.keyboardHeight = e.keyboardFrame.height;
+	});
 
 	
 /*
