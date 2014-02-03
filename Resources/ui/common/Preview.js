@@ -270,10 +270,10 @@ var PreviewWin = function(_tabGroup,_message) {
 	});
 	self.addEventListener('closeDeliveryOptions',function(e) {
 		deliveryOptions = e.options;
-		if (deliveryOptions.signMessage && utmMessage.getText().indexOf('\n- ' + _nickname) === -1) {
-			utmMessage.setText(utmMessage.getText() + '\n- ' + _nickname);
+		if (deliveryOptions.signMessage && utmMessage.getText().indexOf('-' + _nickname) === -1) {
+			utmMessage.setText(utmMessage.getText() + '\n\n-' + _nickname);
 		} else if (!deliveryOptions.signMessage){
-			utmMessage.setText(utmMessage.getText().replace('\n- ' + _nickname,''));
+			utmMessage.setText(utmMessage.getText().replace('-' + _nickname,''));
 		}
 		if (utm.iPhone || utm.iPad) {
 			navWin.close();
@@ -307,8 +307,10 @@ var PreviewWin = function(_tabGroup,_message) {
 				var response = eval('(' + this.responseText + ')');
 				if (this.status === 200) {
 					var utmText = response.UtmText;
-					if (deliveryOptions.signMessage) {
-						utmText = utmText + '\n- ' + _nickname;
+					if (deliveryOptions.signMessage && utmText.indexOf('-' + _nickname) === -1) {
+						utmText = utmText + '\n\n-' + _nickname;
+					} else if (!deliveryOptions.signMessage){
+						utmText = utmText.replace('-' + _nickname,'');
 					}
 					utmMessage.setText(utmText.trim());
 					deliveryOptions.curRjCrypt = response.RjCrypt;
