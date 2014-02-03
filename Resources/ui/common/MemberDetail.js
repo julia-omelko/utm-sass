@@ -13,10 +13,10 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 	});
 	self.setLeftNavButton(backButton);
 	
-	var scrollingView = Ti.UI.createScrollView({
+	var scrollingView = Ti.UI.createView({
 		top: 0,
 		width: Ti.UI.FILL,
-		height: utm.viewableArea - 69,
+		height: utm.viewableArea - 110,
 		showVerticalScrollIndicator: true,
 		contentHeight: 'auto',
 		layout: 'vertical'
@@ -102,16 +102,16 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 	scrollingView.add(groupLabel);
 	
 	var tableView = Ti.UI.createTableView({
-		height: 200,
-		width: '100%',
-		top: 15
+		width: Ti.UI.FILL,
+		height: utm.viewableArea - 253,
+		top: 10
 	});
 	scrollingView.add(tableView);
 	var tableData = [];
 	
 	var saveButton = Ti.UI.createButton({
 		title: 'Save',
-		bottom: 15,
+		bottom: 10,
 		width: (Ti.Platform.displayCaps.platformWidth-50),
 		height: 40,
 		borderRadius: 20,
