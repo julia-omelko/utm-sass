@@ -120,7 +120,10 @@ var DeliveryOptionsWin = function(_win,_options,_enabled) {
 	var signLabel = Ti.UI.createLabel({
 		text: 'Sign message',
 		width: Ti.UI.SIZE,
-		left: 25
+		height: Ti.UI.FILL,
+		left: 25,
+		font: {fontFamily: utm.fontFamily},
+		color: utm.barColor	
 	});
 	var signSwitch = Ti.UI.createSwitch({
 		value: _options.signMessage,
@@ -138,7 +141,10 @@ var DeliveryOptionsWin = function(_win,_options,_enabled) {
 	var deleteLabel = Ti.UI.createLabel({
 		text: 'Delete message when read',
 		width: Ti.UI.SIZE,
-		left: 25
+		left: 25,
+		height: Ti.UI.FILL,
+		font: {fontFamily: utm.fontFamily},
+		color: utm.barColor	
 	});
 	var deleteSwitch = Ti.UI.createSwitch({
 		value: _options.deleteOnRead,
