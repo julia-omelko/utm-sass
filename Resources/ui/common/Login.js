@@ -3,6 +3,8 @@ var LoginWin = function() {
 	var StandardWindow = require('ui/common/StandardWindow');
 	var self = new StandardWindow('', '');
 	self.setNavBarHidden(true);
+	var majorVersion = Ti.Platform.version.split('.')[0];
+	
 	
 	var scrollView = Ti.UI.createScrollView({
 		top: 20,
@@ -11,6 +13,10 @@ var LoginWin = function() {
 		showHorizontalScrollIndicator : false,
 		height: Ti.Platform.displayCaps.platformHeight-20
 	});
+	if (majorVersion === 6) {
+		scrollView.setTop(0);
+		scrollView.setHeight(Ti.Platform.displayCaps.platformHeight);
+	}
 	self.add(scrollView);
 	var view = Ti.UI.createView({
 		layout: 'vertical'
@@ -23,7 +29,11 @@ var LoginWin = function() {
 		height: '71dp',
 		top: (Ti.Platform.displayCaps.platformHeight-160-280)/2 //Math.round(Ti.Platform.displayCaps.platformHeight*0.055)
 	});
+	if (majorVersion === 6) {
+		utmLogo.setTop(utmLogo.getTop()-80);
+	}
 	view.add(utmLogo);
+	alert(4);
 	
 	var username = Ti.UI.createTextField({
 		color: utm.textFieldColor,		
@@ -219,8 +229,10 @@ var LoginWin = function() {
 		bottom: 0,
 		height: Ti.UI.SIZE
 	});
-	scrollView.add(linkTable);
-	
+	self.add(linkTable);
+	if (majorVersion === 6) {
+		linkTable.setBottom(120);
+	}
 
 	loginBtn.addEventListener('click',function(e) {
 		username.blur();
