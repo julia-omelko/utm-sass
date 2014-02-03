@@ -78,7 +78,7 @@ function CameraView(_win,_imagePreview) {
 	function processImage(event){
 		
 		if(utm.Android){
-			resizedImage = event.media.imageAsResized(event.media.width/6,event.media.height/6);
+			resizedImage = event.media.imageAsResized(event.media.width/4,event.media.height/4);
 		}else{
 			resizedImage = event.media.imageAsResized(event.media.width/3,event.media.height/3);
 		}	
