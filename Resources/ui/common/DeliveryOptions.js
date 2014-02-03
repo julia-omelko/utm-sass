@@ -122,8 +122,7 @@ var DeliveryOptionsWin = function(_win,_options,_enabled) {
 		width: Ti.UI.SIZE,
 		height: Ti.UI.FILL,
 		left: 25,
-		font: {fontFamily: utm.fontFamily},
-		color: utm.barColor	
+		font: {fontFamily: utm.fontFamily}
 	});
 	var signSwitch = Ti.UI.createSwitch({
 		value: _options.signMessage,
@@ -143,8 +142,7 @@ var DeliveryOptionsWin = function(_win,_options,_enabled) {
 		width: Ti.UI.SIZE,
 		left: 25,
 		height: Ti.UI.FILL,
-		font: {fontFamily: utm.fontFamily},
-		color: utm.barColor	
+		font: {fontFamily: utm.fontFamily}
 	});
 	var deleteSwitch = Ti.UI.createSwitch({
 		value: _options.deleteOnRead,

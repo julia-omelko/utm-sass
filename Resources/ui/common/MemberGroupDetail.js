@@ -95,7 +95,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	});
 	self.add(tableView);
 	
-	var settingsView = Ti.UI.createView({
+	var settingsView = Ti.UI.createScrollView({
 		height: utm.viewableArea - 137,
 		top: 27,
 		layout: 'vertical'
@@ -307,7 +307,8 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	var signLabel = Ti.UI.createLabel({
 		text: 'Sign message',
 		width: Ti.UI.SIZE,
-		left: 25
+		left: 25,
+		font: {fontFamily: utm.fontFamily}
 	});
 	var signSwitch = Ti.UI.createSwitch({
 		right: 25,

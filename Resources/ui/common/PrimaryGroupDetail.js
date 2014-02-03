@@ -292,7 +292,8 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 	var signLabel = Ti.UI.createLabel({
 		text: 'Sign message',
 		width: Ti.UI.SIZE,
-		left: 25
+		left: 25,
+		font: {fontFamily: utm.fontFamily}
 	});
 	var signSwitch = Ti.UI.createSwitch({
 		right: 25,
