@@ -126,7 +126,7 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 	if (_messageData.mode !== 'sent') {
 		var replyBtn = Ti.UI.createButton({
 			title: 'Reply',
-			bottom: 25,
+			bottom: 10,
 			width: (Ti.Platform.displayCaps.platformWidth-50),
 			height: 40,
 			borderRadius: 20,
