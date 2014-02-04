@@ -15,7 +15,7 @@ var CreateAccountWin = function() {
 	
 	var scrollingView = Ti.UI.createScrollView({
 		width: '100%',
-		height: Ti.Platform.displayCaps.platformHeight - 22,
+		height: utm.viewableArea-10,
 		showVerticalScrollIndicator: true,
 		contentHeight: 'auto',
 		layout: 'vertical',
@@ -237,30 +237,25 @@ var CreateAccountWin = function() {
 	scrollingView.add(phone);
 	
 	var rulesView = Ti.UI.createView({
-		width: Ti.UI.FILL,
-		height: Ti.UI.SIZE,
-		top: 10
-	});
-	var rulesInnerView = Ti.UI.createView({
 		width: Ti.UI.SIZE,
-		height: Ti.UI.SIZE
+		height: Ti.UI.SIZE,
+		top: 10,
+		layout: 'horizontal'
 	});
 	scrollingView.add(rulesView);
-	rulesView.add(rulesInnerView);
 	var rulesSwitch = Ti.UI.createSwitch({
-		value: false,
-		left: 0
+		value: false
 	});
-	rulesInnerView.add(rulesSwitch);
+	rulesView.add(rulesSwitch);
 	var rulesLabel = Ti.UI.createLabel({
 		text: 'I accept rules of use',
 		width: Ti.UI.SIZE,
 		height: Ti.UI.SIZE,
-		left: 60,
+		left: 15,
 		font: {fontFamily: utm.fontFamily, fontSize: 18},
 		color: utm.barColor	
 	});
-	rulesInnerView.add(rulesLabel);
+	rulesView.add(rulesLabel);
 	
 	rulesLabel.addEventListener('click',function(e){
 		var WebView = require('/ui/common/WebView');
@@ -276,7 +271,7 @@ var CreateAccountWin = function() {
 	
 	var createButton = Ti.UI.createButton({
 		title: 'Create account',
-		top: 10,
+		bottom: 10,
 		width: (Ti.Platform.displayCaps.platformWidth-50),
 		height: 40,
 		borderRadius: 20,
@@ -288,7 +283,7 @@ var CreateAccountWin = function() {
 	createButton.addEventListener('click',function(e){
 		validateForm();
 	});
-	scrollingView.add(createButton);
+	self.add(createButton);
 	
 	
 	
