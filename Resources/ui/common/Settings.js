@@ -117,8 +117,8 @@ var SettingsWin = function(_tabGroup) {
 			if (e.index === e.source.cancel) {
 				Ti.API.info('The cancel button was clicked');
 			} else {
-				alert('forget me');
-				//callForgetMe();
+				//alert('forget me');
+				callForgetMe();
 			}
 		});
 		dialog.show();
