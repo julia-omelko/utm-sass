@@ -579,6 +579,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 						_memberData = response.MyInformation;
 					}
 					populateSettings(_memberData);
+					_groupData.Members = response.myHort.Members;
 					displayMemberData(response.myHort.Members);
 				} else {
 					utm.handleHttpError({}, this.status, this.responseText);
