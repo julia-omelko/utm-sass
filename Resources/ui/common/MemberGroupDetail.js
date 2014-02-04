@@ -226,7 +226,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		} else {
 			//twitter.deauthorize(); NOTE this deauthrizes for ALL MYHORTS - dont want to do that uless its the only myhort with twitter set.
 
-			var dialog = Ti.UI.createAlertDialog({
+			/*var dialog = Ti.UI.createAlertDialog({
 				cancel : 1,
 				buttonNames : ['Deauthorize',  L('cancel')],
 				message : 'You are about to deauthorize Twitter for this group ',
@@ -242,7 +242,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 					Ti.API.info('The cancel button was clicked');
 				}
 			});
-			dialog.show();
+			dialog.show();*/
 		}
 	});
 	
@@ -271,7 +271,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 			Facebook.authorize();
 			facebookEnabledForUser = true;
 		} else {
-			var dialog = Ti.UI.createAlertDialog({
+			/*var dialog = Ti.UI.createAlertDialog({
 				cancel : 1,
 				buttonNames : ['Deauthorize', L('cancel')],
 				message : 'You are about deauthorize Facebook for this group ',
@@ -284,7 +284,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 					Ti.API.info('The cancel button was clicked');
 				}
 			});
-			dialog.show();
+			dialog.show();*/
 		}
 	});
 
