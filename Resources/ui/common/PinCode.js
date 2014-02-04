@@ -29,9 +29,11 @@ var SettingsWin = function(_tabGroup) {
 		self.setRightNavButton(clearButton);
 	}
 	
-	var scrollingView = Ti.UI.createView({
+	var scrollingView = Ti.UI.createScrollView({
 		layout : 'vertical',
-		height: Ti.UI.FILL
+		height: utm.viewableArea,
+		contentHeight: utm.viewableArea+80,
+		top: 0
 	});
 	self.add(scrollingView);
 
