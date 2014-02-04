@@ -211,7 +211,7 @@ var PreviewWin = function(_tabGroup,_message) {
 		text: '',
 		top: 10,
 		left: 25,
-		height: 75,
+		height: 85,
 		width: Ti.Platform.displayCaps.platformWidth-50,
 		font: {fontFamily: utm.fontFamily},
 		verticalAlign: Ti.UI.TEXT_VERTICAL_ALIGNMENT_TOP,
