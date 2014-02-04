@@ -566,6 +566,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 
 
 	function loadMyHortDetail() {
+		self.showAi();
 		var getMyHortDetailReq = Ti.Network.createHTTPClient({
 			validatesSecureCertificate : utm.validatesSecureCertificate,
 			onload : function() {
