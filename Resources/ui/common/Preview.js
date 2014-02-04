@@ -12,6 +12,7 @@ var PreviewWin = function(_tabGroup,_message) {
 		curRjCrypt: ''
 	};
 	if (_message.deliveryOptions != null) {
+		// a reply to a message.
 		var deliveryEnabled = {
 			sms: _message.deliveryOptions.Mobile,
 			email: _message.deliveryOptions.Email,
@@ -25,6 +26,14 @@ var PreviewWin = function(_tabGroup,_message) {
 			twitter: false,
 			facebook: false
 		};
+		for (var i=0; i<_message.selectedContacts.length; i++) {
+			if (typeof _message.selectedContacts[i].userData !== 'undefined') {
+				if (typeof _message.selectedContacts[i].userData.HasMobile !== 'undefined' && _message.selectedContacts[i].userData.HasMobile) {
+					deliveryOptions.sms = true;
+					deliveryEnabled.sms = true;
+				}
+			}
+		}
 	}
 	
 	function loadMyHortDetail() {
@@ -65,26 +74,6 @@ var PreviewWin = function(_tabGroup,_message) {
 	}
 	
 	loadMyHortDetail();
-	
-	
-	
-
-	for (var i=0; i<_message.selectedContacts.length; i++) {
-		if (typeof _message.selectedContacts[i].userData !== 'undefined') {
-			if (typeof _message.selectedContacts[i].userData.HasMobile !== 'undefined' && _message.selectedContacts[i].userData.HasMobile) {
-				deliveryOptions.sms = true;
-				deliveryEnabled.sms = true;
-			}
-			if (typeof _message.selectedContacts[i].userData.HasTwitter !== 'undefined' && _message.selectedContacts[i].userData.HasTwitter) {
-				deliveryOptions.twitter = true;
-				deliveryEnabled.twitter = true;
-			}
-			if (typeof _message.selectedContacts[i].userData.HasFacebook !== 'undefined' && _message.selectedContacts[i].userData.HasFacebook) {
-				deliveryOptions.facebook = true;
-				deliveryEnabled.facebook = true;
-			}
-		}
-	}
 
 	
 	var StandardWindow = require('ui/common/StandardWindow');
