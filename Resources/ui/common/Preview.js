@@ -1,6 +1,7 @@
 var PreviewWin = function(_tabGroup,_message) {
 	_myHortId = _message.selectedContacts[0].userData.MyHortId;
 	_nickname = '';
+
 	var deliveryOptions = {
 		sms: true,
 		email: false,
@@ -10,12 +11,21 @@ var PreviewWin = function(_tabGroup,_message) {
 		deleteOnRead: true,
 		curRjCrypt: ''
 	};
-	var deliveryEnabled = {
-		sms: false,
-		email: true,
-		twitter: false,
-		facebook: false
-	};
+	if (_message.deliveryOptions != null) {
+		var deliveryEnabled = {
+			sms: _message.deliveryOptions.Mobile,
+			email: _message.deliveryOptions.Email,
+			twitter: _message.deliveryOptions.Twitter,
+			facebook: _message.deliveryOptions.Facebook
+		};
+	} else {
+		var deliveryEnabled = {
+			sms: false,
+			email: true,
+			twitter: false,
+			facebook: false
+		};
+	}
 	
 	function loadMyHortDetail() {
 		var getMyHortDetailReq = Ti.Network.createHTTPClient({

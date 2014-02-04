@@ -1,4 +1,10 @@
-var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageID) {
+var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
+	if (_mode === 'Reply') {
+		_messageID = _messageData.Id;
+	} else {
+		_messageData = {deliveryOptions: null};
+	}
+	
 	
 	var StandardWindow = require('ui/common/StandardWindow');
 	var self = new StandardWindow(_mode, '');
@@ -174,6 +180,7 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageID) {
 			mode: _mode,
 			message: messageField.getValue(),
 			messageID: _messageID,
+			deliveryOptions: _messageData.deliveryOptions,
 			attachment: ((previewView.getHight() !== 46) ? camera.getImage() : '')
 		};
 		var PreviewWin = require('/ui/common/Preview');

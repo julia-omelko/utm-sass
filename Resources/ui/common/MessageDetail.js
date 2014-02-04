@@ -153,6 +153,7 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 		validatesSecureCertificate:utm.validatesSecureCertificate,
 		onload: function() {
 			var response = eval('('+this.responseText+')');
+			_messageData.deliveryOptions = response.Data;
 			
 			if (this.status === 200) {
 				if (_messageData.HasAttachments) {
@@ -161,6 +162,7 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 					//Mark Message as Read
 					if (!_messageData.WasRead) {
 						setMessageAsRead(_messageData.Id);
+						_messageData.WasRead = true;
 					}
 					self.hideAi();
 				}
@@ -234,7 +236,7 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 					});
 					
 					var ComposeWin = require('/ui/common/Compose');
-					var composeWin = new ComposeWin(_tabGroup,selectedContacts,'Reply',_messageData.Id);
+					var composeWin = new ComposeWin(_tabGroup,selectedContacts,'Reply',_messageData);
 					utm.winStack.push(composeWin);
 					_tabGroup.getActiveTab().open(composeWin);
 											
