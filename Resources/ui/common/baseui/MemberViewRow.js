@@ -31,7 +31,7 @@ function MemberTableRow(rowData){
 	self.add(nickName);
 	
 	memberNote = Ti.UI.createView({
-		right: 25,
+		left: Ti.Platform.displayCaps.platformWidth - 90,
 		height: Ti.UI.SIZE,
 		width: Ti.UI.SIZE,
 		layout: 'vertical'
