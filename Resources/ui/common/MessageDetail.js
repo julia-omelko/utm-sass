@@ -59,11 +59,12 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 	userView.add(userSubView);
 	
 	var fromLabel = Ti.UI.createLabel({
-		text: ((_messageData.mode === 'received') ? _messageData.FromUserName : _messageData.ToHeader),
-		font: {fontFamily: utm.fontFamily, fontWeight: 'bold'},
+		text: ((_messageData.mode === 'received') ? _messageData.FromUserName : _messageData.ToHeader.split(',').join(', ')),
+		font: {fontFamily: utm.fontFamily},
 		color: utm.barColor,
 		height: Ti.UI.SIZE,
 		width: Ti.UI.SIZE,
+		wordWrap: true,
 		left: 0,
 		top: 0
 	});

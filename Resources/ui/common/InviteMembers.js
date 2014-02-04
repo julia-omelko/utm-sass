@@ -290,9 +290,10 @@ var InviteMembersWin = function(_tabGroup,_myHortInfo) {
 			UsersToInvite: emailInviteList,
 			InviteMessage: inviteMessageField.getValue(),
 			FromNickName: primaryMemberNickName,
-			MemberType: 'Secondary',
+			MemberType: 'Invisible',
 			InviteCode: 'autogen'
 		};
+		Ti.API.info(JSON.stringify(myHortInviteModel));
 		inviteMyHortReq.send(JSON.stringify(myHortInviteModel));
 	}
 
