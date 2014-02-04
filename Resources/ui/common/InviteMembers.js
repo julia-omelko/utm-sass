@@ -29,7 +29,7 @@ var InviteMembersWin = function(_tabGroup,_myHortInfo) {
 	self.add(scrollingView);
 	
 
-	var messageHeader = Ti.UI.createLabel({
+	/*var messageHeader = Ti.UI.createLabel({
 		text: 'Invite message:',
 		top: 25,
 		left: 25,
@@ -71,10 +71,10 @@ var InviteMembersWin = function(_tabGroup,_myHortInfo) {
 		left: 0
 	});
 	inviteMessageField.add(messageMinHeight);
-	scrollingView.add(inviteMessageField);
+	scrollingView.add(inviteMessageField);*/
 
 	var inviteHeader = Ti.UI.createLabel({
-		text: 'Email:',
+		text: 'Email to invite:',
 		top: 25,
 		left: 25,
 		font: {fontFamily: utm.fontFamily, fontSize: 18},
@@ -288,12 +288,11 @@ var InviteMembersWin = function(_tabGroup,_myHortInfo) {
 		var myHortInviteModel = {
 			MyHortInfo: _myHortInfo.myHort,
 			UsersToInvite: emailInviteList,
-			InviteMessage: inviteMessageField.getValue(),
+			//InviteMessage: inviteMessageField.getValue(),
 			FromNickName: primaryMemberNickName,
 			MemberType: 'Invisible',
 			InviteCode: 'autogen'
 		};
-		Ti.API.info(JSON.stringify(myHortInviteModel));
 		inviteMyHortReq.send(JSON.stringify(myHortInviteModel));
 	}
 
