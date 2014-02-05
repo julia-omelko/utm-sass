@@ -19,6 +19,23 @@ function MessageTableRow(rowData){
 	});
 	self.add(avatar);
 	
+	var textHolder = Ti.UI.createView({
+		top: 10,
+		height: 60,
+		width: Ti.UI.FILL,
+		left: 80,
+		layout: 'vertical'
+	});
+	self.add(textHolder);
+	
+	var textHeader = Ti.UI.createView({
+		top: 0,
+		left: 0,
+		width: Ti.UI.FILL,
+		height: Ti.UI.SIZE
+	});
+	textHolder.add(textHeader);
+	
 	var fromLabel = Ti.UI.createLabel({
 		text: rowData.FromUserName,
 		font: {fontFamily: utm.fontFamily, fontWeight: (rowData.WasRead ? 'normal' : 'bold')},
@@ -27,10 +44,10 @@ function MessageTableRow(rowData){
 		ellipsize: true,
 		height: Ti.UI.SIZE,
 		width: (Ti.Platform.displayCaps.platformWidth-150),
-		left: 80,
-		top: 11
+		left: 0,
+		top: 0
 	});
-	self.add(fromLabel);
+	textHeader.add(fromLabel);
 	
 	
 	var dateText = getDateTimeFormat(rowData.DateSent);
@@ -46,23 +63,23 @@ function MessageTableRow(rowData){
 		ellipsize: true,
 		height: Ti.UI.SIZE,
 		width: 80,
-		left: 230,
-		top: 11
+		left: (Ti.Platform.displayCaps.platformWidth-180),
+		top: 0
 	});
-	self.add(dateLabel);
+	textHeader.add(dateLabel);
 	
 	var utmLabel = Ti.UI.createLabel({
 		text: rowData.UtmText.trim(),
 		font: {fontFamily: utm.fontFamily},
-		left: 80,
+		left: 0,
 		width: (Ti.Platform.displayCaps.platformWidth-115),
-		height: 50,
+		height: Ti.UI.FILL,
 		ellipsize: true,
 		color: utm.textColor,
-		top: 28,
+		top: 2,
 		verticalAlign: Ti.UI.TEXT_VERTICAL_ALIGNMENT_TOP
 	});
-	self.add(utmLabel);
+	textHolder.add(utmLabel);
 	
     return self;
  }
