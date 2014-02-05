@@ -21,7 +21,7 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 	
 	var scrollingView = Ti.UI.createScrollView({
 		width: Ti.UI.FILL,
-		height: utm.viewableArea - 60,
+		height: ((_messageData.mode !== 'sent') ? utm.viewableArea - 60 : utm.viewableArea),
 		top: 0,
 		showVerticalScrollIndicator: true,
 		contentHeight:'auto',
@@ -63,7 +63,7 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 		font: {fontFamily: utm.fontFamily},
 		color: utm.barColor,
 		height: Ti.UI.SIZE,
-		width: Ti.UI.SIZE,
+		width: Ti.UI.FILL,
 		wordWrap: true,
 		left: 0,
 		top: 0
