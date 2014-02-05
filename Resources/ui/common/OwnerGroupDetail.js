@@ -407,24 +407,6 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 				twitter.authorize();
 			}
 			twitterEnabledForUser = true;
-		} else {
-			//var dialog = Ti.UI.createAlertDialog({
-			//	cancel : 1,
-			//	buttonNames : ['Deauthorize',  L('cancel')],
-			//	message : 'You are about to deauthorize Twitter for this group ',
-			//	title : 'Confirm deauthorize'
-			//});
-			//dialog.addEventListener('click', function(e) {
-			//	if (e.index === 0) {
-			//		utm.TwitterToken = '';
-			//		utm.TwitterTokenSecret = '';
-			//		twitter.deauthorize();
-			//		twitterEnabledForUser = false;
-			//	} else if (e.index === 2) {
-			//		Ti.API.info('The cancel button was clicked');
-			//	}
-			//});
-			//dialog.show();
 		}
 	});
 	
@@ -453,21 +435,6 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 			Facebook.setForceDialogAuth(true);
 			Facebook.authorize();
 			facebookEnabledForUser = true;
-		} else {
-		//	var dialog = Ti.UI.createAlertDialog({
-		//		cancel : 1,
-		//		buttonNames : ['Deauthorize', L('cancel')],
-		//		message : 'You are about deauthorize Facebook for this group ',
-		//		title : 'Deauthorize Options'
-		//	});
-		//	dialog.addEventListener('click', function(e) {
-		//		if (e.index === 0) {
-		//			Facebook.logout();
-		//		} else if (e.index === 2) {
-		//			Ti.API.info('The cancel button was clicked');
-		//		}
-		//	});
-		//	dialog.show();
 		}
 	});
 
@@ -476,7 +443,10 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 			utm.facebookToken = Facebook.getAccessToken();
 		} else if (e.error) {
 			utm.facebookToken == '';
+			fbSwitch.setValue(false);
 		} else if (e.cancelled) {
+			utm.facebookToken == '';
+			fbSwitch.setValue(false);
 		}
 	});
 	
@@ -650,13 +620,14 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		};
 		if (twitterSwitch.getValue()) {
 			if (!twitter.isAuthorized()) {
-				twitter.authorize();
+				_userSettings.TwitterToken = '';
+				_userSettings.TwitterSecret = '';
+			} else {
+				_userSettings.TwitterToken = utm.TwitterToken;
+				_userSettings.TwitterSecret = utm.TwitterTokenSecret;
 			}
-			_userSettings.TwitterToken = utm.TwitterToken;
-			_userSettings.TwitterSecret = utm.TwitterTokenSecret;
 		}
 		if (fbSwitch.getValue()) {
-			Facebook.authorize();
 			_userSettings.FaceBook = Facebook.getAccessToken();
 		}
 		
