@@ -220,7 +220,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	twitterSwitch.addEventListener('change', function(e) {
 		if (e.value) {
 			if (!twitter.isAuthorized()) {
-				authTwitter();
+				twitter.authorize();
 			}
 			twitterEnabledForUser = true;
 		} else {
@@ -506,7 +506,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 
 		if (twitterSwitch.getValue()) {
 			if (!twitter.isAuthorized()) {
-				authTwitter();
+				twitter.authorize();
 			}
 			_userSettings.TwitterToken = utm.TwitterToken;
 			_userSettings.TwitterSecret = utm.TwitterTokenSecret;
