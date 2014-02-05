@@ -201,6 +201,7 @@ var PreviewWin = function(_tabGroup,_message) {
 		text: 'UTM Message:',
 		top: 25,
 		left: 25,
+		height: Ti.UI.SIZE,
 		font: {fontFamily: utm.fontFamily, fontSize: 18},
 		color: utm.barColor		
 	});
@@ -210,7 +211,7 @@ var PreviewWin = function(_tabGroup,_message) {
 		text: '',
 		top: 10,
 		left: 25,
-		height: 85,
+		height: 90,
 		width: Ti.Platform.displayCaps.platformWidth-50,
 		font: {fontFamily: utm.fontFamily},
 		verticalAlign: Ti.UI.TEXT_VERTICAL_ALIGNMENT_TOP,

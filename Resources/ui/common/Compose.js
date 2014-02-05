@@ -2,6 +2,7 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 	if (_mode === 'Reply') {
 		_messageID = _messageData.Id;
 	} else {
+		_messageID = null;
 		_messageData = {deliveryOptions: null};
 	}
 	
