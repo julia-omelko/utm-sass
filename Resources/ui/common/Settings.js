@@ -129,7 +129,8 @@ var SettingsWin = function(_tabGroup) {
 			validatesSecureCertificate : utm.validatesSecureCertificate,
 			onload : function(e) {
 				alert("You have been removed from YouThisMe.");
-				Ti.App.fireEvent("app:logout", {});
+				utm.loggedIn = false;
+				utm.tabGroup.close();
 				forgetMeReq = null;
 			},
 			onerror : function(e) {
