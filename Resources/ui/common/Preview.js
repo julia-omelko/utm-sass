@@ -454,14 +454,14 @@ var PreviewWin = function(_tabGroup,_message) {
 				var response = eval('(' + this.responseText + ')');
 				self.hideAi();
 				if (this.status === 200 && response.Status === 'Success') {
-					alert('Your message has been sent.');
+					//alert('Your message has been sent.');
 					for(var i=0; i<utm.winStack.length; i++) {
 						utm.winStack[i].close();
 					}
 					utm.winStack = [];
 					self.close();
 				} else if (this.status === 200 && response.Status === 'Warning') {
-					alert('Your message has been sent.');
+					//alert('Your message has been sent.');
 					for(var i=0; i<utm.winStack.length; i++) {
 						utm.winStack[i].close();
 					}
