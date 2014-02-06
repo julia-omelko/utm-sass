@@ -137,6 +137,7 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 		});	
 		self.add(replyBtn);
 		replyBtn.addEventListener('click', function() {
+			self.showAi();
 			Ti.App.fireEvent('app:getSubscriptionInfo',{callBack:'app:replyToMessage'});
 		});	
 		var replyToMessage = function() {
@@ -220,6 +221,7 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 				if (this.status === 200) {					
 					if (response.length === 0) {
 						alert('You are unable to send a message to this member as they are no longer a member of this group.');
+						self.hideAi();
 						getMembersReq = null;
 						return;
 					}
@@ -239,14 +241,17 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 					var composeWin = new ComposeWin(_tabGroup,selectedContacts,'Reply',_messageData);
 					utm.winStack.push(composeWin);
 					_tabGroup.getActiveTab().open(composeWin);
+					self.hideAi();
 											
 				} else {
-					utm.handleHttpError(e, this.status, this.responseText);		
+					utm.handleHttpError(e, this.status, this.responseText);	
+					self.hideAi();
 				}		
 				getMembersReq = null;
 		     },
 		     onerror : function(e) {		
 		        utm.handleHttpError(e,this.status,this.responseText); 
+		        self.hideAi();
 		        getMembersReq = null;
 		     }
 		     ,timeout:utm.netTimeout
