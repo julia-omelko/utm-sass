@@ -135,12 +135,12 @@ var MessageMembersWin = function(_tabGroup) {
 	function displayMyHortData(myHortData) {
 		myHortData.myHort.Members.sort(sort_by('NickName', true, function(a){return a.toUpperCase();}));
 		
-		for (var i=0; i<myHortData.myHort.Members.length; i++) {
+		/*for (var i=0; i<myHortData.myHort.Members.length; i++) {
 			if (myHortData.myHort.Members[i].UserId === utm.User.UserProfile.UserId) {
 				myHortData.myHort.Members.splice(i, 1);
 				break;
 			}
-		}
+		}*/
 		
 		var aAlpha = [];
 		var aMember = [];

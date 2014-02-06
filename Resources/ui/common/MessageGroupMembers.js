@@ -69,12 +69,12 @@ var MessageGroupMembersWin = function(_tabGroup,_myHortData) {
 	function displayMyHortData(myHortData) {
 		myHortData.sort(sort_by('NickName', true, function(a){return a.toUpperCase();}));
 		
-		for (var i=0; i<myHortData.length; i++) {
+		/*for (var i=0; i<myHortData.length; i++) {
 			if (myHortData[i].UserId === utm.User.UserProfile.UserId) {
 				myHortData.splice(i, 1);
 				break;
 			}
-		}
+		}*/
 		
 		var aAlpha = [];
 		var aMember = [];
