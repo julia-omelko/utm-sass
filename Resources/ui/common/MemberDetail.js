@@ -13,6 +13,29 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 	});
 	self.setLeftNavButton(backButton);
 	
+	var composeButton = Ti.UI.createImageView({
+		image: '/images/icons/compose.png',
+		height: 22,
+		width: 22
+	});
+	var composeMessage = function() {
+		var selectedContacts = [{userData:_memberData}];
+		var ComposeWin = require('/ui/common/Compose');
+		var composeWin = new ComposeWin(_tabGroup,selectedContacts,'Send');
+		utm.winStack.push(composeWin);
+		_tabGroup.setActiveTab(0);
+		_tabGroup.getActiveTab().open(composeWin);
+	};
+	composeButton.addEventListener('click',function(e){
+		Ti.App.fireEvent('app:getSubscriptionInfo',{callBack:'app:memberMessage'});
+	});
+	Ti.App.addEventListener('app:memberMessage',composeMessage);
+	self.addEventListener('close',function(e){
+		Ti.App.removeEventListener('app:memberMessage',composeMessage);
+	});
+	self.setRightNavButton(composeButton);
+	
+	
 	var scrollingView = Ti.UI.createView({
 		top: 0,
 		width: Ti.UI.FILL,
