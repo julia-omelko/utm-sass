@@ -3,7 +3,7 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 	var self = new StandardWindow('Account Settings', true);
 
 	var backButton = Ti.UI.createLabel({
-		text: 'back',
+		text: 'Back',
 		font: {fontFamily: utm.fontFamily},
 		color: 'white'
 	});

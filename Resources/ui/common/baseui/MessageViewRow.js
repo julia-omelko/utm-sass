@@ -1,17 +1,17 @@
 function MessageTableRow(rowData){
 	var self = Ti.UI.createTableViewRow({
 		className: 'row',
-		height: (utm.Android ? '100dp' : 80),
+		height: 80 * utm.sizeMultiplier,
 		hasChild: true,
 		messageData: rowData
 	});
 	
 	var avatar = Ti.UI.createImageView({
-		left: 10,
-		top: 10,
+		left: 10 * utm.sizeMultiplier,
+		top: 10 * utm.sizeMultiplier,
 		image: '/images/avatar/' + rowData.FromUsersAvatar + '.png',
-		width: 60,
-		height: 60,
+		width: 60 * utm.sizeMultiplier,
+		height: 60 * utm.sizeMultiplier,
 		backgroundColor: 'white',
 		borderColor: '#D4D4D4',
 		borderWidth: 1,
@@ -20,10 +20,10 @@ function MessageTableRow(rowData){
 	self.add(avatar);
 	
 	var textHolder = Ti.UI.createView({
-		top: 10,
-		height: 60,
+		top: 8 * utm.sizeMultiplier,
+		height: Ti.UI.SIZE,
 		width: Ti.UI.FILL,
-		left: 80,
+		left: 80 * utm.sizeMultiplier,
 		layout: 'vertical'
 	});
 	self.add(textHolder);
@@ -38,12 +38,12 @@ function MessageTableRow(rowData){
 	
 	var fromLabel = Ti.UI.createLabel({
 		text: rowData.FromUserName,
-		font: {fontFamily: utm.fontFamily, fontWeight: (rowData.WasRead ? 'normal' : 'bold')},
+		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize, fontWeight: (rowData.WasRead ? 'normal' : 'bold')},
 		color: (rowData.WasRead ? utm.barColor : utm.color_org),
 		wordWrap: false,
 		ellipsize: true,
 		height: Ti.UI.SIZE,
-		width: (Ti.Platform.displayCaps.platformWidth-150),
+		width: (Ti.Platform.displayCaps.platformWidth-(150 * utm.sizeMultiplier)),
 		left: 0,
 		top: 0
 	});
@@ -57,26 +57,27 @@ function MessageTableRow(rowData){
 	dateText = dateText.replace('a minute','1m');
 	var dateLabel = Ti.UI.createLabel({
 		text: dateText,
-		font: {fontFamily: utm.fontFamily},
+		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize},
 		color: utm.secondaryTextColor,
 		wordWrap: false,
 		ellipsize: true,
 		height: Ti.UI.SIZE,
-		width: 80,
-		left: (Ti.Platform.displayCaps.platformWidth-180),
+		width: 80 * utm.sizeMultiplier,
+		left: (Ti.Platform.displayCaps.platformWidth-(180 * utm.sizeMultiplier)),
 		top: 0
 	});
 	textHeader.add(dateLabel);
 	
 	var utmLabel = Ti.UI.createLabel({
 		text: rowData.UtmText.trim(),
-		font: {fontFamily: utm.fontFamily},
+		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize},
 		left: 0,
-		width: (Ti.Platform.displayCaps.platformWidth-115),
-		height: Ti.UI.FILL,
+		width: (Ti.Platform.displayCaps.platformWidth-(115 * utm.sizeMultiplier)),
+		height: Ti.UI.SIZE,
 		ellipsize: true,
+		wordWrap: true,
 		color: utm.textColor,
-		top: 2,
+		top: 1,
 		verticalAlign: Ti.UI.TEXT_VERTICAL_ALIGNMENT_TOP
 	});
 	textHolder.add(utmLabel);

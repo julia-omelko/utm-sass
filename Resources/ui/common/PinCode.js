@@ -11,7 +11,7 @@ var SettingsWin = function(_tabGroup) {
 	var self = new StandardWindow('Set Unlock Code', '');
 	
 	var backButton = Ti.UI.createLabel({
-		text: 'back',
+		text: 'Back',
 		font: {fontFamily: utm.fontFamily},
 		color: 'white'
 	});

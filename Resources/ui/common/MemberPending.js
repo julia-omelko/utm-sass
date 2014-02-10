@@ -5,7 +5,7 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData,_myHortData) {
 	var self = new StandardWindow('Member Detail', '');
 
 	var backButton = Ti.UI.createLabel({
-		text: 'back',
+		text: 'Back',
 		font: {fontFamily: utm.fontFamily},
 		color: 'white'
 	});

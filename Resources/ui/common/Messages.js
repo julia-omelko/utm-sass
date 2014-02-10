@@ -4,7 +4,7 @@ var MessagesWin = function(_tabGroup) {
 	var self = new StandardWindow('Messages', true);
 
 	var editButton = Ti.UI.createLabel({
-		text: 'edit',
+		text: 'Edit',
 		font: {fontFamily: utm.fontFamily},
 		color: 'white'
 	});
@@ -38,8 +38,8 @@ var MessagesWin = function(_tabGroup) {
 	var tabBar = Titanium.UI.createView({
 		layout : 'horizontal',
 		width : '100%',
-		height : 27,
-		top: 0
+		height : 27 * utm.sizeMultiplier,
+		top: utm.viewableTop
 	});
 	self.add(tabBar);
 	var receivedButton = Ti.UI.createLabel({
@@ -49,7 +49,7 @@ var MessagesWin = function(_tabGroup) {
 		backgroundColor: 'white',
 		borderColor: '#D4D4D4',
 		borderWidth: 1,
-		font: {fontFamily: utm.fontFamily},
+		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize},
 		color: utm.textColor,
 	    textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER
 	});
@@ -61,7 +61,7 @@ var MessagesWin = function(_tabGroup) {
 		backgroundColor: utm.backgroundColor,
 		borderColor: '#D4D4D4',
 		borderWidth: 1,
-		font: {fontFamily: utm.fontFamily},
+		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize},
 		color: utm.secondaryTextColor,
 		textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER
 	});
@@ -98,10 +98,13 @@ var MessagesWin = function(_tabGroup) {
 	var tableView = Titanium.UI.createTableView({
 		editable: false,
 		allowsSelectionDuringEditing: true,
-		height: utm.viewableArea - 27,
-		top: 27,
+		height: utm.viewableArea - (27 * utm.sizeMultiplier),
+		top: utm.viewableTop + (27 * utm.sizeMultiplier),
 		refreshControl: ((utm.iPad || utm.iPhone) ? refreshControl : null)
 	});
+	if (utm.Android) {
+		tableView.setHeight(tableView.getHeight() - (40 * utm.sizeMultiplier) - 20);
+	}
 	self.add(tableView);	
 	
 	tableView.addEventListener('click', function(e) {
@@ -127,7 +130,6 @@ var MessagesWin = function(_tabGroup) {
 				
 				Ti.Analytics.featureEvent('user.viewed_messages');
 				if (this.status === 200) {
-					
 					for (var i=0; i < response.length; i++) {
 						response[i].mode = mode;
 						var row = new MessageTableRow(response[i]);
@@ -136,7 +138,9 @@ var MessagesWin = function(_tabGroup) {
 
 					tableView.setData(tableData);
 					self.hideAi();
-        			refreshControl.endRefreshing();
+					if (utm.iPad || utm.iPhone) {
+        				refreshControl.endRefreshing();
+        			}
         			refreshing = false;
 				} else {
 					utm.handleHttpError({}, this.status, this.responseText);
@@ -232,7 +236,15 @@ var MessagesWin = function(_tabGroup) {
 	}
 	
 	
-	
+	if (utm.Android) {
+		var StandardButton = require('/ui/common/baseui/StandardButton');
+		var aComposeButton = new StandardButton({title:'New Message'});
+		aComposeButton.addEventListener('click',function(e){
+			Ti.App.fireEvent('app:getSubscriptionInfo',{callBack:'app:composeMessage'});
+		});
+		tableView.setHeight(tableView.getHeight()-60);
+		self.add(aComposeButton);
+	}
 	
 	
 	

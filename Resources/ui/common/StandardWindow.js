@@ -15,23 +15,40 @@ function StandardWindow(_title,_showAi) {
 		
 	} else if (utm.Android) {
 		var self = Titanium.UI.createWindow({
-		    //layout: 'vertical',
 		 	backgroundColor: utm.backgroundColor,
 		    navBarHidden: true		   
 		});
-		
-		var my_navbar = Ti.UI.createLabel({
-		    height: 50,
-		    width: '100%',
-		    backgroundColor: utm.androidBarColor,
-		    color: utm.backgroundColor,
-		    font: {fontSize: utm.androidTitleFontSize, fontFamily: utm.fontFamily},
-		    textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
-		    text: _title,
-		    top: 0
-		});
- 		self.add(my_navbar);
+		if (_title !== '') {
+			var psudoNavBar = Ti.UI.createView({
+				height: utm.viewableTop,
+				top: 0,
+				width: Ti.UI.FILL,
+			    backgroundColor: utm.androidBarColor
+			});
+			self.add(psudoNavBar);
+			
+			var winTitle = Ti.UI.createLabel({
+			    height: Ti.UI.FILL,
+			    width: Ti.UI.FILL,
+			    color: utm.backgroundColor,
+			    font: {fontSize: utm.androidTitleFontSize, fontFamily: utm.fontFamily},
+			    textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+			    text: _title
+			});
+	 		psudoNavBar.add(winTitle);
+ 		}
+ 		self.setLeftNavButton = function(buttonView) {
+ 			//alert(1111);
+ 		};
+ 		self.setRightNavButton = function(buttonView) {
+ 			//alert(2222);
+ 		};
 	};
+	
+	
+	
+	
+	
 	
 	
 	var ai = Ti.UI.createView({
@@ -86,22 +103,6 @@ function StandardWindow(_title,_showAi) {
 		}, utm.netTimeout);
 	}
 	
-	/*
-	var ai = require('/ui/common/baseui/ActivityIndicator');
-	var indicator = ai.createIndicatorWindow();
-	self.showAi = function() {
-		indicator.openIndicator();
-	};
-	self.hideAi = function() {
-		indicator.closeIndicator();
-	};
-	
-	if (_showAi === true) {
-		self.addEventListener('open',function(e){
-			self.showAi();
-		});
-	}
-	*/
 	
 	return self;
 } 

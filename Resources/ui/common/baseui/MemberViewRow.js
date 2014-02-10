@@ -1,7 +1,7 @@
 function MemberTableRow(rowData){
 	var self = Ti.UI.createTableViewRow({
 		className: 'row',
-		height: (utm.Android ? '100dp' : 40),
+		height: 40*utm.sizeMultiplier,
 		hasChild: true,
 		memberData: rowData
 	});
@@ -10,8 +10,8 @@ function MemberTableRow(rowData){
 		left: 10,
 		top: 5,
 		image: '/images/avatar/'+ rowData.Avatar +'.png',
-		width: 30,
-		height: 30,
+		width: 30*utm.sizeMultiplier,
+		height: 30*utm.sizeMultiplier,
 		backgroundColor: 'white',
 		borderColor: '#D4D4D4',
 		borderWidth: 1,
@@ -21,17 +21,18 @@ function MemberTableRow(rowData){
 	
 	var nickName = Ti.UI.createLabel({
 		text: rowData.NickName,
-		font: {fontFamily: utm.fontFamily},
+		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize},
 		wordWrap: false,
 		ellipsize: true,
 		height: Ti.UI.SIZE,
 		width: Ti.UI.SIZE,
-		left: 50
+		left: (30*utm.sizeMultiplier)+20,
+		color: utm.textColor
 	});
 	self.add(nickName);
 	
 	memberNote = Ti.UI.createView({
-		left: Ti.Platform.displayCaps.platformWidth - 90,
+		left: Ti.Platform.displayCaps.platformWidth - (90*utm.sizeMultiplier),
 		height: Ti.UI.SIZE,
 		width: Ti.UI.SIZE,
 		layout: 'vertical'
@@ -41,7 +42,7 @@ function MemberTableRow(rowData){
 	if (rowData.MyHortId !== utm.User.UserProfile.PrimaryMyHort && rowData.MemberType === 'Invisible') {
 		var invisibleText = Ti.UI.createLabel({
 			text: 'Invisible',
-			font: {fontFamily: utm.fontFamily},
+			font: {fontFamily: utm.fontFamily, fontSize:utm.fontSize},
 			color: utm.secondaryTextColor,
 			wordWrap: false,
 			ellipsize: true,
@@ -54,7 +55,7 @@ function MemberTableRow(rowData){
 	if (rowData.InviteCode != null) {
 		var pendingText = Ti.UI.createLabel({
 			text: 'Pending',
-			font: {fontFamily: utm.fontFamily},
+			font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize},
 			color: utm.secondaryTextColor,
 			wordWrap: false,
 			ellipsize: true,

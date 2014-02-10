@@ -4,7 +4,7 @@ var CreateAccountWin = function() {
 	var self = new StandardWindow('Create Account', '');
 	
 	var backButton = Ti.UI.createLabel({
-		text: 'back',
+		text: 'Back',
 		font: {fontFamily: utm.fontFamily},
 		color: 'white'
 	});

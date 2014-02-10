@@ -11,7 +11,7 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 	var self = new StandardWindow(_mode, '');
 	
 	var backButton = Ti.UI.createLabel({
-		text: 'back',
+		text: 'Back',
 		font: {fontFamily: utm.fontFamily},
 		color: 'white'
 	});

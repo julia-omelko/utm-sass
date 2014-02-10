@@ -29,15 +29,17 @@ var LoginWin = function() {
 		height: '71dp',
 		top: (Ti.Platform.displayCaps.platformHeight-160-280)/2 //Math.round(Ti.Platform.displayCaps.platformHeight*0.055)
 	});
-	if (majorVersion === 6) {
+	if (utm.iPhone && majorVersion === 6) {
 		utmLogo.setTop(utmLogo.getTop()-80);
+	} else if (utm.Android) {
+		utmLogo.setTop(0);
 	}
 	view.add(utmLogo);
 	
 	var username = Ti.UI.createTextField({
 		color: utm.textFieldColor,		
 		width: Math.min(235,Math.round(Ti.Platform.displayCaps.platformWidth*0.82)),
-		height: 40,
+		height: (utm.Android ? Ti.UI.SIZE : 40),
 		hintText: L('label_user_name'),
 		autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
 		autocorrect: false,
@@ -49,7 +51,8 @@ var LoginWin = function() {
 		borderWidth: 1,
 		backgroundColor: 'white',
 		clearButtonMode: Ti.UI.INPUT_BUTTONMODE_ALWAYS,
-		paddingLeft: 7
+		paddingLeft: 7,
+		font: {fontFamily: utm.fontFamily, fontSize: '16dp'}
 	});
 	var usernameFocued = Ti.UI.createView({
 		width: Ti.UI.FILL,
@@ -69,7 +72,7 @@ var LoginWin = function() {
 		color: utm.textFieldColor,
 		top: 15,
 		width: Math.min(235,Math.round(Ti.Platform.displayCaps.platformWidth*0.82)),
-		height: 40,
+		height: (utm.Android ? Ti.UI.SIZE : 40),
 		hintText: L('label_password'),
 		passwordMask: true,
 		autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
@@ -81,7 +84,8 @@ var LoginWin = function() {
 		borderWidth: 1,
 		backgroundColor: 'white',
 		clearButtonMode: Ti.UI.INPUT_BUTTONMODE_ALWAYS,
-		paddingLeft: 7
+		paddingLeft: 7,
+		font: {fontFamily: utm.fontFamily, fontSize: '16dp'}
 	});
 	var passwordFocued = Ti.UI.createView({
 		width: Ti.UI.FILL,
@@ -105,7 +109,7 @@ var LoginWin = function() {
 		title: L('login'),
 		top: 15,
 		width: Math.min(235,Math.round(Ti.Platform.displayCaps.platformWidth*0.82)),
-		height: 40,
+		height: 40*utm.sizeMultiplier,
 		borderRadius: 20,
 		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
 		backgroundColor: utm.buttonColor,
@@ -169,7 +173,7 @@ var LoginWin = function() {
 	var tableData = [];
 	tableData[0] = Ti.UI.createTableViewRow({
 		title: 'New to UTM? Create an account',
-		height: 35,
+		height: 35*utm.sizeMultiplier,
 		backgroundColor: 'white',
 		hasChild: true,
 		color: 'black',
@@ -182,7 +186,7 @@ var LoginWin = function() {
 	});
 	tableData[1] = Ti.UI.createTableViewRow({
 		title: 'About YouThisMe & Our Promise',
-		height: 35,
+		height: 35*utm.sizeMultiplier,
 		backgroundColor: 'white',
 		hasChild: true,
 		color: 'black',
@@ -196,7 +200,7 @@ var LoginWin = function() {
 	});
 	tableData[2] = Ti.UI.createTableViewRow({
 		title: 'Privacy Policy',
-		height: 35,
+		height: 35*utm.sizeMultiplier,
 		backgroundColor: 'white',
 		hasChild: true,
 		color: 'black',
@@ -210,7 +214,7 @@ var LoginWin = function() {
 	});
 	tableData[3] = Ti.UI.createTableViewRow({
 		title: 'Rules of Use',
-		height: 35,
+		height: 35*utm.sizeMultiplier,
 		backgroundColor: 'white',
 		hasChild: true,
 		color: 'black',

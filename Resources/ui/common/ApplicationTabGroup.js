@@ -1,9 +1,13 @@
 function ApplicationTabGroup() {
 	//create module instance
 	var self = Ti.UI.createTabGroup({
-		backgroundColor: 'white'
+		backgroundColor: 'white',
+		navBarHidden: (utm.Android ? true : false)
 	});
 	utm.winStack = [];
+	
+	
+
 	
 	var	MessagesWin = require('ui/common/Messages'),
 		MembersWin = require('ui/common/Members'),

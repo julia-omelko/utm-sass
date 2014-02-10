@@ -4,7 +4,7 @@ var MessageGroupMembersWin = function(_tabGroup,_myHortData) {
 	var self = new StandardWindow('Choose Recipients', true);
 
 	var backButton = Ti.UI.createLabel({
-		text: 'back',
+		text: 'Back',
 		font: {fontFamily: utm.fontFamily},
 		color: 'white'
 	});

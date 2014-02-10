@@ -4,7 +4,7 @@ var WebViewWin = function(_title,_url) {
 	var self = new StandardWindow(_title, false);
 	
 	var backButton = Ti.UI.createLabel({
-		text: 'back',
+		text: 'Back',
 		font: {fontFamily: utm.fontFamily},
 		color: 'white'
 	});

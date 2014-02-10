@@ -4,7 +4,7 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 	var self = new StandardWindow('Member Detail', true);
 	
 	var backButton = Ti.UI.createLabel({
-		text: 'back',
+		text: 'Back',
 		font: {fontFamily: utm.fontFamily},
 		color: 'white'
 	});
@@ -37,7 +37,7 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 	
 	
 	var scrollingView = Ti.UI.createView({
-		top: 0,
+		top: utm.viewableTop,
 		width: Ti.UI.FILL,
 		height: utm.viewableArea - 110,
 		showVerticalScrollIndicator: true,

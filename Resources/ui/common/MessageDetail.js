@@ -10,7 +10,7 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 	var self = new StandardWindow(winTitle, true);
 	
 	var backButton = Ti.UI.createLabel({
-		text: 'back',
+		text: 'Back',
 		font: {fontFamily: utm.fontFamily},
 		color: 'white'
 	});
@@ -22,7 +22,7 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 	var scrollingView = Ti.UI.createScrollView({
 		width: Ti.UI.FILL,
 		height: ((_messageData.mode !== 'sent') ? utm.viewableArea - 60 : utm.viewableArea),
-		top: 0,
+		top: utm.viewableTop,
 		showVerticalScrollIndicator: true,
 		contentHeight:'auto',
 		layout:'vertical'
@@ -40,8 +40,8 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 		top: 25,
 		left: 0,
 		image: '/images/avatar/' + _messageData.FromUsersAvatar + '.png',
-		width: 80,
-		height: 80,
+		width: 80*utm.sizeMultiplier,
+		height: 80*utm.sizeMultiplier,
 		backgroundColor: 'white',
 		borderColor: '#D4D4D4',
 		borderWidth: 1,
@@ -50,9 +50,9 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 	userView.add(avatar);
 	
 	var userSubView = Ti.UI.createView({
-		left: 100,
+		left: (100*utm.sizeMultiplier),
 		top: 30,
-		width: (Ti.Platform.displayCaps.platformWidth-100-25),
+		width: (Ti.Platform.displayCaps.platformWidth-(100*utm.sizeMultiplier)-25),
 		height: Ti.UI.SIZE,
 		layout: 'vertical'
 	});
@@ -60,7 +60,7 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 	
 	var fromLabel = Ti.UI.createLabel({
 		text: ((_messageData.mode === 'received') ? _messageData.FromUserName : _messageData.ToHeader.split(',').join(', ')),
-		font: {fontFamily: utm.fontFamily},
+		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize},
 		color: utm.barColor,
 		height: Ti.UI.SIZE,
 		width: Ti.UI.FILL,
@@ -72,12 +72,12 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 	
 	var dateLabel = Ti.UI.createLabel({
 		text: getDateTimeFormat(_messageData.DateSent),
-		font: {fontFamily: utm.fontFamily},
+		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize},
 		color: utm.secondaryTextColor,
 		wordWrap: false,
 		ellipsize: true,
 		height: Ti.UI.SIZE,
-		width: (Ti.Platform.displayCaps.platformWidth-100-25),
+		width: (Ti.Platform.displayCaps.platformWidth-(100*utm.sizeMultiplier)-25),
 		left: 0,
 		top: 10
 	});
@@ -87,7 +87,7 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 		text: 'UTM message',
 		top: 25,
 		left: 25,
-		font: {fontFamily: utm.fontFamily, fontSize: 18},
+		font: {fontFamily: utm.fontFamily, fontSize: '18dp'},
 		color: utm.barColor		
 	});
 	scrollingView.add(utmMessageHeader);
@@ -97,7 +97,7 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 		top: 10,
 		left: 25,
 		width: Ti.Platform.displayCaps.platformWidth-50,
-		font: {fontFamily: utm.fontFamily},
+		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize},
 		color: 'black'		
 	});
 	scrollingView.add(utmMessage);
@@ -107,7 +107,7 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 		text: 'Original message',
 		top: 25,
 		left: 25,
-		font: {fontFamily: utm.fontFamily, fontSize: 18},
+		font: {fontFamily: utm.fontFamily, fontSize: '18dp'},
 		color: utm.barColor		
 	});
 	scrollingView.add(originalMessageHeader);
@@ -117,24 +117,15 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 		top: 10,
 		left: 25,
 		width: Ti.Platform.displayCaps.platformWidth-50,
-		font: {fontFamily: utm.fontFamily},
+		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize},
 		color: 'black',
 		height: Ti.UI.SIZE	
 	});
 	scrollingView.add(originalMessage);
 	
 	if (_messageData.mode !== 'sent') {
-		var replyBtn = Ti.UI.createButton({
-			title: 'Reply',
-			bottom: 10,
-			width: (Ti.Platform.displayCaps.platformWidth-50),
-			height: 40,
-			borderRadius: 20,
-			font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
-			backgroundColor: utm.buttonColor,
-			color: 'white',
-			style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
-		});	
+		var StandardButton = require('/ui/common/baseui/StandardButton');
+		var replyBtn = new StandardButton({title:'Reply'});
 		self.add(replyBtn);
 		replyBtn.addEventListener('click', function() {
 			self.showAi();

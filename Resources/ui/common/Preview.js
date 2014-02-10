@@ -80,7 +80,7 @@ var PreviewWin = function(_tabGroup,_message) {
 	var self = new StandardWindow('Preview', true);
 	
 	var backButton = Ti.UI.createLabel({
-		text: 'back',
+		text: 'Back',
 		font: {fontFamily: utm.fontFamily},
 		color: 'white'
 	});

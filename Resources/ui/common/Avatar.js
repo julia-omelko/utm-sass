@@ -5,7 +5,7 @@ var AvatarWin = function(_tabGroup) {
 	var self = new StandardWindow('Change Avatar', '');
 	
 	var backButton = Ti.UI.createLabel({
-		text: 'back',
+		text: 'Back',
 		font: {fontFamily: utm.fontFamily},
 		color: 'white'
 	});

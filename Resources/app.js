@@ -16,12 +16,19 @@ utm.setEnvModePrefix = function (env){
 };
 if (Ti.Platform.osname == 'iphone') {
 	utm.iPhone = true;
+	utm.viewableTop = 0;
 	utm.viewableArea = Ti.Platform.displayCaps.platformHeight - 114;
+	utm.sizeMultiplier = 1;
 } else if(Ti.Platform.osname == 'ipad') {
 	utm.iPad = true;
+	utm.viewableTop = 0;
 	utm.viewableArea = Ti.Platform.displayCaps.platformHeight - 114;
+	utm.sizeMultiplier = 1;
 } else if(Ti.Platform.osname == 'android') {
 	utm.Android = true;
+	utm.viewableTop = 50;
+	utm.viewableArea = Ti.Platform.displayCaps.platformHeight - 138;
+	utm.sizeMultiplier = 2;
 };
 if (Ti.Platform.model === 'Simulator' || Ti.Platform.model ===  'google_sdk' || Ti.Platform.model ===  'sdk') { 
 	utm.setEnvModePrefix("dev");
@@ -50,6 +57,7 @@ if (utm.Android) {
 } else {
 	utm.fontFamily = 'Titillium';
 }
+utm.fontSize = '14dp';
 
 //Note 2 diff controllers based on platform folders
 var NavigationController = require('NavigationController');

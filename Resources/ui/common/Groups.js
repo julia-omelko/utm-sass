@@ -12,7 +12,7 @@ var GroupsWin = function(_tabGroup) {
 	self.add(scrollView);
 
 	var editButton = Ti.UI.createLabel({
-		text: 'edit',
+		text: 'Edit',
 		font: {fontFamily: utm.fontFamily},
 		color: 'white'
 	});

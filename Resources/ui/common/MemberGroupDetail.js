@@ -15,7 +15,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	var self = new StandardWindow('Group Detail', true);
 
 	var backButton = Ti.UI.createLabel({
-		text: 'back',
+		text: 'Back',
 		font: {fontFamily: utm.fontFamily},
 		color: 'white'
 	});

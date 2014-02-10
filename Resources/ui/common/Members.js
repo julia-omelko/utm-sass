@@ -6,6 +6,7 @@ var MembersWin = function(_tabGroup) {
 	var self = new StandardWindow('Members', true);
 	
 	var scrollView = Ti.UI.createScrollView({
+		top: utm.viewableTop,
 		scrollType : 'vertical',
 		showVerticalScrollIndicator : true,
 		showHorizontalScrollIndicator : false,
@@ -14,7 +15,7 @@ var MembersWin = function(_tabGroup) {
 	self.add(scrollView);
 
 	var editButton = Ti.UI.createLabel({
-		text: 'edit',
+		text: 'Edit',
 		font: {fontFamily: utm.fontFamily},
 		color: 'white'
 	});
@@ -40,14 +41,15 @@ var MembersWin = function(_tabGroup) {
 	self.setRightNavButton(newButton);
 
 	var tableView = Ti.UI.createTableView({
+		top: utm.viewableTop,
 		editable: false,
 		allowsSelectionDuringEditing: true,
-		height: utm.viewableArea,
-		top: 0
+		height: utm.viewableArea
 	});
 	self.add(tableView);
 	
 	tableView.addEventListener('click',function(e){
+		alert(e);
 		if (e.rowData.memberData.InviteCode != null) {
 			var MemberDetailWin = require('/ui/common/MemberPending');
 			var memberDetailWin = new MemberDetailWin(_tabGroup, e.rowData.memberData, myHortData.myHort);
