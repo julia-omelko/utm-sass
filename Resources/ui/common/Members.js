@@ -49,7 +49,7 @@ var MembersWin = function(_tabGroup) {
 	self.add(tableView);
 	
 	tableView.addEventListener('click',function(e){
-		alert(e);
+		//alert(e);
 		if (e.rowData.memberData.InviteCode != null) {
 			var MemberDetailWin = require('/ui/common/MemberPending');
 			var memberDetailWin = new MemberDetailWin(_tabGroup, e.rowData.memberData, myHortData.myHort);

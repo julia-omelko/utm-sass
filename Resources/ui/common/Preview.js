@@ -1,7 +1,7 @@
 var PreviewWin = function(_tabGroup,_message) {
 	_myHortId = _message.selectedContacts[0].userData.MyHortId;
 	_nickname = '';
-
+	
 	var deliveryOptions = {
 		sms: true,
 		email: false,
@@ -43,14 +43,17 @@ var PreviewWin = function(_tabGroup,_message) {
 				var response = eval('(' + this.responseText + ')');
 				if (this.status === 200) {
 					myHortData = response;
-					if (myHortData.PrimaryUser.FaceBook !== '') {
-						deliveryEnabled.facebook = true;
-					}
-					if (myHortData.PrimaryUser.TwitterSecret !== '') {
-						deliveryEnabled.twitter = true;
-					}
-					if (myHortData.PrimaryUser.Mobile) {
-						deliveryEnabled.sms = true;
+					//Ti.API.info(myHortData);
+					if (_message.deliveryOptions != null) {
+						if (myHortData.PrimaryUser.FaceBook !== '') {
+							deliveryEnabled.facebook = true;
+						}
+						if (myHortData.PrimaryUser.TwitterSecret !== '') {
+							deliveryEnabled.twitter = true;
+						}
+						if (myHortData.PrimaryUser.Mobile) {
+							deliveryEnabled.sms = true;
+						}
 					}
 					deliveryOptions.signMessage = myHortData.PrimaryUser.AddNicknameToUtms;
 										
@@ -68,12 +71,17 @@ var PreviewWin = function(_tabGroup,_message) {
 			},
 			timeout : utm.netTimeout
 		});
+		
 		getMyHortDetailReq.open("GET", utm.serviceUrl + "MyHort/GetMyHortDetails?myHortId=" + _myHortId);
 		getMyHortDetailReq.setRequestHeader('Authorization-Token', utm.AuthToken);
 		getMyHortDetailReq.send();
 	}
 	
-	loadMyHortDetail();
+	if (_message.deliveryOptions != null) {
+		getUtmMessage();
+	} else {
+		loadMyHortDetail();
+	}
 
 	
 	var StandardWindow = require('ui/common/StandardWindow');
