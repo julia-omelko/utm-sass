@@ -361,7 +361,6 @@ var LoginWin = function() {
 				        userData: response
 				    });		
 				    
-				    Titanium.Analytics.featureEvent('user.logged_in');
 				    password.value='';
 					username.value='';
 					
@@ -388,7 +387,6 @@ var LoginWin = function() {
 					//setMessageArea(L("invalid_login"));
 					//Too many tries - Account is locked for 1 hour.
 					//Invalid UserName/Password
-					Titanium.Analytics.featureEvent('user.logged_in_invalid');
 				}else{
 				  	utm.handleError(e,this.status,this.responseText);
 				}

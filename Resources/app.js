@@ -117,7 +117,6 @@ function handleLoginSuccess(event) {
 	
 	utm.User.MyHorts = event.userData.MyHorts;
 
-	//utm.recordAnalytics('login succes', utm.User.UserProfile.UserName );
 	utm.enableSendMessageButton=true;
 	
 	isSubscriptionValid(utm.User.UserProfile.SubscriptionEnds);

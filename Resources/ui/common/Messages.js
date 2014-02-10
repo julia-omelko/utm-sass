@@ -128,7 +128,6 @@ var MessagesWin = function(_tabGroup) {
 				var response = eval('(' + this.responseText + ')');
 				var tableData = [];
 				
-				Ti.Analytics.featureEvent('user.viewed_messages');
 				if (this.status === 200) {
 					for (var i=0; i < response.length; i++) {
 						response[i].mode = mode;
