@@ -273,6 +273,26 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 	signRow.add(signSwitch);
 	additionalSection.add(signRow);
 	
+	var deleteRow = Ti.UI.createTableViewRow({
+		height: (utm.Android ? '100dp' : 40),
+		hasChild: false,
+		selectedBackgroundColor: 'white'
+	});
+	var deleteLabel = Ti.UI.createLabel({
+		text: 'Delete message when read',
+		width: Ti.UI.SIZE,
+		left: 25,
+		height: Ti.UI.FILL,
+		font: {fontFamily: utm.fontFamily}
+	});
+	var deleteSwitch = Ti.UI.createSwitch({
+		value: false,
+		right: 25
+	});
+	deleteRow.add(deleteLabel);
+	deleteRow.add(deleteSwitch);
+	additionalSection.add(deleteRow);
+	
 	tableDataSettings.push(postSection);
 	tableDataSettings.push(additionalSection);
 	tableViewSettings.setData(tableDataSettings);
