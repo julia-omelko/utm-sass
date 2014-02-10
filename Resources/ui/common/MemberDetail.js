@@ -24,7 +24,7 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 		var composeWin = new ComposeWin(_tabGroup,selectedContacts,'Send');
 		utm.winStack.push(composeWin);
 		_tabGroup.setActiveTab(0);
-		_tabGroup.getActiveTab().open(composeWin);
+		_tabGroup.getTabs()[0].open(composeWin);
 	};
 	composeButton.addEventListener('click',function(e){
 		Ti.App.fireEvent('app:getSubscriptionInfo',{callBack:'app:memberMessage'});
