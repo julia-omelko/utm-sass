@@ -1,4 +1,5 @@
 function MessageTableRow(rowData){
+
 	var self = Ti.UI.createTableViewRow({
 		className: 'row',
 		height: 80 * utm.sizeMultiplier,
@@ -37,7 +38,7 @@ function MessageTableRow(rowData){
 	textHolder.add(textHeader);
 	
 	var fromLabel = Ti.UI.createLabel({
-		text: rowData.FromUserName,
+		text: ((rowData.FromUserId === utm.User.UserProfile.UserId) ? rowData.ToHeader.split(',').join(', ') : rowData.FromUserName),
 		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize, fontWeight: (rowData.WasRead ? 'normal' : 'bold')},
 		color: (rowData.WasRead ? utm.barColor : utm.color_org),
 		wordWrap: false,
