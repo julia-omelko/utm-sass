@@ -52,7 +52,7 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 	var userSubView = Ti.UI.createView({
 		left: (100*utm.sizeMultiplier),
 		top: 30,
-		width: (Ti.Platform.displayCaps.platformWidth-(100*utm.sizeMultiplier)-25),
+		width: Ti.UI.FILL,
 		height: Ti.UI.SIZE,
 		layout: 'vertical'
 	});
