@@ -49,18 +49,19 @@ var MembersWin = function(_tabGroup) {
 	self.add(tableView);
 	
 	tableView.addEventListener('click',function(e){
-		//alert(e);
-		if (e.rowData.memberData.InviteCode != null) {
-			var MemberDetailWin = require('/ui/common/MemberPending');
-			var memberDetailWin = new MemberDetailWin(_tabGroup, e.rowData.memberData, myHortData.myHort);
-		} else {
-			var MemberDetailWin = require('/ui/common/MemberDetail');
-		var memberDetailWin = new MemberDetailWin(_tabGroup, e.rowData.memberData);
+		if (e.source.memberData != null) {
+			if (e.source.memberData.InviteCode != null) {
+				var MemberDetailWin = require('/ui/common/MemberPending');
+				var memberDetailWin = new MemberDetailWin(_tabGroup, e.source.memberData, myHortData.myHort);
+			} else {
+				var MemberDetailWin = require('/ui/common/MemberDetail');
+			var memberDetailWin = new MemberDetailWin(_tabGroup, e.source.memberData);
+			}
+			memberDetailWin.addEventListener('close',function(e){
+				loadMyHortDetail();
+			});
+			_tabGroup.getActiveTab().open(memberDetailWin);
 		}
-		memberDetailWin.addEventListener('close',function(e){
-			loadMyHortDetail();
-		});
-		_tabGroup.getActiveTab().open(memberDetailWin);
 	});
 	
 	tableView.addEventListener('delete', function(e) {

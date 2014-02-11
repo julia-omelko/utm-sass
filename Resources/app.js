@@ -29,6 +29,7 @@ if (Ti.Platform.osname == 'iphone') {
 	utm.viewableTop = 50;
 	utm.viewableArea = Ti.Platform.displayCaps.platformHeight - 138;
 	utm.sizeMultiplier = 2;
+	utm.viewableTop = 50*utm.sizeMultiplier;
 };
 if (Ti.Platform.model === 'Simulator' || Ti.Platform.model ===  'google_sdk' || Ti.Platform.model ===  'sdk') { 
 	utm.setEnvModePrefix("dev");
@@ -49,7 +50,6 @@ utm.secondaryTextColor = '#858585';
 utm.textFieldColor='#000000';
 utm.textErrorColor='#800000';
 utm.buttonColor = '#F27100';
-utm.androidTitleFontSize = 25;
 utm.androidTitleFontWeight = 'bold';
 utm.androidLabelFontSize = 25;
 if (utm.Android) {

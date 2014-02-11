@@ -15,7 +15,8 @@ function MemberTableRow(rowData){
 		backgroundColor: 'white',
 		borderColor: '#D4D4D4',
 		borderWidth: 1,
-		borderRadius: 2
+		borderRadius: 2,
+		memberData: self.memberData
 	});
 	self.add(avatar);
 	
@@ -27,7 +28,8 @@ function MemberTableRow(rowData){
 		height: Ti.UI.SIZE,
 		width: Ti.UI.SIZE,
 		left: (30*utm.sizeMultiplier)+20,
-		color: utm.textColor
+		color: utm.textColor,
+		memberData: self.memberData
 	});
 	self.add(nickName);
 	
@@ -35,7 +37,8 @@ function MemberTableRow(rowData){
 		left: Ti.Platform.displayCaps.platformWidth - (90*utm.sizeMultiplier),
 		height: Ti.UI.SIZE,
 		width: Ti.UI.SIZE,
-		layout: 'vertical'
+		layout: 'vertical',
+		memberData: self.memberData
 	});
 	self.add(memberNote);
 	
@@ -47,7 +50,8 @@ function MemberTableRow(rowData){
 			wordWrap: false,
 			ellipsize: true,
 			height: Ti.UI.SIZE,
-			width: Ti.UI.SIZE
+			width: Ti.UI.SIZE,
+			memberData: self.memberData
 		});
 		memberNote.add(invisibleText);
 	}
@@ -60,11 +64,14 @@ function MemberTableRow(rowData){
 			wordWrap: false,
 			ellipsize: true,
 			height: Ti.UI.SIZE,
-			width: Ti.UI.SIZE
+			width: Ti.UI.SIZE,
+			memberData: self.memberData
 		});
 		memberNote.add(pendingText);
 	}
 	
+	
+
 	
     return self;
  }

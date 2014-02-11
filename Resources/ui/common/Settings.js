@@ -6,18 +6,19 @@ var SettingsWin = function(_tabGroup) {
 	var scrollView = Ti.UI.createScrollView({
 		layout : 'vertical',
 		height: Ti.UI.FILL,
-		width: Ti.UI.FILL
+		width: Ti.UI.FILL,
+		top: utm.viewableTop
 	});
 	self.add(scrollView);
 
 	
 	var buyMessagesButton = Ti.UI.createButton({
 		title: 'Buy messages',
-		top: 25,
+		top: 25*utm.sizeMultiplier,
 		width: (Ti.Platform.displayCaps.platformWidth-50),
-		height: 40,
-		borderRadius: 20,
-		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
+		height: 40*utm.sizeMultiplier,
+		borderRadius: 20*utm.sizeMultiplier,
+		font:{fontFamily: utm.fontFamily, fontSize: utm.fontSize},
 		backgroundColor: utm.buttonColor,
 		color: 'white',
 		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
@@ -36,11 +37,11 @@ var SettingsWin = function(_tabGroup) {
 
 	var setPinLockButton = Ti.UI.createButton({
 		title : 'Set unlock code',
-		top: 25,
+		top: 25*utm.sizeMultiplier,
 		width: (Ti.Platform.displayCaps.platformWidth-50),
-		height: 40,
-		borderRadius: 20,
-		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
+		height: 40*utm.sizeMultiplier,
+		borderRadius: 20*utm.sizeMultiplier,
+		font:{fontFamily: utm.fontFamily, fontSize: utm.fontSize},
 		backgroundColor: utm.barColor,
 		color: 'white',
 		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
@@ -55,11 +56,11 @@ var SettingsWin = function(_tabGroup) {
 
 	var avatarButton = Ti.UI.createButton({
 		title : 'Change avatar',
-		top: 25,
+		top: 25*utm.sizeMultiplier,
 		width: (Ti.Platform.displayCaps.platformWidth-50),
-		height: 40,
-		borderRadius: 20,
-		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
+		height: 40*utm.sizeMultiplier,
+		borderRadius: 20*utm.sizeMultiplier,
+		font:{fontFamily: utm.fontFamily, fontSize: utm.fontSize},
 		backgroundColor: utm.barColor,
 		color: 'white',
 		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
@@ -74,11 +75,11 @@ var SettingsWin = function(_tabGroup) {
 
 	var accountButton = Ti.UI.createButton({
 		title : 'Account settings',
-		top: 25,
+		top: 25*utm.sizeMultiplier,
 		width: (Ti.Platform.displayCaps.platformWidth-50),
-		height: 40,
-		borderRadius: 20,
-		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
+		height: 40*utm.sizeMultiplier,
+		borderRadius: 20*utm.sizeMultiplier,
+		font:{fontFamily: utm.fontFamily, fontSize: utm.fontSize},
 		backgroundColor: utm.barColor,
 		color: 'white',
 		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
@@ -95,11 +96,11 @@ var SettingsWin = function(_tabGroup) {
 
 	var forgetMeButton = Ti.UI.createButton({
 		title : 'Forget me',
-		top: 25,
+		top: 25*utm.sizeMultiplier,
 		width: (Ti.Platform.displayCaps.platformWidth-50),
-		height: 40,
-		borderRadius: 20,
-		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
+		height: 40*utm.sizeMultiplier,
+		borderRadius: 20*utm.sizeMultiplier,
+		font:{fontFamily: utm.fontFamily, fontSize: utm.fontSize},
 		backgroundColor: utm.barColor,
 		color: 'white',
 		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN

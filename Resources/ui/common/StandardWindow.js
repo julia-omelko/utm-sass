@@ -31,7 +31,7 @@ function StandardWindow(_title,_showAi) {
 			    height: Ti.UI.FILL,
 			    width: Ti.UI.FILL,
 			    color: utm.backgroundColor,
-			    font: {fontSize: utm.androidTitleFontSize, fontFamily: utm.fontFamily},
+			    font: {fontSize: '25dp', fontFamily: utm.fontFamily},
 			    textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
 			    text: _title
 			});

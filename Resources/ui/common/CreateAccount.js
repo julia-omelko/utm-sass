@@ -19,39 +19,40 @@ var CreateAccountWin = function() {
 		showVerticalScrollIndicator: true,
 		contentHeight: 'auto',
 		layout: 'vertical',
-		top: 0
+		top: utm.viewableTop
 	});
 	self.add(scrollingView);
 	
 	var avatarHeader = Ti.UI.createLabel({
 		text: 'Choose your avatar',
-		top: 15,
-		left: 25,
-		font: {fontFamily: utm.fontFamily, fontSize: 18},
+		top: 15*utm.sizeMultiplier,
+		left: 25*utm.sizeMultiplier,
+		font: {fontFamily: utm.fontFamily, fontSize: '18dp'},
 		color: utm.barColor		
 	});
 	scrollingView.add(avatarHeader);
 	
 	var avatarHolder = Ti.UI.createScrollView({
-		top: 10,
-		left: 15,
-		right: 15,
-		height: 90,
+		top: 10*utm.sizeMultiplier,
+		left: 15*utm.sizeMultiplier,
+		right: 15*utm.sizeMultiplier,
+		height: 90*utm.sizeMultiplier,
 		borderColor: '#D4D4D4',
 		borderWidth: 1,
 		borderRadius: 4,
 		showHorizontalScrollIndicator: true,
 		contentWidth: 'auto',
+		scrollType: 'horizontal',
 		selectedAvatar: 0
 	});
 	
 	var aAvatar = [];
 	for (var i=0; i<12; i++) {
 		aAvatar[i] = Ti.UI.createImageView({
-			left: 10 + (80*i),
+			left: (10*utm.sizeMultiplier) + (80*utm.sizeMultiplier*i),
 			image: '/images/avatar/'+ i +'.png',
-			width: 70,
-			height: 70,
+			width: 70*utm.sizeMultiplier,
+			height: 70*utm.sizeMultiplier,
 			backgroundColor: 'white',
 			borderColor: '#D4D4D4',
 			borderWidth: 1,
@@ -75,8 +76,8 @@ var CreateAccountWin = function() {
 	
 	var username = Ti.UI.createTextField({
 		color: utm.textFieldColor,		
-		width: Math.min(235,Math.round(Ti.Platform.displayCaps.platformWidth*0.82)),
-		height: 40,
+		width: Math.min(235*utm.sizeMultiplier,Math.round(Ti.Platform.displayCaps.platformWidth*0.82)),
+		height: (utm.Android ? Ti.UI.SIZE : 40),
 		hintText: 'username',
 		autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
 		autocorrect: false,
@@ -89,7 +90,8 @@ var CreateAccountWin = function() {
 		backgroundColor: 'white',
 		clearButtonMode: Ti.UI.INPUT_BUTTONMODE_ALWAYS,
 		paddingLeft: 7,
-		isUnique: false
+		isUnique: false,
+		font: {fontFamily: utm.fontFamily, fontSize: '16dp'}
 	});
 	var focused = Ti.UI.createView({
 		width: Ti.UI.FILL,
@@ -107,8 +109,8 @@ var CreateAccountWin = function() {
 
 	var nickname = Ti.UI.createTextField({
 		color: utm.textFieldColor,		
-		width: Math.min(235,Math.round(Ti.Platform.displayCaps.platformWidth*0.82)),
-		height: 40,
+		width: Math.min(235*utm.sizeMultiplier,Math.round(Ti.Platform.displayCaps.platformWidth*0.82)),
+		height: (utm.Android ? Ti.UI.SIZE : 40),
 		hintText: 'nickname',
 		autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
 		autocorrect: false,
@@ -120,7 +122,8 @@ var CreateAccountWin = function() {
 		borderWidth: 1,
 		backgroundColor: 'white',
 		clearButtonMode: Ti.UI.INPUT_BUTTONMODE_ALWAYS,
-		paddingLeft: 7
+		paddingLeft: 7,
+		font: {fontFamily: utm.fontFamily, fontSize: '16dp'}
 	});
 	nickname.addEventListener('focus', function() {
 		nickname.add(focused);
@@ -133,8 +136,8 @@ var CreateAccountWin = function() {
 
 	var password = Ti.UI.createTextField({
 		color: utm.textFieldColor,		
-		width: Math.min(235,Math.round(Ti.Platform.displayCaps.platformWidth*0.82)),
-		height: 40,
+		width: Math.min(235*utm.sizeMultiplier,Math.round(Ti.Platform.displayCaps.platformWidth*0.82)),
+		height: (utm.Android ? Ti.UI.SIZE : 40),
 		hintText: 'enter password',
 		autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
 		autocorrect: false,
@@ -147,7 +150,8 @@ var CreateAccountWin = function() {
 		backgroundColor: 'white',
 		clearButtonMode: Ti.UI.INPUT_BUTTONMODE_ALWAYS,
 		paddingLeft: 7,
-		passwordMask: true
+		passwordMask: true,
+		font: {fontFamily: utm.fontFamily, fontSize: '16dp'}
 	});
 	password.addEventListener('focus', function() {
 		password.add(focused);
@@ -159,8 +163,8 @@ var CreateAccountWin = function() {
 	
 	var passwordConfirm = Ti.UI.createTextField({
 		color: utm.textFieldColor,		
-		width: Math.min(235,Math.round(Ti.Platform.displayCaps.platformWidth*0.82)),
-		height: 40,
+		width: Math.min(235*utm.sizeMultiplier,Math.round(Ti.Platform.displayCaps.platformWidth*0.82)),
+		height: (utm.Android ? Ti.UI.SIZE : 40),
 		hintText: 'retype password',
 		autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
 		autocorrect: false,
@@ -173,7 +177,8 @@ var CreateAccountWin = function() {
 		backgroundColor: 'white',
 		clearButtonMode: Ti.UI.INPUT_BUTTONMODE_ALWAYS,
 		paddingLeft: 7,
-		passwordMask: true
+		passwordMask: true,
+		font: {fontFamily: utm.fontFamily, fontSize: '16dp'}
 	});
 	passwordConfirm.addEventListener('focus', function() {
 		passwordConfirm.add(focused);
@@ -188,8 +193,8 @@ var CreateAccountWin = function() {
 	
 	var email = Ti.UI.createTextField({
 		color: utm.textFieldColor,		
-		width: Math.min(235,Math.round(Ti.Platform.displayCaps.platformWidth*0.82)),
-		height: 40,
+		width: Math.min(235*utm.sizeMultiplier,Math.round(Ti.Platform.displayCaps.platformWidth*0.82)),
+		height: (utm.Android ? Ti.UI.SIZE : 40),
 		hintText: 'enter your e-mail',
 		autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
 		autocorrect: false,
@@ -201,7 +206,8 @@ var CreateAccountWin = function() {
 		borderWidth: 1,
 		backgroundColor: 'white',
 		clearButtonMode: Ti.UI.INPUT_BUTTONMODE_ALWAYS,
-		paddingLeft: 7
+		paddingLeft: 7,
+		font: {fontFamily: utm.fontFamily, fontSize: '16dp'}
 	});
 	email.addEventListener('focus', function() {
 		email.add(focused);
@@ -213,8 +219,8 @@ var CreateAccountWin = function() {
 	
 	var phone = Ti.UI.createTextField({
 		color: utm.textFieldColor,		
-		width: Math.min(235,Math.round(Ti.Platform.displayCaps.platformWidth*0.82)),
-		height: 40,
+		width: Math.min(235*utm.sizeMultiplier,Math.round(Ti.Platform.displayCaps.platformWidth*0.82)),
+		height: (utm.Android ? Ti.UI.SIZE : 40),
 		hintText: 'phone (optional)',
 		autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
 		autocorrect: false,
@@ -226,7 +232,8 @@ var CreateAccountWin = function() {
 		borderWidth: 1,
 		backgroundColor: 'white',
 		clearButtonMode: Ti.UI.INPUT_BUTTONMODE_ALWAYS,
-		paddingLeft: 7
+		paddingLeft: 7,
+		font: {fontFamily: utm.fontFamily, fontSize: '16dp'}
 	});
 	phone.addEventListener('focus', function() {
 		phone.add(focused);
@@ -252,14 +259,13 @@ var CreateAccountWin = function() {
 		width: Ti.UI.SIZE,
 		height: Ti.UI.SIZE,
 		left: 15,
-		font: {fontFamily: utm.fontFamily, fontSize: 18},
+		font: {fontFamily: utm.fontFamily, fontSize: '18dp'},
 		color: utm.barColor	
 	});
 	rulesView.add(rulesLabel);
 	
 	rulesLabel.addEventListener('click',function(e){
 		var WebView = require('/ui/common/WebView');
-		//var webView = new WebView('Rules of Use', 'rules');
 		var webView = new WebView('Privacy Policy', utm.webUrl + '/Home/RulesOfUse');
 		utm.navController.open(webView);
 	});
@@ -267,19 +273,8 @@ var CreateAccountWin = function() {
 	
 	
 	
-	
-	
-	var createButton = Ti.UI.createButton({
-		title: 'Create account',
-		bottom: 10,
-		width: (Ti.Platform.displayCaps.platformWidth-50),
-		height: 40,
-		borderRadius: 20,
-		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
-		backgroundColor: utm.buttonColor,
-		color: 'white',
-		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
-	});		
+	var StandardButton = require('/ui/common/baseui/StandardButton');
+	var createButton = new StandardButton({title:'Create account'});
 	createButton.addEventListener('click',function(e){
 		validateForm();
 	});

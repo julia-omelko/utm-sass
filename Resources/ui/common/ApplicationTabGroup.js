@@ -25,6 +25,8 @@ function ApplicationTabGroup() {
 	var tab1 = Ti.UI.createTab({
 		title: 'Messages',
 		icon: '/images/tabicon/messages@2x.png',
+		backgroundColor: 'black',
+		backgroundSelectedColor: utm.barColor,
 		window: win1
 	});
 	win1.containingTab = tab1;
@@ -32,6 +34,8 @@ function ApplicationTabGroup() {
 	var tab2 = Ti.UI.createTab({
 		title: 'Members',
 		icon: '/images/tabicon/members@2x.png',
+		backgroundColor: 'black',
+		backgroundSelectedColor: utm.barColor,
 		window: win2
 	});
 	win2.containingTab = tab2;
@@ -39,6 +43,8 @@ function ApplicationTabGroup() {
 	var tab3 = Ti.UI.createTab({
 		title: 'Groups',
 		icon: '/images/tabicon/groups@2x.png',
+		backgroundColor: 'black',
+		backgroundSelectedColor: utm.barColor,
 		window: win3
 	});
 	win3.containingTab = tab3;
@@ -46,6 +52,8 @@ function ApplicationTabGroup() {
 	var tab4 = Ti.UI.createTab({
 		title: 'Settings',
 		icon: '/images/tabicon/settings@2x.png',
+		backgroundColor: 'black',
+		backgroundSelectedColor: utm.barColor,
 		window: win4
 	});
 	win4.containingTab = tab4;
@@ -53,6 +61,8 @@ function ApplicationTabGroup() {
 	var tab5 = Ti.UI.createTab({
 		title: 'Logout',
 		icon: '/images/tabicon/logout@2x.png',
+		backgroundColor: 'black',
+		backgroundSelectedColor: utm.barColor,
 		window: win5
 	});
 	win5.containingTab = tab5;

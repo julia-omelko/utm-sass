@@ -38,7 +38,7 @@ var LoginWin = function() {
 	
 	var username = Ti.UI.createTextField({
 		color: utm.textFieldColor,		
-		width: Math.min(235,Math.round(Ti.Platform.displayCaps.platformWidth*0.82)),
+		width: Math.min(235*utm.sizeMultiplier,Math.round(Ti.Platform.displayCaps.platformWidth*0.82)),
 		height: (utm.Android ? Ti.UI.SIZE : 40),
 		hintText: L('label_user_name'),
 		autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
@@ -71,7 +71,7 @@ var LoginWin = function() {
 	var password = Ti.UI.createTextField({
 		color: utm.textFieldColor,
 		top: 15,
-		width: Math.min(235,Math.round(Ti.Platform.displayCaps.platformWidth*0.82)),
+		width: Math.min(235*utm.sizeMultiplier,Math.round(Ti.Platform.displayCaps.platformWidth*0.82)),
 		height: (utm.Android ? Ti.UI.SIZE : 40),
 		hintText: L('label_password'),
 		passwordMask: true,
@@ -108,10 +108,10 @@ var LoginWin = function() {
 	var loginBtn = Ti.UI.createButton({
 		title: L('login'),
 		top: 15,
-		width: Math.min(235,Math.round(Ti.Platform.displayCaps.platformWidth*0.82)),
+		width: Math.min(235*utm.sizeMultiplier,Math.round(Ti.Platform.displayCaps.platformWidth*0.82)),
 		height: 40*utm.sizeMultiplier,
-		borderRadius: 20,
-		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
+		borderRadius: 20*utm.sizeMultiplier,
+		font:{fontFamily: utm.fontFamily, fontSize: utm.fontSize},
 		backgroundColor: utm.buttonColor,
 		color: 'white',
 		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
@@ -150,17 +150,16 @@ var LoginWin = function() {
 	versionLabel.addEventListener('longpress',function(e) {	
 		var dialog = Ti.UI.createAlertDialog({
 			cancel : 1,
-			buttonNames : ['Local','Dev', 'Test','Prod', L('cancel')],
+			//buttonNames : ['Local','Dev', 'Test','Prod', L('cancel')],
+			buttonNames : ['Dev','Test','Prod'],
 			title : 'Choose The Environment'
 		});
 		dialog.addEventListener('click', function(e) {
 			if (e.index === 0) {
-				utm.setEnvModePrefix("local");					
+				utm.setEnvModePrefix("dev");					
 			} else if (e.index === 1) {
-				utm.setEnvModePrefix("dev");
-			} else if (e.index === 2) {
 				utm.setEnvModePrefix("test");
-			}else if (e.index === 3) {
+			} else if (e.index === 2) {
 				utm.setEnvModePrefix("prod");
 			}
 		});
