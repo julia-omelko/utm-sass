@@ -14,6 +14,8 @@ utm.setEnvModePrefix = function (env){
 		utm.webUrl ='https://www.youthisme.com';
 	}	
 };
+
+
 if (Ti.Platform.osname == 'iphone') {
 	utm.iPhone = true;
 	utm.viewableTop = 0;
@@ -26,9 +28,9 @@ if (Ti.Platform.osname == 'iphone') {
 	utm.sizeMultiplier = 1;
 } else if(Ti.Platform.osname == 'android') {
 	utm.Android = true;
-	utm.viewableTop = 50;
 	utm.viewableArea = Ti.Platform.displayCaps.platformHeight - 138;
-	utm.sizeMultiplier = 2;
+	utm.sizeMultiplier = Math.round(Ti.Platform.displayCaps.platformWidth/320);
+	utm.sizeMultiplier = 1;
 	utm.viewableTop = 50*utm.sizeMultiplier;
 };
 if (Ti.Platform.model === 'Simulator' || Ti.Platform.model ===  'google_sdk' || Ti.Platform.model ===  'sdk') { 

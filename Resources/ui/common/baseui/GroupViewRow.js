@@ -64,7 +64,7 @@ function GroupTableRow(_groupData){
 			self.add(aMembers[aMembers.length-1]);
 			if (aMembers.length === 4 && listCount !== 4 && listCount !== 5 ) {
 				aMembers[aMembers.length] = Ti.UI.createLabel({
-					left: ((60*utm.sizeMultiplier)+20) + (aMembers.length*40*utm.sizeMultiplier),
+					left: ((60*utm.sizeMultiplier)+(20*utm.sizeMultiplier)) + (aMembers.length*40*utm.sizeMultiplier),
 					top: 40*utm.sizeMultiplier,
 					text: '+' + (listCount-4),
 					width: 30*utm.sizeMultiplier,
