@@ -231,9 +231,15 @@ var LoginWin = function() {
 		bottom: 0,
 		height: Ti.UI.SIZE
 	});
-	self.add(linkTable);
-	if (majorVersion === 6) {
-		linkTable.setBottom(120);
+	
+	if (utm.Android) {
+		view.add(linkTable);  //Can't add table to window because Android keyboard makes window smaller, so add to view for Android
+		linkTable.setTop(40);
+	} else {
+		self.add(linkTable);
+		if (majorVersion === 6) {
+			linkTable.setBottom(120);
+		}
 	}
 
 	loginBtn.addEventListener('click',function(e) {
