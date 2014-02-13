@@ -174,8 +174,6 @@ function verifyServerSideWithApple(_receipt,_productIdentifier){
 						MessagesRemaining: response.Data.SubscriptionInfo.MessagesRemaining,
 						SubscriptionEnds:  response.Data.SubscriptionInfo.SubscriptionEnds 
 					});
-				}else{
-					alert("Your purchase was successful but will not be reflected right away.");
 				}
 			} else {
 				utm.handleError(e, this.status, this.responseText);
