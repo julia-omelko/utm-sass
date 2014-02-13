@@ -117,13 +117,16 @@ scrollingView.add(instructionLbl);
 		
 		win.updateMessage = function(){
 			message='';
-			if (utm.User.UserProfile.SubscriptionEnds !== null) {
-				message = 'You have unlimited messages \n';
-			} else if ( utm.User.UserProfile.MessagesRemaining < 1 ){
-				message = 'You have no more messages available \n';
-			} else {
-				message = 'You have ' + utm.User.UserProfile.MessagesRemaining + ' messages remaining \n';
+			 if ( utm.User.UserProfile.MessagesRemaining < 1 ){
+					message = 'You have no more messages available \n';
+			}else{
+				if (utm.User.UserProfile.SubscriptionEnds === null) {
+					message = 'You have ' + utm.User.UserProfile.MessagesRemaining + ' messages remaining \n';
+				}else{
+					message='\nYour subscription renews or expires on '  + 	utm.User.UserProfile.SubscriptionEnds.substring(0,	10) +'\n';		
+				}	
 			}
+			
 			instructionLbl.text = message;
 		};
 		win.updateMessage();

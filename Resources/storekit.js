@@ -60,7 +60,7 @@ Storekit.addEventListener('transactionState', function (evt) {
 						if (e.success) {
 							if (e.valid) {
 								//alert('Thanks! Receipt Verified');
-								verifyServerSideWithApple(evt.receipt,evt.productIdentifier)
+								verifyServerSideWithApple(evt.receipt,evt.productIdentifier);
 							} else {
 								//alert('Sorry. Receipt is invalid');
 							}
@@ -157,8 +157,10 @@ function verifyServerSideWithApple(_receipt,_productIdentifier){
 			if (this.status == 200) {		
 				var response = eval('('+this.responseText+')');
 				if(response.Status ==='Sucess'){
-					utm.User.UserProfile.MessagesRemaining = response.Data.MessagesRemaining;
-					utm.User.UserProfile.SubscriptionEnds = response.Data.SubscriptionEnds; //Issue with dates not the same with SubscriptionInfo vs VerifyAppleReceipt when null
+					utm.User.UserProfile.MessagesRemaining = response.Data.SubscriptionInfo.MessagesRemaining;
+					utm.User.UserProfile.SubscriptionEnds = response.Data.SubscriptionInfo.SubscriptionEnds; //Issue with dates not the same with SubscriptionInfo vs VerifyAppleReceipt when null
+					utm.User.UserProfile.HasSubscription = response.Data.SubscriptionInfo.HasSubscription;
+					
 					/*
 					 * These messages will be replaced with custom messages supplied by the UTM server. - TV
 					 */
@@ -170,7 +172,7 @@ function verifyServerSideWithApple(_receipt,_productIdentifier){
 
 					Ti.App.fireEvent('updateMessageCount',{
 						MessagesRemaining: response.Data.SubscriptionInfo.MessagesRemaining,
-						SubscriptionEnds: ((_productIdentifier === 'com.youthisme.UnlimitedMessagesFor99') ? response.Data.SubscriptionInfo.SubscriptionEnds : null)
+						SubscriptionEnds:  response.Data.SubscriptionInfo.SubscriptionEnds 
 					});
 				}else{
 					alert("Your purchase was successful but will not be reflected right away.");
