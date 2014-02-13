@@ -206,7 +206,7 @@ function handleLoginSuccess(event) {
 	utm.User.MyHorts = event.userData.MyHorts;
 	if(utm.User.MyHorts.length ===0 ){
 		utm.enableSendMessageButton=false;
-		utm.recordAnalytics('login failed', utm.User.UserProfile.UserName );
+	
 		var dialog = Ti.UI.createAlertDialog({
 		    cancel: 1,
 			    buttonNames: [L('ok_button')],
