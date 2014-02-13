@@ -30,7 +30,7 @@ if (Ti.Platform.osname == 'iphone') {
 	utm.Android = true;
 	utm.viewableArea = Ti.Platform.displayCaps.platformHeight - 138;
 	utm.sizeMultiplier = Math.round(Ti.Platform.displayCaps.platformWidth/320);
-	utm.sizeMultiplier = 1;
+	//utm.sizeMultiplier = 1;
 	utm.viewableTop = 50*utm.sizeMultiplier;
 };
 if (Ti.Platform.model === 'Simulator' || Ti.Platform.model ===  'google_sdk' || Ti.Platform.model ===  'sdk') { 

@@ -195,7 +195,7 @@ function verifyServerSideWithApple(_receipt,_productIdentifier){
 	verifyReceipt.send(_receipt);
 }
 
-// Called upon login.  This ultimatly triggers the restoredCompletedTransactions storekit events - TV
+// Called upon login.
 Ti.App.addEventListener('App:startTransactionListener',function(e){
 	Storekit.addTransactionObserver();
 	//Storekit.restoreCompletedTransactions();

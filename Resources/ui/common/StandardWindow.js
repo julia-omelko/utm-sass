@@ -31,7 +31,7 @@ function StandardWindow(_title,_showAi) {
 			    height: Ti.UI.FILL,
 			    width: Ti.UI.FILL,
 			    color: utm.backgroundColor,
-			    font: {fontSize: '25dp', fontFamily: utm.fontFamily},
+			    font: {fontSize: '24dp', fontFamily: utm.fontFamily},
 			    textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
 			    text: _title
 			});
@@ -77,9 +77,9 @@ function StandardWindow(_title,_showAi) {
 		images: images,
 		duration: 83,
 		repeatCount: 0,
-		top: 150,
-		width: 50,
-		height: 50
+		top: 150*utm.sizeMultiplier,
+		width: 50*utm.sizeMultiplier,
+		height: 50*utm.sizeMultiplier
 	});
 	ai.add(imageView);
 	imageView.start();

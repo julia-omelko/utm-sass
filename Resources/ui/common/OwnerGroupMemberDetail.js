@@ -14,8 +14,8 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData) {
 	self.setLeftNavButton(backButton);
 		
 	var settingsView = Ti.UI.createScrollView ({
-		height: utm.viewableArea - 110,
-		top: 0,
+		height: utm.viewableArea - ((40*2*utm.sizeMultiplier)+30),
+		top: utm.viewableTop,
 		showVerticalScrollIndicator:true,
 		contentHeight:'auto',
 		layout: 'vertical'
@@ -31,7 +31,7 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData) {
 	
 	var nicknameLabel = Ti.UI.createLabel({
 		text: 'Nickname',
-		font: {fontFamily: utm.fontFamily, fontSize: 18},
+		font: {fontFamily: utm.fontFamily, fontSize: '18dp'},
 		color: utm.barColor,
 		wordWrap: false,
 		ellipsize: true,
@@ -46,7 +46,7 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData) {
 		value: _memberData.NickName,
 		color: utm.textFieldColor,		
 		width: (Ti.Platform.displayCaps.platformWidth-50),
-		height: 30,
+		height: (utm.Android ? Ti.UI.SIZE : 30),
 		left: 25,
 		autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
 		autocorrect: false,
@@ -58,7 +58,7 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData) {
 		borderWidth: 1,
 		backgroundColor: 'white',
 		paddingLeft: 7,
-		font: {fontFamily: utm.fontFamily, fontSize: 16}
+		font: {fontFamily: utm.fontFamily, fontSize: '16dp'}
 	});
 	nicknameField.addEventListener('focus', function() {
 		nicknameField.add(focused);
@@ -77,7 +77,7 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData) {
 	settingsView.add(tableViewSettings);
 	
 	var invisibleRow = Ti.UI.createTableViewRow({
-		height: (utm.Android ? '100dp' : 40),
+		height: 40*utm.sizeMultiplier,
 		hasChild: false,
 		selectedBackgroundColor: 'white',
 		width: Ti.UI.FILL
@@ -86,6 +86,7 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData) {
 		text:'Invisible to others',
 		height: Ti.UI.SIZE,
 		width: Ti.UI.SIZE,
+		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize},
 		left: 15
 	});
 	var invisibleSwitch = Ti.UI.createSwitch({

@@ -13,7 +13,7 @@ function StandardButton(_params){
 		height: 40 * utm.sizeMultiplier,
 		borderRadius: 20 * utm.sizeMultiplier,
 		font:{fontFamily: utm.fontFamily, fontSize: utm.fontSize},
-		backgroundColor: ((_params.type != null && _params.type === 'Secondary') ? utm.barColor : utm.buttonColor),
+		backgroundColor: ((_params.type != null && _params.type === 'secondary') ? utm.barColor : utm.buttonColor),
 		color: 'white',
 		style: (utm.Android ? null : Ti.UI.iPhone.SystemButtonStyle.PLAIN)
 	});	

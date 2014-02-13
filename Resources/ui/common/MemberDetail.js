@@ -39,7 +39,7 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 	var scrollingView = Ti.UI.createView({
 		top: utm.viewableTop,
 		width: Ti.UI.FILL,
-		height: utm.viewableArea - 110,
+		height: utm.viewableArea - ((40*2*utm.sizeMultiplier)+30),
 		showVerticalScrollIndicator: true,
 		contentHeight: 'auto',
 		layout: 'vertical'
@@ -57,8 +57,8 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 		top: 25,
 		left: 0,
 		image: '/images/avatar/' + _memberData.Avatar + '.png',
-		width: 80,
-		height: 80,
+		width: 80*utm.sizeMultiplier,
+		height: 80*utm.sizeMultiplier,
 		backgroundColor: 'white',
 		borderColor: '#D4D4D4',
 		borderWidth: 1,
@@ -68,13 +68,13 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 	
 	var nicknameLabel = Ti.UI.createLabel({
 		text: 'Nickname',
-		font: {fontFamily: utm.fontFamily, fontSize: 18},
+		font: {fontFamily: utm.fontFamily, fontSize: '18dp'},
 		color: utm.barColor,
 		wordWrap: false,
 		ellipsize: true,
 		height: Ti.UI.SIZE,
 		width: Ti.UI.SIZE,
-		left: 100,
+		left: (80*utm.sizeMultiplier)+20,
 		top: 30
 	});
 	userView.add(nicknameLabel);
@@ -82,20 +82,20 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 	var nicknameField = Ti.UI.createTextField({
 		value: _memberData.NickName,
 		color: utm.textFieldColor,		
-		width: (Ti.Platform.displayCaps.platformWidth-100-25),
-		height: 30,
-		left: 100,
+		width: (Ti.Platform.displayCaps.platformWidth-nicknameLabel.getLeft()-25),
+		height: (utm.Android ? Ti.UI.SIZE : 30),
+		left: nicknameLabel.getLeft(),
 		autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
 		autocorrect: false,
 		keyboardType: Ti.UI.KEYBOARD_DEFAULT,
 		returnKeyType: Ti.UI.RETURNKEY_DEFAULT,
-		top: 50,
+		top: 50*utm.sizeMultiplier,
 		borderColor: '#D4D4D4',
 		borderRadius: 2,
 		borderWidth: 1,
 		backgroundColor: 'white',
 		paddingLeft: 7,
-		font: {fontFamily: utm.fontFamily, fontSize: 16}
+		font: {fontFamily: utm.fontFamily, fontSize: '16dp'}
 	});
 	var focused = Ti.UI.createView({
 		width: Ti.UI.FILL,
@@ -113,7 +113,7 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 
 	var groupLabel = Ti.UI.createLabel({
 		text: 'Groups',
-		font: {fontFamily: utm.fontFamily, fontSize: 18},
+		font: {fontFamily: utm.fontFamily, fontSize: '18dp'},
 		color: utm.barColor,
 		wordWrap: false,
 		ellipsize: true,
@@ -132,33 +132,15 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 	scrollingView.add(tableView);
 	var tableData = [];
 	
-	var saveButton = Ti.UI.createButton({
-		title: 'Save',
-		bottom: 10,
-		width: (Ti.Platform.displayCaps.platformWidth-50),
-		height: 40,
-		borderRadius: 20,
-		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
-		backgroundColor: utm.buttonColor,
-		color: 'white',
-		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
-	});	
+	
+	var StandardButton = require('/ui/common/baseui/StandardButton');
+	var saveButton = new StandardButton({title:'Save'});
 	saveButton.addEventListener('click', function() {
 		saveMemberData();
 	});	
 	self.add(saveButton);
 	
-	var deleteButton = Ti.UI.createButton({
-		title: 'Delete member',
-		bottom: 60,
-		width: (Ti.Platform.displayCaps.platformWidth-50),
-		height: 40,
-		borderRadius: 20,
-		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
-		backgroundColor: utm.barColor,
-		color: 'white',
-		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
-	});
+	var deleteButton = new StandardButton({title:'Delete member',bottom:(40*utm.sizeMultiplier)+20,type:'secondary'});
 	deleteButton.addEventListener('click',function(e){
 		confirmDeleteMember();
 	});
@@ -243,8 +225,8 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 					if (_groups[i].MyHortId !== utm.User.UserProfile.PrimaryMyHort) {
 						tableData[tableData.length] = Ti.UI.createTableViewRow({
 							title: _groups[i].FriendlyName,
-							height: 40,
-							font: {fontFamily: utm.fontFamily}
+							height: 40*utm.sizeMultiplier,
+							font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize}
 						});
 						break;
 					}

@@ -15,8 +15,8 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData,_myHortData) {
 	self.setLeftNavButton(backButton);
 		
 	var scrollingView = Ti.UI.createScrollView ({
-		height: utm.viewableArea - 110,
-		top: 0,
+		height: utm.viewableArea - ((40*2*utm.sizeMultiplier)+30),
+		top: utm.viewableTop,
 		showVerticalScrollIndicator:true,
 		contentHeight:'auto',
 		layout: 'vertical'
@@ -28,7 +28,7 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData,_myHortData) {
 	
 	var emailLabel = Ti.UI.createLabel({
 		text: 'Email',
-		font: {fontFamily: utm.fontFamily, fontSize: 18},
+		font: {fontFamily: utm.fontFamily, fontSize: '18dp'},
 		color: utm.barColor,
 		wordWrap: false,
 		ellipsize: true,
@@ -46,13 +46,13 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData,_myHortData) {
 		height: Ti.UI.SIZE,
 		left: 35,
 		top: 10,
-		font: {fontFamily: utm.fontFamily, fontSize: 16}
+		font: {fontFamily: utm.fontFamily, fontSize: '16dp'}
 	});
 	scrollingView.add(emailField);
 	
 	var inviteLabel = Ti.UI.createLabel({
 		text: 'Invite expiration date',
-		font: {fontFamily: utm.fontFamily, fontSize: 18},
+		font: {fontFamily: utm.fontFamily, fontSize: '18dp'},
 		color: utm.barColor,
 		wordWrap: false,
 		ellipsize: true,
@@ -70,7 +70,7 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData,_myHortData) {
 		height: Ti.UI.SIZE,
 		left: 35,
 		top: 10,
-		font: {fontFamily: utm.fontFamily, fontSize: 16}
+		font: {fontFamily: utm.fontFamily, fontSize: '16dp'}
 	});
 	scrollingView.add(inviteDateText);
 	
@@ -82,33 +82,14 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData,_myHortData) {
 	
 	
 	
-	var deleteButton = Ti.UI.createButton({
-		title: 'Cancel invite',
-		bottom: 60,
-		width: (Ti.Platform.displayCaps.platformWidth-50),
-		height: 40,
-		borderRadius: 20,
-		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
-		backgroundColor: utm.barColor,
-		color: 'white',
-		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
-	});
+	var StandardButton = require('/ui/common/baseui/StandardButton');
+	var deleteButton = new StandardButton({title:'Cancel invite',bottom:(40*utm.sizeMultiplier)+20,type:'secondary'});
 	deleteButton.addEventListener('click',function(e){
 		deleteInvite();
 	});
 	self.add(deleteButton);
 	
-	var reinviteButton = Ti.UI.createButton({
-		title: 'Reinvite',
-		bottom: 10,
-		width: (Ti.Platform.displayCaps.platformWidth-50),
-		height: 40,
-		borderRadius: 20,
-		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
-		backgroundColor: utm.buttonColor,
-		color: 'white',
-		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
-	});	
+	var reinviteButton = new StandardButton({title:'Reinvite'});
 	reinviteButton.addEventListener('click', function() {
 		reinviteMyHort();
 	});	
