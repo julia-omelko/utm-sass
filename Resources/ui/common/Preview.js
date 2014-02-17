@@ -3,7 +3,7 @@ var PreviewWin = function(_tabGroup,_message) {
 	_nickname = '';
 	
 	var deliveryOptions = {
-		sms: true,
+		sms: false,
 		email: false,
 		twitter: false,
 		facebook: false,
@@ -54,7 +54,7 @@ var PreviewWin = function(_tabGroup,_message) {
 						if (myHortData.PrimaryUser.TwitterSecret !== '') {
 							deliveryEnabled.twitter = true;
 						}
-						if (myHortData.PrimaryUser.Mobile) {
+						if (myHortData.PrimaryUser.Mobile !== '') {
 							deliveryEnabled.sms = true;
 						}
 					//}
