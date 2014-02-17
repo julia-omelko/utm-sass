@@ -3,8 +3,6 @@ var DeliveryOptionsWin = function(_win,_options,_enabled) {
 	var StandardWindow = require('ui/common/StandardWindow');
 	var self = new StandardWindow('Delivery Options', '');
 
-
-	
 	var backButton = Ti.UI.createLabel({
 		text: 'done',
 		font: {fontFamily: utm.fontFamily},
@@ -21,21 +19,23 @@ var DeliveryOptionsWin = function(_win,_options,_enabled) {
 	self.setRightNavButton(backButton);
 	
 	var tableData = [];
-	var tableView = Ti.UI.createTableView({});
+	var tableView = Ti.UI.createTableView({
+		top: utm.viewableTop
+	});
 	self.add(tableView);
 	
 	
 	var deliverSection = Ti.UI.createTableViewSection({ headerTitle: 'Deliver by' });
 	
 	var smsRow = Ti.UI.createTableViewRow({
-		height: (utm.Android ? '100dp' : 40),
+		height: 50*utm.sizeMultiplier,
 		hasChild: false,
 		selectedBackgroundColor: 'white'
 	});
 	var smsIcon = Ti.UI.createImageView({
 		image: '/images/icons/message.png',
-		height: 30,
-		width: 30,
+		height: 30*utm.sizeMultiplier,
+		width: 30*utm.sizeMultiplier,
 		left: 25
 	});
 	var smsSwitch = Ti.UI.createSwitch({
@@ -48,14 +48,14 @@ var DeliveryOptionsWin = function(_win,_options,_enabled) {
 	deliverSection.add(smsRow);
 	
 	var emailRow = Ti.UI.createTableViewRow({
-		height: (utm.Android ? '100dp' : 40),
+		height: 50*utm.sizeMultiplier,
 		hasChild: false,
 		selectedBackgroundColor: 'white'
 	});
 	var emailIcon = Ti.UI.createImageView({
 		image: '/images/icons/mail.png',
-		height: 30,
-		width: 30,
+		height: 30*utm.sizeMultiplier,
+		width: 30*utm.sizeMultiplier,
 		left: 25
 	});
 	var emailSwitch = Ti.UI.createSwitch({
@@ -71,14 +71,14 @@ var DeliveryOptionsWin = function(_win,_options,_enabled) {
 	var postSection = Ti.UI.createTableViewSection({ headerTitle: 'Post to my' });
 	
 	var twitterRow = Ti.UI.createTableViewRow({
-		height: (utm.Android ? '100dp' : 40),
+		height: 50*utm.sizeMultiplier,
 		hasChild: false,
 		selectedBackgroundColor: 'white'
 	});
 	var twitterIcon = Ti.UI.createImageView({
 		image: '/images/icons/twitter.png',
-		height: 30,
-		width: 30,
+		height: 30*utm.sizeMultiplier,
+		width: 30*utm.sizeMultiplier,
 		left: 25
 	});
 	var twitterSwitch = Ti.UI.createSwitch({
@@ -91,14 +91,14 @@ var DeliveryOptionsWin = function(_win,_options,_enabled) {
 	postSection.add(twitterRow);
 	
 	var fbRow = Ti.UI.createTableViewRow({
-		height: (utm.Android ? '100dp' : 40),
+		height: 50*utm.sizeMultiplier,
 		hasChild: false,
 		selectedBackgroundColor: 'white'
 	});
 	var fbIcon = Ti.UI.createImageView({
 		image: '/images/icons/facebook.png',
-		height: 30,
-		width: 30,
+		height: 30*utm.sizeMultiplier,
+		width: 30*utm.sizeMultiplier,
 		left: 25
 	});
 	var fbSwitch = Ti.UI.createSwitch({
@@ -113,7 +113,7 @@ var DeliveryOptionsWin = function(_win,_options,_enabled) {
 	var additionalSection = Ti.UI.createTableViewSection({ headerTitle: 'Additional' });
 	
 	var signRow = Ti.UI.createTableViewRow({
-		height: (utm.Android ? '100dp' : 40),
+		height: 50*utm.sizeMultiplier,
 		hasChild: false,
 		selectedBackgroundColor: 'white'
 	});
@@ -122,7 +122,7 @@ var DeliveryOptionsWin = function(_win,_options,_enabled) {
 		width: Ti.UI.SIZE,
 		height: Ti.UI.FILL,
 		left: 25,
-		font: {fontFamily: utm.fontFamily}
+		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize}
 	});
 	var signSwitch = Ti.UI.createSwitch({
 		value: _options.signMessage,
@@ -133,7 +133,7 @@ var DeliveryOptionsWin = function(_win,_options,_enabled) {
 	additionalSection.add(signRow);
 	
 	var deleteRow = Ti.UI.createTableViewRow({
-		height: (utm.Android ? '100dp' : 40),
+		height: 40*utm.sizeMultiplier,
 		hasChild: false,
 		selectedBackgroundColor: 'white'
 	});
@@ -142,7 +142,7 @@ var DeliveryOptionsWin = function(_win,_options,_enabled) {
 		width: Ti.UI.SIZE,
 		left: 25,
 		height: Ti.UI.FILL,
-		font: {fontFamily: utm.fontFamily}
+		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize}
 	});
 	var deleteSwitch = Ti.UI.createSwitch({
 		value: _options.deleteOnRead,

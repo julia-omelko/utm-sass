@@ -285,17 +285,17 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 		var image = Ti.Utils.base64decode(imageSrc);
 
 		var previewView = Ti.UI.createView({
-			top: 15,
-			height: 80,
-			width: 80,
-			borderRadius: 20,
+			top: 15*utm.sizeMultiplier,
+			height: 80*utm.sizeMultiplier,
+			width: 80*utm.sizeMultiplier,
+			borderRadius: 20*utm.sizeMultiplier,
 			backgroundColor: utm.barColor,
 			borderColor: utm.barColor
 		});
 		var previewImage = Ti.UI.createImageView({
 			image: image,
-			height: 80,
-			width: 80
+			height: 80*utm.sizeMultiplier,
+			width: 80*utm.sizeMultiplier
 		});
 		previewView.addEventListener('click',function(e){
 			var AttachmentPreviewWin = require('/ui/common/AttachmentPreview');

@@ -20,8 +20,8 @@ var MessageMembersWin = function(_tabGroup) {
 	var tabBar = Titanium.UI.createView({
 		layout : 'horizontal',
 		width : '100%',
-		height : 27,
-		top: 0
+		height : 27*utm.sizeMultiplier,
+		top: utm.viewableTop
 	});
 	self.add(tabBar);
 	var membersButton = Ti.UI.createLabel({
@@ -31,7 +31,7 @@ var MessageMembersWin = function(_tabGroup) {
 		backgroundColor: 'white',
 		borderColor: '#D4D4D4',
 		borderWidth: 1,
-		font: {fontFamily: utm.fontFamily},
+		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize},
 		color: utm.textColor,
 	    textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER
 	});
@@ -43,7 +43,7 @@ var MessageMembersWin = function(_tabGroup) {
 		backgroundColor: utm.backgroundColor,
 		borderColor: '#D4D4D4',
 		borderWidth: 1,
-		font: {fontFamily: utm.fontFamily},
+		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize},
 		color: utm.secondaryTextColor,
 		textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER
 	});
@@ -71,17 +71,21 @@ var MessageMembersWin = function(_tabGroup) {
 	
 	
 	var memberTableView = Ti.UI.createTableView({
-		height: utm.viewableArea - 86,
-		top: 27
+		height: utm.viewableArea - ((40*utm.sizeMultiplier)+20) - (27*utm.sizeMultiplier),
+		top: utm.viewableTop + (27*utm.sizeMultiplier)
 	});
 	self.add(memberTableView);
 	memberTableView.addEventListener('click',function(e){
-		e.rowData.setHasCheck((e.rowData.getHasCheck() ? false : true));
+		if (e.source.toString() === '[object TableViewRow]') {
+			e.source.setHasCheck((e.source.getHasCheck() ? false : true));
+		} else {
+			e.source.parent.setHasCheck((e.source.parent.getHasCheck() ? false : true));
+		}
 	});
 	
 	var groupTableView = Ti.UI.createTableView({
-		height: utm.viewableArea - 27,
-		top: 27
+		height: utm.viewableArea - (27*utm.sizeMultiplier),
+		top: utm.viewableTop + (27*utm.sizeMultiplier)
 	});
 	groupTableView.addEventListener('click',function(e){
 		var MessageGroupMembersWin = require('/ui/common/MessageGroupMembers');
@@ -218,18 +222,8 @@ var MessageMembersWin = function(_tabGroup) {
 	loadMyHortDetail();
 	loadMyHorts();
 	
-		
-	var composeButton = Ti.UI.createButton({
-		title: 'Compose',
-		bottom: 10,
-		width: (Ti.Platform.displayCaps.platformWidth-50),
-		height: 40,
-		borderRadius: 20,
-		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
-		backgroundColor: utm.buttonColor,
-		color: 'white',
-		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
-	});	
+	var StandardButton = require('/ui/common/baseui/StandardButton');
+	var composeButton = new StandardButton({title:'Compose'});
 	composeButton.addEventListener('click', function() {
 		var selectedContacts = [];
 		var aData = memberTableView.getData();

@@ -99,11 +99,11 @@ var PreviewWin = function(_tabGroup,_message) {
 	
 	var scrollingView = Ti.UI.createScrollView({
 		width: '100%',
-		height: utm.viewableArea - 110,
+		height: utm.viewableArea - ((40*2*utm.sizeMultiplier)+30),
 		showVerticalScrollIndicator: true,
 		contentHeight: 'auto',
 		layout: 'vertical',
-		top: 0
+		top: utm.viewableTop
 	});
 	self.add(scrollingView);
 	
@@ -114,7 +114,7 @@ var PreviewWin = function(_tabGroup,_message) {
 	});
 	scrollingView.add(topView);
 	var leftView = Ti.UI.createView({
-		width: Ti.Platform.displayCaps.platformWidth-80-35,
+		width: Ti.Platform.displayCaps.platformWidth-(80*utm.sizeMultiplier)-35,
 		height: Ti.UI.SIZE,
 		layout: 'vertical',
 		left: 0,
@@ -127,7 +127,7 @@ var PreviewWin = function(_tabGroup,_message) {
 		text: _message.mode + ' to:',
 		top: 0,
 		left: 25,
-		font: {fontFamily: utm.fontFamily, fontSize: 18},
+		font: {fontFamily: utm.fontFamily, fontSize: '18dp'},
 		color: utm.barColor		
 	});
 	leftView.add(sendHeader);
@@ -144,7 +144,7 @@ var PreviewWin = function(_tabGroup,_message) {
 		top: 10,
 		left: 25,
 		width: Ti.Platform.displayCaps.platformWidth-50,
-		font: {fontFamily: utm.fontFamily},
+		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize},
 		color: 'black'		
 	});
 	leftView.add(sendLabel);
@@ -153,7 +153,7 @@ var PreviewWin = function(_tabGroup,_message) {
 		text: 'Original Message:',
 		top: 25,
 		left: 25,
-		font: {fontFamily: utm.fontFamily, fontSize: 18},
+		font: {fontFamily: utm.fontFamily, fontSize: '18dp'},
 		color: utm.barColor		
 	});
 	leftView.add(messageHeader);
@@ -161,16 +161,16 @@ var PreviewWin = function(_tabGroup,_message) {
 	if ("attachment" in _message && _message.attachment != null) {
 		var previewView = Ti.UI.createView({
 			right: 25,
-			height: 80,
-			width: 80,
-			borderRadius: 20,
+			height: 80*utm.sizeMultiplier,
+			width: 80*utm.sizeMultiplier,
+			borderRadius: 20*utm.sizeMultiplier,
 			backgroundColor: utm.barColor,
 			borderColor: utm.barColor
 		});
 		var previewImage = Ti.UI.createImageView({
 			image: _message.attachment,
-			height: 80,
-			width: 80
+			height: 80*utm.sizeMultiplier,
+			width: 80*utm.sizeMultiplier
 		});
 		previewView.addEventListener('click',function(e){
 			var AttachmentPreviewWin = require('/ui/common/AttachmentPreview');
@@ -200,7 +200,7 @@ var PreviewWin = function(_tabGroup,_message) {
 		top: 10,
 		left: 25,
 		width: Ti.Platform.displayCaps.platformWidth-50,
-		font: {fontFamily: utm.fontFamily},
+		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize},
 		color: 'black'		
 	});
 	scrollingView.add(messageField);
@@ -210,7 +210,7 @@ var PreviewWin = function(_tabGroup,_message) {
 		top: 25,
 		left: 25,
 		height: Ti.UI.SIZE,
-		font: {fontFamily: utm.fontFamily, fontSize: 18},
+		font: {fontFamily: utm.fontFamily, fontSize: '18dp'},
 		color: utm.barColor		
 	});
 	scrollingView.add(messageHeader);
@@ -219,9 +219,9 @@ var PreviewWin = function(_tabGroup,_message) {
 		text: '',
 		top: 10,
 		left: 25,
-		height: 90,
+		height: 90*utm.sizeMultiplier,
 		width: Ti.Platform.displayCaps.platformWidth-50,
-		font: {fontFamily: utm.fontFamily},
+		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize},
 		verticalAlign: Ti.UI.TEXT_VERTICAL_ALIGNMENT_TOP,
 		color: 'black'		
 	});
@@ -229,11 +229,11 @@ var PreviewWin = function(_tabGroup,_message) {
 	
 	var utmRefresh = Ti.UI.createImageView({
 		image: '/images/icons/refresh.png',
-		left: (Ti.Platform.displayCaps.platformWidth-40)/2,
+		left: (Ti.Platform.displayCaps.platformWidth-(40*utm.sizeMultiplier))/2,
 		top: 0,
-		height: 40,
-		width: 40,
-		borderRadius: 20,
+		height: 40*utm.sizeMultiplier,
+		width: 40*utm.sizeMultiplier,
+		borderRadius: 20*utm.sizeMultiplier,
 		backgroundColor: utm.buttonColor,
 	});
 	utmRefresh.addEventListener('click',function(e){
@@ -248,21 +248,8 @@ var PreviewWin = function(_tabGroup,_message) {
 	
 	
 	
-	
-	
-	
-	
-	var optionsBtn = Ti.UI.createButton({
-		title: 'Delivery options',
-		bottom: 60,
-		width: (Ti.Platform.displayCaps.platformWidth-50),
-		height: 40,
-		borderRadius: 20,
-		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
-		backgroundColor: utm.barColor,
-		color: 'white',
-		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
-	});	
+	var StandardButton = require('/ui/common/baseui/StandardButton');
+	var optionsBtn = new StandardButton({title:'Delivery options',bottom:(40*utm.sizeMultiplier)+20,type:'secondary'});
 	optionsBtn.addEventListener('click', function() {
 		var DeliveryOptionsWin = require('/ui/common/DeliveryOptions');
 		var deliveryOptionsWin = new DeliveryOptionsWin(self, deliveryOptions, deliveryEnabled);
@@ -289,17 +276,7 @@ var PreviewWin = function(_tabGroup,_message) {
 	});
 	self.add(optionsBtn);
 	
-	var sendButton = Ti.UI.createButton({
-		title: 'Send message',
-		bottom: 10,
-		width: (Ti.Platform.displayCaps.platformWidth-50),
-		height: 40,
-		borderRadius: 20,
-		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
-		backgroundColor: utm.buttonColor,
-		color: 'white',
-		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
-	});	
+	var sendButton = new StandardButton({title:'Send message'});
 	self.add(sendButton);
 	
 	

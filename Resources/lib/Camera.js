@@ -21,8 +21,8 @@ function CameraView(_previewView) {
 		photoDialog.addEventListener('click', function(e) {			
 			resizedImage = null;
 			if (e.cancel === e.index || e.cancel === true) {
-				_previewView.setHeight(46);
-				_previewView.setWidth(46);
+				_previewView.setHeight(46*utm.sizeMultiplier);
+				_previewView.setWidth(46*utm.sizeMultiplier);
 				_previewView.setImage('/images/icons/camera.png');
 				return;
 			} else if (e.index === 0) {
@@ -33,8 +33,8 @@ function CameraView(_previewView) {
 						processImage(e);
 					},
 		        	cancel:function() {
-						_previewView.setHeight(46);
-						_previewView.setWidth(46);
+						_previewView.setHeight(46*utm.sizeMultiplier);
+						_previewView.setWidth(46*utm.sizeMultiplier);
 						_previewView.setImage('/images/icons/camera.png');
 						return;
 		        	},
@@ -52,8 +52,8 @@ function CameraView(_previewView) {
 						processImage(e);
 					},
 		        	cancel:function(){
-						_previewView.setHeight(46);
-						_previewView.setWidth(46);
+						_previewView.setHeight(46*utm.sizeMultiplier);
+						_previewView.setWidth(46*utm.sizeMultiplier);
 						_previewView.setImage('/images/icons/camera.png');
 						return;
 		        	},
@@ -71,15 +71,16 @@ function CameraView(_previewView) {
 	};
 	
 	function processImage(e){
-		if (utm.Android) {
+		resizedImage = e.media.imageAsResized(e.media.width/2,e.media.height/2);
+		/*if (utm.Android) {
 			resizedImage = e.media.imageAsResized(e.media.width/6,e.media.height/6);
 		} else {
 			resizedImage = e.media.imageAsResized(e.media.width/3,e.media.height/3);
-		}	
+		}*/
 		
 		_previewView.setVisible(false);
-		_previewView.setHeight(80);
-		_previewView.setWidth(80);
+		_previewView.setHeight(80*utm.sizeMultiplier);
+		_previewView.setWidth(80*utm.sizeMultiplier);
 		_previewView.setImage(resizedImage);
 		_previewView.setVisible(true);
 		

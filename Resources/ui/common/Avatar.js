@@ -17,17 +17,17 @@ var AvatarWin = function(_tabGroup) {
 	
 	var scrollingView = Ti.UI.createScrollView({
 		layout : 'vertical',
-		height: utm.viewableArea - 74,
-		top: 0
+		height: utm.viewableArea - 40*utm.sizeMultiplier,
+		top: utm.viewableTop
 	});
 	self.add(scrollingView);
 
 
-var avatarHeader = Ti.UI.createLabel({
+	var avatarHeader = Ti.UI.createLabel({
 		text: 'Choose your avatar',
 		top: 15,
 		left: 25,
-		font: {fontFamily: utm.fontFamily, fontSize: 18},
+		font: {fontFamily: utm.fontFamily, fontSize: '18dp'},
 		color: utm.barColor		
 	});
 	scrollingView.add(avatarHeader);
@@ -42,45 +42,36 @@ var avatarHeader = Ti.UI.createLabel({
 	var aAvatar = [];
 	for (var i=0; i<12; i++) {
 		aAvatar[i] = Ti.UI.createImageView({
-			left: 8,
-			right: 8,
-			top: 16,
+			left: 8*utm.sizeMultiplier,
+			right: 8*utm.sizeMultiplier,
+			top: 16*utm.sizeMultiplier,
 			image: '/images/avatar/'+ i +'.png',
-			width: 70,
-			height: 70,
+			width: 70*utm.sizeMultiplier,
+			height: 70*utm.sizeMultiplier,
 			backgroundColor: 'white',
 			borderColor: '#D4D4D4',
-			borderWidth: 1,
-			borderRadius: 2,
+			borderWidth: 1*utm.sizeMultiplier,
+			borderRadius: 2*utm.sizeMultiplier,
 			avatar: i
 		});
 		aAvatar[i].addEventListener('click',function(e){
 			for (var i=0; i<12; i++) {
 				aAvatar[i].setBorderColor('#D4D4D4');
-				aAvatar[i].setBorderWidth(1);
+				aAvatar[i].setBorderWidth(1*utm.sizeMultiplier);
 			}
 			e.source.setBorderColor(utm.barColor);
-			e.source.setBorderWidth(2);
+			e.source.setBorderWidth(2*utm.sizeMultiplier);
 			selectedAvatar = e.source.avatar;
 		});
 		avatarHolder.add(aAvatar[i]);
 	}
-	aAvatar[aAvatar.length-1].setRight(10);
+	aAvatar[aAvatar.length-1].setRight(10*utm.sizeMultiplier);
 	scrollingView.add(avatarHolder);
 
 	aAvatar[utm.User.UserProfile.Avatar].fireEvent('click');
-
-	var saveButton = Ti.UI.createButton({
-		title: 'Save',
-		bottom: 25,
-		width: (Ti.Platform.displayCaps.platformWidth-50),
-		height: 40,
-		borderRadius: 20,
-		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
-		backgroundColor: utm.buttonColor,
-		color: 'white',
-		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
-	});	
+	
+	var StandardButton = require('/ui/common/baseui/StandardButton');
+	var saveButton = new StandardButton({title:'Save'});
 	saveButton.addEventListener('click', function() {
 		updateAvatar();
 	});	

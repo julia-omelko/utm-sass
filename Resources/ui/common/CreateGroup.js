@@ -32,7 +32,7 @@ var CreateGroupWin = function(_tabGroup) {
 	
 	var groupLabel = Ti.UI.createLabel({
 		text: 'Group name',
-		font: {fontFamily: utm.fontFamily, fontSize: 18},
+		font: {fontFamily: utm.fontFamily, fontSize: '18dp'},
 		color: utm.barColor,
 		wordWrap: false,
 		ellipsize: true,
@@ -47,7 +47,7 @@ var CreateGroupWin = function(_tabGroup) {
 		value: '',
 		color: utm.textFieldColor,		
 		width: (Ti.Platform.displayCaps.platformWidth-50),
-		height: 30,
+		height: (utm.Android ? Ti.UI.SIZE : 30),
 		left: 25,
 		autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
 		autocorrect: false,
@@ -59,7 +59,7 @@ var CreateGroupWin = function(_tabGroup) {
 		borderWidth: 1,
 		backgroundColor: 'white',
 		paddingLeft: 7,
-		font: {fontFamily: utm.fontFamily, fontSize: 16}
+		font: {fontFamily: utm.fontFamily, fontSize: '16dp'}
 	});
 	groupField.addEventListener('focus', function() {
 		groupField.add(focused);

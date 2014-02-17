@@ -578,7 +578,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	
 	
 	var StandardButton = require('/ui/common/baseui/StandardButton');
-	var deleteButton = new StandardButton({title:'Delete member',bottom:(40*utm.sizeMultiplier)+20,type:'secondary'});
+	var deleteButton = new StandardButton({title:'Delete group',bottom:(40*utm.sizeMultiplier)+20,type:'secondary'});
 	deleteButton.addEventListener('click',function(e){
 		confirmDeleteMyHort();
 	});

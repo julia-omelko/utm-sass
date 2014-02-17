@@ -11,7 +11,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 
 	var backButton = Ti.UI.createLabel({
 		text: 'Back',
-		font: {fontFamily: utm.fontFamily},
+		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize},
 		color: 'white'
 	});
 	backButton.addEventListener('click',function(e){
@@ -116,12 +116,12 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		width: Ti.UI.FILL,
 		bottom: 50,
 		backgroundColor: utm.backgroundColor,
-		font: {fontFamily: utm.fontFamily},
 		color: utm.textColor
 	});
 	var invisibleLabel = Ti.UI.createLabel({
 		left: 25,
 		text: 'Invisible to others',
+		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize},
 		height: Ti.UI.SIZE,
 		width: Ti.UI.SIZE
 	});

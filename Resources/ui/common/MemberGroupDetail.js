@@ -1,15 +1,12 @@
 var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	
 	var _myHortDetails = {};
-	
 	for (var i=0; i<_groupData.Members.length; i++) {
 		if (_groupData.Members[i].UserId === utm.User.UserProfile.UserId) {
 			_memberData = _groupData.Members[i];
 			break;
 		}
 	}
-	
-	
 	
 	var StandardWindow = require('ui/common/StandardWindow');
 	var self = new StandardWindow('Group Detail', true);
@@ -43,8 +40,8 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	var tabBar = Titanium.UI.createView({
 		layout : 'horizontal',
 		width : '100%',
-		height : 27,
-		top: 0
+		height : 27*utm.sizeMultiplier,
+		top: utm.viewableTop
 	});
 	self.add(tabBar);
 	var membersButton = Ti.UI.createLabel({
@@ -54,7 +51,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		backgroundColor: 'white',
 		borderColor: '#D4D4D4',
 		borderWidth: 1,
-		font: {fontFamily: utm.fontFamily},
+		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize},
 		color: utm.textColor,
 	    textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER
 	});
@@ -66,7 +63,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		backgroundColor: utm.backgroundColor,
 		borderColor: '#D4D4D4',
 		borderWidth: 1,
-		font: {fontFamily: utm.fontFamily},
+		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize},
 		color: utm.secondaryTextColor,
 		textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER
 	});
@@ -90,14 +87,14 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	});
 	
 	var tableView = Ti.UI.createTableView({
-		height: utm.viewableArea - 137,
-		top: 27
+		height: utm.viewableArea - ((27*utm.sizeMultiplier)+((40*2*utm.sizeMultiplier)+30)),
+		top: utm.viewableTop + (27*utm.sizeMultiplier)
 	});
 	self.add(tableView);
 	
 	var settingsView = Ti.UI.createScrollView({
-		height: utm.viewableArea - 137,
-		top: 27,
+		height: utm.viewableArea - ((27*utm.sizeMultiplier)+((40*2*utm.sizeMultiplier)+30)),
+		top: utm.viewableTop + (27*utm.sizeMultiplier),
 		layout: 'vertical'
 	});
 	
@@ -110,7 +107,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	
 	var emailLabel = Ti.UI.createLabel({
 		text: 'Email',
-		font: {fontFamily: utm.fontFamily, fontSize: 18},
+		font: {fontFamily: utm.fontFamily, fontSize: '18dp'},
 		color: utm.barColor,
 		wordWrap: false,
 		ellipsize: true,
@@ -125,7 +122,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		value: '',
 		color: utm.textFieldColor,		
 		width: (Ti.Platform.displayCaps.platformWidth-50),
-		height: 30,
+		height: (utm.Android ? Ti.UI.SIZE : 30),
 		left: 25,
 		autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
 		autocorrect: false,
@@ -137,7 +134,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		borderWidth: 1,
 		backgroundColor: 'white',
 		paddingLeft: 7,
-		font: {fontFamily: utm.fontFamily, fontSize: 16}
+		font: {fontFamily: utm.fontFamily, fontSize: '16dp'}
 	});
 	emailField.addEventListener('focus', function() {
 		emailField.add(focused);
@@ -149,7 +146,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	
 	var mobileLabel = Ti.UI.createLabel({
 		text: 'Mobile',
-		font: {fontFamily: utm.fontFamily, fontSize: 18},
+		font: {fontFamily: utm.fontFamily, fontSize: '18dp'},
 		color: utm.barColor,
 		wordWrap: false,
 		ellipsize: true,
@@ -164,7 +161,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		value: '',
 		color: utm.textFieldColor,		
 		width: (Ti.Platform.displayCaps.platformWidth-50),
-		height: 30,
+		height: (utm.Android ? Ti.UI.SIZE : 30),
 		left: 25,
 		autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
 		autocorrect: false,
@@ -176,7 +173,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		borderWidth: 1,
 		backgroundColor: 'white',
 		paddingLeft: 7,
-		font: {fontFamily: utm.fontFamily, fontSize: 16}
+		font: {fontFamily: utm.fontFamily, fontSize: '16dp'}
 	});
 	mobileField.addEventListener('focus', function() {
 		mobileField.add(focused);
@@ -197,14 +194,14 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	var postSection = Ti.UI.createTableViewSection({ headerTitle: 'Post to my' });
 	
 	var twitterRow = Ti.UI.createTableViewRow({
-		height: (utm.Android ? '100dp' : 40),
+		height: 40*utm.sizeMultiplier,
 		hasChild: false,
 		selectedBackgroundColor: 'white'
 	});
 	var twitterIcon = Ti.UI.createImageView({
 		image: '/images/icons/twitter.png',
-		height: 30,
-		width: 30,
+		height: 30*utm.sizeMultiplier,
+		width: 30*utm.sizeMultiplier,
 		left: 25
 	});
 	var twitterSwitch = Ti.UI.createSwitch({
@@ -227,14 +224,14 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	});
 	
 	var fbRow = Ti.UI.createTableViewRow({
-		height: (utm.Android ? '100dp' : 40),
+		height: 40*utm.sizeMultiplier,
 		hasChild: false,
 		selectedBackgroundColor: 'white'
 	});
 	var fbIcon = Ti.UI.createImageView({
 		image: '/images/icons/facebook.png',
-		height: 30,
-		width: 30,
+		height: 30*utm.sizeMultiplier,
+		width: 30*utm.sizeMultiplier,
 		left: 25
 	});
 	var fbSwitch = Ti.UI.createSwitch({
@@ -268,7 +265,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	var additionalSection = Ti.UI.createTableViewSection({ headerTitle: 'Additional' });
 	
 	var signRow = Ti.UI.createTableViewRow({
-		height: (utm.Android ? '100dp' : 40),
+		height: 40*utm.sizeMultiplier,
 		hasChild: false,
 		selectedBackgroundColor: 'white'
 	});
@@ -276,7 +273,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		text: 'Sign message',
 		width: Ti.UI.SIZE,
 		left: 25,
-		font: {fontFamily: utm.fontFamily}
+		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize}
 	});
 	var signSwitch = Ti.UI.createSwitch({
 		right: 25,
@@ -382,33 +379,14 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	displayMemberData(_groupData.Members);
 	loadMyHortDetail();
 	
-	var leaveButton = Ti.UI.createButton({
-		title: 'Leave group',
-		bottom: 60,
-		width: (Ti.Platform.displayCaps.platformWidth-50),
-		height: 40,
-		borderRadius: 20,
-		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
-		backgroundColor: utm.barColor,
-		color: 'white',
-		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
-	});
+	var StandardButton = require('/ui/common/baseui/StandardButton');
+	var leaveButton = new StandardButton({title:'Leave group',bottom:(40*utm.sizeMultiplier)+20,type:'secondary'});
 	leaveButton.addEventListener('click',function(e){
 		confirmLeaveMyHort();
 	});
 	self.add(leaveButton);
 	
-	var saveButton = Ti.UI.createButton({
-		title: 'Save',
-		bottom: 10,
-		width: (Ti.Platform.displayCaps.platformWidth-50),
-		height: 40,
-		borderRadius: 20,
-		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
-		backgroundColor: utm.buttonColor,
-		color: 'white',
-		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
-	});	
+	var saveButton = new StandardButton({title:'Save'});
 	saveButton.addEventListener('click', function() {
 		updateMyHortData();
 	});	

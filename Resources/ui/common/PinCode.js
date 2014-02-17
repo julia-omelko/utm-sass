@@ -33,7 +33,7 @@ var SettingsWin = function(_tabGroup) {
 		layout : 'vertical',
 		height: utm.viewableArea,
 		contentHeight: utm.viewableArea+80,
-		top: 0
+		top: utm.viewableTop
 	});
 	self.add(scrollingView);
 
@@ -47,12 +47,12 @@ var SettingsWin = function(_tabGroup) {
 		font: {
 			fontFamily: 'Helvetica Neue',
 			fontWeight: 'bold',
-			fontSize: 25
+			fontSize: '25dp'
 		},
 		textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
-		borderRadius: 5,
+		borderRadius: 5*utm.sizeMultiplier,
 		borderColor: utm.barColor,
-		borderWidth: 1,
+		borderWidth: 1*utm.sizeMultiplier,
 		top: 2
 	};
 	
@@ -60,7 +60,7 @@ var SettingsWin = function(_tabGroup) {
 		color: 'white',
 		height: 20,
 		width: Ti.Platform.displayCaps.platformWidth,
-		top: ((Ti.Platform.osname === 'android') ? -100 : 0),
+		top: ((Ti.Platform.osname === 'android') ? (-100*utm.sizeMultiplier) : 0),
 		left: 0,
 		passwordMask: true,
 		font: { fontSize: 20 },
@@ -96,7 +96,7 @@ var SettingsWin = function(_tabGroup) {
 		left: 25,
 		text: 'Enter new unlock code',
 		width: Ti.UI.SIZE,
-		font: {fontFamily: utm.fontFamily, fontSize: 18},
+		font: {fontFamily: utm.fontFamily, fontSize: '18dp'},
 		color: utm.barColor		
 	});
 	scrollingView.add(pinLabel);
@@ -117,7 +117,7 @@ var SettingsWin = function(_tabGroup) {
 		top: 15,
 		left: 25,
 		width: Ti.UI.SIZE,
-		font: {fontFamily: utm.fontFamily, fontSize: 18},
+		font: {fontFamily: utm.fontFamily, fontSize: '18dp'},
 		color: utm.barColor			
 	});	
 	scrollingView.add(pinConfirmLabel);
@@ -143,7 +143,7 @@ var SettingsWin = function(_tabGroup) {
 			return;
 		}
 		for (var i=0;i<=7;i++) {
-			password[i].setBorderWidth(1);
+			password[i].setBorderWidth(1*utm.sizeMultiplier);
 			if (i >= e.value.length) {
 				password[i].setText('');
 			} else {
@@ -153,16 +153,16 @@ var SettingsWin = function(_tabGroup) {
 		if (e.value.length === 8) {
 			checkToDisableSaveButton();
 		} else {
-			password[e.value.length].setBorderWidth(3);
+			password[e.value.length].setBorderWidth(3*utm.sizeMultiplier);
 		}
 	});
 	
 	var saveButton = Ti.UI.createButton({
 		title: 'Save',
-		top: 15,
+		top: 15*utm.sizeMultiplier,
 		width: (Ti.Platform.displayCaps.platformWidth-50),
-		height: 40,
-		borderRadius: 20,
+		height: 40*utm.sizeMultiplier,
+		borderRadius: 20*utm.sizeMultiplier,
 		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
 		backgroundColor: utm.buttonColor,
 		color: 'white',

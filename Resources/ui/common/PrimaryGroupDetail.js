@@ -36,8 +36,8 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 	
 	
 	var settingsView = Ti.UI.createScrollView ({
-		height: utm.viewableArea - 60,
-		top: 0,
+		height: utm.viewableArea - (40*utm.sizeMultiplier)-20,
+		top: utm.viewableTop,
 		showVerticalScrollIndicator:true,
 		contentHeight:'auto',
 		layout: 'vertical'
@@ -55,7 +55,7 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 	
 	var emailLabel = Ti.UI.createLabel({
 		text: 'Email',
-		font: {fontFamily: utm.fontFamily, fontSize: 18},
+		font: {fontFamily: utm.fontFamily, fontSize: '18dp'},
 		color: utm.barColor,
 		wordWrap: false,
 		ellipsize: true,
@@ -70,7 +70,7 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 		value: '',
 		color: utm.textFieldColor,		
 		width: (Ti.Platform.displayCaps.platformWidth-50),
-		height: 30,
+		height: (utm.Android ? Ti.UI.SIZE : 30),
 		left: 25,
 		autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
 		autocorrect: false,
@@ -82,7 +82,7 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 		borderWidth: 1,
 		backgroundColor: 'white',
 		paddingLeft: 7,
-		font: {fontFamily: utm.fontFamily, fontSize: 16}
+		font: {fontFamily: utm.fontFamily, fontSize: '16dp'}
 	});
 	emailField.addEventListener('focus', function() {
 		emailField.add(focused);
@@ -94,7 +94,7 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 	
 	var mobileLabel = Ti.UI.createLabel({
 		text: 'Mobile',
-		font: {fontFamily: utm.fontFamily, fontSize: 18},
+		font: {fontFamily: utm.fontFamily, fontSize: '18dp'},
 		color: utm.barColor,
 		wordWrap: false,
 		ellipsize: true,
@@ -109,7 +109,7 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 		value: '',
 		color: utm.textFieldColor,		
 		width: (Ti.Platform.displayCaps.platformWidth-50),
-		height: 30,
+		height: (utm.Android ? Ti.UI.SIZE : 30),
 		left: 25,
 		autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
 		autocorrect: false,
@@ -121,7 +121,7 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 		borderWidth: 1,
 		backgroundColor: 'white',
 		paddingLeft: 7,
-		font: {fontFamily: utm.fontFamily, fontSize: 16}
+		font: {fontFamily: utm.fontFamily, fontSize: '16dp'}
 	});
 	mobileField.addEventListener('focus', function() {
 		nicknameField.add(focused);
@@ -133,7 +133,7 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 	
 	var nicknameLabel = Ti.UI.createLabel({
 		text: 'Nickname',
-		font: {fontFamily: utm.fontFamily, fontSize: 18},
+		font: {fontFamily: utm.fontFamily, fontSize: '18dp'},
 		color: utm.barColor,
 		wordWrap: false,
 		ellipsize: true,
@@ -148,7 +148,7 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 		value: '',
 		color: utm.textFieldColor,		
 		width: (Ti.Platform.displayCaps.platformWidth-50),
-		height: 30,
+		height: (utm.Android ? Ti.UI.SIZE : 30),
 		left: 25,
 		autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
 		autocorrect: false,
@@ -160,7 +160,7 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 		borderWidth: 1,
 		backgroundColor: 'white',
 		paddingLeft: 7,
-		font: {fontFamily: utm.fontFamily, fontSize: 16}
+		font: {fontFamily: utm.fontFamily, fontSize: '16dp'}
 	});
 	nicknameField.addEventListener('focus', function() {
 		nicknameField.add(focused);
@@ -181,14 +181,14 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 	var postSection = Ti.UI.createTableViewSection({ headerTitle: 'Post to my' });
 	
 	var twitterRow = Ti.UI.createTableViewRow({
-		height: (utm.Android ? '100dp' : 40),
+		height: 40*utm.sizeMultiplier,
 		hasChild: false,
 		selectedBackgroundColor: 'white'
 	});
 	var twitterIcon = Ti.UI.createImageView({
 		image: '/images/icons/twitter.png',
-		height: 30,
-		width: 30,
+		height: 30*utm.sizeMultiplier,
+		width: 30*utm.sizeMultiplier,
 		left: 25
 	});
 	var twitterSwitch = Ti.UI.createSwitch({
@@ -210,14 +210,14 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 	
 	
 	var fbRow = Ti.UI.createTableViewRow({
-		height: (utm.Android ? '100dp' : 40),
+		height: 40*utm.sizeMultiplier,
 		hasChild: false,
 		selectedBackgroundColor: 'white'
 	});
 	var fbIcon = Ti.UI.createImageView({
 		image: '/images/icons/facebook.png',
-		height: 30,
-		width: 30,
+		height: 30*utm.sizeMultiplier,
+		width: 30*utm.sizeMultiplier,
 		left: 25
 	});
 	var fbSwitch = Ti.UI.createSwitch({
@@ -255,7 +255,7 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 	var additionalSection = Ti.UI.createTableViewSection({ headerTitle: 'Additional' });
 	
 	var signRow = Ti.UI.createTableViewRow({
-		height: (utm.Android ? '100dp' : 40),
+		height: 40*utm.sizeMultiplier,
 		hasChild: false,
 		selectedBackgroundColor: 'white'
 	});
@@ -263,7 +263,7 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 		text: 'Sign message',
 		width: Ti.UI.SIZE,
 		left: 25,
-		font: {fontFamily: utm.fontFamily}
+		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize}
 	});
 	var signSwitch = Ti.UI.createSwitch({
 		right: 25,
@@ -274,7 +274,7 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 	additionalSection.add(signRow);
 	
 	var deleteRow = Ti.UI.createTableViewRow({
-		height: (utm.Android ? '100dp' : 40),
+		height: 40*utm.sizeMultiplier,
 		hasChild: false,
 		selectedBackgroundColor: 'white'
 	});
@@ -283,7 +283,7 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 		width: Ti.UI.SIZE,
 		left: 25,
 		height: Ti.UI.FILL,
-		font: {fontFamily: utm.fontFamily}
+		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize}
 	});
 	var deleteSwitch = Ti.UI.createSwitch({
 		value: false,
@@ -349,18 +349,8 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 	
 	loadMyHortDetail();
 	
-	
-	var saveButton = Ti.UI.createButton({
-		title: 'Save',
-		bottom: 10,
-		width: (Ti.Platform.displayCaps.platformWidth-50),
-		height: 40,
-		borderRadius: 20,
-		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
-		backgroundColor: utm.buttonColor,
-		color: 'white',
-		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
-	});	
+	var StandardButton = require('/ui/common/baseui/StandardButton');
+	var saveButton = new StandardButton({title:'Save'});
 	saveButton.addEventListener('click', function() {
 		updateMyHortData();
 	});	

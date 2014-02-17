@@ -77,7 +77,7 @@ var InviteMembersWin = function(_tabGroup,_myHortInfo) {
 		text: 'Email to invite:',
 		top: 25,
 		left: 25,
-		font: {fontFamily: utm.fontFamily, fontSize: 18},
+		font: {fontFamily: utm.fontFamily, fontSize: '18dp'},
 		color: utm.barColor		
 	});
 	scrollingView.add(inviteHeader);
@@ -94,7 +94,7 @@ var InviteMembersWin = function(_tabGroup,_myHortInfo) {
 		left: 25,
 		color: utm.textFieldColor,		
 		width: Ti.Platform.displayCaps.platformWidth-90,
-		height: 30,
+		height: (utm.Android ? Ti.UI.SIZE : 30),
 		keyboardType: Ti.UI.KEYBOARD_EMAIL,
 		returnKeyType: Ti.UI.RETURNKEY_DEFAULT,
 		borderColor: '#D4D4D4',
@@ -102,7 +102,7 @@ var InviteMembersWin = function(_tabGroup,_myHortInfo) {
 		borderWidth: 1,
 		backgroundColor: 'white',
 		paddingLeft: 7,
-		font: {fontFamily: utm.fontFamily, fontSize: 16},
+		font: {fontFamily: utm.fontFamily, fontSize: '16dp'},
 	});
 	var emailFocued = Ti.UI.createView({
 		width: Ti.UI.FILL,

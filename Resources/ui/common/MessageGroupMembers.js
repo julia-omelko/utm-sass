@@ -15,12 +15,16 @@ var MessageGroupMembersWin = function(_tabGroup,_myHortData) {
 	
 	
 	var memberTableView = Ti.UI.createTableView({
-		height: utm.viewableArea - 59,
-		top: 0
+		height: utm.viewableArea - ((40*utm.sizeMultiplier)+20),
+		top: utm.viewableTop
 	});
 	self.add(memberTableView);
 	memberTableView.addEventListener('click',function(e){
-		e.rowData.setHasCheck((e.rowData.getHasCheck() ? false : true));
+		if (e.source.toString() === '[object TableViewRow]') {
+			e.source.setHasCheck((e.source.getHasCheck() ? false : true));
+		} else {
+			e.source.parent.setHasCheck((e.source.parent.getHasCheck() ? false : true));
+		}
 	});
 	
 	
@@ -112,18 +116,9 @@ var MessageGroupMembersWin = function(_tabGroup,_myHortData) {
 	
 	loadMyHortDetail();
 	
-		
-	var composeButton = Ti.UI.createButton({
-		title: 'Compose',
-		bottom: 10,
-		width: (Ti.Platform.displayCaps.platformWidth-50),
-		height: 40,
-		borderRadius: 20,
-		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
-		backgroundColor: utm.buttonColor,
-		color: 'white',
-		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
-	});	
+	
+	var StandardButton = require('/ui/common/baseui/StandardButton');
+	var composeButton = new StandardButton({title:'Compose'});
 	composeButton.addEventListener('click', function() {
 		var selectedContacts = [];
 		var aData = memberTableView.getData();

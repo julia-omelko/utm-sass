@@ -101,36 +101,14 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData) {
 	
 	settingsView.add(tableViewSettings);
 	
-	
-	
-	
-	var deleteButton = Ti.UI.createButton({
-		title: 'Delete from group',
-		bottom: 60,
-		width: (Ti.Platform.displayCaps.platformWidth-50),
-		height: 40,
-		borderRadius: 20,
-		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
-		backgroundColor: utm.barColor,
-		color: 'white',
-		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
-	});
+	var StandardButton = require('/ui/common/baseui/StandardButton');
+	var deleteButton = new StandardButton({title:'Delete from group',bottom:(40*utm.sizeMultiplier)+20,type:'secondary'});
 	deleteButton.addEventListener('click',function(e){
 		removeFromGroup();
 	});
 	self.add(deleteButton);
 	
-	var saveButton = Ti.UI.createButton({
-		title: 'Save',
-		bottom: 10,
-		width: (Ti.Platform.displayCaps.platformWidth-50),
-		height: 40,
-		borderRadius: 20,
-		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
-		backgroundColor: utm.buttonColor,
-		color: 'white',
-		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
-	});	
+	var saveButton = new StandardButton({title:'Save'});
 	saveButton.addEventListener('click', function() {
 		updateMyHortMemberData();
 	});	

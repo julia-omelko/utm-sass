@@ -27,11 +27,11 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 	
 	var scrollingView = Ti.UI.createScrollView({
 		width: Ti.UI.FILL,
-		height: utm.viewableArea - 60,
+		height: utm.viewableArea - ((40*utm.sizeMultiplier)+20),
 		showVerticalScrollIndicator: true,
 		contentHeight: 'auto',
 		layout: 'vertical',
-		top: 0,
+		top: utm.viewableTop,
 		contentHeight: Ti.Platform.displayCaps.platformHeight*2
 	});
 	self.add(scrollingView);
@@ -43,7 +43,7 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 	});
 	scrollingView.add(topView);
 	var leftView = Ti.UI.createView({
-		width: Ti.Platform.displayCaps.platformWidth-80-35,
+		width: Ti.Platform.displayCaps.platformWidth-(80*utm.sizeMultiplier)-35,
 		height: Ti.UI.SIZE,
 		layout: 'vertical',
 		left: 0,
@@ -55,7 +55,7 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 		text: _mode + ' to:',
 		top: 0,
 		left: 25,
-		font: {fontFamily: utm.fontFamily, fontSize: 18},
+		font: {fontFamily: utm.fontFamily, fontSize: '18dp'},
 		color: utm.barColor		
 	});
 	leftView.add(sendHeader);
@@ -69,8 +69,8 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 		text: sendTo,
 		top: 10,
 		left: 25,
-		width: Ti.Platform.displayCaps.platformWidth-50-80-10,
-		font: {fontFamily: utm.fontFamily},
+		width: Ti.Platform.displayCaps.platformWidth-50-(80*utm.sizeMultiplier)-10,
+		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize},
 		color: 'black'		
 	});
 	leftView.add(sendLabel);
@@ -79,7 +79,7 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 		text: 'Message:',
 		top: 25,
 		left: 25,
-		font: {fontFamily: utm.fontFamily, fontSize: 18},
+		font: {fontFamily: utm.fontFamily, fontSize: '18dp'},
 		color: utm.barColor		
 	});
 	leftView.add(messageHeader);
@@ -87,16 +87,16 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 	
 	var previewView = Ti.UI.createView({
 		right: 25,
-		height: 80,
-		width: 80,
-		borderRadius: 20,
+		height: 80*utm.sizeMultiplier,
+		width: 80*utm.sizeMultiplier,
+		borderRadius: 20*utm.sizeMultiplier,
 		backgroundColor: utm.barColor,
 		borderColor: utm.barColor
 	});
 	var previewImage = Ti.UI.createImageView({
 		image: '/images/icons/camera.png',
-		height: 46,
-		width: 46
+		height: 46*utm.sizeMultiplier,
+		width: 46*utm.sizeMultiplier
 	});
 	previewView.addEventListener('click',function(e){
 		camera.captureImage();
@@ -108,17 +108,25 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 	var Camera = require("/lib/Camera");
 	var camera = new Camera(previewImage);
 	
+	var StandardButton = require('/ui/common/baseui/StandardButton');
+	var previewBtn = new StandardButton({title:'Preview'});
+	
+	
+	
+	
+	
 	
 	var messageFieldMaxHeight = Ti.UI.createView({
 		width: Ti.UI.SIZE,
-		height: utm.viewableArea - 216 + 50 - 60
+		height: (utm.Android) ? 80*utm.sizeMultiplier : (utm.viewableArea - (216*utm.sizeMultiplier) + 50 - ((40*utm.sizeMultiplier)+20))
+		//height: (utm.viewableArea - ((80*utm.sizeMultiplier)+20) - ((40*utm.sizeMultiplier)+20) - utm.keyboardHeight - 20)
 	});
 	scrollingView.add(messageFieldMaxHeight);
 	
 	var messageField = Ti.UI.createTextArea({
 		color: utm.textFieldColor,		
 		width: Ti.Platform.displayCaps.platformWidth-50,
-		height: Ti.UI.SIZE,
+		height: ((utm.Android) ? 80*utm.sizeMultiplier : Ti.UI.SIZE),
 		keyboardType: Ti.UI.KEYBOARD_DEFAULT,
 		returnKeyType: Ti.UI.RETURNKEY_DEFAULT,
 		suppressReturn: false,
@@ -128,7 +136,7 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 		borderWidth: 1,
 		backgroundColor: 'white',
 		paddingLeft: 7,
-		font: {fontFamily: utm.fontFamily, fontSize: 16},
+		font: {fontFamily: utm.fontFamily, fontSize: '16dp'},
 	});
 	var messageFocued = Ti.UI.createView({
 		width: Ti.UI.FILL,
@@ -138,17 +146,21 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 	});
 	messageField.addEventListener('focus', function() {
 		messageField.add(messageFocued);
-		previewBtn.setBottom(10+utm.keyboardHeight-50);
-		scrollingView.setHeight(utm.viewableArea-60-utm.keyboardHeight+50);
+		if (utm.iPhone || utm.iPad) {
+			previewBtn.setBottom(10+utm.keyboardHeight-50);
+			scrollingView.setHeight(utm.viewableArea-60-utm.keyboardHeight+50);
+		}
 	});
 	messageField.addEventListener('blur', function() { 
 		messageField.remove(messageFocued);
-		previewBtn.setBottom(10);
-		scrollingView.setHeight(utm.viewableArea-60);
+		if (utm.iPhone || utm.iPad) {
+			previewBtn.setBottom(10);
+			scrollingView.setHeight(utm.viewableArea-60);
+		}
 	});
 	var messageMinHeight = Ti.UI.createView({
 		width: 1,
-		height: 60,
+		height: 80*utm.sizeMultiplier,
 		left: 0
 	});
 	messageField.add(messageMinHeight);
@@ -157,24 +169,6 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 
 
 	
-	
-	
-	
-	
-	
-	
-	
-	var previewBtn = Ti.UI.createButton({
-		title: 'Preview',
-		bottom: 10,
-		width: (Ti.Platform.displayCaps.platformWidth-50),
-		height: 40,
-		borderRadius: 20,
-		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
-		backgroundColor: utm.buttonColor,
-		color: 'white',
-		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
-	});	
 	previewBtn.addEventListener('click', function() {
 		var message = {
 			selectedContacts: _selectedContacts,
@@ -182,7 +176,7 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 			message: messageField.getValue(),
 			messageID: _messageID,
 			deliveryOptions: _messageData.deliveryOptions,
-			attachment: ((previewView.getHight() !== 46) ? camera.getImage() : '')
+			attachment: ((previewView.getHeight() !== 46*utm.sizeMultiplier) ? camera.getImage() : '')
 		};
 		var PreviewWin = require('/ui/common/Preview');
 		var previewWin = new PreviewWin(_tabGroup,message);
