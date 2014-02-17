@@ -3,15 +3,9 @@ var SettingsWin = function(_tabGroup) {
 	
 	var StandardWindow = require('ui/common/StandardWindow');
 	var self = new StandardWindow('Buy Messages', true);
-	
-	var backButton = Ti.UI.createLabel({
-		text: 'Back',
-		font: {fontFamily: utm.fontFamily},
-		color: 'white'
-	});
-	backButton.addEventListener('click',function(e){
-		self.close({animated:true});
-	});
+
+	var BackButton = require('ui/common/baseui/BackButton');
+	var backButton = new BackButton(self);
 	self.setLeftNavButton(backButton);
 	
 	

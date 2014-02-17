@@ -9,21 +9,10 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 	
 	var StandardWindow = require('ui/common/StandardWindow');
 	var self = new StandardWindow(_mode, '');
-	
-	var backButton = Ti.UI.createLabel({
-		text: 'Back',
-		font: {fontFamily: utm.fontFamily},
-		color: 'white'
-	});
-	backButton.addEventListener('click',function(e){
-		self.close({animated:true});
-	});
-	self.setLeftNavButton(backButton);
-	
-	
 
-	
-	
+	var BackButton = require('ui/common/baseui/BackButton');
+	var backButton = new BackButton(self);
+	self.setLeftNavButton(backButton);
 	
 	var scrollingView = Ti.UI.createScrollView({
 		width: Ti.UI.FILL,

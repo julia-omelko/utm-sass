@@ -10,7 +10,7 @@ var MessagesWin = function(_tabGroup) {
 	});
 	editButton.addEventListener('click', function(e){
 		tableView.setEditing(!tableView.getEditing());
-		editButton.setText((tableView.getEditing() ? 'done' : 'edit'));
+		editButton.setText((tableView.getEditing() ? 'Done' : 'Edit'));
 	});
 	self.setLeftNavButton(editButton);
 	

@@ -9,14 +9,8 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	var StandardWindow = require('ui/common/StandardWindow');
 	var self = new StandardWindow('Add Members to Group', true);
 
-	var backButton = Ti.UI.createLabel({
-		text: 'Back',
-		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize},
-		color: 'white'
-	});
-	backButton.addEventListener('click',function(e){
-		self.close();
-	});
+	var BackButton = require('ui/common/baseui/BackButton');
+	var backButton = new BackButton(self);
 	self.setLeftNavButton(backButton);
 	
 	var tableView = Ti.UI.createTableView({

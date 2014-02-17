@@ -4,7 +4,7 @@ var DeliveryOptionsWin = function(_win,_options,_enabled) {
 	var self = new StandardWindow('Delivery Options', '');
 
 	var backButton = Ti.UI.createLabel({
-		text: 'done',
+		text: 'Done',
 		font: {fontFamily: utm.fontFamily},
 		color: 'white'
 	});

@@ -4,14 +4,8 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData,_myHortData) {
 	var StandardWindow = require('ui/common/StandardWindow');
 	var self = new StandardWindow('Member Detail', '');
 
-	var backButton = Ti.UI.createLabel({
-		text: 'Back',
-		font: {fontFamily: utm.fontFamily},
-		color: 'white'
-	});
-	backButton.addEventListener('click',function(e){
-		self.close();
-	});
+	var BackButton = require('ui/common/baseui/BackButton');
+	var backButton = new BackButton(self);
 	self.setLeftNavButton(backButton);
 		
 	var scrollingView = Ti.UI.createScrollView ({

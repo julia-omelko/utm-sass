@@ -6,7 +6,7 @@ var AttachmentPreviewWin = function(_win,_attachment) {
 
 	
 	var backButton = Ti.UI.createLabel({
-		text: 'done',
+		text: 'Done',
 		font: {fontFamily: utm.fontFamily},
 		color: 'white'
 	});
