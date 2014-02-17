@@ -43,10 +43,10 @@ var PreviewWin = function(_tabGroup,_message) {
 				var response = eval('(' + this.responseText + ')');
 				if (this.status === 200) {
 					myHortData = response;
-					//Ti.API.info(myHortData);
-					if (_message.deliveryOptions != null) {
+					//if (_message.deliveryOptions != null) {
 						if (myHortData.PrimaryUser.FaceBook !== '') {
 							deliveryEnabled.facebook = true;
+							alert(deliveryEnabled);
 						}
 						if (myHortData.PrimaryUser.TwitterSecret !== '') {
 							deliveryEnabled.twitter = true;
@@ -54,7 +54,7 @@ var PreviewWin = function(_tabGroup,_message) {
 						if (myHortData.PrimaryUser.Mobile) {
 							deliveryEnabled.sms = true;
 						}
-					}
+					//}
 					deliveryOptions.signMessage = myHortData.PrimaryUser.AddNicknameToUtms;
 										
 					_nickname = myHortData.PrimaryUser.NickName;
@@ -245,6 +245,7 @@ var PreviewWin = function(_tabGroup,_message) {
 	var StandardButton = require('/ui/common/baseui/StandardButton');
 	var optionsBtn = new StandardButton({title:'Delivery options',bottom:(40*utm.sizeMultiplier)+20,type:'secondary'});
 	optionsBtn.addEventListener('click', function() {
+		alert(deliveryEnabled);
 		var DeliveryOptionsWin = require('/ui/common/DeliveryOptions');
 		var deliveryOptionsWin = new DeliveryOptionsWin(self, deliveryOptions, deliveryEnabled);
 		if (utm.Android) {
