@@ -1,5 +1,6 @@
 function CameraView(_previewView) {
 	var resizedImage;
+	var thumbnailImage;
 	
 	var CameraView = Ti.UI.createView({
         layout: 'horizontal',
@@ -71,7 +72,12 @@ function CameraView(_previewView) {
 	};
 	
 	function processImage(e){
-		resizedImage = e.media.imageAsResized(e.media.width/2,e.media.height/2);
+		var ImageFactory = require('ti.imagefactory');
+		resizedImage = ImageFactory.compress(e.media,0.35);
+		
+		thumbnailImage = e.media.imageAsResized(80*utm.sizeMultiplier,80*utm.sizeMultiplier);
+		
+		//resizedImage = e.media.imageAsResized(e.media.width/2,e.media.height/2);
 		/*if (utm.Android) {
 			resizedImage = e.media.imageAsResized(e.media.width/6,e.media.height/6);
 		} else {
@@ -81,7 +87,7 @@ function CameraView(_previewView) {
 		_previewView.setVisible(false);
 		_previewView.setHeight(80*utm.sizeMultiplier);
 		_previewView.setWidth(80*utm.sizeMultiplier);
-		_previewView.setImage(resizedImage);
+		_previewView.setImage(thumbnailImage);
 		_previewView.setVisible(true);
 		
 	}
@@ -90,8 +96,13 @@ function CameraView(_previewView) {
 		return resizedImage;
 	};
 	
+	CameraView.getThumbnail = function(){
+		return _previewView.getImage();
+	};
+	
 	CameraView.reset = function(){
 		_previewView.setVisible(false);
+		_previewView.setImage(null);
 		resizedImage = null;	
 	};
 

@@ -146,7 +146,7 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 					callOutToGetAttachments(_messageData);
 				} else {
 					//Mark Message as Read
-					if (!_messageData.WasRead) {
+					if (!_messageData.WasRead && (_messageData.mode === 'received')) {
 						setMessageAsRead(_messageData.Id);
 						_messageData.WasRead = true;
 					}
@@ -255,8 +255,9 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 				if(this.status == 200){
 					showAttachment(response);
 					
-					if (!_messageData.WasRead) {
+					if (!_messageData.WasRead && _messageData.mode === 'received') {
 						setMessageAsRead(_messageData.Id);
+						_messageData.WasRead = true;
 					}
 				}
 				getAttachmentsReq = null;	
@@ -289,7 +290,8 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 		var previewImage = Ti.UI.createImageView({
 			image: image,
 			height: 80*utm.sizeMultiplier,
-			width: 80*utm.sizeMultiplier
+			width: 80*utm.sizeMultiplier,
+			autorotate: true
 		});
 		previewView.addEventListener('click',function(e){
 			var AttachmentPreviewWin = require('/ui/common/AttachmentPreview');

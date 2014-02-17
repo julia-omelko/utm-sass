@@ -165,9 +165,10 @@ var PreviewWin = function(_tabGroup,_message) {
 			borderColor: utm.barColor
 		});
 		var previewImage = Ti.UI.createImageView({
-			image: _message.attachment,
+			image: _message.thumbnail,
 			height: 80*utm.sizeMultiplier,
-			width: 80*utm.sizeMultiplier
+			width: 80*utm.sizeMultiplier,
+			autorotate: true
 		});
 		previewView.addEventListener('click',function(e){
 			var AttachmentPreviewWin = require('/ui/common/AttachmentPreview');

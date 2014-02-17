@@ -85,7 +85,8 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 	var previewImage = Ti.UI.createImageView({
 		image: '/images/icons/camera.png',
 		height: 46*utm.sizeMultiplier,
-		width: 46*utm.sizeMultiplier
+		width: 46*utm.sizeMultiplier,
+		autorotate: true
 	});
 	previewView.addEventListener('click',function(e){
 		camera.captureImage();
@@ -165,7 +166,9 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 			message: messageField.getValue(),
 			messageID: _messageID,
 			deliveryOptions: _messageData.deliveryOptions,
-			attachment: ((previewView.getHeight() !== 46*utm.sizeMultiplier) ? camera.getImage() : '')
+			attachment: camera.getImage(),
+			thumbnail: camera.getThumbnail()
+			//attachment: ((previewView.getHeight() !== 46*utm.sizeMultiplier) ? camera.getImage() : '')
 		};
 		var PreviewWin = require('/ui/common/Preview');
 		var previewWin = new PreviewWin(_tabGroup,message);

@@ -34,7 +34,8 @@ var AttachmentPreviewWin = function(_win,_attachment) {
 	var attachmentPreview = Ti.UI.createImageView({
 		image: _attachment,
     	//enableZoomControls: true,
-    	width: '100%'
+    	width: '100%',
+		autorotate: true
 	});
 	scrollView.add(attachmentPreview);
 	
