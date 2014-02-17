@@ -20,7 +20,7 @@ var MessageGroupMembersWin = function(_tabGroup,_myHortData) {
 	});
 	self.add(memberTableView);
 	memberTableView.addEventListener('click',function(e){
-		if (e.source.toString() === '[object TableViewRow]') {
+		if (e.source.toString() === '[object TableViewRow]' || e.source.toString() === '[object TiUITableViewRow]') {
 			e.source.setHasCheck((e.source.getHasCheck() ? false : true));
 		} else {
 			e.source.parent.setHasCheck((e.source.parent.getHasCheck() ? false : true));

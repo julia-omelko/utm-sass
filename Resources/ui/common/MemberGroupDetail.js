@@ -88,7 +88,8 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	
 	var tableView = Ti.UI.createTableView({
 		height: utm.viewableArea - ((27*utm.sizeMultiplier)+((40*2*utm.sizeMultiplier)+30)),
-		top: utm.viewableTop + (27*utm.sizeMultiplier)
+		top: utm.viewableTop + (27*utm.sizeMultiplier),
+		allowsSelection:false
 	});
 	self.add(tableView);
 	
