@@ -262,7 +262,7 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 	signRow.add(signSwitch);
 	additionalSection.add(signRow);
 	
-	var deleteRow = Ti.UI.createTableViewRow({
+	/*var deleteRow = Ti.UI.createTableViewRow({
 		height: 40*utm.sizeMultiplier,
 		hasChild: false,
 		selectedBackgroundColor: 'white'
@@ -281,7 +281,7 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 	});
 	deleteRow.add(deleteLabel);
 	deleteRow.add(deleteSwitch);
-	additionalSection.add(deleteRow);
+	additionalSection.add(deleteRow);*/
 	
 	tableDataSettings.push(postSection);
 	tableDataSettings.push(additionalSection);

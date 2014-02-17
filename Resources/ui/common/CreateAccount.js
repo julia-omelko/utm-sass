@@ -349,6 +349,7 @@ var CreateAccountWin = function() {
 	function register() {
 		var curReg = {
 			UserName: username.getValue(),
+			NickName: nickname.getValue(),
 			Password: password.getValue(),
 			ConfirmPassword: passwordConfirm.getValue(),
 			Email: email.getValue(),
