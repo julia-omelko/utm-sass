@@ -15,7 +15,8 @@ function StandardButton(_params){
 		font:{fontFamily: utm.fontFamily, fontSize: utm.fontSize},
 		backgroundColor: ((_params.type != null && _params.type === 'secondary') ? utm.barColor : utm.buttonColor),
 		color: 'white',
-		style: (utm.Android ? null : Ti.UI.iPhone.SystemButtonStyle.PLAIN)
+		style: (utm.Android ? null : Ti.UI.iPhone.SystemButtonStyle.PLAIN),
+		zIndex: 1
 	});	
 	
     return self;

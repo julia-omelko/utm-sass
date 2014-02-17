@@ -263,7 +263,8 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 		text: 'Sign message',
 		width: Ti.UI.SIZE,
 		left: 25,
-		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize}
+		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize},
+		color: utm.secondaryTextColor
 	});
 	var signSwitch = Ti.UI.createSwitch({
 		right: 25,
@@ -283,7 +284,8 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 		width: Ti.UI.SIZE,
 		left: 25,
 		height: Ti.UI.FILL,
-		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize}
+		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize},
+		color: utm.secondaryTextColor
 	});
 	var deleteSwitch = Ti.UI.createSwitch({
 		value: false,

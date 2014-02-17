@@ -87,6 +87,7 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData) {
 		height: Ti.UI.SIZE,
 		width: Ti.UI.SIZE,
 		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize},
+		color: utm.secondaryTextColor,
 		left: 15
 	});
 	var invisibleSwitch = Ti.UI.createSwitch({
