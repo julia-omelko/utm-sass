@@ -145,7 +145,9 @@ var MembersWin = function(_tabGroup) {
 				var response = eval('(' + this.responseText + ')');
 				if (this.status === 200) {
 					myHortData = response;
-					getPendingMembers(response.myHort.Members);
+					if(response.myHort && response.myHort.Members){
+						getPendingMembers(response.myHort.Members);
+					}	
 				} else {
 					utm.handleHttpError({}, this.status, this.responseText);
 				}
