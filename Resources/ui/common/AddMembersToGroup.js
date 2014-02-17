@@ -122,6 +122,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		left: 25,
 		text: 'Invisible to others',
 		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize},
+		color: utm.secondaryTextColor,
 		height: Ti.UI.SIZE,
 		width: Ti.UI.SIZE
 	});

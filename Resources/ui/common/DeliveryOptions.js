@@ -122,7 +122,8 @@ var DeliveryOptionsWin = function(_win,_options,_enabled) {
 		width: Ti.UI.SIZE,
 		height: Ti.UI.FILL,
 		left: 25,
-		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize}
+		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize},
+		color: utm.secondaryTextColor
 	});
 	var signSwitch = Ti.UI.createSwitch({
 		value: _options.signMessage,

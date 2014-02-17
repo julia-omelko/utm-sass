@@ -226,7 +226,8 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 						tableData[tableData.length] = Ti.UI.createTableViewRow({
 							title: _groups[i].FriendlyName,
 							height: 40*utm.sizeMultiplier,
-							font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize}
+							font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize},
+							color: utm.secondaryTextColor
 						});
 						break;
 					}
