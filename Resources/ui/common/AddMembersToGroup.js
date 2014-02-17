@@ -175,7 +175,6 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 				self.close();
 			},
 			onerror : function(e) {
-				alert(e);
 				utm.handleHttpError(e, this.status, this.responseText);
 				inviteMyHortReq = null;
 			},

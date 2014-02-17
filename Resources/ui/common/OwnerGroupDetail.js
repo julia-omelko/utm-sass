@@ -638,7 +638,6 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 				updateMyHortDetailReq = null;
 			},
 			onerror : function(e) {
-				alert(e);
 				utm.handleHttpError(e, this.status, this.responseText);
 				updateMyHortDetailReq = null;
 			},

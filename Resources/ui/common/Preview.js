@@ -248,7 +248,6 @@ var PreviewWin = function(_tabGroup,_message) {
 	var StandardButton = require('/ui/common/baseui/StandardButton');
 	var optionsBtn = new StandardButton({title:'Delivery options',bottom:(40*utm.sizeMultiplier)+20,type:'secondary'});
 	optionsBtn.addEventListener('click', function() {
-		alert(deliveryEnabled);
 		var DeliveryOptionsWin = require('/ui/common/DeliveryOptions');
 		var deliveryOptionsWin = new DeliveryOptionsWin(self, deliveryOptions, deliveryEnabled);
 		if (utm.Android) {
@@ -402,7 +401,6 @@ var PreviewWin = function(_tabGroup,_message) {
 					WasVirusScanned: true
 				}];	
 			} catch(err) {
-				alert(err);
 				if (utm.Android) {
 					alert("An error occured handling the photo.  Some Android phones don't support attaching photos directly form the camera.  Try attaching an image from a album.");
 				} else {
