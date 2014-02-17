@@ -143,7 +143,8 @@ var DeliveryOptionsWin = function(_win,_options,_enabled) {
 		width: Ti.UI.SIZE,
 		left: 25,
 		height: Ti.UI.FILL,
-		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize}
+		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize},
+		color: utm.secondaryTextColor
 	});
 	var deleteSwitch = Ti.UI.createSwitch({
 		value: _options.deleteOnRead,
