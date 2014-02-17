@@ -22,7 +22,7 @@ var PreviewWin = function(_tabGroup,_message) {
 	} else {
 		var deliveryEnabled = {
 			sms: false,
-			email: true,
+			email: false,
 			twitter: false,
 			facebook: false
 		};
@@ -31,6 +31,10 @@ var PreviewWin = function(_tabGroup,_message) {
 				if (typeof _message.selectedContacts[i].userData.HasMobile !== 'undefined' && _message.selectedContacts[i].userData.HasMobile) {
 					deliveryOptions.sms = true;
 					deliveryEnabled.sms = true;
+				}
+				if (typeof _message.selectedContacts[i].userData.HasEmail !== 'undefined' && _message.selectedContacts[i].userData.HasEmail) {
+					deliveryOptions.email = true;
+					deliveryEnabled.email = true;
 				}
 			}
 		}
