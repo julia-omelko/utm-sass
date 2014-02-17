@@ -40,11 +40,26 @@ var MembersWin = function(_tabGroup) {
 	});
 	self.setRightNavButton(newButton);
 
+
+
+
+
+	var refreshing = false;
+	if (utm.iPad || utm.iPhone) {
+		var refreshControl = Ti.UI.createRefreshControl({
+			tintColor: utm.color_org
+		});
+		refreshControl.addEventListener('refreshstart',function(e){
+			refreshing = true;
+			loadMyHortDetail();
+		});
+	}
 	var tableView = Ti.UI.createTableView({
 		top: utm.viewableTop,
 		editable: false,
 		allowsSelectionDuringEditing: true,
-		height: utm.viewableArea
+		height: utm.viewableArea,
+		refreshControl: ((utm.iPad || utm.iPhone) ? refreshControl : null)
 	});
 	self.add(tableView);
 	
@@ -121,7 +136,9 @@ var MembersWin = function(_tabGroup) {
 
 
 	function loadMyHortDetail() {
-		self.showAi();
+		if (refreshing === false) {
+			self.showAi();
+		}
 		var getMyHortDetailReq = Ti.Network.createHTTPClient({
 			validatesSecureCertificate : utm.validatesSecureCertificate,
 			onload : function() {
@@ -173,6 +190,10 @@ var MembersWin = function(_tabGroup) {
 		}
 		tableView.setData(tableData);
 		self.hideAi();
+		if (utm.iPad || utm.iPhone) {
+			refreshControl.endRefreshing();
+		}
+        refreshing = false;
 	}
 	
 	var sort_by = function(field, reverse, primer) {
