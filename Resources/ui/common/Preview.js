@@ -46,7 +46,6 @@ var PreviewWin = function(_tabGroup,_message) {
 					//if (_message.deliveryOptions != null) {
 						if (myHortData.PrimaryUser.FaceBook !== '') {
 							deliveryEnabled.facebook = true;
-							alert(deliveryEnabled);
 						}
 						if (myHortData.PrimaryUser.TwitterSecret !== '') {
 							deliveryEnabled.twitter = true;
