@@ -61,6 +61,23 @@ var GroupsWin = function(_tabGroup) {
 		});
 		_tabGroup.getActiveTab().open(groupDetailWin);
 	});
+	
+	
+	if (utm.Android) {
+		var StandardButton = require('/ui/common/baseui/StandardButton');
+		var aCreateButton = new StandardButton({title:'Create group'});
+		aCreateButton.addEventListener('click',function(e){
+			var CreateGroupWin = require('/ui/common/CreateGroup');
+			var createGroupWin = new CreateGroupWin(_tabGroup);
+			createGroupWin.addEventListener('close',function(e){
+				self.showAi();
+				loadMyHorts();
+			});
+			_tabGroup.getActiveTab().open(createGroupWin);
+		});
+		tableView.setHeight(utm.viewableArea - utm.viewableTabHeight - ((40*utm.sizeMultiplier)+20));
+		self.add(aCreateButton);
+	}
 
 
 	function loadMyHorts() {

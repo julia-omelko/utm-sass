@@ -117,8 +117,8 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 	});
 	scrollingView.add(originalMessage);
 	
+	var StandardButton = require('/ui/common/baseui/StandardButton');
 	if (_messageData.mode !== 'sent') {
-		var StandardButton = require('/ui/common/baseui/StandardButton');
 		var replyBtn = new StandardButton({title:'Reply'});
 		self.add(replyBtn);
 		replyBtn.addEventListener('click', function() {
@@ -133,6 +133,15 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 			Ti.App.removeEventListener('app:replyToMessage',replyToMessage);
 		});
 	}
+	var deleteButton = new StandardButton({
+		title: 'Delete message',
+		bottom: (_messageData.mode !== 'sent') ? (40*utm.sizeMultiplier)+20 : null,
+		type: 'secondary'
+	});
+	deleteButton.addEventListener('click',function(e){
+		deleteMessage(_messageData.Id);
+	});
+	self.add(deleteButton);
 	
 	
 	var getMessageDetailReq = Ti.Network.createHTTPClient({
@@ -315,6 +324,69 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 		scrollingView.add(previewView);
 		self.hideAi();
 	}
+	
+	function deleteMessage(messageId) {
+		if (_messageData.mode === 'sent') {
+
+			var dialog = Ti.UI.createAlertDialog({
+				cancel : 2,
+				buttonNames : ['Delete message?', 'Super delete message?', L('cancel')],
+				message : '“Delete message” simply deletes this message from your message box. “Super delete message” also deletes it from the message boxes of all recipients.',
+				title : 'Delete options',
+				messageId : messageId
+			});
+			dialog.addEventListener('click', function(e) {
+				if (e.index === 0) {
+					callDeleteMessage(messageId, false);
+				} else if (e.index === 1) {
+					callDeleteMessage(messageId, true);
+				} else if (e.index === 2) {
+					Ti.API.info('The cancel button was clicked');
+				}
+			});
+			dialog.show();
+
+		} else {
+			if (utm.Android){
+				var dialog = Ti.UI.createAlertDialog({
+					cancel : 1,
+					buttonNames : ['Yes',  L('cancel')],
+					message : 'Do you want to delete this message? ',
+					title : 'Delete Confirmation',
+					messageId : messageId
+				});
+				dialog.addEventListener('click', function(e) {
+					if (e.index === 0) {
+						callDeleteMessage(messageId, true);
+					}
+				});
+				dialog.show();
+			} else {
+				callDeleteMessage(messageId, false);
+			}
+			
+		}
+
+	}
+
+	function callDeleteMessage(messageId, isSuperDelete) {
+		var deleteMessagesReq = Ti.Network.createHTTPClient({
+			validatesSecureCertificate : utm.validatesSecureCertificate,
+			onload : function(e) {
+				self.close();
+				deleteMessagesReq = null;
+			},
+			onerror : function(e) {
+				deleteMessagesReq = null;
+			},
+			timeout : utm.netTimeout
+		});
+		deleteMessagesReq.open('delete', utm.serviceUrl + 'Messages/DeleteMessage/' + messageId + '?isSuperDelete=' + isSuperDelete);
+		deleteMessagesReq.setRequestHeader('Authorization-Token', utm.AuthToken);
+		deleteMessagesReq.send();
+	}
+	
+	
 	
 	
 	return self;

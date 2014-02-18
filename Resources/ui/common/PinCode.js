@@ -32,12 +32,13 @@ var SettingsWin = function(_tabGroup) {
 	self.add(scrollingView);
 
 	var gapWidth = 20;
+	var sizeModifier = (utm.Android ? 8 : 6);
 	var platformWidth = Ti.Platform.displayCaps.platformWidth;
 	
 	var passwordDefault = {
 		color: '#000000',
-		width: Math.round(Ti.Platform.displayCaps.platformWidth/6),
-		height: Math.round(Ti.Platform.displayCaps.platformWidth/6),
+		width: Math.round(Ti.Platform.displayCaps.platformWidth/sizeModifier),
+		height: Math.round(Ti.Platform.displayCaps.platformWidth/sizeModifier),
 		font: {
 			fontFamily: 'Helvetica Neue',
 			fontWeight: 'bold',
@@ -86,10 +87,11 @@ var SettingsWin = function(_tabGroup) {
 	password[0].setBorderWidth(3);
 
 	var pinLabel = Ti.UI.createLabel({
-		top: 25,
+		top: 15,
 		left: 25,
 		text: 'Enter new unlock code',
 		width: Ti.UI.SIZE,
+		height: Ti.UI.SIZE,
 		font: {fontFamily: utm.fontFamily, fontSize: '18dp'},
 		color: utm.barColor		
 	});
@@ -97,7 +99,7 @@ var SettingsWin = function(_tabGroup) {
 	
 	var firstCode = Ti.UI.createView({
 		width: Ti.UI.FILL,
-		height: Math.round(Ti.Platform.displayCaps.platformWidth/6)+4,
+		height: Math.round(Ti.Platform.displayCaps.platformWidth/sizeModifier)+4,
 		top: 10
 	});
 	firstCode.add(password[0]);
@@ -111,6 +113,7 @@ var SettingsWin = function(_tabGroup) {
 		top: 15,
 		left: 25,
 		width: Ti.UI.SIZE,
+		height: Ti.UI.SIZE,
 		font: {fontFamily: utm.fontFamily, fontSize: '18dp'},
 		color: utm.barColor			
 	});	
@@ -118,7 +121,7 @@ var SettingsWin = function(_tabGroup) {
 	
 	var secondCode = Ti.UI.createView({
 		width: Ti.UI.FILL,
-		height: Math.round(Ti.Platform.displayCaps.platformWidth/6)+4,
+		height: Math.round(Ti.Platform.displayCaps.platformWidth/sizeModifier)+4,
 		top: 10
 	});
 	secondCode.add(password[4]);
@@ -162,8 +165,22 @@ var SettingsWin = function(_tabGroup) {
 		color: 'white',
 		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
 	});	
+	scrollingView.add(saveButton);
 	
-	scrollingView.add(saveButton);	
+	if (utm.Android) {
+		var clearButton = Ti.UI.createButton({
+			title: 'Clear unlock code',
+			top: 15,
+			width: (Ti.Platform.displayCaps.platformWidth-50),
+			height: 40*utm.sizeMultiplier,
+			borderRadius: 20*utm.sizeMultiplier,
+			font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
+			backgroundColor: utm.barColor,
+			color: 'white',
+			style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
+		});	
+		scrollingView.add(clearButton);
+	}
 
 	clearButton.addEventListener('click', function(e) {
 		keychain.deletePasswordForService('utm', 'lockscreen');

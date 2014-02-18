@@ -102,10 +102,6 @@ var MessagesWin = function(_tabGroup) {
 		top: utm.viewableTop + (27 * utm.sizeMultiplier),
 		refreshControl: ((utm.iPad || utm.iPhone) ? refreshControl : null)
 	});
-	Ti.API.info('viewableArea: ' + utm.viewableArea);
-	Ti.API.info('viewableTabHeight: ' + utm.viewableTabHeight);
-	Ti.API.info('button: ' + ((40 * utm.sizeMultiplier)+20));
-	Ti.API.info(tableView.getHeight());
 	if (utm.Android) {
 		tableView.setHeight(utm.viewableArea - (27 * utm.sizeMultiplier)  - utm.viewableTabHeight - ((40 * utm.sizeMultiplier)+20));
 	}

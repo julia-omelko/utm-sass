@@ -4,15 +4,13 @@ var CreateGroupWin = function(_tabGroup) {
 	var StandardWindow = require('ui/common/StandardWindow');
 	var self = new StandardWindow('Create Group', '');
 
-
-
 	var BackButton = require('ui/common/baseui/BackButton');
 	var backButton = new BackButton(self);
 	self.setLeftNavButton(backButton);
 		
 	var settingsView = Ti.UI.createScrollView ({
-		height: utm.viewableArea - 60,
-		top: 0,
+		height: utm.viewableArea - ((40*utm.sizeMultiplier)+20),
+		top: utm.viewableTop,
 		showVerticalScrollIndicator:true,
 		contentHeight:'auto',
 		layout: 'vertical'
@@ -66,17 +64,8 @@ var CreateGroupWin = function(_tabGroup) {
 	settingsView.add(groupField);
 	
 	
-	var saveButton = Ti.UI.createButton({
-		title: 'Create group',
-		bottom: 10,
-		width: (Ti.Platform.displayCaps.platformWidth-50),
-		height: 40,
-		borderRadius: 20,
-		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
-		backgroundColor: utm.buttonColor,
-		color: 'white',
-		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
-	});	
+	var StandardButton = require('/ui/common/baseui/StandardButton');
+	var saveButton = new StandardButton({title:'Create group'});	
 	saveButton.addEventListener('click', function() {
 		createMyHort(groupField.getValue());
 	});	
