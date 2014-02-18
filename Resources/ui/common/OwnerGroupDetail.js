@@ -64,20 +64,28 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	tabBar.add(settingsButton);
 	
 	membersButton.addEventListener('click', function(e){
+		mode = 'members';
 		membersButton.setBackgroundColor('white');
 		membersButton.setColor(utm.textColor);
 		settingsButton.setBackgroundColor(utm.backgroundColor);
 		settingsButton.setColor(utm.secondaryTextColor);
 		self.remove(settingsView);
 		self.add(tableView);
+		if (utm.Android) {
+			saveButton.setTitle('Add members');
+		}
 	});
 	settingsButton.addEventListener('click', function(e){
+		mode = 'settings';
 		settingsButton.setBackgroundColor('white');
 		settingsButton.setColor(utm.textColor);
 		membersButton.setBackgroundColor(utm.backgroundColor);
 		membersButton.setColor(utm.secondaryTextColor);
 		self.remove(tableView);
 		self.add(settingsView);
+		if (utm.Android) {
+			saveButton.setTitle('Save');
+		}
 	});
 	
 	
@@ -579,9 +587,18 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	});
 	self.add(deleteButton);
 	
-	var saveButton = new StandardButton({title:'Save'});
+	var saveButton = new StandardButton({title:'Add members'});
 	saveButton.addEventListener('click', function() {
-		updateMyHortData();
+		if (mode === 'settings' || !utm.Android) {
+			updateMyHortData();
+		} else {
+			var AddToGroupWin = require('/ui/common/AddMembersToGroup');
+			var addToGroupWin = new AddToGroupWin(_tabGroup,_groupData);
+			addToGroupWin.addEventListener('close',function(e){
+				loadMyHortDetail();
+			});
+			_tabGroup.getActiveTab().open(addToGroupWin);
+		}
 	});	
 	self.add(saveButton);
 	

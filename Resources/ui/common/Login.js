@@ -140,7 +140,7 @@ var LoginWin = function() {
 	var versionLabel = Ti.UI.createLabel({
 		color: utm.textColor,	
 		font: {fontFamily: utm.fontFamily, fontSize:'14dp' },
-		text: Ti.App.version + ' Beta',
+		text: Ti.App.version + ' beta',
 		textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
 		top: 10,
 		width: Ti.UI.SIZE, 
@@ -245,6 +245,9 @@ var LoginWin = function() {
 	loginBtn.addEventListener('click',function(e) {
 		username.blur();
 		password.blur();
+		
+		utm.viewableArea = (Math.max.apply(Math, aHeight)) - utm.viewableTop;
+		utm.keyboardHeight = (Math.max.apply(Math, aHeight)) - (Math.min.apply(Math, aHeight));
 
 		if (username.value !== '' && password.value !== '') {	
 			var shortVersionNum = Ti.App.version;
@@ -300,7 +303,16 @@ var LoginWin = function() {
 	Ti.App.addEventListener('keyboardframechanged',function(e){
 		utm.keyboardHeight = e.keyboardFrame.height;
 	});
+	
 
+	var aHeight = [];
+	self.addEventListener('postlayout',function(e){
+		aHeight.push(self.rect.height);
+	});
+	
+	
+	
+	
 	
 /*
 	

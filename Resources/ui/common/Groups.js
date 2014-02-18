@@ -43,7 +43,7 @@ var GroupsWin = function(_tabGroup) {
 		editable: false,
 		moveable: false,
 		allowsSelectionDuringEditing: true,
-		height: utm.viewableArea,
+		height: utm.viewableArea - utm.viewableTabHeight,
 		top: utm.viewableTop
 	});
 	self.add(tableView);

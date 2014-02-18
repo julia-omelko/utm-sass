@@ -16,7 +16,7 @@ var LogoutWin = function(_tabGroup) {
 		Ti.App.fireEvent('app:logout');
 		_tabGroup.close();
 	});
-
+	
 	return self;
 };
 module.exports = LogoutWin;

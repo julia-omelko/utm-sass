@@ -10,7 +10,7 @@ var MembersWin = function(_tabGroup) {
 		scrollType : 'vertical',
 		showVerticalScrollIndicator : true,
 		showHorizontalScrollIndicator : false,
-		height: Ti.Platform.displayCaps.platformHeight
+		height: utm.viewableArea
 	});
 	self.add(scrollView);
 
@@ -54,11 +54,12 @@ var MembersWin = function(_tabGroup) {
 			loadMyHortDetail();
 		});
 	}
+	
 	var tableView = Ti.UI.createTableView({
 		top: utm.viewableTop,
 		editable: false,
 		allowsSelectionDuringEditing: true,
-		height: utm.viewableArea,
+		height: utm.viewableArea - utm.viewableTabHeight,
 		refreshControl: ((utm.iPad || utm.iPhone) ? refreshControl : null)
 	});
 	self.add(tableView);
@@ -86,6 +87,26 @@ var MembersWin = function(_tabGroup) {
 			deleteMember(e.rowData.memberData);
 		}
 	});
+	
+	
+	if (utm.Android) {
+		var StandardButton = require('/ui/common/baseui/StandardButton');
+		var aNewButton = new StandardButton({title:'Invite member'});
+		aNewButton.addEventListener('click',function(e){
+			var InviteWin = require('/ui/common/InviteMembers');
+			var inviteWin = new InviteWin(_tabGroup,myHortData);
+			inviteWin.addEventListener('close',function(e){
+				loadMyHortDetail();
+			});
+			_tabGroup.getActiveTab().open(inviteWin);
+		});
+		tableView.setHeight(utm.viewableArea-utm.viewableTabHeight-((40*utm.sizeMultiplier)+20));
+		self.add(aNewButton);
+	}
+	
+	
+	
+	
 	
 	
 	function deleteMember(_memberData) {
@@ -241,7 +262,8 @@ var MembersWin = function(_tabGroup) {
 	
 	loadMyHortDetail();
 
-
+	
+	
 
 
 	return self;

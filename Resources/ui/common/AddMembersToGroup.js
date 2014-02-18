@@ -14,12 +14,16 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	self.setLeftNavButton(backButton);
 	
 	var tableView = Ti.UI.createTableView({
-		height: utm.viewableArea - 100,
-		top: 0
+		height: utm.viewableArea - ((40*utm.sizeMultiplier)+30),
+		top: utm.viewableTop
 	});
 	self.add(tableView);
 	tableView.addEventListener('click',function(e){
-		e.rowData.setHasCheck((e.rowData.getHasCheck() ? false : true));
+		if (e.source.toString() === '[object TableViewRow]' || e.source.toString() === '[object TiUITableViewRow]') {
+			e.source.setHasCheck((e.source.getHasCheck() ? false : true));
+		} else {
+			e.source.parent.setHasCheck((e.source.parent.getHasCheck() ? false : true));			
+		}
 	});
 	
 	function loadMyHortDetail() {
@@ -28,7 +32,6 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 			onload : function() {
 				var response = eval('(' + this.responseText + ')');
 				if (this.status === 200) {
-					Ti.API.info(response);
 					myHortData = response;
 					displayMyHortData(response);
 				} else {
@@ -106,9 +109,9 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 
 	
 	var invisibleView = Ti.UI.createView({
-		height: 50,
+		height: 50*utm.sizeMultiplier,
 		width: Ti.UI.FILL,
-		bottom: 50,
+		bottom: (40*utm.sizeMultiplier)+20,
 		backgroundColor: utm.backgroundColor,
 		color: utm.textColor
 	});
@@ -129,17 +132,8 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	self.add(invisibleView);
 	
 	
-	var saveButton = Ti.UI.createButton({
-		title: 'Add to group',
-		bottom: 10,
-		width: (Ti.Platform.displayCaps.platformWidth-50),
-		height: 40,
-		borderRadius: 20,
-		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
-		backgroundColor: utm.buttonColor,
-		color: 'white',
-		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
-	});	
+	var StandardButton = require('/ui/common/baseui/StandardButton');
+	var saveButton = new StandardButton({title:'Add to group'});
 	saveButton.addEventListener('click', function() {
 		inviteMyHort();
 	});	

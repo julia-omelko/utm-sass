@@ -20,29 +20,40 @@ if (Ti.Platform.osname == 'iphone') {
 	utm.iPhone = true;
 	utm.viewableTop = 0;
 	utm.viewableArea = Ti.Platform.displayCaps.platformHeight - 114;
+	utm.viewableTabHeight = 0;
+	utm.keyboardHeight = 0;
 	utm.sizeMultiplier = 1;
 } else if(Ti.Platform.osname == 'ipad') {
 	utm.iPad = true;
 	utm.viewableTop = 0;
 	utm.viewableArea = Ti.Platform.displayCaps.platformHeight - 114;
+	utm.viewableTabHeight = 0;
+	utm.keyboardHeight = 0;
 	utm.sizeMultiplier = 1;
-} else if(Ti.Platform.osname == 'android') {
+} else if (Ti.Platform.osname == 'android') {
 	utm.Android = true;
-	utm.viewableArea = Ti.Platform.displayCaps.platformHeight - 138;
+	utm.viewableArea = Ti.Platform.displayCaps.platformHeight;
 	utm.sizeMultiplier = Math.round(Ti.Platform.displayCaps.platformWidth/320);
-	//utm.sizeMultiplier = 1;
 	utm.viewableTop = 40*utm.sizeMultiplier;
+	utm.viewableTabHeight = 0;
+	utm.keyboardHeight = 0;
+	if (Ti.App.Properties.getString('viewableTabHeight','') !== '') {
+		utm.viewableTabHeight = Ti.App.Properties.getString('viewableTabHeight','');
+	} else if (Ti.Platform.displayCaps.density === 'normal') {
+		utm.viewableTabHeight = 64;
+	} else if (Ti.Platform.displayCaps.density === 'low') {
+		utm.viewableTabHeight = 48;
+	} else {
+		utm.viewableTabHeight = 96;
+	}
 };
-
-/*if (Ti.Platform.model === 'Simulator' || Ti.Platform.model ===  'google_sdk' || Ti.Platform.model ===  'sdk') { 
+if (Ti.Platform.model === 'Simulator' || Ti.Platform.model ===  'google_sdk' || Ti.Platform.model ===  'sdk') { 
 	utm.setEnvModePrefix("dev");
 	utm.validatesSecureCertificate = false;
 } else {
 	utm.setEnvModePrefix("prod");
 	utm.validatesSecureCertificate = true;
-}*/	
-utm.setEnvModePrefix("test");
-
+}	
 utm.netTimeout = 18000;
 utm.screenLockTime = 5000;
 

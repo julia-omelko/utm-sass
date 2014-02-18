@@ -98,12 +98,16 @@ var MessagesWin = function(_tabGroup) {
 	var tableView = Titanium.UI.createTableView({
 		editable: false,
 		allowsSelectionDuringEditing: true,
-		height: utm.viewableArea - (27 * utm.sizeMultiplier),
+		height: utm.viewableArea - (27 * utm.sizeMultiplier) - utm.viewableTabHeight,
 		top: utm.viewableTop + (27 * utm.sizeMultiplier),
 		refreshControl: ((utm.iPad || utm.iPhone) ? refreshControl : null)
 	});
+	Ti.API.info('viewableArea: ' + utm.viewableArea);
+	Ti.API.info('viewableTabHeight: ' + utm.viewableTabHeight);
+	Ti.API.info('button: ' + ((40 * utm.sizeMultiplier)+20));
+	Ti.API.info(tableView.getHeight());
 	if (utm.Android) {
-		tableView.setHeight(tableView.getHeight() - (40 * utm.sizeMultiplier) - 20);
+		tableView.setHeight(utm.viewableArea - (27 * utm.sizeMultiplier)  - utm.viewableTabHeight - ((40 * utm.sizeMultiplier)+20));
 	}
 	self.add(tableView);	
 	
@@ -241,12 +245,20 @@ var MessagesWin = function(_tabGroup) {
 		aComposeButton.addEventListener('click',function(e){
 			Ti.App.fireEvent('app:getSubscriptionInfo',{callBack:'app:composeMessage'});
 		});
-		tableView.setHeight(tableView.getHeight()-60);
+		//tableView.setHeight(tableView.getHeight()-((40*utm.sizeMultiplier)+20));
 		self.add(aComposeButton);
 	}
 	
 	
-	
+	self.addEventListener('postlayout',evaluateAndroidHeight);
+	function evaluateAndroidHeight(){
+		if (self.rect.height !== 0) {
+			self.removeEventListener('postlayout',evaluateAndroidHeight);
+			utm.viewableTabHeight = (utm.viewableArea+utm.viewableTop) - self.rect.height;
+			Ti.App.Properties.setString('viewableTabHeight',utm.viewableTabHeight);
+			
+		}
+	}
 	
 	
 	getMessages('received');

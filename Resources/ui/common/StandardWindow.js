@@ -103,7 +103,6 @@ function StandardWindow(_title,_showAi) {
 		}, utm.netTimeout);
 	}
 	
-	
 	return self;
 } 
 module.exports = StandardWindow;	

@@ -14,11 +14,11 @@ var InviteMembersWin = function(_tabGroup,_myHortInfo) {
 	
 	var scrollingView = Ti.UI.createScrollView({
 		width: '100%',
-		height: utm.viewableArea - 74,
+		height: utm.viewableArea,
 		showVerticalScrollIndicator: true,
 		contentHeight: 'auto',
 		layout: 'vertical',
-		top: 0
+		top: utm.viewableTop
 	});
 	self.add(scrollingView);
 	
@@ -87,7 +87,7 @@ var InviteMembersWin = function(_tabGroup,_myHortInfo) {
 	var emailField = Ti.UI.createTextField({
 		left: 25,
 		color: utm.textFieldColor,		
-		width: Ti.Platform.displayCaps.platformWidth-90,
+		width: Ti.Platform.displayCaps.platformWidth-((30*utm.sizeMultiplier)+50),
 		height: (utm.Android ? Ti.UI.SIZE : 30),
 		keyboardType: Ti.UI.KEYBOARD_EMAIL,
 		returnKeyType: Ti.UI.RETURNKEY_DEFAULT,
@@ -113,16 +113,16 @@ var InviteMembersWin = function(_tabGroup,_myHortInfo) {
 	emailView.add(emailField);
 
 	var contactButton = Ti.UI.createView({
-		height: 30,
-		width: 30,
+		height: 30*utm.sizeMultiplier,
+		width: 30*utm.sizeMultiplier,
 		right: 25,
 		backgroundColor: utm.buttonColor,
-		borderRadius: 6
+		borderRadius: 6*utm.sizeMultiplier
 	});
 	var contactIcon = Ti.UI.createImageView({
 		image: '/images/icons/contacts.png',
-		height: 22,
-		width: 22,
+		height: 22*utm.sizeMultiplier,
+		width: 22*utm.sizeMultiplier,
 	});
 	contactButton.add(contactIcon);
 	emailView.add(contactButton);
@@ -228,8 +228,8 @@ var InviteMembersWin = function(_tabGroup,_myHortInfo) {
 		title: 'Send invite',
 		top: 25,
 		width: (Ti.Platform.displayCaps.platformWidth-50),
-		height: 40,
-		borderRadius: 20,
+		height: 40*utm.sizeMultiplier,
+		borderRadius: 20*utm.sizeMultiplier,
 		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
 		backgroundColor: utm.buttonColor,
 		color: 'white',
