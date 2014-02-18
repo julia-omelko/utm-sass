@@ -33,13 +33,16 @@ if (Ti.Platform.osname == 'iphone') {
 	//utm.sizeMultiplier = 1;
 	utm.viewableTop = 40*utm.sizeMultiplier;
 };
-if (Ti.Platform.model === 'Simulator' || Ti.Platform.model ===  'google_sdk' || Ti.Platform.model ===  'sdk') { 
+
+/*if (Ti.Platform.model === 'Simulator' || Ti.Platform.model ===  'google_sdk' || Ti.Platform.model ===  'sdk') { 
 	utm.setEnvModePrefix("dev");
 	utm.validatesSecureCertificate = false;
 } else {
 	utm.setEnvModePrefix("prod");
 	utm.validatesSecureCertificate = true;
-}	
+}*/	
+utm.setEnvModePrefix("test");
+
 utm.netTimeout = 18000;
 utm.screenLockTime = 5000;
 
