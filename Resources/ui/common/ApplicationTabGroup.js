@@ -6,6 +6,11 @@ function ApplicationTabGroup() {
 	});
 	utm.winStack = [];
 	
+	if (utm.Android && (Ti.Platform.displayCaps.density === 'xhigh' || Ti.Platform.displayCaps.density === 'xxhigh')) {
+		var aTitle = [null,null,null,null,null];
+	} else {
+		var aTitle = ['Messages','Members','Groups','Settings','Logout'];
+	}
 	
 
 	
@@ -23,7 +28,7 @@ function ApplicationTabGroup() {
 		win5 = new LogoutWin(self);
 	
 	var tab1 = Ti.UI.createTab({
-		title: 'Messages',
+		title: aTitle[0],
 		icon: '/images/tabicon/messages@2x.png',
 		backgroundColor: 'black',
 		backgroundSelectedColor: utm.barColor,
@@ -32,8 +37,8 @@ function ApplicationTabGroup() {
 	win1.containingTab = tab1;
 	
 	var tab2 = Ti.UI.createTab({
-		title: 'Members',
-		icon: '/images/tabicon/members@2x.png',
+		title: aTitle[1],
+		icon: 'images/tabicon/members@2x.png',
 		backgroundColor: 'black',
 		backgroundSelectedColor: utm.barColor,
 		window: win2
@@ -41,7 +46,7 @@ function ApplicationTabGroup() {
 	win2.containingTab = tab2;
 	
 	var tab3 = Ti.UI.createTab({
-		title: 'Groups',
+		title: aTitle[2],
 		icon: '/images/tabicon/groups@2x.png',
 		backgroundColor: 'black',
 		backgroundSelectedColor: utm.barColor,
@@ -50,7 +55,7 @@ function ApplicationTabGroup() {
 	win3.containingTab = tab3;
 	
 	var tab4 = Ti.UI.createTab({
-		title: 'Settings',
+		title: aTitle[3],
 		icon: '/images/tabicon/settings@2x.png',
 		backgroundColor: 'black',
 		backgroundSelectedColor: utm.barColor,
@@ -59,7 +64,7 @@ function ApplicationTabGroup() {
 	win4.containingTab = tab4;
 	
 	var tab5 = Ti.UI.createTab({
-		title: 'Logout',
+		title: aTitle[4],
 		icon: '/images/tabicon/logout@2x.png',
 		backgroundColor: 'black',
 		backgroundSelectedColor: utm.barColor,
