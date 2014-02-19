@@ -59,13 +59,13 @@ Storekit.addEventListener('transactionState', function (evt) {
 					Storekit.verifyReceipt(evt, function (e) {
 						if (e.success) {
 							if (e.valid) {
-								//alert('Thanks! Receipt Verified');
-								verifyServerSideWithApple(evt.receipt,evt.productIdentifier)
+								Ti.API.info('Thanks! Receipt Verified');
+								verifyServerSideWithApple(evt.receipt,evt.productIdentifier);
 							} else {
-								//alert('Sorry. Receipt is invalid');
+								Ti.API.info('Sorry. Receipt is invalid');
 							}
 						} else {
-							//alert(e.message);
+							Ti.API.info(e.message);
 						}
 					});
 				}
