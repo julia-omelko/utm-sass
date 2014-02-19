@@ -179,6 +179,8 @@ var LoginWin = function() {
 		font: {fontFamily: utm.fontFamily, fontSize:'14dp' }
 	});
 	tableData[0].addEventListener('click', function(e){
+		utm.viewableArea = (Math.max.apply(Math, aHeight)) - utm.viewableTop;
+		utm.keyboardHeight = (Math.max.apply(Math, aHeight)) - (Math.min.apply(Math, aHeight));
 		var CreateAccount = require('/ui/common/CreateAccount');
 		var createAccount = new CreateAccount();
 		utm.navController.open(createAccount);
@@ -250,6 +252,7 @@ var LoginWin = function() {
 		utm.keyboardHeight = (Math.max.apply(Math, aHeight)) - (Math.min.apply(Math, aHeight));
 
 		if (username.value !== '' && password.value !== '') {	
+			self.showAi();
 			var shortVersionNum = Ti.App.version;
 			var shortVersionNumArray = shortVersionNum.split('.');
 			shortVersionNum = shortVersionNumArray[0] + '.' + shortVersionNumArray[1];
@@ -275,15 +278,18 @@ var LoginWin = function() {
 				var response = eval('('+this.responseText+')');
 				if (this.status === 200) {
 					password.setValue('');
+					self.hideAi();
 					Ti.App.fireEvent("app:loginSuccess", {
 				        userData: response
 				    });
 				} else {
+					self.hideAi();
 					utm.handleHttpError({},this.status,this.responseText);
 				}
 				loginReq = null;
 			},
 			onerror:function(e) {
+				self.hideAi();
 				password.setValue('');
 				if (this.status === 401) {
 					var err = JSON.parse(this.responseText);

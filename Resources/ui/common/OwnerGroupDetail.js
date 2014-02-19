@@ -709,6 +709,18 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		deleteMyHortReq.send();
 	}
 	
+		// keyboard resizing
+	if (utm.Android) {
+		aHeight = [];
+		self.addEventListener('postlayout',function(e){
+			aHeight.push(self.rect.height);
+			if (self.rect.height === (Math.max.apply(Math, aHeight))) {
+				settingsView.setHeight(utm.viewableArea - (27*utm.sizeMultiplier) - ((40*2*utm.sizeMultiplier)+30));
+			} else {
+				settingsView.setHeight(utm.viewableArea - (27*utm.sizeMultiplier) - ((40*2*utm.sizeMultiplier)+30) - utm.keyboardHeight);
+			}
+		});
+	}
 	
 	return self;
 };

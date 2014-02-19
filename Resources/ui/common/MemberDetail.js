@@ -38,6 +38,9 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 		contentHeight: 'auto',
 		layout: 'vertical'
 	});
+	if (utm.Android) {
+		scrollingView.setHeight(utm.viewableArea - ((40*2*utm.sizeMultiplier)+30) - utm.keyboardHeight);
+	}
 	self.add(scrollingView);
 	
 	var userView = Ti.UI.createView({
@@ -257,6 +260,19 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 		getMyHortsReq.send();
 	};
 	loadMyHorts();
+	
+	// keyboard resizing
+	if (utm.Android) {
+		aHeight = [];
+		self.addEventListener('postlayout',function(e){
+			aHeight.push(self.rect.height);
+			if (self.rect.height === (Math.min.apply(Math, aHeight))) {
+				scrollingView.setHeight(utm.viewableArea - ((40*2*utm.sizeMultiplier)+30) - utm.keyboardHeight);
+			} else {
+				scrollingView.setHeight(utm.viewableArea - ((40*2*utm.sizeMultiplier)+30));
+			}
+		});
+	}
 	
 	
 	return self;

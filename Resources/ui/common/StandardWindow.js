@@ -46,7 +46,40 @@ function StandardWindow(_title,_showAi) {
 	};
 	
 	
+ 	function timeoutCompare(_n){
+		var d = new Date();
+		var n = d.getTime();
+
+		if (utm.activityActive === _n) {
+			Ti.App.fireEvent('resumed');
+		} else if (n-utm.activityActive >= utm.androidTimeout/2) {
+			Ti.App.fireEvent('resumed'); 
+		} else {
+			//monitorGuid();
+		}
+	}
 	
+	function monitorGuid() {
+		var d = new Date();
+		var n = d.getTime();
+		utm.activityActive = n;
+		setTimeout(function(n) {
+		    timeoutCompare();
+		}, utm.androidTimeout);
+	};
+
+	self.addEventListener('open', function(ev) {
+		monitorGuid();
+	});
+	self.addEventListener('close', function(ev) {
+		monitorGuid();
+	});
+	self.addEventListener('blur', function(ev) {
+		monitorGuid();
+	});
+	self.addEventListener('focus', function(ev) {
+		timeoutCompare();
+	});
 	
 	
 	

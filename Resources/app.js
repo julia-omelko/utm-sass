@@ -88,6 +88,8 @@ utm.screenWillLock = true;
 utm.loggedIn = false;
 utm.isInPinLock = false;
 utm.appPauseTime = new Date();
+utm.activityActive = 0;
+utm.androidTimeout = (5*60*1000); // 5 minutes
 
 var unpinLockScreen = require('/lib/com.qbset.unlockscreen');
 if(utm.iPhone || utm.iPad ){

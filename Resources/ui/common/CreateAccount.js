@@ -11,7 +11,7 @@ var CreateAccountWin = function() {
 	
 	var scrollingView = Ti.UI.createScrollView({
 		width: '100%',
-		height: utm.viewableArea-10,
+		height: utm.viewableArea,
 		showVerticalScrollIndicator: true,
 		contentHeight: 'auto',
 		layout: 'vertical',
@@ -266,17 +266,30 @@ var CreateAccountWin = function() {
 		utm.navController.open(webView);
 	});
 	
-	
-	
-	
-	var StandardButton = require('/ui/common/baseui/StandardButton');
-	var createButton = new StandardButton({title:'Create account'});
+	var createButton = Ti.UI.createButton({
+		title: 'Create account', //'Reply',
+		top: 14,
+		width: (Ti.Platform.displayCaps.platformWidth-50),
+		height: 40 * utm.sizeMultiplier,
+		borderRadius: 20 * utm.sizeMultiplier,
+		font:{fontFamily: utm.fontFamily, fontSize: utm.fontSize},
+		backgroundColor: utm.buttonColor,
+		color: 'white',
+		style: (utm.Android ? null : Ti.UI.iPhone.SystemButtonStyle.PLAIN),
+		zIndex: 1
+	});	
 	createButton.addEventListener('click',function(e){
 		validateForm();
 	});
-	self.add(createButton);
+	scrollingView.add(createButton);
 	
-	
+	if (utm.Android) {
+		var keyboardBuffer = Ti.UI.createView({
+			width: Ti.UI.FILL,
+			height: utm.keyboardHeight
+		});
+		scrollingView.add(keyboardBuffer);
+	}
 	
 	function isUserNameUnique(_username){
 		var checkUserNameRquest = Ti.Network.createHTTPClient({
@@ -284,6 +297,7 @@ var CreateAccountWin = function() {
 			onload : function() {
 				var response = eval('(' + this.responseText + ')');
 				if (response) {
+					self.hideAi();
 					alert('This username is already in use');
 				} else {
 					register();
@@ -342,6 +356,7 @@ var CreateAccountWin = function() {
 		} else if (!rulesSwitch.getValue()) {
 			alert('You must accept the rules of use');
 		} else {
+			self.showAi();
 			isUserNameUnique(username.getValue());
 		}
 	}
@@ -363,6 +378,7 @@ var CreateAccountWin = function() {
 			validatesSecureCertificate : utm.validatesSecureCertificate,
 			onload : function() {
 				var response = eval('(' + this.responseText + ')');
+				self.hideAi();
 				if (this.status === 200) {
 					if (this.responseData) {
 						if (response.Status ==='Error'){
@@ -389,6 +405,7 @@ var CreateAccountWin = function() {
 				}
 			},
 			onerror : function(e) {
+				self.hideAi();
 				if (this.responseData) {
 					var error = eval('(' + this.responseData + ')');
 					var errorString='';
