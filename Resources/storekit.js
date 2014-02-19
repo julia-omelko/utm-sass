@@ -39,6 +39,7 @@ var IOS7 = isIOS7Plus();
  * @param product A Ti.Storekit.Product (hint: use Storekit.requestProducts to get one of these!).
  */
 Storekit.addEventListener('transactionState', function (evt) {
+	Ti.API.info(evt.state);
 	switch (evt.state) {
 		case Storekit.TRANSACTION_STATE_FAILED:
 			if (evt.cancelled) {
@@ -173,7 +174,7 @@ function verifyServerSideWithApple(_receipt,_productIdentifier){
 						SubscriptionEnds: ((_productIdentifier === 'com.youthisme.UnlimitedMessagesFor99') ? response.Data.SubscriptionInfo.SubscriptionEnds : null)
 					});
 				}else{
-					alert("Your purchase was successful but will not be reflected right away.");
+					//alert("Your purchase was successful but will not be reflected right away.");
 				}
 			} else {
 				utm.handleHttpError({}, this.status, this.responseText);

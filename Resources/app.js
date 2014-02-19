@@ -138,7 +138,7 @@ function handleLoginSuccess(event) {
 	utm.enableSendMessageButton=true;
 	
 	isSubscriptionValid(utm.User.UserProfile.SubscriptionEnds);
-	//Ti.App.fireEvent('App:startTransactionListener');
+	Ti.App.fireEvent('App:startTransactionListener');
 	openTabGroup();
 }
 
