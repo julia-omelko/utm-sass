@@ -26,13 +26,13 @@ var SettingsWin = function(_tabGroup) {
 	scrollView.add(buyMessagesButton);
 
 	buyMessagesButton.addEventListener('click', function() {
-		if (utm.iPhone || utm.iPad ) {
+		//if (utm.iPhone || utm.iPad ) {
 			var SubscriptionWindow = require('/ui/common/Subscribe');
 			var subscriptionWindow = new SubscriptionWindow(_tabGroup);
 			_tabGroup.getActiveTab().open(subscriptionWindow);
-		} else {
-			Ti.Platform.openURL(utm.webUrl +'/Store');
-		}
+		//} else {
+		//	Ti.Platform.openURL(utm.webUrl +'/Store');
+		//}
 	});	
 
 	var setPinLockButton = Ti.UI.createButton({
