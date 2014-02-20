@@ -310,7 +310,6 @@ var CreateAccountWin = function() {
 			},
 			timeout : utm.netTimeout
 		});
-		Ti.API.info(utm.serviceUrl + "Account/IsUserNameFound?userName="+_username);
 		checkUserNameRquest.open("GET", utm.serviceUrl + "Account/IsUserNameFound?userName="+_username);
 		checkUserNameRquest.setRequestHeader("Content-Type", "application/json; charset=utf-8");
 		checkUserNameRquest.send();
@@ -419,9 +418,6 @@ var CreateAccountWin = function() {
 			},
 			timeout : utm.netTimeout
 		});
-		
-		Ti.API.info(curReg);
-		Ti.API.info(utm.serviceUrl + "Account/Create?returnUrl=/Account/Verify");
 		
 		getSignUpReq.open("POST", utm.serviceUrl + "Account/Create?returnUrl=/Account/Verify");
 		getSignUpReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");
