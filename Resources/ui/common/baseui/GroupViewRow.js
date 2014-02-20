@@ -1,6 +1,6 @@
 function GroupTableRow(_groupData){
 	var self = Ti.UI.createTableViewRow({
-		className: 'row',
+		className: 'GroupTableRow',
 		height: 80*utm.sizeMultiplier,
 		hasChild: true,
 		groupData: _groupData

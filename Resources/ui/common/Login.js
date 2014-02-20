@@ -179,8 +179,10 @@ var LoginWin = function() {
 		font: {fontFamily: utm.fontFamily, fontSize:'14dp' }
 	});
 	tableData[0].addEventListener('click', function(e){
-		utm.viewableArea = (Math.max.apply(Math, aHeight)) - utm.viewableTop;
-		utm.keyboardHeight = (Math.max.apply(Math, aHeight)) - (Math.min.apply(Math, aHeight));
+		if (utm.Android) {
+			utm.viewableArea = (Math.max.apply(Math, aHeight)) - utm.viewableTop;
+			utm.keyboardHeight = (Math.max.apply(Math, aHeight)) - (Math.min.apply(Math, aHeight));
+		}
 		var CreateAccount = require('/ui/common/CreateAccount');
 		var createAccount = new CreateAccount();
 		utm.navController.open(createAccount);
@@ -248,9 +250,11 @@ var LoginWin = function() {
 		username.blur();
 		password.blur();
 		
-		utm.viewableArea = (Math.max.apply(Math, aHeight)) - utm.viewableTop;
-		utm.keyboardHeight = (Math.max.apply(Math, aHeight)) - (Math.min.apply(Math, aHeight));
-
+		if (utm.Android) {
+			utm.viewableArea = (Math.max.apply(Math, aHeight)) - utm.viewableTop;
+			utm.keyboardHeight = (Math.max.apply(Math, aHeight)) - (Math.min.apply(Math, aHeight));
+		}
+		
 		if (username.value !== '' && password.value !== '') {	
 			self.showAi();
 			var shortVersionNum = Ti.App.version;

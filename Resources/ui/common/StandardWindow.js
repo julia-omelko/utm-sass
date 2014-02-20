@@ -115,11 +115,14 @@ function StandardWindow(_title,_showAi) {
 		height: 50*utm.sizeMultiplier
 	});
 	ai.add(imageView);
-	imageView.start();
+	if (_showAi) {
+		imageView.start();
+	}
 	self.add(ai);
 	
 	var timerId;
 	self.showAi = function() {
+		imageView.start();
 		ai.setVisible(true);
 		timerId = setTimeout(function(){
 			self.hideAi();
@@ -127,6 +130,7 @@ function StandardWindow(_title,_showAi) {
 	};
 	self.hideAi = function() {
 		ai.setVisible(false);
+		imageView.stop();
 		clearTimeout(timerId);
 	};
 	

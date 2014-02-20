@@ -33,11 +33,11 @@ var NavigationController = function() {
 			height: 50*utm.sizeMultiplier
 		});
 		ai.add(imageView);
-		imageView.start();
 		windowToOpen.add(ai);
 		
 		var timerId;
 		windowToOpen.showAi = function() {
+			imageView.start();
 			ai.setVisible(true);
 			timerId = setTimeout(function(){
 				windowToOpen.hideAi();
@@ -45,6 +45,7 @@ var NavigationController = function() {
 		};
 		windowToOpen.hideAi = function() {
 			ai.setVisible(false);
+			imageView.stop();
 			clearTimeout(timerId);
 		};
 	

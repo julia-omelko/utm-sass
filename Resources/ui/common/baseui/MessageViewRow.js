@@ -1,7 +1,7 @@
 function MessageTableRow(rowData){
 
 	var self = Ti.UI.createTableViewRow({
-		className: 'row',
+		className: 'MessageTableRow',
 		height: 80 * utm.sizeMultiplier,
 		hasChild: true,
 		messageData: rowData

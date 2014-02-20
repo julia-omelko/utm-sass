@@ -15,7 +15,6 @@ var WebViewWin = function(_title,_url) {
 	});
 	self.add(webView);
 	
-	Ti.API.info(_url);
 	
 	return self;
 };

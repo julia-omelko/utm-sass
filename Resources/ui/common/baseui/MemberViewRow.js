@@ -1,6 +1,6 @@
 function MemberTableRow(rowData){
 	var self = Ti.UI.createTableViewRow({
-		className: 'row',
+		className: 'MemberTableRow',
 		height: 40*utm.sizeMultiplier,
 		hasChild: true,
 		memberData: rowData

@@ -188,7 +188,7 @@ var MessagesWin = function(_tabGroup) {
 					callDeleteMessage(messageId, true);
 					tableView.deleteRow(theRow);
 				} else if (e.index === 2) {
-					Ti.API.info('The cancel button was clicked');
+					//Ti.API.info('The cancel button was clicked');
 				}
 			});
 			dialog.show();

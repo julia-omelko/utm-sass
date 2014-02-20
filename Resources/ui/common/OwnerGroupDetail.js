@@ -389,7 +389,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	var twitterRow = Ti.UI.createTableViewRow({
 		height: 40*utm.sizeMultiplier,
 		hasChild: false,
-		selectedBackgroundColor: 'white'
+		backgroundSelectedColor: 'white'
 	});
 	var twitterIcon = Ti.UI.createImageView({
 		image: '/images/icons/twitter.png',
@@ -418,7 +418,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	var fbRow = Ti.UI.createTableViewRow({
 		height: 40*utm.sizeMultiplier,
 		hasChild: false,
-		selectedBackgroundColor: 'white'
+		backgroundSelectedColor: 'white'
 	});
 	var fbIcon = Ti.UI.createImageView({
 		image: '/images/icons/facebook.png',
@@ -463,7 +463,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	var signRow = Ti.UI.createTableViewRow({
 		height: 40*utm.sizeMultiplier,
 		hasChild: false,
-		selectedBackgroundColor: 'white'
+		backgroundSelectedColor: 'white'
 	});
 	var signLabel = Ti.UI.createLabel({
 		text: 'Sign message',

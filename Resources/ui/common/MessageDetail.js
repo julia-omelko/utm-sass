@@ -17,6 +17,7 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 		width: Ti.UI.FILL,
 		height: ((_messageData.mode !== 'sent') ? utm.viewableArea - 60 : utm.viewableArea),
 		top: utm.viewableTop,
+		scrollType: 'vertical',
 		showVerticalScrollIndicator: true,
 		contentHeight:'auto',
 		layout:'vertical'
@@ -341,7 +342,7 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 				} else if (e.index === 1) {
 					callDeleteMessage(messageId, true);
 				} else if (e.index === 2) {
-					Ti.API.info('The cancel button was clicked');
+					//Ti.API.info('The cancel button was clicked');
 				}
 			});
 			dialog.show();

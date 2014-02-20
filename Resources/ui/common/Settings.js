@@ -116,9 +116,8 @@ var SettingsWin = function(_tabGroup) {
 		});
 		dialog.addEventListener('click', function(e) {
 			if (e.index === e.source.cancel) {
-				Ti.API.info('The cancel button was clicked');
+				//Ti.API.info('The cancel button was clicked');
 			} else {
-				//alert('forget me');
 				callForgetMe();
 			}
 		});

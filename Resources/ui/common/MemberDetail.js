@@ -151,7 +151,6 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 			validatesSecureCertificate : utm.validatesSecureCertificate,
 			onload : function() {
 				var json = this.responseData;
-				Ti.API.info(_memberData);
 				if (this.status === 200) {
 					self.close();
 				} else {

@@ -73,7 +73,7 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData) {
 	var invisibleRow = Ti.UI.createTableViewRow({
 		height: 40*utm.sizeMultiplier,
 		hasChild: false,
-		selectedBackgroundColor: 'white',
+		backgroundSelectedColor: 'white',
 		width: Ti.UI.FILL
 	});
 	var invisibleText = Ti.UI.createLabel({

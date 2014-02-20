@@ -12,7 +12,8 @@ var AvatarWin = function(_tabGroup) {
 	var scrollingView = Ti.UI.createScrollView({
 		layout : 'vertical',
 		height: utm.viewableArea - 40*utm.sizeMultiplier,
-		top: utm.viewableTop
+		top: utm.viewableTop,
+		scrollType: 'vertical'
 	});
 	self.add(scrollingView);
 

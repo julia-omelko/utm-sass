@@ -41,7 +41,6 @@ var MessageGroupMembersWin = function(_tabGroup,_myHortData) {
 			onload : function() {
 				var response = eval('(' + this.responseText + ')');
 				if (this.status === 200) {
-					Ti.API.info(response);
 					myHortData = response;
 					displayMyHortData(response);
 				} else {

@@ -2,14 +2,6 @@ var GroupsWin = function(_tabGroup) {
 	
 	var StandardWindow = require('ui/common/StandardWindow');
 	var self = new StandardWindow('Groups', true);
-	
-	var scrollView = Ti.UI.createScrollView({
-		scrollType : 'vertical',
-		showVerticalScrollIndicator : true,
-		showHorizontalScrollIndicator : false,
-		height: Ti.Platform.displayCaps.platformHeight
-	});
-	self.add(scrollView);
 
 	var editButton = Ti.UI.createLabel({
 		text: 'Edit',
@@ -87,8 +79,6 @@ var GroupsWin = function(_tabGroup) {
 				if (this.status === 200) {
 					var response = eval('(' + this.responseText + ')');
 					if (response !== null) {
-						Ti.API.info(response);
-						Ti.API.info(utm.User.UserProfile.PrimaryMyHort);
 						populateTable(response);
 					}
 				} else {

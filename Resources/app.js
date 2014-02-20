@@ -23,7 +23,7 @@ if (Ti.Platform.osname == 'iphone') {
 	utm.viewableTabHeight = 0;
 	utm.keyboardHeight = 0;
 	utm.sizeMultiplier = 1;
-} else if(Ti.Platform.osname == 'ipad') {
+} else if (Ti.Platform.osname == 'ipad') {
 	utm.iPad = true;
 	utm.viewableTop = 0;
 	utm.viewableArea = Ti.Platform.displayCaps.platformHeight - 114;
@@ -46,6 +46,7 @@ if (Ti.Platform.osname == 'iphone') {
 	} else {
 		utm.viewableTabHeight = 96;
 	}
+	Ti.API.info(Ti.Platform.displayCaps.density);
 };
 if (Ti.Platform.model === 'Simulator' || Ti.Platform.model ===  'google_sdk' || Ti.Platform.model ===  'sdk') { 
 	utm.setEnvModePrefix("dev");

@@ -171,7 +171,7 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 	var twitterRow = Ti.UI.createTableViewRow({
 		height: 40*utm.sizeMultiplier,
 		hasChild: false,
-		selectedBackgroundColor: 'white'
+		backgroundSelectedColor: 'white'
 	});
 	var twitterIcon = Ti.UI.createImageView({
 		image: '/images/icons/twitter.png',
@@ -200,7 +200,7 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 	var fbRow = Ti.UI.createTableViewRow({
 		height: 40*utm.sizeMultiplier,
 		hasChild: false,
-		selectedBackgroundColor: 'white'
+		backgroundSelectedColor: 'white'
 	});
 	var fbIcon = Ti.UI.createImageView({
 		image: '/images/icons/facebook.png',
@@ -245,7 +245,7 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 	var signRow = Ti.UI.createTableViewRow({
 		height: 40*utm.sizeMultiplier,
 		hasChild: false,
-		selectedBackgroundColor: 'white'
+		backgroundSelectedColor: 'white'
 	});
 	var signLabel = Ti.UI.createLabel({
 		text: 'Sign message',
@@ -265,7 +265,7 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 	/*var deleteRow = Ti.UI.createTableViewRow({
 		height: 40*utm.sizeMultiplier,
 		hasChild: false,
-		selectedBackgroundColor: 'white'
+		backgroundSelectedColor: 'white'
 	});
 	var deleteLabel = Ti.UI.createLabel({
 		text: 'Delete message when read',
@@ -373,13 +373,11 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 		if (fbSwitch.getValue()) {
 			_userSettings.FaceBook = Facebook.getAccessToken();
 		}
-		Ti.API.info(_userSettings);
 		
 		var updateMyHortDetailReq = Ti.Network.createHTTPClient({
 			validatesSecureCertificate : utm.validatesSecureCertificate,
 			onload : function() {
 				var json = this.responseData;
-				Ti.API.info(json);
 				if (this.status === 200) {
 					self.close();
 				} else {

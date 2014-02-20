@@ -30,7 +30,7 @@ var DeliveryOptionsWin = function(_win,_options,_enabled) {
 	var smsRow = Ti.UI.createTableViewRow({
 		height: 50*utm.sizeMultiplier,
 		hasChild: false,
-		selectedBackgroundColor: 'white'
+		backgroundSelectedColor: 'white'
 	});
 	var smsIcon = Ti.UI.createImageView({
 		image: '/images/icons/message.png',
@@ -50,7 +50,7 @@ var DeliveryOptionsWin = function(_win,_options,_enabled) {
 	var emailRow = Ti.UI.createTableViewRow({
 		height: 50*utm.sizeMultiplier,
 		hasChild: false,
-		selectedBackgroundColor: 'white'
+		backgroundSelectedColor: 'white'
 	});
 	var emailIcon = Ti.UI.createImageView({
 		image: '/images/icons/mail.png',
@@ -73,7 +73,7 @@ var DeliveryOptionsWin = function(_win,_options,_enabled) {
 	var twitterRow = Ti.UI.createTableViewRow({
 		height: 50*utm.sizeMultiplier,
 		hasChild: false,
-		selectedBackgroundColor: 'white'
+		backgroundSelectedColor: 'white'
 	});
 	var twitterIcon = Ti.UI.createImageView({
 		image: '/images/icons/twitter.png',
@@ -93,7 +93,7 @@ var DeliveryOptionsWin = function(_win,_options,_enabled) {
 	var fbRow = Ti.UI.createTableViewRow({
 		height: 50*utm.sizeMultiplier,
 		hasChild: false,
-		selectedBackgroundColor: 'white'
+		backgroundSelectedColor: 'white'
 	});
 	var fbIcon = Ti.UI.createImageView({
 		image: '/images/icons/facebook.png',
@@ -115,7 +115,7 @@ var DeliveryOptionsWin = function(_win,_options,_enabled) {
 	var signRow = Ti.UI.createTableViewRow({
 		height: 50*utm.sizeMultiplier,
 		hasChild: false,
-		selectedBackgroundColor: 'white'
+		backgroundSelectedColor: 'white'
 	});
 	var signLabel = Ti.UI.createLabel({
 		text: 'Sign message',
@@ -136,7 +136,7 @@ var DeliveryOptionsWin = function(_win,_options,_enabled) {
 	var deleteRow = Ti.UI.createTableViewRow({
 		height: 40*utm.sizeMultiplier,
 		hasChild: false,
-		selectedBackgroundColor: 'white'
+		backgroundSelectedColor: 'white'
 	});
 	var deleteLabel = Ti.UI.createLabel({
 		text: 'Delete message when read',
