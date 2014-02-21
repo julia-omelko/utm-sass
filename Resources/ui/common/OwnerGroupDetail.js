@@ -83,9 +83,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		membersButton.setColor(utm.secondaryTextColor);
 		self.remove(tableView);
 		self.add(settingsView);
-		if (utm.Android) {
-			saveButton.setTitle('Save');
-		}
+		saveButton.setTitle('Save');
 	});
 	
 	
@@ -587,7 +585,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	});
 	self.add(deleteButton);
 	
-	var saveButton = new StandardButton({title:'Add members'});
+	var saveButton = new StandardButton({title:(utm.Android ? 'Add members' : 'Save')});
 	saveButton.addEventListener('click', function() {
 		if (mode === 'settings' || !utm.Android) {
 			updateMyHortData();

@@ -33,7 +33,8 @@ if (Ti.Platform.osname == 'iphone') {
 } else if (Ti.Platform.osname == 'android') {
 	utm.Android = true;
 	utm.viewableArea = Ti.Platform.displayCaps.platformHeight;
-	utm.sizeMultiplier = Math.round(Ti.Platform.displayCaps.platformWidth/320);
+	utm.sizeMultiplier = Math.round(Ti.Platform.displayCaps.platformWidth/32)/10;
+	//utm.sizeMultiplier = Math.round(Ti.Platform.displayCaps.platformWidth/320);
 	utm.viewableTop = 40*utm.sizeMultiplier;
 	utm.viewableTabHeight = 0;
 	utm.keyboardHeight = 0;
@@ -90,7 +91,7 @@ utm.loggedIn = false;
 utm.isInPinLock = false;
 utm.appPauseTime = new Date();
 utm.activityActive = 0;
-utm.androidTimeout = (0.5*60*1000); // 5 minutes
+utm.androidTimeout = (5*60*1000); // 5 minutes
 
 var unpinLockScreen = require('/lib/com.qbset.unlockscreen');
 if(utm.iPhone || utm.iPad ){
@@ -101,7 +102,9 @@ if(utm.iPhone || utm.iPad ){
 
 utm.keyboardHeight = 0;
 
-
+Ti.API.info(Ti.Platform.displayCaps.density);
+Ti.API.info(Ti.Platform.displayCaps.platformHeight);
+Ti.API.info(Ti.Platform.displayCaps.platformWidth);
 
 
 (function() {
