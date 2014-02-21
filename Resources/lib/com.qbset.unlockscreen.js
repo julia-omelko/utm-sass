@@ -54,9 +54,10 @@ exports.loadWindow = function(params) {
         navBarHidden: true,
     });
 
-    win.addEventListener('androidback',function(e){	
-		var activity = Titanium.Android.currentActivity;
-    	activity.finish();
+    win.addEventListener('androidback',function(e){
+        // deactivate Android back button
+		//var activity = Titanium.Android.currentActivity;
+    	//activity.finish();
     });
 
     return win;
