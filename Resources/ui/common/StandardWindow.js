@@ -7,10 +7,10 @@ function StandardWindow(_title,_showAi) {
 			color: 'white'
 		});
 		var self = Ti.UI.createWindow({			
-			//layout: 'vertical',
 			titleControl: titleControl,
 			backgroundColor: utm.backgroundColor,
-			barColor: utm.barColor
+			barColor: utm.barColor,
+			exitOnClose: (_title === '' ? true : false)
 		});
 		
 	} else if (utm.Android) {
