@@ -99,9 +99,7 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 	var Camera = require("/lib/Camera");
 	var camera = new Camera(previewImage);
 	
-	var StandardButton = require('/ui/common/baseui/StandardButton');
-	var previewBtn = new StandardButton({title:'Preview'});
-	
+
 	
 	
 	
@@ -117,7 +115,7 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 	var messageField = Ti.UI.createTextArea({
 		color: utm.textFieldColor,		
 		width: Ti.Platform.displayCaps.platformWidth-50,
-		height: ((utm.Android) ? 80*utm.sizeMultiplier : Ti.UI.SIZE),
+		height: ((utm.Android) ? 60*utm.sizeMultiplier : Ti.UI.SIZE),
 		keyboardType: Ti.UI.KEYBOARD_DEFAULT,
 		returnKeyType: Ti.UI.RETURNKEY_DEFAULT,
 		suppressReturn: false,
@@ -158,7 +156,25 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 	messageFieldMaxHeight.add(messageField);
 	
 
-
+	var StandardButton = require('/ui/common/baseui/StandardButton');
+	//if (utm.iPhone || utm.iPad) {
+		var previewBtn = new StandardButton({title:'Preview'});
+		self.add(previewBtn);
+	/*} else {
+		var previewBtn = Ti.UI.createButton({
+			title: 'Preview',
+			top: 15,
+			width: (Ti.Platform.displayCaps.platformWidth-50),
+			height: 40 * utm.sizeMultiplier,
+			borderRadius: 20 * utm.sizeMultiplier,
+			font:{fontFamily: utm.fontFamily, fontSize: utm.fontSize},
+			backgroundColor: utm.buttonColor,
+			color: 'white',
+			style: null,
+			zIndex: 1
+		});	
+		scrollingView.add(previewBtn);
+	}*/
 	
 	previewBtn.addEventListener('click', function() {
 		var message = {
@@ -176,7 +192,6 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 		utm.winStack.push(previewWin);
 		_tabGroup.getActiveTab().open(previewWin);
 	});	
-	self.add(previewBtn);
 	
 	return self;
 };
