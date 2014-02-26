@@ -53,7 +53,7 @@ if (Ti.Platform.model === 'Simulator' || Ti.Platform.model ===  'google_sdk' || 
 	utm.setEnvModePrefix("dev");
 	utm.validatesSecureCertificate = false;
 } else {
-	utm.setEnvModePrefix("prod");
+	utm.setEnvModePrefix("dev");
 	utm.validatesSecureCertificate = true;
 }	
 utm.netTimeout = 18000;
