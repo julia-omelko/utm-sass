@@ -7,6 +7,25 @@ var MessageGroupMembersWin = function(_tabGroup,_myHortData) {
 	var backButton = new BackButton(self);
 	self.setLeftNavButton(backButton);
 	
+	var selectAllButton = Ti.UI.createImageView({
+		image: '/images/icons/checkAll.png',
+		height: 22,
+		width: 22
+	});
+	selectAllButton.addEventListener('click',function(e){
+		selectAllMembers();
+	});
+	self.setRightNavButton(selectAllButton);
+	function selectAllMembers() {
+		var sections = memberTableView.getData();
+		for (var i=0;i<sections.length;i++) {
+			var rows = sections[i].getRows();
+			for (var j=0;j<rows.length;j++) {
+				rows[j].setHasCheck(true);
+			}
+		}
+	}
+	
 	
 	var memberTableView = Ti.UI.createTableView({
 		height: utm.viewableArea - ((40*utm.sizeMultiplier)+20),
@@ -136,6 +155,14 @@ var MessageGroupMembersWin = function(_tabGroup,_myHortData) {
 	});	
 	self.add(composeButton);
 	
+	if (utm.Android) {
+		var aSelectAllButton = new StandardButton({title:'Select all',bottom:(40*utm.sizeMultiplier)+20,type:'secondary'});
+		aSelectAllButton.addEventListener('click',function(e){
+			selectAllMembers();
+		});
+		self.add(aSelectAllButton);
+		memberTableView.setHeight(utm.viewableArea - ((2*(40*utm.sizeMultiplier))+30));
+	}
 	
 	
 	return self;
