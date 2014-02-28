@@ -262,7 +262,7 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 	signRow.add(signSwitch);
 	additionalSection.add(signRow);
 	
-	/*var deleteRow = Ti.UI.createTableViewRow({
+	var deleteRow = Ti.UI.createTableViewRow({
 		height: 40*utm.sizeMultiplier,
 		hasChild: false,
 		backgroundSelectedColor: 'white'
@@ -281,7 +281,7 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 	});
 	deleteRow.add(deleteLabel);
 	deleteRow.add(deleteSwitch);
-	additionalSection.add(deleteRow);*/
+	additionalSection.add(deleteRow);
 	
 	tableDataSettings.push(postSection);
 	tableDataSettings.push(additionalSection);
@@ -303,6 +303,9 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 		}
 		if (_memberData.AddNicknameToUtms) {
 			signSwitch.setValue(true);
+		}
+		if (_memberData.DeleteOnRead !== null && _memberData.DeleteOnRead) {
+			deleteSwitch.setValue(true);
 		}
 		self.hideAi();
 	};
@@ -358,7 +361,8 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 			TwitterSecret: '',
 			FaceBook: '',
 			Mobile: mobileField.getValue(),
-			AddNickNameToUtms: signSwitch.getValue()
+			AddNickNameToUtms: signSwitch.getValue(),
+			DeleteOnRead: deleteSwitch.getValue()
 		};
 		
 		if (twitterSwitch.getValue()) {

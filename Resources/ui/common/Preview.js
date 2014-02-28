@@ -67,7 +67,10 @@ var PreviewWin = function(_tabGroup,_message) {
 					}
 					//}
 					deliveryOptions.signMessage = sendData.AddNicknameToUtms;
-										
+					if (sendData.deleteOnRead !== null) {
+						deliveryOptions.deleteOnRead = sendData.deleteOnRead;
+					}
+					
 					_nickname = sendData.NickName;
 					getUtmMessage();
 					

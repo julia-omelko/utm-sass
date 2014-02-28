@@ -279,6 +279,27 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	signRow.add(signSwitch);
 	additionalSection.add(signRow);
 	
+	var deleteRow = Ti.UI.createTableViewRow({
+		height: 40*utm.sizeMultiplier,
+		hasChild: false,
+		backgroundSelectedColor: 'white'
+	});
+	var deleteLabel = Ti.UI.createLabel({
+		text: 'Delete message when read',
+		width: Ti.UI.SIZE,
+		left: 25,
+		height: Ti.UI.FILL,
+		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize},
+		color: utm.secondaryTextColor
+	});
+	var deleteSwitch = Ti.UI.createSwitch({
+		value: false,
+		right: 25
+	});
+	deleteRow.add(deleteLabel);
+	deleteRow.add(deleteSwitch);
+	additionalSection.add(deleteRow);
+	
 	tableDataSettings.push(postSection);
 	tableDataSettings.push(additionalSection);
 	tableViewSettings.setData(tableDataSettings);
@@ -339,6 +360,9 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		}
 		if (_memberData.AddNicknameToUtms) {
 			signSwitch.setValue(true);
+		}
+		if (_memberData.DeleteOnRead !== null && _memberData.DeleteOnRead) {
+			deleteSwitch.setValue(true);
 		}
 	};
 
@@ -437,6 +461,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 			Email: emailField.getValue(),
 			Mobile: mobileField.getValue(),
 			AddNicknameToUtms: signSwitch.getValue(),
+			DeleteOnRead: deleteSwitch.getValue(),
 			MemberType: _memberData.MemberType,
 			TwitterToken: '',
 			TwitterSecret: '',
