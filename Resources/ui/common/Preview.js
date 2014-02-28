@@ -47,20 +47,28 @@ var PreviewWin = function(_tabGroup,_message) {
 				var response = eval('(' + this.responseText + ')');
 				if (this.status === 200) {
 					myHortData = response;
+					if (myHortData.PrimaryUser !== null) {
+						var sendData = myHortData.PrimaryUser;
+					} else {
+						var sendData = myHortData.MyInformation;
+					}
 					//if (_message.deliveryOptions != null) {
-						if (myHortData.PrimaryUser.FaceBook !== '') {
-							deliveryEnabled.facebook = true;
-						}
-						if (myHortData.PrimaryUser.TwitterSecret !== '') {
-							deliveryEnabled.twitter = true;
-						}
-						if (myHortData.PrimaryUser.Mobile !== '') {
-							deliveryEnabled.sms = true;
-						}
+					if (sendData.FaceBook !== '') {
+						deliveryEnabled.facebook = true;
+					}
+					if (sendData.TwitterSecret !== '') {
+						deliveryEnabled.twitter = true;
+					}
+					if (sendData.Mobile !== '') {
+						deliveryEnabled.sms = true;
+					}
+					if (sendData.Email !== '') {
+						deliveryEnabled.email = true;
+					}
 					//}
-					deliveryOptions.signMessage = myHortData.PrimaryUser.AddNicknameToUtms;
+					deliveryOptions.signMessage = sendData.AddNicknameToUtms;
 										
-					_nickname = myHortData.PrimaryUser.NickName;
+					_nickname = sendData.NickName;
 					getUtmMessage();
 					
 				} else {
