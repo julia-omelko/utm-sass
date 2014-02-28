@@ -14,7 +14,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	self.setLeftNavButton(backButton);
 	
 	var tableView = Ti.UI.createTableView({
-		height: utm.viewableArea - ((40*utm.sizeMultiplier)+30),
+		height: utm.viewableArea - ((40*utm.sizeMultiplier)+30) - (40*utm.sizeMultiplier),
 		top: utm.viewableTop
 	});
 	self.add(tableView);
@@ -120,7 +120,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		text: 'Invisible to others',
 		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize},
 		color: utm.secondaryTextColor,
-		height: Ti.UI.SIZE,
+		height: 40*utm.sizeMultiplier, //Ti.UI.SIZE,
 		width: Ti.UI.SIZE
 	});
 	invisibleView.add(invisibleLabel);
