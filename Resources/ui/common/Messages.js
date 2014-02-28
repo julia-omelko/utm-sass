@@ -38,7 +38,7 @@ var MessagesWin = function(_tabGroup) {
 	var tabBar = Titanium.UI.createView({
 		layout : 'horizontal',
 		width : '100%',
-		height : 27 * utm.sizeMultiplier,
+		height : 37 * utm.sizeMultiplier,
 		top: utm.viewableTop
 	});
 	self.add(tabBar);
@@ -98,12 +98,12 @@ var MessagesWin = function(_tabGroup) {
 	var tableView = Titanium.UI.createTableView({
 		editable: false,
 		allowsSelectionDuringEditing: true,
-		height: utm.viewableArea - (27 * utm.sizeMultiplier) - utm.viewableTabHeight,
-		top: utm.viewableTop + (27 * utm.sizeMultiplier),
+		height: utm.viewableArea - (37 * utm.sizeMultiplier) - utm.viewableTabHeight,
+		top: utm.viewableTop + (37 * utm.sizeMultiplier),
 		refreshControl: ((utm.iPad || utm.iPhone) ? refreshControl : null)
 	});
 	if (utm.Android) {
-		tableView.setHeight(utm.viewableArea - (27 * utm.sizeMultiplier)  - utm.viewableTabHeight - ((40 * utm.sizeMultiplier)+20));
+		tableView.setHeight(utm.viewableArea - (37 * utm.sizeMultiplier)  - utm.viewableTabHeight - ((40 * utm.sizeMultiplier)+20));
 	}
 	self.add(tableView);	
 	

@@ -34,7 +34,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	var tabBar = Titanium.UI.createView({
 		layout : 'horizontal',
 		width : '100%',
-		height : 27*utm.sizeMultiplier,
+		height : 37*utm.sizeMultiplier,
 		top: utm.viewableTop
 	});
 	self.add(tabBar);
@@ -104,8 +104,8 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	
 	
 	var tableView = Ti.UI.createTableView({
-		height: utm.viewableArea - ((27*utm.sizeMultiplier)+((40*2*utm.sizeMultiplier)+30)),
-		top: utm.viewableTop+(27*utm.sizeMultiplier)
+		height: utm.viewableArea - ((37*utm.sizeMultiplier)+((40*2*utm.sizeMultiplier)+30)),
+		top: utm.viewableTop+(37*utm.sizeMultiplier)
 	});
 	self.add(tableView);
 	tableView.addEventListener('click',function(e){
@@ -124,8 +124,8 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	});
 	
 	var settingsView = Ti.UI.createScrollView ({
-		height: utm.viewableArea - ((27*utm.sizeMultiplier)+((40*2*utm.sizeMultiplier)+30)),
-		top: utm.viewableTop+(27*utm.sizeMultiplier),
+		height: utm.viewableArea - ((37*utm.sizeMultiplier)+((40*2*utm.sizeMultiplier)+30)),
+		top: utm.viewableTop+(37*utm.sizeMultiplier),
 		showVerticalScrollIndicator:true,
 		contentHeight:'auto',
 		layout: 'vertical'
@@ -713,9 +713,9 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		self.addEventListener('postlayout',function(e){
 			aHeight.push(self.rect.height);
 			if (self.rect.height === (Math.max.apply(Math, aHeight))) {
-				settingsView.setHeight(utm.viewableArea - (27*utm.sizeMultiplier) - ((40*2*utm.sizeMultiplier)+30));
+				settingsView.setHeight(utm.viewableArea - (37*utm.sizeMultiplier) - ((40*2*utm.sizeMultiplier)+30));
 			} else {
-				settingsView.setHeight(utm.viewableArea - (27*utm.sizeMultiplier) - ((40*2*utm.sizeMultiplier)+30) - utm.keyboardHeight);
+				settingsView.setHeight(utm.viewableArea - (37*utm.sizeMultiplier) - ((40*2*utm.sizeMultiplier)+30) - utm.keyboardHeight);
 			}
 		});
 	}

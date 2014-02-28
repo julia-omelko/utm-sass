@@ -14,7 +14,7 @@ var MessageMembersWin = function(_tabGroup) {
 	var tabBar = Titanium.UI.createView({
 		layout : 'horizontal',
 		width : '100%',
-		height : 27*utm.sizeMultiplier,
+		height : 37*utm.sizeMultiplier,
 		top: utm.viewableTop
 	});
 	self.add(tabBar);
@@ -65,8 +65,8 @@ var MessageMembersWin = function(_tabGroup) {
 	
 	
 	var memberTableView = Ti.UI.createTableView({
-		height: utm.viewableArea - ((40*utm.sizeMultiplier)+20) - (27*utm.sizeMultiplier),
-		top: utm.viewableTop + (27*utm.sizeMultiplier)
+		height: utm.viewableArea - ((40*utm.sizeMultiplier)+20) - (37*utm.sizeMultiplier),
+		top: utm.viewableTop + (37*utm.sizeMultiplier)
 	});
 	self.add(memberTableView);
 	memberTableView.addEventListener('click',function(e){
@@ -79,8 +79,8 @@ var MessageMembersWin = function(_tabGroup) {
 	});
 	
 	var groupTableView = Ti.UI.createTableView({
-		height: utm.viewableArea - (27*utm.sizeMultiplier),
-		top: utm.viewableTop + (27*utm.sizeMultiplier)
+		height: utm.viewableArea - (37*utm.sizeMultiplier),
+		top: utm.viewableTop + (37*utm.sizeMultiplier)
 	});
 	groupTableView.addEventListener('click',function(e){
 		var MessageGroupMembersWin = require('/ui/common/MessageGroupMembers');

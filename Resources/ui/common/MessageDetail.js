@@ -1,5 +1,7 @@
 var MessageDetailWin = function(_tabGroup,_messageData) {
 	
+	Ti.API.info(_messageData);
+	
 	if (_messageData.mode === 'received') {
 		var winTitle = 'Message Received';
 	} else {
