@@ -158,7 +158,7 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 					callOutToGetAttachments(_messageData);
 				} else {
 					//Mark Message as Read
-					if (!_messageData.WasRead && (_messageData.mode === 'received')) {
+					if (!_messageData.WasRead) {
 						setMessageAsRead(_messageData.Id);
 						_messageData.WasRead = true;
 					}
@@ -267,7 +267,7 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 				if(this.status == 200){
 					showAttachment(response);
 					
-					if (!_messageData.WasRead && _messageData.mode === 'received') {
+					if (!_messageData.WasRead) {
 						setMessageAsRead(_messageData.Id);
 						_messageData.WasRead = true;
 					}
