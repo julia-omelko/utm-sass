@@ -44,6 +44,16 @@
             <orientation>Ti.UI.LANDSCAPE_RIGHT</orientation>
         </orientations>
     </iphone>
+
+    <property name="ti.android.bug2373.disableDetection" type="bool">true</property>
+	<property name="ti.android.bug2373.finishfalseroot" type="bool">true</property>
+	<property name="ti.android.bug2373.restartDelay" type="int">500</property>
+	<property name="ti.android.bug2373.finishDelay" type="int">0</property>
+	<property name="ti.android.bug2373.skipAlert" type="bool">true</property>
+	<property name="ti.android.bug2373.message">Initializing</property>
+	<property name="ti.android.bug2373.title">Restart Required</property>
+	<property name="ti.android.bug2373.buttonText">Continue</property>
+    
     <android xmlns:android="http://schemas.android.com/apk/res/android">
         <manifest android:installLocation="auto" android:versionCode="6" android:versionName="2.0.0">
             <uses-permission android:name="com.android.vending.BILLING"/>
