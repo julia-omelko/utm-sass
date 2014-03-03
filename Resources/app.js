@@ -50,10 +50,10 @@ if (Ti.Platform.osname == 'iphone') {
 	Ti.API.info(Ti.Platform.displayCaps.density);
 };
 if (Ti.Platform.model === 'Simulator' || Ti.Platform.model ===  'google_sdk' || Ti.Platform.model ===  'sdk') { 
-	utm.setEnvModePrefix("dev");
+	utm.setEnvModePrefix("test");
 	utm.validatesSecureCertificate = false;
 } else {
-	utm.setEnvModePrefix("dev");
+	utm.setEnvModePrefix("test");
 	utm.validatesSecureCertificate = true;
 }	
 utm.netTimeout = 18000;
