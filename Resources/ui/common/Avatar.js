@@ -11,7 +11,7 @@ var AvatarWin = function(_tabGroup) {
 	
 	var scrollingView = Ti.UI.createScrollView({
 		layout : 'vertical',
-		height: utm.viewableArea - 40*utm.sizeMultiplier,
+		height: utm.viewableArea - ((40*utm.sizeMultiplier)+20),
 		top: utm.viewableTop,
 		scrollType: 'vertical'
 	});
@@ -35,7 +35,7 @@ var AvatarWin = function(_tabGroup) {
 	});
 	
 	var aAvatar = [];
-	for (var i=0; i<12; i++) {
+	for (var i=0; i<16; i++) {
 		aAvatar[i] = Ti.UI.createImageView({
 			left: 8*utm.sizeMultiplier,
 			right: 8*utm.sizeMultiplier,

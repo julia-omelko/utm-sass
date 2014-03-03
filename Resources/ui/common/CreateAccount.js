@@ -43,7 +43,7 @@ var CreateAccountWin = function() {
 	});
 	
 	var aAvatar = [];
-	for (var i=0; i<12; i++) {
+	for (var i=0; i<16; i++) {
 		aAvatar[i] = Ti.UI.createImageView({
 			left: (10*utm.sizeMultiplier) + (80*utm.sizeMultiplier*i),
 			image: '/images/avatar/'+ i +'.png',
@@ -56,7 +56,7 @@ var CreateAccountWin = function() {
 			avatarID: i
 		});
 		aAvatar[i].addEventListener('click',function(e){
-			for (var i=0; i<12; i++) {
+			for (var i=0; i<16; i++) {
 				aAvatar[i].setBorderColor('#D4D4D4');
 				aAvatar[i].setBorderWidth(1);
 			}
