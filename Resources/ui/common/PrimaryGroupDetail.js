@@ -364,6 +364,7 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 			AddNickNameToUtms: signSwitch.getValue(),
 			DeleteOnRead: deleteSwitch.getValue()
 		};
+		Ti.API.info(_userSettings);
 		
 		if (twitterSwitch.getValue()) {
 			if (!twitter.isAuthorized()) {

@@ -136,7 +136,7 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 	});
 	messageField.addEventListener('focus', function() {
 		messageField.add(messageFocued);
-		if (utm.iPhone || utm.iPad) {
+		if ((utm.iPhone || utm.iPad) && utm.keyboardHeight !== 0) {
 			previewBtn.setBottom(10+utm.keyboardHeight-50);
 			scrollingView.setHeight(utm.viewableArea-60-utm.keyboardHeight+50);
 		}

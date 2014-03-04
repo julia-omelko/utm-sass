@@ -8,7 +8,7 @@ var PreviewWin = function(_tabGroup,_message) {
 		twitter: false,
 		facebook: false,
 		signMessage: false,
-		deleteOnRead: true,
+		deleteOnRead: false,
 		curRjCrypt: ''
 	};
 	if (_message.deliveryOptions != null) {
@@ -47,6 +47,26 @@ var PreviewWin = function(_tabGroup,_message) {
 				var response = eval('(' + this.responseText + ')');
 				if (this.status === 200) {
 					myHortData = response;
+					
+					for (var i=0;i<myHortData.length;i++) {
+						if (myHortData[i].UserId === utm.User.UserProfile.UserId) {
+							deliveryEnabled.facebook = myHortData[i].HasFacebook;
+							deliveryEnabled.twitter = myHortData[i].HasTwitter;
+							_nickname = myHortData[i].NickName;
+							deliveryOptions.signMessage = myHortData[i].AddNickNameToUtms;
+							deliveryOptions.deleteOnRead = myHortData[i].DeleteOnRead;
+						}
+						if (myHortData[i].HasEmail) {
+							deliveryEnabled.email = true;
+						}
+						if (myHortData[i].HasMobile) {
+							deliveryEnabled.sms = true;
+						}
+					}
+					
+					
+					
+					/*
 					if (myHortData.PrimaryUser !== null) {
 						var sendData = myHortData.PrimaryUser;
 					} else {
@@ -72,6 +92,7 @@ var PreviewWin = function(_tabGroup,_message) {
 					}
 					
 					_nickname = sendData.NickName;
+					*/
 					getUtmMessage();
 					
 				} else {
@@ -85,8 +106,9 @@ var PreviewWin = function(_tabGroup,_message) {
 			},
 			timeout : utm.netTimeout
 		});
-		
-		getMyHortDetailReq.open("GET", utm.serviceUrl + "MyHort/GetMyHortDetails?myHortId=" + _myHortId);
+
+		getMyHortDetailReq.open("GET", utm.serviceUrl + "Members/" + _myHortId);
+		//getMyHortDetailReq.open("GET", utm.serviceUrl + "MyHort/GetMyHortDetails?myHortId=" + _myHortId);
 		getMyHortDetailReq.setRequestHeader('Authorization-Token', utm.AuthToken);
 		getMyHortDetailReq.send();
 	}
