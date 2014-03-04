@@ -9,6 +9,7 @@ function CameraView(_previewView) {
 
 
 	CameraView.captureImage= function(){
+		utm.screenWillLock = false;
 		resizedImage = null;
 		
 		var photoDialog = Ti.UI.createOptionDialog({
@@ -25,6 +26,7 @@ function CameraView(_previewView) {
 				_previewView.setHeight(46*utm.sizeMultiplier);
 				_previewView.setWidth(46*utm.sizeMultiplier);
 				_previewView.setImage('/images/icons/camera.png');
+				utm.screenWillLock = true;
 				return;
 			} else if (e.index === 0) {
 				Ti.Media.showCamera({
@@ -32,17 +34,20 @@ function CameraView(_previewView) {
 					mediaTypes:[Ti.Media.MEDIA_TYPE_PHOTO],
 					success:function(e) {
 						processImage(e);
+						utm.screenWillLock = true;
 					},
 		        	cancel:function() {
 						_previewView.setHeight(46*utm.sizeMultiplier);
 						_previewView.setWidth(46*utm.sizeMultiplier);
 						_previewView.setImage('/images/icons/camera.png');
+						utm.screenWillLock = true;
 						return;
 		        	},
 		        	error:function(error) {
+						utm.screenWillLock = true;
 		            	if (error.code == Ti.Media.NO_CAMERA) {
 		            		alert('Device does not have camera capabilities');
-		            	}else{
+		            	} else {
 		                	alert('Unable to access camera.\nPlease use a picture from the gallery.');
 		            	}
 		            }
@@ -51,14 +56,17 @@ function CameraView(_previewView) {
 				Ti.Media.openPhotoGallery({
 					success:function(e) {
 						processImage(e);
+						utm.screenWillLock = true;
 					},
 		        	cancel:function(){
 						_previewView.setHeight(46*utm.sizeMultiplier);
 						_previewView.setWidth(46*utm.sizeMultiplier);
 						_previewView.setImage('/images/icons/camera.png');
+						utm.screenWillLock = true;
 						return;
 		        	},
 		        	error:function(error){
+						utm.screenWillLock = true;
 		            	if (error.code == Ti.Media.NO_CAMERA){
 		            		alert('Device does not have camera capabilities');
 		            	}else{

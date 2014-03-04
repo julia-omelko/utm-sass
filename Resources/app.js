@@ -248,6 +248,9 @@ function callLogoutService(){
 var SplashView = require('ui/common/Splash');
 var splashView = new SplashView();
 Ti.App.addEventListener('pause', function(e){
+	if (!utm.loggedIn || !utm.screenWillLock) {
+		return;
+	}
 	if (utm.loggedIn) {
 		utm.appPauseTime = new Date();
 		splashView.open();
@@ -255,11 +258,10 @@ Ti.App.addEventListener('pause', function(e){
 });
 
 Ti.App.addEventListener("resumed", function(e){
-	splashView.close();
-		
 	if (!utm.loggedIn || !utm.screenWillLock) {
 		return;
 	}
+	splashView.close();
 	
 	var curDate = new Date();
 	var curMil = curDate.valueOf() ;
