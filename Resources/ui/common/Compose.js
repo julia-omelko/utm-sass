@@ -148,6 +148,10 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 			scrollingView.setHeight(utm.viewableArea-60);
 		}
 	});
+	messageField.addEventListener('change', function() { 
+		utm.monitorGuid();
+	});
+	
 	var messageMinHeight = Ti.UI.createView({
 		width: 1,
 		height: 80*utm.sizeMultiplier,

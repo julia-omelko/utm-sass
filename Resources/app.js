@@ -91,7 +91,9 @@ utm.loggedIn = false;
 utm.isInPinLock = false;
 utm.appPauseTime = new Date();
 utm.activityActive = 0;
-utm.androidTimeout = (5*60*1000); // 5 minutes
+utm.androidTimeout = (5*60*1000)/20; // 5 minutes
+utm.timer = '';
+
 
 var unpinLockScreen = require('/lib/com.qbset.unlockscreen');
 if(utm.iPhone || utm.iPad ){
@@ -375,4 +377,32 @@ utm.handleHttpError = function (e,status,responseText) {
  	alert(message);
  	
 };
+
+utm.timeoutCompare = function(_n) {
+	var d = new Date();
+	var n = d.getTime();
+
+	if (utm.activityActive === _n) {
+		Ti.App.fireEvent('resumed');
+	} else if (n-utm.activityActive >= utm.androidTimeout/2) {
+		Ti.App.fireEvent('resumed'); 
+	} else {
+		//monitorGuid();
+	}
+};
+	
+utm.monitorGuid = function() {
+	clearTimeout(utm.timer);
+	var d = new Date();
+	var n = d.getTime();
+	utm.activityActive = n;
+	utm.timer = setTimeout(function(n) {
+	    utm.timeoutCompare();
+	}, utm.androidTimeout);
+};
+
+
+
+
+
 

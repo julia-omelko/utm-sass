@@ -46,7 +46,7 @@ function StandardWindow(_title,_showAi) {
 	};
 	
 	
- 	function timeoutCompare(_n){
+ 	/*function timeoutCompare(_n){
 		var d = new Date();
 		var n = d.getTime();
 
@@ -60,26 +60,27 @@ function StandardWindow(_title,_showAi) {
 	}
 	
 	function monitorGuid() {
+		clearTimeout(utm.timer);
 		var d = new Date();
 		var n = d.getTime();
 		utm.activityActive = n;
-		setTimeout(function(n) {
+		utm.timer = setTimeout(function(n) {
 		    timeoutCompare();
 		}, utm.androidTimeout);
-	};
+	};*/
 
 	self.addEventListener('open', function(ev) {
-		monitorGuid();
+		utm.monitorGuid();
 	});
 	self.addEventListener('close', function(ev) {
-		monitorGuid();
+		utm.monitorGuid();
 	});
 	self.addEventListener('blur', function(ev) {
-		monitorGuid();
+		utm.monitorGuid();
 	});
-	self.addEventListener('focus', function(ev) {
-		timeoutCompare();
-	});
+	/*self.addEventListener('focus', function(ev) {
+		utm.timeoutCompare();
+	});*/
 	
 	
 	
