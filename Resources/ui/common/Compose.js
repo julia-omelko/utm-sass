@@ -103,20 +103,21 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 
 	
 	
+	var textAreaHeight = ((utm.Android) ? 80*utm.sizeMultiplier : (utm.viewableArea - 125 + 50 - ((40*utm.sizeMultiplier)+20) - utm.keyboardHeight));
+	if (textAreaHeight < 80) {
+		textAreaHeight = 80;
+	}
 	
-	
-	
-	var messageFieldMaxHeight = Ti.UI.createView({
+	/*var messageFieldMaxHeight = Ti.UI.createView({
 		width: Ti.UI.SIZE,
 		height: (utm.Android) ? 80*utm.sizeMultiplier : (utm.viewableArea - (216*utm.sizeMultiplier) + 50 - ((40*utm.sizeMultiplier)+20))
-		//height: (utm.viewableArea - ((80*utm.sizeMultiplier)+20) - ((40*utm.sizeMultiplier)+20) - utm.keyboardHeight - 20)
 	});
-	scrollingView.add(messageFieldMaxHeight);
+	scrollingView.add(messageFieldMaxHeight);*/
 	
 	var messageField = Ti.UI.createTextArea({
 		color: utm.textFieldColor,		
 		width: Ti.Platform.displayCaps.platformWidth-50,
-		height: ((utm.Android) ? 60*utm.sizeMultiplier : Ti.UI.SIZE),
+		height: textAreaHeight,
 		keyboardType: Ti.UI.KEYBOARD_DEFAULT,
 		returnKeyType: Ti.UI.RETURNKEY_DEFAULT,
 		suppressReturn: false,
@@ -149,16 +150,14 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 		}
 	});
 	messageField.addEventListener('change', function() { 
-		utm.monitorGuid();
+		self.monitorGuid();
+		/*if (messageField.rect.height > maxHeight) {
+			messageField.setHeight(maxHeight);
+		}*/
 	});
 	
-	var messageMinHeight = Ti.UI.createView({
-		width: 1,
-		height: 80*utm.sizeMultiplier,
-		left: 0
-	});
-	messageField.add(messageMinHeight);
-	messageFieldMaxHeight.add(messageField);
+
+	scrollingView.add(messageField);
 	
 
 	var StandardButton = require('/ui/common/baseui/StandardButton');

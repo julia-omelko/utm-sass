@@ -91,7 +91,7 @@ utm.loggedIn = false;
 utm.isInPinLock = false;
 utm.appPauseTime = new Date();
 utm.activityActive = 0;
-utm.androidTimeout = (5*60*1000)/20; // 5 minutes
+utm.androidTimeout = (5*60*1000); // 5 minutes
 utm.timer = '';
 
 
@@ -104,9 +104,6 @@ if(utm.iPhone || utm.iPad ){
 
 utm.keyboardHeight = 0;
 
-Ti.API.info(Ti.Platform.displayCaps.density);
-Ti.API.info(Ti.Platform.displayCaps.platformHeight);
-Ti.API.info(Ti.Platform.displayCaps.platformWidth);
 
 
 (function() {
@@ -378,6 +375,7 @@ utm.handleHttpError = function (e,status,responseText) {
  	
 };
 
+/*
 utm.timeoutCompare = function(_n) {
 	var d = new Date();
 	var n = d.getTime();
@@ -392,7 +390,9 @@ utm.timeoutCompare = function(_n) {
 };
 	
 utm.monitorGuid = function() {
-	clearTimeout(utm.timer);
+	if (utm.timer !== '') {
+		clearTimeout(utm.timer);
+	}
 	var d = new Date();
 	var n = d.getTime();
 	utm.activityActive = n;
@@ -400,7 +400,7 @@ utm.monitorGuid = function() {
 	    utm.timeoutCompare();
 	}, utm.androidTimeout);
 };
-
+*/
 
 
 
