@@ -69,6 +69,10 @@ function MessageTableRow(rowData){
 	});
 	textHeader.add(dateLabel);
 	
+	Ti.App.addEventListener('orientdisplay', function(evt) {
+			dateLabel.left = (Ti.Platform.displayCaps.platformWidth-(180 * utm.sizeMultiplier));
+	});	
+	
 	var utmLabel = Ti.UI.createLabel({
 		text: rowData.UtmText.trim(),
 		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize},

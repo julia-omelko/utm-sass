@@ -38,6 +38,10 @@ function GroupTableRow(_groupData){
 		top: 10*utm.sizeMultiplier
 	});
 	self.add(groupName);
+
+	Ti.App.addEventListener('orientdisplay', function(evt) {
+			groupName.width = (Ti.Platform.displayCaps.platformWidth-150);
+	});
 	
 	var listCount = 0;
 	for (var i=0; i<_groupData.Members.length; i++) {

@@ -152,6 +152,9 @@ var PreviewWin = function(_tabGroup,_message) {
 	});
 	topView.add(leftView);
 	
+	Ti.App.addEventListener('orientdisplay', function(evt) {
+		leftView.width = Ti.Platform.displayCaps.platformWidth-(80*utm.sizeMultiplier)-35;
+	});	
 	
 	var sendHeader = Ti.UI.createLabel({
 		text: _message.mode + ' to:',
@@ -178,6 +181,10 @@ var PreviewWin = function(_tabGroup,_message) {
 		color: 'black'		
 	});
 	leftView.add(sendLabel);
+	
+	Ti.App.addEventListener('orientdisplay', function(evt) {
+		sendLabel.width = Ti.Platform.displayCaps.platformWidth-50;
+	});		
 	
 	var messageHeader = Ti.UI.createLabel({
 		text: 'Original Message:',
@@ -236,6 +243,10 @@ var PreviewWin = function(_tabGroup,_message) {
 	});
 	scrollingView.add(messageField);
 	
+	Ti.App.addEventListener('orientdisplay', function(evt) {
+		messageField.width = Ti.Platform.displayCaps.platformWidth-50;
+	});		
+	
 	var messageHeader = Ti.UI.createLabel({
 		text: 'UTM Message:',
 		top: 25,
@@ -258,6 +269,10 @@ var PreviewWin = function(_tabGroup,_message) {
 	});
 	scrollingView.add(utmMessage);
 	
+	Ti.App.addEventListener('orientdisplay', function(evt) {
+		utmMessage.width = Ti.Platform.displayCaps.platformWidth-50;
+	});		
+	
 	var utmRefresh = Ti.UI.createImageView({
 		image: '/images/icons/refresh.png',
 		left: (Ti.Platform.displayCaps.platformWidth-(40*utm.sizeMultiplier))/2,
@@ -271,12 +286,11 @@ var PreviewWin = function(_tabGroup,_message) {
 		self.showAi();
 		getUtmMessage();
 	});
-	scrollingView.add(utmRefresh);	
+	scrollingView.add(utmRefresh);
 	
-
-	
-
-	
+	Ti.App.addEventListener('orientdisplay', function(evt) {			
+		utmRefresh.left = (Ti.Platform.displayCaps.platformWidth-(40*utm.sizeMultiplier))/2;
+	});			
 	
 	
 	var StandardButton = require('/ui/common/baseui/StandardButton');

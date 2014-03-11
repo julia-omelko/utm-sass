@@ -15,40 +15,8 @@ utm.setEnvModePrefix = function (env){
 	}	
 };
 
+getPlatformSize();
 
-if (Ti.Platform.osname == 'iphone') {
-	utm.iPhone = true;
-	utm.viewableTop = 0;
-	utm.viewableArea = Ti.Platform.displayCaps.platformHeight - 114;
-	utm.viewableTabHeight = 0;
-	utm.keyboardHeight = 0;
-	utm.sizeMultiplier = 1;
-} else if (Ti.Platform.osname == 'ipad') {
-	utm.iPad = true;
-	utm.viewableTop = 0;
-	utm.viewableArea = Ti.Platform.displayCaps.platformHeight - 114;
-	utm.viewableTabHeight = 0;
-	utm.keyboardHeight = 0;
-	utm.sizeMultiplier = 1;
-} else if (Ti.Platform.osname == 'android') {
-	utm.Android = true;
-	utm.viewableArea = Ti.Platform.displayCaps.platformHeight;
-	utm.sizeMultiplier = Math.round(Ti.Platform.displayCaps.platformWidth/32)/10;
-	//utm.sizeMultiplier = Math.round(Ti.Platform.displayCaps.platformWidth/320);
-	utm.viewableTop = 40*utm.sizeMultiplier;
-	utm.viewableTabHeight = 0;
-	utm.keyboardHeight = 0;
-	if (Ti.App.Properties.getString('viewableTabHeight','') !== '') {
-		utm.viewableTabHeight = Ti.App.Properties.getString('viewableTabHeight','');
-	} else if (Ti.Platform.displayCaps.density === 'normal') {
-		utm.viewableTabHeight = 64;
-	} else if (Ti.Platform.displayCaps.density === 'low') {
-		utm.viewableTabHeight = 48;
-	} else {
-		utm.viewableTabHeight = 96;
-	}
-	Ti.API.info(Ti.Platform.displayCaps.density);
-};
 if (Ti.Platform.model === 'Simulator' || Ti.Platform.model ===  'google_sdk' || Ti.Platform.model ===  'sdk') { 
 	utm.setEnvModePrefix("test");
 	utm.validatesSecureCertificate = false;
@@ -373,6 +341,51 @@ utm.handleHttpError = function (e,status,responseText) {
  	}
  	alert(message);
  	
+};
+
+// if on iPad and screen orientation changed, get new layout dimensions, set values and fire orientdisplay event to adjust GUI elements
+// (iphone and Android are locked into portait mode in tiapp.xml)
+Ti.Gesture.addEventListener('orientationchange',function(e) {
+	if (Ti.Platform.osname == 'ipad') {
+		getPlatformSize();
+		Ti.App.fireEvent('orientdisplay');
+	}
+});
+
+function getPlatformSize() {
+	if (Ti.Platform.osname == 'iphone') {
+		utm.iPhone = true;
+		utm.viewableTop = 0;
+		utm.viewableArea = Ti.Platform.displayCaps.platformHeight - 114;
+		utm.viewableTabHeight = 0;
+		utm.keyboardHeight = 0;
+		utm.sizeMultiplier = 1;
+	} else if (Ti.Platform.osname == 'ipad') {
+		utm.iPad = true;
+		utm.viewableTop = 0;
+		utm.viewableArea = Ti.Platform.displayCaps.platformHeight - 114;
+		utm.viewableTabHeight = 0;
+		utm.keyboardHeight = 0;
+		utm.sizeMultiplier = 1;
+	} else if (Ti.Platform.osname == 'android') {
+		utm.Android = true;
+		utm.viewableArea = Ti.Platform.displayCaps.platformHeight;
+		utm.sizeMultiplier = Math.round(Ti.Platform.displayCaps.platformWidth/32)/10;
+		//utm.sizeMultiplier = Math.round(Ti.Platform.displayCaps.platformWidth/320);
+		utm.viewableTop = 40*utm.sizeMultiplier;
+		utm.viewableTabHeight = 0;
+		utm.keyboardHeight = 0;
+		if (Ti.App.Properties.getString('viewableTabHeight','') !== '') {
+			utm.viewableTabHeight = Ti.App.Properties.getString('viewableTabHeight','');
+		} else if (Ti.Platform.displayCaps.density === 'normal') {
+			utm.viewableTabHeight = 64;
+		} else if (Ti.Platform.displayCaps.density === 'low') {
+			utm.viewableTabHeight = 48;
+		} else {
+			utm.viewableTabHeight = 96;
+		}
+		Ti.API.info(Ti.Platform.displayCaps.density);
+	};
 };
 
 /*

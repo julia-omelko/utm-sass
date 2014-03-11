@@ -42,6 +42,10 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 	});
 	topView.add(leftView);
 	
+	Ti.App.addEventListener('orientdisplay', function(evt) {
+		leftView.width = Ti.Platform.displayCaps.platformWidth-(80*utm.sizeMultiplier)-35;
+	});
+	
 	var sendHeader = Ti.UI.createLabel({
 		text: _mode + ' to:',
 		top: 0,
@@ -65,6 +69,10 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 		color: 'black'		
 	});
 	leftView.add(sendLabel);
+	
+	Ti.App.addEventListener('orientdisplay', function(evt) {
+		sendLabel.width = Ti.Platform.displayCaps.platformWidth-50-(80*utm.sizeMultiplier)-10;
+	});
 	
 	var messageHeader = Ti.UI.createLabel({
 		text: 'Message:',
@@ -129,12 +137,22 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 		paddingLeft: 7,
 		font: {fontFamily: utm.fontFamily, fontSize: '16dp'},
 	});
+	
+	Ti.App.addEventListener('orientdisplay', function(evt) {
+		messageField.width = Ti.Platform.displayCaps.platformWidth-50;
+	});
+	
 	var messageFocued = Ti.UI.createView({
 		width: Ti.UI.FILL,
 		height: 2,
 		backgroundColor: utm.barColor,
 		bottom: 0
 	});
+	
+	Ti.App.addEventListener('orientdisplay', function(evt) {
+		messageFocued.width = Ti.UI.FILL;
+	});	
+	
 	messageField.addEventListener('focus', function() {
 		messageField.add(messageFocued);
 		if ((utm.iPhone || utm.iPad) && utm.keyboardHeight !== 0) {

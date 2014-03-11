@@ -24,6 +24,10 @@ var SettingsWin = function(_tabGroup) {
 		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
 	});
 	scrollView.add(buyMessagesButton);
+	
+	Ti.App.addEventListener('orientdisplay', function(evt) {
+		buyMessagesButton.width = (Ti.Platform.displayCaps.platformWidth-50);
+	});
 
 	buyMessagesButton.addEventListener('click', function() {
 		//if (utm.iPhone || utm.iPad ) {
@@ -47,6 +51,10 @@ var SettingsWin = function(_tabGroup) {
 		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
 	});
 	scrollView.add(setPinLockButton);
+	
+	Ti.App.addEventListener('orientdisplay', function(evt) {
+		setPinLockButton.width = (Ti.Platform.displayCaps.platformWidth-50);
+	});
 
 	setPinLockButton.addEventListener('click', function() {
 		var SetPinWindow = require('/ui/common/PinCode');
@@ -67,6 +75,10 @@ var SettingsWin = function(_tabGroup) {
 	});
 	scrollView.add(avatarButton);
 
+	Ti.App.addEventListener('orientdisplay', function(evt) {
+		avatarButton.width = (Ti.Platform.displayCaps.platformWidth-50);
+	});
+
 	avatarButton.addEventListener('click', function() {
 		var AvatarWin = require('/ui/common/Avatar');
 		var avatarWin = new AvatarWin();	
@@ -85,6 +97,10 @@ var SettingsWin = function(_tabGroup) {
 		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
 	});
 	scrollView.add(accountButton);
+	
+	Ti.App.addEventListener('orientdisplay', function(evt) {
+		accountButton.width = (Ti.Platform.displayCaps.platformWidth-50);
+	});
 
 	accountButton.addEventListener('click', function() {
 		var AccountWin = require('/ui/common/PrimaryGroupDetail');
@@ -106,6 +122,10 @@ var SettingsWin = function(_tabGroup) {
 		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
 	});
 	scrollView.add(forgetMeButton);
+	
+	Ti.App.addEventListener('orientdisplay', function(evt) {
+		forgetMeButton.width = (Ti.Platform.displayCaps.platformWidth-50);
+	});	
 
 	forgetMeButton.addEventListener('click', function() {
 		var dialog = Ti.UI.createAlertDialog({

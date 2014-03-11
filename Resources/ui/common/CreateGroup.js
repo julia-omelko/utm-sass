@@ -63,6 +63,10 @@ var CreateGroupWin = function(_tabGroup) {
 	});
 	settingsView.add(groupField);
 	
+	Ti.App.addEventListener('orientdisplay', function(evt) {
+		groupField.width = (Ti.Platform.displayCaps.platformWidth-50);
+	});	
+	
 	
 	var StandardButton = require('/ui/common/baseui/StandardButton');
 	var saveButton = new StandardButton({title:'Create group'});	

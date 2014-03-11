@@ -17,6 +17,10 @@ function StandardButton(_params){
 		color: 'white',
 		style: (utm.Android ? null : Ti.UI.iPhone.SystemButtonStyle.PLAIN),
 		zIndex: 1
+	});
+	
+	Ti.App.addEventListener('orientdisplay', function(evt) {
+		self.width = (Ti.Platform.displayCaps.platformWidth-50);
 	});	
 	
     return self;

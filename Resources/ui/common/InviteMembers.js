@@ -112,6 +112,10 @@ var InviteMembersWin = function(_tabGroup,_myHortInfo) {
 	});
 	emailView.add(emailField);
 
+	Ti.App.addEventListener('orientdisplay', function(evt) {
+		emailField.width = Ti.Platform.displayCaps.platformWidth-((30*utm.sizeMultiplier)+50);
+	});
+
 	var contactButton = Ti.UI.createView({
 		height: 30*utm.sizeMultiplier,
 		width: 30*utm.sizeMultiplier,
@@ -240,6 +244,10 @@ var InviteMembersWin = function(_tabGroup,_myHortInfo) {
 		inviteMyHort();
 	});	
 	scrollingView.add(sendBtn);
+	
+	Ti.App.addEventListener('orientdisplay', function(evt) {
+		sendBtn.width = (Ti.Platform.displayCaps.platformWidth-50);
+	});	
 
 	function inviteMyHort() {
 		var invalidEmail = validateEmails(emailField.value);

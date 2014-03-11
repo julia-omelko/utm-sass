@@ -49,6 +49,11 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		color: utm.textColor,
 	    textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER
 	});
+	
+	Ti.App.addEventListener('orientdisplay', function(evt) {
+		membersButton.width = Math.round(Ti.Platform.displayCaps.platformWidth * 0.5);
+	});	
+	
 	tabBar.add(membersButton);
 	var settingsButton = Ti.UI.createLabel({
 		text: 'settings',
@@ -62,6 +67,10 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER
 	});
 	tabBar.add(settingsButton);
+	
+	Ti.App.addEventListener('orientdisplay', function(evt) {
+		settingsButton.width = Math.round(Ti.Platform.displayCaps.platformWidth * 0.5);
+	});
 	
 	membersButton.addEventListener('click', function(e){
 		mode = 'members';
@@ -177,6 +186,10 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	});
 	settingsView.add(groupField);
 	
+	Ti.App.addEventListener('orientdisplay', function(evt) {
+		groupField.width = (Ti.Platform.displayCaps.platformWidth-50);
+	});
+	
 	var premessageLabel = Ti.UI.createLabel({
 		text: 'Premessage',
 		font: {fontFamily: utm.fontFamily, fontSize: '18dp'},
@@ -216,6 +229,10 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		premessageField.remove(focused);
 	});
 	settingsView.add(premessageField);
+	
+	Ti.App.addEventListener('orientdisplay', function(evt) {
+		premessageField.width = (Ti.Platform.displayCaps.platformWidth-50);
+	});	
 	
 	var postmessageLabel = Ti.UI.createLabel({
 		text: 'Postmessage',
@@ -257,6 +274,10 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	});
 	settingsView.add(postmessageField);
 	
+	Ti.App.addEventListener('orientdisplay', function(evt) {
+		postmessageField.width = (Ti.Platform.displayCaps.platformWidth-50);
+	});	
+	
 	var emailLabel = Ti.UI.createLabel({
 		text: 'Email',
 		font: {fontFamily: utm.fontFamily, fontSize: '18dp'},
@@ -296,6 +317,10 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	});
 	settingsView.add(emailField);
 	
+	Ti.App.addEventListener('orientdisplay', function(evt) {
+		emailField.width = (Ti.Platform.displayCaps.platformWidth-50);
+	});	
+	
 	var mobileLabel = Ti.UI.createLabel({
 		text: 'Mobile',
 		font: {fontFamily: utm.fontFamily, fontSize: '18dp'},
@@ -334,6 +359,10 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		nicknameField.remove(focused);
 	});
 	settingsView.add(mobileField);
+
+	Ti.App.addEventListener('orientdisplay', function(evt) {
+		mobileField.width = (Ti.Platform.displayCaps.platformWidth-50);
+	});	
 	
 	var nicknameLabel = Ti.UI.createLabel({
 		text: 'Nickname',
@@ -373,6 +402,10 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		nicknameField.remove(focused);
 	});
 	settingsView.add(nicknameField);
+
+	Ti.App.addEventListener('orientdisplay', function(evt) {
+		nicknameField.width = (Ti.Platform.displayCaps.platformWidth-50);
+	});	
 	
 	var tableDataSettings = [];
 	var tableViewSettings = Ti.UI.createTableView({

@@ -30,6 +30,11 @@ var MessageMembersWin = function(_tabGroup) {
 	    textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER
 	});
 	tabBar.add(membersButton);
+	
+	Ti.App.addEventListener('orientdisplay', function(evt) {
+			membersButton.width = Math.round(Ti.Platform.displayCaps.platformWidth * 0.5);
+	});	
+	
 	var groupsButton = Ti.UI.createLabel({
 		text: 'groups',
 		width: Math.round(Ti.Platform.displayCaps.platformWidth * 0.5),
@@ -42,6 +47,10 @@ var MessageMembersWin = function(_tabGroup) {
 		textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER
 	});
 	tabBar.add(groupsButton);
+	
+	Ti.App.addEventListener('orientdisplay', function(evt) {
+			groupsButton.width = Math.round(Ti.Platform.displayCaps.platformWidth * 0.5);
+	});	
 	
 	membersButton.addEventListener('click', function(e){
 		membersButton.setBackgroundColor('white');

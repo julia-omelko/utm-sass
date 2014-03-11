@@ -99,6 +99,9 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 	});
 	scrollingView.add(utmMessage);
 	
+	Ti.App.addEventListener('orientdisplay', function(evt) {
+			utmMessage.width = Ti.Platform.displayCaps.platformWidth-50;	
+	});
 	
 	var originalMessageHeader = Ti.UI.createLabel({
 		text: 'Original message',
@@ -119,6 +122,10 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 		height: Ti.UI.SIZE	
 	});
 	scrollingView.add(originalMessage);
+	
+	Ti.App.addEventListener('orientdisplay', function(evt) {
+			originalMessage.width = Ti.Platform.displayCaps.platformWidth-50;
+	});	
 	
 	var StandardButton = require('/ui/common/baseui/StandardButton');
 	if (_messageData.mode !== 'sent') {
