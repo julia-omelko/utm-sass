@@ -62,6 +62,10 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData) {
 	});
 	settingsView.add(nicknameField);
 	
+	Ti.App.addEventListener('orientdisplay', function(evt) {
+		nicknameField.width = (Ti.Platform.displayCaps.platformWidth-50);
+	});
+	
 	var tableDataSettings = [];
 	var tableViewSettings = Ti.UI.createTableView({
 		top: 10,
@@ -76,6 +80,11 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData) {
 		backgroundSelectedColor: 'white',
 		width: Ti.UI.FILL
 	});
+	
+	Ti.App.addEventListener('orientdisplay', function(evt) {
+		invisibleRow.width = Ti.UI.FILL;
+	});
+	
 	var invisibleText = Ti.UI.createLabel({
 		text:'Invisible to others',
 		height: Ti.UI.SIZE,

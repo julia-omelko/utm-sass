@@ -140,6 +140,10 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		layout: 'vertical'
 	});
 	
+	Ti.App.addEventListener('orientdisplay', function(evt) {
+		settingsView.height = utm.viewableArea - ((37*utm.sizeMultiplier)+((40*2*utm.sizeMultiplier)+30));
+	});
+	
 	var focused = Ti.UI.createView({
 		width: Ti.UI.FILL,
 		height: 2,

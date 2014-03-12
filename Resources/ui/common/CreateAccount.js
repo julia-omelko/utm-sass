@@ -283,6 +283,10 @@ var CreateAccountWin = function() {
 	});
 	scrollingView.add(createButton);
 	
+	Ti.App.addEventListener('orientdisplay', function(evt) {
+		createButton.width = (Ti.Platform.displayCaps.platformWidth-50);
+	});
+	
 	if (utm.Android) {
 		var keyboardBuffer = Ti.UI.createView({
 			width: Ti.UI.FILL,

@@ -50,6 +50,11 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	    textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER
 	});
 	tabBar.add(membersButton);
+	
+	Ti.App.addEventListener('orientdisplay', function(evt) {
+		membersButton.width = Math.round(Ti.Platform.displayCaps.platformWidth * 0.5);
+	});
+	
 	var settingsButton = Ti.UI.createLabel({
 		text: 'settings',
 		width: Math.round(Ti.Platform.displayCaps.platformWidth * 0.5),
@@ -62,6 +67,10 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER
 	});
 	tabBar.add(settingsButton);
+	
+	Ti.App.addEventListener('orientdisplay', function(evt) {
+		settingsButton.width = Math.round(Ti.Platform.displayCaps.platformWidth * 0.5);
+	});	
 	
 	membersButton.addEventListener('click', function(e){
 		membersButton.setBackgroundColor('white');
@@ -82,6 +91,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	
 	var tableView = Ti.UI.createTableView({
 		height: utm.viewableArea - ((37*utm.sizeMultiplier)+((40*2*utm.sizeMultiplier)+30)),
+		width: Ti.UI.FILL,
 		top: utm.viewableTop + (37*utm.sizeMultiplier),
 		allowsSelection:false
 	});
@@ -139,6 +149,10 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	});
 	settingsView.add(emailField);
 	
+	Ti.App.addEventListener('orientdisplay', function(evt) {
+		emailField.width = (Ti.Platform.displayCaps.platformWidth-50);
+	});	
+	
 	var mobileLabel = Ti.UI.createLabel({
 		text: 'Mobile',
 		font: {fontFamily: utm.fontFamily, fontSize: '18dp'},
@@ -178,6 +192,11 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	});
 	settingsView.add(mobileField);
 	
+	Ti.App.addEventListener('orientdisplay', function(evt) {
+		mobileField.width = (Ti.Platform.displayCaps.platformWidth-50);
+	});	
+		
+	
 	var tableDataSettings = [];
 	var tableViewSettings = Ti.UI.createTableView({
 		top: 10,
@@ -190,6 +209,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	
 	var twitterRow = Ti.UI.createTableViewRow({
 		height: 40*utm.sizeMultiplier,
+		width: (Ti.Platform.displayCaps.platformWidth-50),
 		hasChild: false,
 		backgroundSelectedColor: 'white'
 	});
@@ -207,6 +227,11 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	twitterRow.add(twitterSwitch);
 	postSection.add(twitterRow);
 	
+	Ti.App.addEventListener('orientdisplay', function(evt) {
+		twitterRow.width = (Ti.Platform.displayCaps.platformWidth-50);
+	});	
+	
+	
 	
 	
 	twitterSwitch.addEventListener('change', function(e) {
@@ -220,6 +245,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	
 	var fbRow = Ti.UI.createTableViewRow({
 		height: 40*utm.sizeMultiplier,
+		width: (Ti.Platform.displayCaps.platformWidth-50),
 		hasChild: false,
 		backgroundSelectedColor: 'white'
 	});
@@ -236,6 +262,10 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	fbRow.add(fbIcon);
 	fbRow.add(fbSwitch);
 	postSection.add(fbRow);
+	
+	Ti.App.addEventListener('orientdisplay', function(evt) {
+		fbRow.width = (Ti.Platform.displayCaps.platformWidth-50);
+	});	
 	
 	fbSwitch.addEventListener('change', function(e) {
 		if (e.value) {
@@ -261,6 +291,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	
 	var signRow = Ti.UI.createTableViewRow({
 		height: 40*utm.sizeMultiplier,
+		width: (Ti.Platform.displayCaps.platformWidth-50),
 		hasChild: false,
 		backgroundSelectedColor: 'white'
 	});
@@ -279,8 +310,13 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	signRow.add(signSwitch);
 	additionalSection.add(signRow);
 	
+	Ti.App.addEventListener('orientdisplay', function(evt) {
+		signRow.width = (Ti.Platform.displayCaps.platformWidth-50);
+	});
+	
 	var deleteRow = Ti.UI.createTableViewRow({
 		height: 40*utm.sizeMultiplier,
+		width: (Ti.Platform.displayCaps.platformWidth-50),
 		hasChild: false,
 		backgroundSelectedColor: 'white'
 	});
@@ -299,6 +335,10 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	deleteRow.add(deleteLabel);
 	deleteRow.add(deleteSwitch);
 	additionalSection.add(deleteRow);
+	
+	Ti.App.addEventListener('orientdisplay', function(evt) {
+		deleteRow.width = (Ti.Platform.displayCaps.platformWidth-50);
+	});	
 	
 	tableDataSettings.push(postSection);
 	tableDataSettings.push(additionalSection);
