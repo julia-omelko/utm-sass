@@ -348,6 +348,7 @@ utm.handleHttpError = function (e,status,responseText) {
 Ti.Gesture.addEventListener('orientationchange',function(e) {
 	if (Ti.Platform.osname == 'ipad') {
 		getPlatformSize();
+		utm.keyboardHeight = Titanium.UI.PORTRAIT ? 264 : 352;
 		Ti.App.fireEvent('orientdisplay');
 	}
 });
