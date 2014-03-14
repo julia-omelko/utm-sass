@@ -11,6 +11,11 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 	var StandardWindow = require('ui/common/StandardWindow');
 	var self = new StandardWindow(winTitle, true);
 
+	var updateDisplay = function() {
+		self.fireEvent('reorientdisplay');
+	};
+	Ti.App.addEventListener('orientdisplay', updateDisplay);
+
 	var BackButton = require('ui/common/baseui/BackButton');
 	var backButton = new BackButton(self);
 	self.setLeftNavButton(backButton);
@@ -99,8 +104,8 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 	});
 	scrollingView.add(utmMessage);
 	
-	Ti.App.addEventListener('orientdisplay', function(evt) {
-			utmMessage.width = Ti.Platform.displayCaps.platformWidth-50;	
+	self.addEventListener('reorientdisplay', function(evt) {
+		utmMessage.width = Ti.Platform.displayCaps.platformWidth-50;	
 	});
 	
 	var originalMessageHeader = Ti.UI.createLabel({
@@ -123,8 +128,8 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 	});
 	scrollingView.add(originalMessage);
 	
-	Ti.App.addEventListener('orientdisplay', function(evt) {
-			originalMessage.width = Ti.Platform.displayCaps.platformWidth-50;
+	self.addEventListener('reorientdisplay', function(evt) {
+		originalMessage.width = Ti.Platform.displayCaps.platformWidth-50;
 	});	
 	
 	var StandardButton = require('/ui/common/baseui/StandardButton');
@@ -397,7 +402,9 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 	}
 	
 	
-	
+	self.addEventListener('close', function(e) {
+		Ti.App.removeEventListener('orientdisplay', updateDisplay);
+	});		
 	
 	return self;
 };

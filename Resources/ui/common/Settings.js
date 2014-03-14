@@ -2,6 +2,11 @@ var SettingsWin = function(_tabGroup) {
 	
 	var StandardWindow = require('ui/common/StandardWindow');
 	var self = new StandardWindow('Settings', '');
+
+	var updateDisplay = function() {
+		self.fireEvent('reorientdisplay');
+	};
+	Ti.App.addEventListener('orientdisplay', updateDisplay);
 	
 	var scrollView = Ti.UI.createScrollView({
 		layout : 'vertical',
@@ -25,7 +30,7 @@ var SettingsWin = function(_tabGroup) {
 	});
 	scrollView.add(buyMessagesButton);
 	
-	Ti.App.addEventListener('orientdisplay', function(evt) {
+	self.addEventListener('reorientdisplay', function(evt) {
 		buyMessagesButton.width = (Ti.Platform.displayCaps.platformWidth-50);
 	});
 
@@ -52,7 +57,7 @@ var SettingsWin = function(_tabGroup) {
 	});
 	scrollView.add(setPinLockButton);
 	
-	Ti.App.addEventListener('orientdisplay', function(evt) {
+	self.addEventListener('reorientdisplay', function(evt) {
 		setPinLockButton.width = (Ti.Platform.displayCaps.platformWidth-50);
 	});
 
@@ -75,7 +80,7 @@ var SettingsWin = function(_tabGroup) {
 	});
 	scrollView.add(avatarButton);
 
-	Ti.App.addEventListener('orientdisplay', function(evt) {
+	self.addEventListener('reorientdisplay', function(evt) {
 		avatarButton.width = (Ti.Platform.displayCaps.platformWidth-50);
 	});
 
@@ -98,7 +103,7 @@ var SettingsWin = function(_tabGroup) {
 	});
 	scrollView.add(accountButton);
 	
-	Ti.App.addEventListener('orientdisplay', function(evt) {
+	self.addEventListener('reorientdisplay', function(evt) {
 		accountButton.width = (Ti.Platform.displayCaps.platformWidth-50);
 	});
 
@@ -123,7 +128,7 @@ var SettingsWin = function(_tabGroup) {
 	});
 	scrollView.add(forgetMeButton);
 	
-	Ti.App.addEventListener('orientdisplay', function(evt) {
+	self.addEventListener('reorientdisplay', function(evt) {
 		forgetMeButton.width = (Ti.Platform.displayCaps.platformWidth-50);
 	});	
 
@@ -163,6 +168,10 @@ var SettingsWin = function(_tabGroup) {
 		forgetMeReq.setRequestHeader('Authorization-Token', utm.AuthToken);
 		forgetMeReq.send();
 	}
+
+	self.addEventListener('close', function(e) {
+		Ti.App.removeEventListener('orientdisplay', updateDisplay);
+	});	
 
 	return self;
 };

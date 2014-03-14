@@ -2,6 +2,11 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 	var StandardWindow = require('ui/common/StandardWindow');
 	var self = new StandardWindow('Account Settings', true);
 
+	var updateDisplay = function() {
+		self.fireEvent('reorientdisplay');
+	};
+	Ti.App.addEventListener('orientdisplay', updateDisplay);
+
 	var BackButton = require('ui/common/baseui/BackButton');
 	var backButton = new BackButton(self);
 	self.setLeftNavButton(backButton);
@@ -31,7 +36,7 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 		layout: 'vertical'
 	});
 	self.add(settingsView);
-	
+
 	var focused = Ti.UI.createView({
 		width: Ti.UI.FILL,
 		height: 2,
@@ -80,6 +85,11 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 	});
 	settingsView.add(emailField);
 	
+	self.addEventListener('reorientdisplay', function(evt) {
+		emailField.width = (Ti.Platform.displayCaps.platformWidth-50);
+	});
+		
+	
 	var mobileLabel = Ti.UI.createLabel({
 		text: 'Mobile',
 		font: {fontFamily: utm.fontFamily, fontSize: '18dp'},
@@ -119,6 +129,10 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 	});
 	settingsView.add(mobileField);
 	
+	self.addEventListener('reorientdisplay', function(evt) {
+		mobileField.width = (Ti.Platform.displayCaps.platformWidth-50);
+	});
+	
 	var nicknameLabel = Ti.UI.createLabel({
 		text: 'Nickname',
 		font: {fontFamily: utm.fontFamily, fontSize: '18dp'},
@@ -157,6 +171,10 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 		nicknameField.remove(focused);
 	});
 	settingsView.add(nicknameField);
+	
+	self.addEventListener('reorientdisplay', function(evt) {
+		nicknameField.width = (Ti.Platform.displayCaps.platformWidth-50);
+	});
 	
 	var tableDataSettings = [];
 	var tableViewSettings = Ti.UI.createTableView({
@@ -403,6 +421,9 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 		updateMyHortDetailReq.send(JSON.stringify(_userSettings));
 	}
 	
+	self.addEventListener('close', function(e) {
+		Ti.App.removeEventListener('orientdisplay', updateDisplay);
+	});	
 	
 	return self;
 };

@@ -11,6 +11,11 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	var StandardWindow = require('ui/common/StandardWindow');
 	var self = new StandardWindow('Group Detail', true);
 
+	var updateDisplay = function() {
+		self.fireEvent('reorientdisplay');
+	};
+	Ti.App.addEventListener('orientdisplay', updateDisplay);
+
 	var BackButton = require('ui/common/baseui/BackButton');
 	var backButton = new BackButton(self);
 	self.setLeftNavButton(backButton);
@@ -50,7 +55,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	    textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER
 	});
 	
-	Ti.App.addEventListener('orientdisplay', function(evt) {
+	self.addEventListener('reorientdisplay', function(evt) {
 		membersButton.width = Math.round(Ti.Platform.displayCaps.platformWidth * 0.5);
 	});	
 	
@@ -68,7 +73,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	});
 	tabBar.add(settingsButton);
 	
-	Ti.App.addEventListener('orientdisplay', function(evt) {
+	self.addEventListener('reorientdisplay', function(evt) {
 		settingsButton.width = Math.round(Ti.Platform.displayCaps.platformWidth * 0.5);
 	});
 	
@@ -140,7 +145,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		layout: 'vertical'
 	});
 	
-	Ti.App.addEventListener('orientdisplay', function(evt) {
+	self.addEventListener('reorientdisplay', function(evt) {
 		settingsView.height = utm.viewableArea - ((37*utm.sizeMultiplier)+((40*2*utm.sizeMultiplier)+30));
 	});
 	
@@ -190,7 +195,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	});
 	settingsView.add(groupField);
 	
-	Ti.App.addEventListener('orientdisplay', function(evt) {
+	self.addEventListener('reorientdisplay', function(evt) {
 		groupField.width = (Ti.Platform.displayCaps.platformWidth-50);
 	});
 	
@@ -234,7 +239,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	});
 	settingsView.add(premessageField);
 	
-	Ti.App.addEventListener('orientdisplay', function(evt) {
+	self.addEventListener('reorientdisplay', function(evt) {
 		premessageField.width = (Ti.Platform.displayCaps.platformWidth-50);
 	});	
 	
@@ -278,7 +283,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	});
 	settingsView.add(postmessageField);
 	
-	Ti.App.addEventListener('orientdisplay', function(evt) {
+	self.addEventListener('reorientdisplay', function(evt) {
 		postmessageField.width = (Ti.Platform.displayCaps.platformWidth-50);
 	});	
 	
@@ -321,7 +326,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	});
 	settingsView.add(emailField);
 	
-	Ti.App.addEventListener('orientdisplay', function(evt) {
+	self.addEventListener('reorientdisplay', function(evt) {
 		emailField.width = (Ti.Platform.displayCaps.platformWidth-50);
 	});	
 	
@@ -364,7 +369,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	});
 	settingsView.add(mobileField);
 
-	Ti.App.addEventListener('orientdisplay', function(evt) {
+	self.addEventListener('reorientdisplay', function(evt) {
 		mobileField.width = (Ti.Platform.displayCaps.platformWidth-50);
 	});	
 	
@@ -407,7 +412,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	});
 	settingsView.add(nicknameField);
 
-	Ti.App.addEventListener('orientdisplay', function(evt) {
+	self.addEventListener('reorientdisplay', function(evt) {
 		nicknameField.width = (Ti.Platform.displayCaps.platformWidth-50);
 	});	
 	
@@ -781,6 +786,10 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 			}
 		});
 	}
+
+	self.addEventListener('close', function(e) {
+		Ti.App.removeEventListener('orientdisplay', updateDisplay);
+	});
 	
 	return self;
 };

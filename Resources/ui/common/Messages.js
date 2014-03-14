@@ -3,6 +3,11 @@ var MessagesWin = function(_tabGroup) {
 	var StandardWindow = require('ui/common/StandardWindow');
 	var self = new StandardWindow('Messages', true);
 
+	var updateDisplay = function() {
+		self.fireEvent('reorientdisplay');
+	};
+	Ti.App.addEventListener('orientdisplay', updateDisplay);
+
 	var editButton = Ti.UI.createLabel({
 		text: 'Edit',
 		font: {fontFamily: utm.fontFamily},
@@ -54,7 +59,8 @@ var MessagesWin = function(_tabGroup) {
 	    textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER
 	});
 	tabBar.add(receivedButton);
-	Ti.App.addEventListener('orientdisplay', function(evt) {
+	
+	self.addEventListener('reorientdisplay', function(evt) {
 		receivedButton.width = Math.round(Ti.Platform.displayCaps.platformWidth * 0.5);
 	});
 	
@@ -70,7 +76,7 @@ var MessagesWin = function(_tabGroup) {
 		textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER
 	});
 	tabBar.add(sentButton);
-	Ti.App.addEventListener('orientdisplay', function(evt) {
+	self.addEventListener('reorientdisplay', function(evt) {
 			sentButton.width = Math.round(Ti.Platform.displayCaps.platformWidth * 0.5);
 	});	
 	var currentMode = 'received';
@@ -261,9 +267,13 @@ var MessagesWin = function(_tabGroup) {
 			
 		}
 	}
-	
+
 	
 	getMessages('received');
+	
+	self.addEventListener('close', function(e) {
+		Ti.App.removeEventListener('orientdisplay', updateDisplay);
+	});	
 	
 	return self;
 };

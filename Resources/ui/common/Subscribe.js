@@ -4,6 +4,11 @@ var SettingsWin = function(_tabGroup) {
 	var StandardWindow = require('ui/common/StandardWindow');
 	var self = new StandardWindow('Buy Messages', (utm.Android ? false : true));
 
+	var updateDisplay = function() {
+		self.fireEvent('reorientdisplay');
+	};
+	Ti.App.addEventListener('orientdisplay', updateDisplay);
+
 	var BackButton = require('ui/common/baseui/BackButton');
 	var backButton = new BackButton(self);
 	self.setLeftNavButton(backButton);
@@ -60,6 +65,11 @@ var SettingsWin = function(_tabGroup) {
 				text: theDesc
 			});
 			scrollingView.add(productDesc);
+			
+			self.addEventListener('reorientdisplay', function(evt) {
+				productDesc.width = (Ti.Platform.displayCaps.platformWidth-50);
+			});	
+			
 			var productButton = Ti.UI.createButton({
 				title: theButton,
 				top: 10,
@@ -78,6 +88,10 @@ var SettingsWin = function(_tabGroup) {
 				});
 			});
 			scrollingView.add(productButton);
+			
+			self.addEventListener('reorientdisplay', function(evt) {
+				productButton.width = (Ti.Platform.displayCaps.platformWidth-50);
+			});	
 		};
 		
 		
@@ -195,7 +209,9 @@ var SettingsWin = function(_tabGroup) {
 	});
 	
 	
-	
+	self.addEventListener('close', function(e) {
+		Ti.App.removeEventListener('orientdisplay', updateDisplay);
+	});		
 
 	return self;
 };

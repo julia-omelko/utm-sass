@@ -4,6 +4,11 @@ var CreateGroupWin = function(_tabGroup) {
 	var StandardWindow = require('ui/common/StandardWindow');
 	var self = new StandardWindow('Create Group', '');
 
+	var updateDisplay = function() {
+		self.fireEvent('reorientdisplay');
+	};
+	Ti.App.addEventListener('orientdisplay', updateDisplay);
+
 	var BackButton = require('ui/common/baseui/BackButton');
 	var backButton = new BackButton(self);
 	self.setLeftNavButton(backButton);
@@ -63,7 +68,7 @@ var CreateGroupWin = function(_tabGroup) {
 	});
 	settingsView.add(groupField);
 	
-	Ti.App.addEventListener('orientdisplay', function(evt) {
+	self.addEventListener('reorientdisplay', function(evt) {
 		groupField.width = (Ti.Platform.displayCaps.platformWidth-50);
 	});	
 	
@@ -95,7 +100,9 @@ var CreateGroupWin = function(_tabGroup) {
 		createMyHortReq.send(JSON.stringify({FriendlyName:_myHortName}));
 	}
 
-	
+	self.addEventListener('close', function(e) {
+		Ti.App.removeEventListener('orientdisplay', updateDisplay);
+	});		
 	
 	return self;
 };

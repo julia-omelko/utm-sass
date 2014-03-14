@@ -3,6 +3,11 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData) {
 	var StandardWindow = require('ui/common/StandardWindow');
 	var self = new StandardWindow('Member Detail', '');
 
+	var updateDisplay = function() {
+		self.fireEvent('reorientdisplay');
+	};
+	Ti.App.addEventListener('orientdisplay', updateDisplay);
+
 	var BackButton = require('ui/common/baseui/BackButton');
 	var backButton = new BackButton(self);
 	self.setLeftNavButton(backButton);
@@ -62,7 +67,7 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData) {
 	});
 	settingsView.add(nicknameField);
 	
-	Ti.App.addEventListener('orientdisplay', function(evt) {
+	self.addEventListener('reorientdisplay', function(evt) {
 		nicknameField.width = (Ti.Platform.displayCaps.platformWidth-50);
 	});
 	
@@ -81,7 +86,7 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData) {
 		width: Ti.UI.FILL
 	});
 	
-	Ti.App.addEventListener('orientdisplay', function(evt) {
+	self.addEventListener('reorientdisplay', function(evt) {
 		invisibleRow.width = Ti.UI.FILL;
 	});
 	
@@ -181,6 +186,10 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData) {
 		});
 		dialog.show();
 	}
+
+	self.addEventListener('close', function(e) {
+		Ti.App.removeEventListener('orientdisplay', updateDisplay);
+	});
 	
 	return self;
 };

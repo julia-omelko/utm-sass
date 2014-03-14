@@ -4,7 +4,11 @@ var InviteMembersWin = function(_tabGroup,_myHortInfo) {
 	var primaryMember = getPrimaryMember(_myHortInfo.myHort.Members);
 	var primaryMemberNickName = primaryMember.NickName;
 	
-	
+	var updateDisplay = function() {
+		self.fireEvent('reorientdisplay');
+	};
+	Ti.App.addEventListener('orientdisplay', updateDisplay);
+		
 	var StandardWindow = require('ui/common/StandardWindow');
 	var self = new StandardWindow('Invite', false);
 
@@ -112,7 +116,7 @@ var InviteMembersWin = function(_tabGroup,_myHortInfo) {
 	});
 	emailView.add(emailField);
 
-	Ti.App.addEventListener('orientdisplay', function(evt) {
+	self.addEventListener('reorientdisplay', function(evt) {
 		emailField.width = Ti.Platform.displayCaps.platformWidth-((30*utm.sizeMultiplier)+50);
 	});
 
@@ -223,10 +227,6 @@ var InviteMembersWin = function(_tabGroup,_myHortInfo) {
 		}
 	};
 	
-	
-	
-
-
 
 	var sendBtn = Ti.UI.createButton({
 		title: 'Send invite',
@@ -245,7 +245,7 @@ var InviteMembersWin = function(_tabGroup,_myHortInfo) {
 	});	
 	scrollingView.add(sendBtn);
 	
-	Ti.App.addEventListener('orientdisplay', function(evt) {
+	self.addEventListener('reorientdisplay', function(evt) {
 		sendBtn.width = (Ti.Platform.displayCaps.platformWidth-50);
 	});	
 
@@ -318,7 +318,9 @@ var InviteMembersWin = function(_tabGroup,_myHortInfo) {
 		}
 	}
 
-
+	self.addEventListener('close', function(e) {
+		Ti.App.removeEventListener('orientdisplay', updateDisplay);
+	});	
 
 	return self;
 };

@@ -3,6 +3,11 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 	var StandardWindow = require('ui/common/StandardWindow');
 	var self = new StandardWindow('Member Detail', true);
 
+	var updateDisplay = function() {
+		self.fireEvent('reorientdisplay');
+	};
+	Ti.App.addEventListener('orientdisplay', updateDisplay);
+
 	var BackButton = require('ui/common/baseui/BackButton');
 	var backButton = new BackButton(self);
 	self.setLeftNavButton(backButton);
@@ -49,6 +54,10 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 		height: Ti.UI.SIZE
 	});
 	scrollingView.add(userView);
+	
+	self.addEventListener('reorientdisplay', function(evt) {
+		userView.width = Ti.Platform.displayCaps.platformWidth-50;
+	});	
 	
 	var avatar = Ti.UI.createImageView({
 		top: 25,
@@ -107,6 +116,10 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 		nicknameField.remove(focused);
 	});
 	userView.add(nicknameField);
+	
+	self.addEventListener('reorientdisplay', function(evt) {
+		nicknameField.width = (Ti.Platform.displayCaps.platformWidth-nicknameLabel.getLeft()-25);
+	});	
 
 	var groupLabel = Ti.UI.createLabel({
 		text: 'Groups',
@@ -273,7 +286,10 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 		});
 	}
 	
-	
+	self.addEventListener('close', function(e) {
+		Ti.App.removeEventListener('orientdisplay', updateDisplay);
+	});	
+		
 	return self;
 };
 module.exports = MemberDetailWin;

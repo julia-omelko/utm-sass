@@ -19,10 +19,14 @@ function StandardButton(_params){
 		zIndex: 1
 	});
 	
-	Ti.App.addEventListener('orientdisplay', function(evt) {
+	var updateBtnWidth = function() {
 		self.width = (Ti.Platform.displayCaps.platformWidth-50);
-	});	
+	};
+	Ti.App.addEventListener('orientdisplay', updateBtnWidth);	
 	
+	self.addEventListener('close', function(e) {
+		Ti.App.removeEventListener('orientdisplay', updateBtnWidth);
+	});	
     return self;
  }
  module.exports = StandardButton;

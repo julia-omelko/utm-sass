@@ -10,6 +10,11 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 	
 	var StandardWindow = require('ui/common/StandardWindow');
 	var self = new StandardWindow(_mode, '');
+	
+	var updateDisplay = function() {
+		self.fireEvent('reorientdisplay');
+	};
+	Ti.App.addEventListener('orientdisplay', updateDisplay);
 
 	var BackButton = require('ui/common/baseui/BackButton');
 	var backButton = new BackButton(self);
@@ -27,10 +32,10 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 	});
 	self.add(scrollingView);	
 	
-	var adjustscrollingView = function() {
+
+	self.addEventListener('reorientdisplay', function(e) {
 		scrollingView.height = utm.viewableArea - ((40*utm.sizeMultiplier)+20);
-	};
-	Ti.App.addEventListener('orientdisplay', adjustscrollingView);
+	});
 	
 	var topView = Ti.UI.createView({
 		width: '100%',
@@ -47,10 +52,9 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 	});
 	topView.add(leftView);
 	
-	var adjustleftView = function() {
+	self.addEventListener('reorientdisplay', function(e) {
 		leftView.width = Ti.Platform.displayCaps.platformWidth-(80*utm.sizeMultiplier)-35;
-	};
-	Ti.App.addEventListener('orientdisplay', adjustleftView);
+	});
 	
 	var sendHeader = Ti.UI.createLabel({
 		text: _mode + ' to:',
@@ -76,10 +80,9 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 	});
 	leftView.add(sendLabel);
 	
-	var adjustsendLabel = function() {
+	self.addEventListener('reorientdisplay', function(e) {
 		sendLabel.width = Ti.Platform.displayCaps.platformWidth-50-(80*utm.sizeMultiplier)-10;
-	};
-	Ti.App.addEventListener('orientdisplay', adjustsendLabel);
+	});
 	
 	var messageHeader = Ti.UI.createLabel({
 		text: 'Message:',
@@ -147,12 +150,11 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 		font: {fontFamily: utm.fontFamily, fontSize: '16dp'},
 	});
 	
-	var adjustmessageField = function() {
+	self.addEventListener('reorientdisplay', function(e) {
 		messageField.width = Ti.Platform.displayCaps.platformWidth-50;
 		calctextAreaHeight();
 		messageField.height = textAreaHeight;
-	};
-	Ti.App.addEventListener('orientdisplay', adjustmessageField);
+	});
 	
 	var messageFocued = Ti.UI.createView({
 		width: Ti.UI.FILL,
@@ -161,10 +163,9 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 		bottom: 0
 	});
 	
-	var adjustmessageFocued = function() {
+	self.addEventListener('reorientdisplay', function(e) {
 		messageFocued.width = Ti.UI.FILL;
-	};
-	Ti.App.addEventListener('orientdisplay', adjustmessageFocued);
+	});
 	
 	var messageFieldHasFocus = false;
 	
@@ -186,7 +187,7 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 		}
 	});
 	
-	var adjustmessageFocusBlur = function() {
+	self.addEventListener('reorientdisplay', function(e) {
 		if ((utm.iPhone || utm.iPad) && utm.keyboardHeight !== 0 && messageFieldHasFocus) {
 			previewBtn.setBottom(10+utm.keyboardHeight-50);
 			scrollingView.setHeight(utm.viewableArea-60-utm.keyboardHeight+50);
@@ -194,8 +195,7 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 			previewBtn.setBottom(10);
 			scrollingView.setHeight(utm.viewableArea-60);
 		}
-	};
-	Ti.App.addEventListener('orientdisplay', adjustmessageFocusBlur);	
+	});	
 	
 	messageField.addEventListener('change', function() { 
 		self.monitorGuid();
@@ -246,12 +246,7 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 	});
 	
 	self.addEventListener('close', function(e) {
-		Ti.App.removeEventListener('orientdisplay', adjustmessageFocued);
-		Ti.App.removeEventListener('orientdisplay', adjustmessageField);
-		Ti.App.removeEventListener('orientdisplay', adjustsendLabel);
-		Ti.App.removeEventListener('orientdisplay', adjustleftView);
-		Ti.App.removeEventListener('orientdisplay', adjustscrollingView);
-		Ti.App.removeEventListener('orientdisplay', adjustmessageFocusBlur);
+		Ti.App.removeEventListener('orientdisplay', updateDisplay);
 	});
 
 	

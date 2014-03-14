@@ -3,7 +3,10 @@ var CreateAccountWin = function() {
 	var StandardWindow = require('ui/common/StandardWindow');
 	var self = new StandardWindow('Create Account', '');
 	
-
+	var updateDisplay = function() {
+		self.fireEvent('reorientdisplay');
+	};
+	Ti.App.addEventListener('orientdisplay', updateDisplay);
 
 	var BackButton = require('ui/common/baseui/BackButton');
 	var backButton = new BackButton(self);
@@ -283,7 +286,7 @@ var CreateAccountWin = function() {
 	});
 	scrollingView.add(createButton);
 	
-	Ti.App.addEventListener('orientdisplay', function(evt) {
+	self.addEventListener('reorientdisplay', function(evt) {
 		createButton.width = (Ti.Platform.displayCaps.platformWidth-50);
 	});
 	
@@ -427,6 +430,10 @@ var CreateAccountWin = function() {
 		getSignUpReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");
 		getSignUpReq.send(JSON.stringify(curReg));
 	}
+
+	self.addEventListener('close', function(e) {
+		Ti.App.removeEventListener('orientdisplay', updateDisplay);
+	});	
 
 	return self;
 };
