@@ -5,6 +5,11 @@ var LoginWin = function() {
 	self.setNavBarHidden(true);
 	var majorVersion = Ti.Platform.version.split('.')[0];
 	
+	var updateDisplay = function() {
+		self.fireEvent('reorientdisplay');
+	};
+	Ti.App.addEventListener('orientdisplay', updateDisplay);
+	
 	
 	var scrollView = Ti.UI.createScrollView({
 		top: 20,
@@ -13,11 +18,16 @@ var LoginWin = function() {
 		showHorizontalScrollIndicator : false,
 		height: Ti.Platform.displayCaps.platformHeight-20
 	});
-	if (majorVersion === 6) {
+	if ((utm.iPad || utm.iPhone) && majorVersion === 6) {
 		scrollView.setTop(0);
 		scrollView.setHeight(Ti.Platform.displayCaps.platformHeight);
 	}
 	self.add(scrollView);
+	
+	self.addEventListener('reorientdisplay', function(evt) {
+		scrollView.height = Ti.Platform.displayCaps.platformHeight-20;
+	});	
+	
 	var view = Ti.UI.createView({
 		layout: 'vertical'
 	});
@@ -29,12 +39,18 @@ var LoginWin = function() {
 		height: '71dp',
 		top: (Ti.Platform.displayCaps.platformHeight-160-280)/2 //Math.round(Ti.Platform.displayCaps.platformHeight*0.055)
 	});
+		
 	if (utm.iPhone && majorVersion === 6) {
 		utmLogo.setTop(utmLogo.getTop()-80);
 	} else if (utm.Android) {
 		utmLogo.setTop(0);
 	}
 	view.add(utmLogo);
+	
+	self.addEventListener('reorientdisplay', function(evt) {
+		utmLogo.top = (Ti.Platform.displayCaps.platformHeight-160-280)/2;
+	});	
+	
 	
 	var username = Ti.UI.createTextField({
 		color: utm.textFieldColor,		
@@ -67,6 +83,10 @@ var LoginWin = function() {
 		username.remove(usernameFocued);
 	});
 	view.add(username);
+	
+	self.addEventListener('reorientdisplay', function(evt) {
+		username.width = Math.min(235*utm.sizeMultiplier,Math.round(Ti.Platform.displayCaps.platformWidth*0.82));
+	});
 	
 	var password = Ti.UI.createTextField({
 		color: utm.textFieldColor,
@@ -104,6 +124,10 @@ var LoginWin = function() {
 	});
 	view.add(password);
 	
+	self.addEventListener('reorientdisplay', function(evt) {
+		password.width = Math.min(235*utm.sizeMultiplier,Math.round(Ti.Platform.displayCaps.platformWidth*0.82));
+	});	
+	
 	
 	var loginBtn = Ti.UI.createButton({
 		title: L('login'),
@@ -118,6 +142,9 @@ var LoginWin = function() {
 	});
 	view.add(loginBtn);
 	
+	self.addEventListener('reorientdisplay', function(evt) {
+		loginBtn.width = Math.min(235*utm.sizeMultiplier,Math.round(Ti.Platform.displayCaps.platformWidth*0.82));
+	});	
 	
 	var forgotPassword = Ti.UI.createLabel({
 	  color: utm.secondaryTextColor,		
@@ -320,7 +347,9 @@ var LoginWin = function() {
 		aHeight.push(self.rect.height);
 	});
 	
-	
+	self.addEventListener('reorientdisplay', function(evt) {
+		aHeight.push(self.rect.height);
+	});	
 	
 	self.addEventListener('android:back',function(){
 		utm.navController.close(self,{animated:false});			
@@ -566,6 +595,10 @@ var LoginWin = function() {
 	
 
 	*/
+
+	self.addEventListener('close', function(e) {
+		Ti.App.removeEventListener('orientdisplay', updateDisplay);
+	});	
 
 	return self;
 };

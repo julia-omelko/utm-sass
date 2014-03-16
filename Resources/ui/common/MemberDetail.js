@@ -43,6 +43,11 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 		contentHeight: 'auto',
 		layout: 'vertical'
 	});
+	
+	self.addEventListener('reorientdisplay', function(evt) {
+		scrollingView.height = utm.viewableArea - ((40*2*utm.sizeMultiplier)+30);
+	});
+	
 	if (utm.Android) {
 		scrollingView.setHeight(utm.viewableArea - ((40*2*utm.sizeMultiplier)+30) - utm.keyboardHeight);
 	}
@@ -140,6 +145,11 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 		top: 10
 	});
 	scrollingView.add(tableView);
+	
+	self.addEventListener('reorientdisplay', function(evt) {
+		tableView.height = utm.viewableArea - 253;
+	});
+	
 	var tableData = [];
 	
 	

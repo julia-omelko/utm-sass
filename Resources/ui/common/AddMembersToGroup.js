@@ -8,6 +8,11 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	
 	var StandardWindow = require('ui/common/StandardWindow');
 	var self = new StandardWindow('Add Members to Group', true);
+	
+	var updateDisplay = function() {
+		self.fireEvent('reorientdisplay');
+	};
+	Ti.App.addEventListener('orientdisplay', updateDisplay);
 
 	var BackButton = require('ui/common/baseui/BackButton');
 	var backButton = new BackButton(self);
@@ -18,6 +23,11 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		top: utm.viewableTop
 	});
 	self.add(tableView);
+	
+	self.addEventListener('reorientdisplay', function(evt) {
+		tableView.height = utm.viewableArea - ((40*utm.sizeMultiplier)+30) - (40*utm.sizeMultiplier);
+	});	
+	
 	tableView.addEventListener('click',function(e){
 		if (e.source.toString() === '[object TableViewRow]' || e.source.toString() === '[object TiUITableViewRow]') {
 			e.source.setHasCheck((e.source.getHasCheck() ? false : true));
@@ -131,7 +141,6 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	invisibleView.add(invisibleSwitch);
 	self.add(invisibleView);
 	
-	
 	var StandardButton = require('/ui/common/baseui/StandardButton');
 	var saveButton = new StandardButton({title:'Add to group'});
 	saveButton.addEventListener('click', function() {
@@ -188,6 +197,9 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		}
 	}
 
+	self.addEventListener('close', function(e) {
+		Ti.App.removeEventListener('orientdisplay', updateDisplay);
+	});	
 	
 	return self;
 };
