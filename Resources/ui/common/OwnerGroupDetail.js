@@ -122,6 +122,11 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		top: utm.viewableTop+(37*utm.sizeMultiplier)
 	});
 	self.add(tableView);
+	
+	self.addEventListener('reorientdisplay', function(evt) {
+		tableView.height = utm.viewableArea - ((37*utm.sizeMultiplier)+((40*2*utm.sizeMultiplier)+30));
+	});	
+	
 	tableView.addEventListener('click',function(e){
 		if (e.source.memberData != null) {
 			//if (e.source.memberData.InviteCode != null) {

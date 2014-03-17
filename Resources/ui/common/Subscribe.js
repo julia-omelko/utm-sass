@@ -21,6 +21,10 @@ var SettingsWin = function(_tabGroup) {
 		width: Ti.UI.FILL
 	});
 	self.add(scrollingView);
+	
+	self.addEventListener('reorientdisplay', function(evt) {
+		scrollingView.height = utm.viewableArea;
+	});	
 
 	var instructionLbl = Ti.UI.createLabel({ 
 		top: 15,

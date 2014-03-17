@@ -3,6 +3,11 @@ var MessageGroupMembersWin = function(_tabGroup,_myHortData) {
 	var StandardWindow = require('ui/common/StandardWindow');
 	var self = new StandardWindow('Choose Recipients', true);
 
+	var updateDisplay = function() {
+		self.fireEvent('reorientdisplay');
+	};
+	Ti.App.addEventListener('orientdisplay', updateDisplay);
+
 	var BackButton = require('ui/common/baseui/BackButton');
 	var backButton = new BackButton(self);
 	self.setLeftNavButton(backButton);
@@ -32,6 +37,12 @@ var MessageGroupMembersWin = function(_tabGroup,_myHortData) {
 		top: utm.viewableTop
 	});
 	self.add(memberTableView);
+	
+	self.addEventListener('reorientdisplay', function(evt) {
+		memberTableView.height = utm.viewableArea - ((40*utm.sizeMultiplier)+20);
+		memberTableView.top = utm.viewableTop;
+	});	
+	
 	memberTableView.addEventListener('click',function(e){
 		if (e.source.toString() === '[object TableViewRow]' || e.source.toString() === '[object TiUITableViewRow]') {
 			e.source.setHasCheck((e.source.getHasCheck() ? false : true));
@@ -163,7 +174,10 @@ var MessageGroupMembersWin = function(_tabGroup,_myHortData) {
 		self.add(aSelectAllButton);
 		memberTableView.setHeight(utm.viewableArea - ((2*(40*utm.sizeMultiplier))+30));
 	}
-	
+
+	self.addEventListener('close', function(e) {
+		Ti.App.removeEventListener('orientdisplay', updateDisplay);
+	});	
 	
 	return self;
 };

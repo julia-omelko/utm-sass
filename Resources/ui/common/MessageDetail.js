@@ -22,7 +22,7 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 	
 	var scrollingView = Ti.UI.createScrollView({
 		width: Ti.UI.FILL,
-		height: ((_messageData.mode !== 'sent') ? utm.viewableArea - 60 : utm.viewableArea),
+		height: utm.viewableArea - 60,
 		top: utm.viewableTop,
 		scrollType: 'vertical',
 		showVerticalScrollIndicator: true,
@@ -30,6 +30,10 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 		layout:'vertical'
 	});
 	self.add(scrollingView);
+
+	self.addEventListener('reorientdisplay', function(evt) {
+		scrollingView.height = utm.viewableArea - 60;	
+	});
 	
 	var userView = Ti.UI.createView({
 		width: Ti.Platform.displayCaps.platformWidth-50,
@@ -37,6 +41,10 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 		height: Ti.UI.SIZE
 	});
 	scrollingView.add(userView);
+	
+	self.addEventListener('reorientdisplay', function(evt) {
+		userView.width = Ti.Platform.displayCaps.platformWidth-50;	
+	});	
 	
 	var avatar = Ti.UI.createImageView({
 		top: 25,

@@ -3,6 +3,11 @@ var MessageMembersWin = function(_tabGroup) {
 	
 	var StandardWindow = require('ui/common/StandardWindow');
 	var self = new StandardWindow('Choose Recipients', true);
+	
+	var updateDisplay = function() {
+		self.fireEvent('reorientdisplay');
+	};
+	Ti.App.addEventListener('orientdisplay', updateDisplay);
 
 	var BackButton = require('ui/common/baseui/BackButton');
 	var backButton = new BackButton(self);
@@ -31,9 +36,9 @@ var MessageMembersWin = function(_tabGroup) {
 	});
 	tabBar.add(membersButton);
 	
-	Ti.App.addEventListener('orientdisplay', function(evt) {
-			membersButton.width = Math.round(Ti.Platform.displayCaps.platformWidth * 0.5);
-	});	
+	self.addEventListener('reorientdisplay', function(evt) {
+		membersButton.width = Math.round(Ti.Platform.displayCaps.platformWidth * 0.5);
+	});
 	
 	var groupsButton = Ti.UI.createLabel({
 		text: 'groups',
@@ -48,8 +53,8 @@ var MessageMembersWin = function(_tabGroup) {
 	});
 	tabBar.add(groupsButton);
 	
-	Ti.App.addEventListener('orientdisplay', function(evt) {
-			groupsButton.width = Math.round(Ti.Platform.displayCaps.platformWidth * 0.5);
+	self.addEventListener('reorientdisplay', function(evt) {
+		groupsButton.width = Math.round(Ti.Platform.displayCaps.platformWidth * 0.5);
 	});	
 	
 	membersButton.addEventListener('click', function(e){
@@ -78,6 +83,11 @@ var MessageMembersWin = function(_tabGroup) {
 		top: utm.viewableTop + (37*utm.sizeMultiplier)
 	});
 	self.add(memberTableView);
+
+	self.addEventListener('reorientdisplay', function(evt) {
+		memberTableView.height = utm.viewableArea - ((40*utm.sizeMultiplier)+20) - (37*utm.sizeMultiplier);
+	});		
+
 	memberTableView.addEventListener('click',function(e){
 		
 		if (e.source.toString() === '[object TableViewRow]' || e.source.toString() === '[object TiUITableViewRow]') {
@@ -91,6 +101,11 @@ var MessageMembersWin = function(_tabGroup) {
 		height: utm.viewableArea - (37*utm.sizeMultiplier),
 		top: utm.viewableTop + (37*utm.sizeMultiplier)
 	});
+	
+	self.addEventListener('reorientdisplay', function(evt) {
+		groupTableView.height = utm.viewableArea - (37*utm.sizeMultiplier);
+	});	
+	
 	groupTableView.addEventListener('click',function(e){
 		var MessageGroupMembersWin = require('/ui/common/MessageGroupMembers');
 		var messageGroupMembersWin = new MessageGroupMembersWin(_tabGroup, e.rowData.groupData);
@@ -252,7 +267,9 @@ var MessageMembersWin = function(_tabGroup) {
 	});	
 	self.add(composeButton);
 	
-	
+	self.addEventListener('close', function(e) {
+		Ti.App.removeEventListener('orientdisplay', updateDisplay);
+	});		
 	
 	return self;
 };

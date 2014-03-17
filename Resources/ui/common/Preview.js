@@ -142,6 +142,10 @@ var PreviewWin = function(_tabGroup,_message) {
 	});
 	self.add(scrollingView);
 	
+	self.addEventListener('reorientdisplay', function(evt) {
+		scrollingView.height = utm.viewableArea - ((40*2*utm.sizeMultiplier)+30);
+	});
+	
 	var topView = Ti.UI.createView({
 		width: '100%',
 		height: Ti.UI.SIZE,

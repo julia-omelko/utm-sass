@@ -114,6 +114,11 @@ var MessagesWin = function(_tabGroup) {
 		top: utm.viewableTop + (37 * utm.sizeMultiplier),
 		refreshControl: ((utm.iPad || utm.iPhone) ? refreshControl : null)
 	});
+	
+	self.addEventListener('reorientdisplay', function(evt) {
+		tableView.heght = utm.viewableArea - (37 * utm.sizeMultiplier) - utm.viewableTabHeight;
+	});	
+	
 	if (utm.Android) {
 		tableView.setHeight(utm.viewableArea - (37 * utm.sizeMultiplier)  - utm.viewableTabHeight - ((40 * utm.sizeMultiplier)+20));
 	}

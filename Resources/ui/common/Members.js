@@ -5,6 +5,11 @@ var MembersWin = function(_tabGroup) {
 	var StandardWindow = require('ui/common/StandardWindow');
 	var self = new StandardWindow('Members', true);
 	
+	var updateDisplay = function() {
+		self.fireEvent('reorientdisplay');
+	};
+	Ti.App.addEventListener('orientdisplay', updateDisplay);	
+	
 	var scrollView = Ti.UI.createScrollView({
 		top: utm.viewableTop,
 		scrollType : 'vertical',
@@ -13,6 +18,10 @@ var MembersWin = function(_tabGroup) {
 		height: utm.viewableArea
 	});
 	self.add(scrollView);
+	
+	self.addEventListener('reorientdisplay', function(evt) {
+		scrollView.height = utm.viewableArea;
+	});	
 
 	var editButton = Ti.UI.createLabel({
 		text: 'Edit',
@@ -63,6 +72,10 @@ var MembersWin = function(_tabGroup) {
 		refreshControl: ((utm.iPad || utm.iPhone) ? refreshControl : null)
 	});
 	self.add(tableView);
+	
+	self.addEventListener('reorientdisplay', function(evt) {
+		tableView.height = utm.viewableArea - utm.viewableTabHeight;
+	});		
 	
 	tableView.addEventListener('click',function(e){
 		if (e.source.memberData != null) {
@@ -263,7 +276,9 @@ var MembersWin = function(_tabGroup) {
 	loadMyHortDetail();
 
 	
-	
+	self.addEventListener('close', function(e) {
+		Ti.App.removeEventListener('orientdisplay', updateDisplay);
+	});	
 
 
 	return self;
