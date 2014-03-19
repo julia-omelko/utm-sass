@@ -167,7 +167,7 @@ var LoginWin = function() {
 	var versionLabel = Ti.UI.createLabel({
 		color: utm.textColor,	
 		font: {fontFamily: utm.fontFamily, fontSize:'14dp' },
-		text: Ti.App.version + ' beta2',
+		text: Ti.App.version,
 		textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
 		top: 10,
 		width: Ti.UI.SIZE, 
