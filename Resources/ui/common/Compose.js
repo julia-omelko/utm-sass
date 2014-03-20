@@ -25,10 +25,10 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 		height: utm.viewableArea - ((40*utm.sizeMultiplier)+20),
 		scrollType: 'vertical',
 		showVerticalScrollIndicator: true,
-		contentHeight: 'auto',
+//		contentHeight: 'auto',
 		layout: 'vertical',
-		top: utm.viewableTop,
-		contentHeight: Ti.Platform.displayCaps.platformHeight*2
+		top: utm.viewableTop
+//		contentHeight: Ti.Platform.displayCaps.platformHeight*2
 	});
 	self.add(scrollingView);	
 	
