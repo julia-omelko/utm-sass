@@ -9,6 +9,11 @@ var SettingsWin = function(_tabGroup) {
 	
 	var StandardWindow = require('ui/common/StandardWindow');
 	var self = new StandardWindow('Set Unlock Code', '');
+	
+	var updateDisplay = function() {
+		self.fireEvent('reorientdisplay');
+	};
+	Ti.App.addEventListener('orientdisplay', updateDisplay);	
 
 	var BackButton = require('ui/common/baseui/BackButton');
 	var backButton = new BackButton(self);
@@ -26,19 +31,32 @@ var SettingsWin = function(_tabGroup) {
 	var scrollingView = Ti.UI.createScrollView({
 		layout : 'vertical',
 		height: utm.viewableArea,
+		width: Ti.Platform.displayCaps.platformWidth,
 		contentHeight: utm.viewableArea+80,
 		top: utm.viewableTop
 	});
-	self.add(scrollingView);
+	self.add(scrollingView);	
 
 	var gapWidth = 20;
 	var sizeModifier = (utm.Android ? 8 : 6);
 	var platformWidth = Ti.Platform.displayCaps.platformWidth;
 	
+	self.addEventListener('reorientdisplay', function(evt) {
+		scrollingView.height = utm.viewableArea;
+		scrollingView.width = Ti.Platform.displayCaps.platformWidth;
+		platformWidth = Ti.Platform.displayCaps.platformWidth;
+	});
+	
+	if(Ti.Platform.displayCaps.platformWidth < Ti.Platform.displayCaps.platformHeight) {
+		var boxSize = Ti.Platform.displayCaps.platformWidth;
+	} else {
+		var boxSize = Ti.Platform.displayCaps.platformHeight;
+	}
+	
 	var passwordDefault = {
 		color: '#000000',
-		width: Math.round(Ti.Platform.displayCaps.platformWidth/sizeModifier),
-		height: Math.round(Ti.Platform.displayCaps.platformWidth/sizeModifier),
+		width: Math.round(boxSize/sizeModifier),
+		height: Math.round(boxSize/sizeModifier),
 		font: {
 			fontFamily: 'Helvetica Neue',
 			fontWeight: 'bold',
@@ -50,6 +68,7 @@ var SettingsWin = function(_tabGroup) {
 		borderWidth: 1*utm.sizeMultiplier,
 		top: 2
 	};
+	
 	
 	var passwordHiddenBoxDefault = {
 		color: 'white',
@@ -63,7 +82,11 @@ var SettingsWin = function(_tabGroup) {
 		borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
 		keyboardType: Ti.UI.KEYBOARD_NUMBER_PAD,
 		returnKeyType: Ti.UI.RETURNKEY_DEFAULT
-	};	
+	};
+	
+	self.addEventListener('reorientdisplay', function(evt) {
+		passwordHiddenBoxDefault.width = Ti.Platform.displayCaps.platformWidth;
+	});	
 	
 	var password = new Array();
  	password[0] = Ti.UI.createLabel(passwordDefault);
@@ -74,18 +97,27 @@ var SettingsWin = function(_tabGroup) {
 	password[5] = Ti.UI.createLabel(passwordDefault);
 	password[6] = Ti.UI.createLabel(passwordDefault);
 	password[7] = Ti.UI.createLabel(passwordDefault);
-	passwordHiddenBox = Ti.UI.createTextField(passwordHiddenBoxDefault);	
-	
-	password[0].left = (platformWidth/2)-(gapWidth/2+gapWidth)-2*passwordDefault.width;
-	password[1].left = (platformWidth/2)-(gapWidth/2)-passwordDefault.width;
-	password[2].left = (platformWidth/2)+(gapWidth/2);
-	password[3].left = (platformWidth/2)+(gapWidth/2+gapWidth)+passwordDefault.width;
-	password[4].left = (platformWidth/2)-(gapWidth/2+gapWidth)-2*passwordDefault.width;
-	password[5].left = (platformWidth/2)-(gapWidth/2)-passwordDefault.width;
-	password[6].left = (platformWidth/2)+(gapWidth/2);
-	password[7].left = (platformWidth/2)+(gapWidth/2+gapWidth)+passwordDefault.width;
-	password[0].setBorderWidth(3);
+	passwordHiddenBox = Ti.UI.createTextField(passwordHiddenBoxDefault);
 
+	
+	function passwordLeft() {
+		password[0].left = (platformWidth/2)-(gapWidth/2+gapWidth)-2*passwordDefault.width;
+		password[1].left = (platformWidth/2)-(gapWidth/2)-passwordDefault.width;
+		password[2].left = (platformWidth/2)+(gapWidth/2);
+		password[3].left = (platformWidth/2)+(gapWidth/2+gapWidth)+passwordDefault.width;
+		password[4].left = (platformWidth/2)-(gapWidth/2+gapWidth)-2*passwordDefault.width;
+		password[5].left = (platformWidth/2)-(gapWidth/2)-passwordDefault.width;
+		password[6].left = (platformWidth/2)+(gapWidth/2);
+		password[7].left = (platformWidth/2)+(gapWidth/2+gapWidth)+passwordDefault.width;
+		password[0].setBorderWidth(3);
+	};
+	
+	passwordLeft();
+	
+	self.addEventListener('reorientdisplay', function(evt) {
+		passwordLeft();
+	});	
+	
 	var pinLabel = Ti.UI.createLabel({
 		top: 15,
 		left: 25,
@@ -99,14 +131,15 @@ var SettingsWin = function(_tabGroup) {
 	
 	var firstCode = Ti.UI.createView({
 		width: Ti.UI.FILL,
-		height: Math.round(Ti.Platform.displayCaps.platformWidth/sizeModifier)+4,
+		height: Math.round(boxSize/sizeModifier)+4,
 		top: 10
 	});
 	firstCode.add(password[0]);
 	firstCode.add(password[1]);
 	firstCode.add(password[2]);
 	firstCode.add(password[3]);
-	scrollingView.add(firstCode);	
+	scrollingView.add(firstCode);
+
 		
 	var pinConfirmLabel = Ti.UI.createLabel({
 		text: 'Confirm your unlock code',
@@ -121,14 +154,15 @@ var SettingsWin = function(_tabGroup) {
 	
 	var secondCode = Ti.UI.createView({
 		width: Ti.UI.FILL,
-		height: Math.round(Ti.Platform.displayCaps.platformWidth/sizeModifier)+4,
+		height: Math.round(boxSize/sizeModifier)+4,
 		top: 10
 	});
 	secondCode.add(password[4]);
 	secondCode.add(password[5]);
 	secondCode.add(password[6]);
 	secondCode.add(password[7]);
-	scrollingView.add(secondCode);	
+	scrollingView.add(secondCode);
+
 	
 	self.add(passwordHiddenBox);
 		
@@ -166,6 +200,10 @@ var SettingsWin = function(_tabGroup) {
 		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
 	});	
 	scrollingView.add(saveButton);
+
+	self.addEventListener('reorientdisplay', function(evt) {
+		saveButton.width = (Ti.Platform.displayCaps.platformWidth-50);
+	});	
 	
 	if (utm.Android) {
 		var clearButton = Ti.UI.createButton({
@@ -254,6 +292,9 @@ var SettingsWin = function(_tabGroup) {
 		});
 	};
 	
+	self.addEventListener('close', function(e) {
+		Ti.App.removeEventListener('orientdisplay', updateDisplay);
+	});
 
 	return self;
 };
