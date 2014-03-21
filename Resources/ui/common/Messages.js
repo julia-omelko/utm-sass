@@ -116,7 +116,7 @@ var MessagesWin = function(_tabGroup) {
 	});
 	
 	self.addEventListener('reorientdisplay', function(evt) {
-		tableView.heght = utm.viewableArea - (37 * utm.sizeMultiplier) - utm.viewableTabHeight;
+		tableView.height = utm.viewableArea - (37 * utm.sizeMultiplier) - utm.viewableTabHeight;
 	});	
 	
 	if (utm.Android) {
