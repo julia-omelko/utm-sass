@@ -44,6 +44,11 @@ exports.loadWindow = function(params) {
 
     win = Ti.UI.createWindow(params.mainWindow || winDefault);
 
+	var updateDisplay = function() {
+		win.fireEvent('reorientdisplay');
+	};
+	Ti.App.addEventListener('orientdisplay', updateDisplay);	
+
     var layout = new exports.layout(params);
 
     win.add(layout);
@@ -60,6 +65,10 @@ exports.loadWindow = function(params) {
     	//activity.finish();
     });
 
+	win.addEventListener('close', function(e) {
+		Ti.App.removeEventListener('orientdisplay', updateDisplay);
+	});
+
     return win;
 };
 
@@ -72,9 +81,9 @@ exports.layout = function(params) {
     var timeOutMilliseconds = params.configLockScreen.timeOut;
     var timeOutMultiplier = params.configLockScreen.timeOutMultiplier || 0;
     var attempts = 0;
-    var platformWidth = Ti.Platform.displayCaps.platformWidth;
-    var gapWidth = params.passwordBox.gapWidth || 20;
-
+//    var platformWidth = Ti.Platform.displayCaps.platformWidth;
+    var gapWidth = params.passwordBox.gapWidth || 20; 
+    
     var messageBoxDefault = {
         text: 'Enter unlock code',
         height: Ti.UI.SIZE,
@@ -89,11 +98,17 @@ exports.layout = function(params) {
         textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER
     };
 
+	if(Ti.Platform.displayCaps.platformWidth < Ti.Platform.displayCaps.platformHeight) {
+		var boxSize = Ti.Platform.displayCaps.platformWidth;
+	} else {
+		var boxSize = Ti.Platform.displayCaps.platformHeight;
+	}
+
     var passwordDefault = {
         color: '#000000',
         top: 15,
-        width: Math.round(Ti.Platform.displayCaps.platformWidth/6),
-        height: Math.round(Ti.Platform.displayCaps.platformWidth/6),
+        width: Math.round(boxSize/6),
+        height: Math.round(boxSize/6),
         passwordMask: true,
         font: {
             fontFamily: utm.fontFamily,
@@ -112,7 +127,7 @@ exports.layout = function(params) {
     var passwordHiddenBoxDefault = {
         color: 'white',
         height: 20,
-        width: platformWidth,
+        width: Ti.Platform.displayCaps.platformWidth,
         top: ((Ti.Platform.osname === 'android') ? -100 : 0),
         left: 0,
         passwordMask: true,
@@ -122,6 +137,11 @@ exports.layout = function(params) {
         keyboardType: Ti.UI.KEYBOARD_NUMBER_PAD,
         returnKeyType: Ti.UI.RETURNKEY_DEFAULT
     };
+    
+	win.addEventListener('reorientdisplay', function(evt) {
+		passwordHiddenBoxDefault.width = Ti.Platform.displayCaps.platformWidth;
+	});
+   
     if (Ti.Platform.osname === 'android') {
         passwordHiddenBoxDefault.softKeyboardOnFocus = Ti.UI.Android.SOFT_KEYBOARD_SHOW_ON_FOCUS;
     }
@@ -129,7 +149,7 @@ exports.layout = function(params) {
     var timeOutBoxDefault = {
         text: timeOutSeconds,
         height: params.timeOutBox.height || 65,
-        width: params.timeOutBox.width || platformWidth-20,
+        width: params.timeOutBox.width || Ti.Platform.displayCaps.platformWidth-20,
         top: params.timeOutBox.top || 185,
         left: params.timeOutBox.left || 10,
         color: params.timeOutBox.color || '#ffffff',
@@ -142,6 +162,10 @@ exports.layout = function(params) {
         textAlign: params.timeOutBox.textAlign || 'center'
     };
 
+	win.addEventListener('reorientdisplay', function(evt) {
+		timeOutBoxDefault.width = Ti.Platform.displayCaps.platformWidth-20;
+	});
+
     if(utm.Android){
         var wrapper = Ti.UI.createScrollView({
         scrollType: 'vertical',
@@ -152,6 +176,7 @@ exports.layout = function(params) {
         var wrapper = Ti.UI.createScrollView({
 	        showVerticalScrollIndicator : true,
 	        showHorizontalScrollIndicator : false,
+	        width : Ti.Platform.displayCaps.platformWidth,
 	        layout: 'vertical'
         });
     }
@@ -172,17 +197,21 @@ exports.layout = function(params) {
         passwordHiddenBox = Ti.UI.createTextField(passwordHiddenBoxDefault),
         timeOutBox = Ti.UI.createLabel(timeOutBoxDefault);
 
-    password1.left = (platformWidth/2)-(gapWidth/2+gapWidth)-2*passwordDefault.width;
-    password2.left = (platformWidth/2)-(gapWidth/2)-passwordDefault.width;
-    password3.left = (platformWidth/2)+(gapWidth/2);
-    password4.left = (platformWidth/2)+(gapWidth/2+gapWidth)+passwordDefault.width;
+    function passwordLeft() {
+	    password1.left = (Ti.Platform.displayCaps.platformWidth/2)-(gapWidth/2+gapWidth)-2*passwordDefault.width;
+	    password2.left = (Ti.Platform.displayCaps.platformWidth/2)-(gapWidth/2)-passwordDefault.width;
+	    password3.left = (Ti.Platform.displayCaps.platformWidth/2)+(gapWidth/2);
+	    password4.left = (Ti.Platform.displayCaps.platformWidth/2)+(gapWidth/2+gapWidth)+passwordDefault.width;
+	};
+	 
+	passwordLeft();
 
     wrapper.add(utmLogo);
     wrapper.add(messageBox);
     
     var passwordView = Ti.UI.createView({
     	height: Ti.UI.SIZE,
-    	weight: Ti.UI.SIZE
+		width: Ti.Platform.displayCaps.platformWidth
     });
     wrapper.add(passwordView);
     
@@ -192,6 +221,12 @@ exports.layout = function(params) {
     passwordView.add(password3);
     passwordView.add(password4);
     passwordView.add(timeOutBox);
+    
+	win.addEventListener('reorientdisplay', function(evt) {
+		passwordLeft();
+		wrapper.width = Ti.Platform.displayCaps.platformWidth;
+		passwordView.width = Ti.Platform.displayCaps.platformWidth;
+	});    
 
     // get password code from hidden field
     passwordHiddenBox.addEventListener('change',function(e) {
