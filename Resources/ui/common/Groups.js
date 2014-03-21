@@ -3,6 +3,11 @@ var GroupsWin = function(_tabGroup) {
 	var StandardWindow = require('ui/common/StandardWindow');
 	var self = new StandardWindow('Groups', true);
 
+	var updateDisplay = function() {
+		self.fireEvent('reorientdisplay');
+	};
+	Ti.App.addEventListener('orientdisplay', updateDisplay);
+
 	var editButton = Ti.UI.createLabel({
 		text: 'Edit',
 		font: {fontFamily: utm.fontFamily},
@@ -39,6 +44,10 @@ var GroupsWin = function(_tabGroup) {
 		top: utm.viewableTop
 	});
 	self.add(tableView);
+
+	self.addEventListener('reorientdisplay', function(evt) {
+		tableView.height = utm.viewableArea - utm.viewableTabHeight;
+	});
 
 	tableView.addEventListener('click',function(e){
 		if (e.rowData.groupData.IsOwner) {
@@ -191,11 +200,11 @@ var GroupsWin = function(_tabGroup) {
 		deleteMyHortDetailReq.send();
 	}
 
-
-
-
 	loadMyHorts();
 
+	self.addEventListener('close', function(e) {
+		Ti.App.removeEventListener('orientdisplay', updateDisplay);
+	});	
 
 	return self;
 };
