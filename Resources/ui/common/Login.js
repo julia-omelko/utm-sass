@@ -16,7 +16,7 @@ var LoginWin = function() {
 		scrollType : 'vertical',
 		showVerticalScrollIndicator : true,
 		showHorizontalScrollIndicator : false,
-		height: Ti.Platform.displayCaps.platformHeight-20
+		height: (utm.Android ? Ti.Platform.displayCaps.platformHeight : Ti.Platform.displayCaps.platformHeight-20)
 	});
 	if ((utm.iPad || utm.iPhone) && majorVersion === 6) {
 		scrollView.setTop(0);
@@ -197,6 +197,7 @@ var LoginWin = function() {
 	
 	
 	var tableData = [];
+
 	tableData[0] = Ti.UI.createTableViewRow({
 		title: 'New to UTM? Create an account',
 		height: 35*utm.sizeMultiplier,
@@ -205,6 +206,7 @@ var LoginWin = function() {
 		color: 'black',
 		font: {fontFamily: utm.fontFamily, fontSize:'14dp' }
 	});
+
 	tableData[0].addEventListener('click', function(e){
 		if (utm.Android) {
 			utm.viewableArea = (Math.max.apply(Math, aHeight)) - utm.viewableTop;
@@ -222,6 +224,7 @@ var LoginWin = function() {
 		color: 'black',
 		font: {fontFamily: utm.fontFamily, fontSize:'14dp' }
 	});
+
 	tableData[1].addEventListener('click', function(e){
 		var WebView = require('/ui/common/WebView');
 		//var webView = new WebView('Who We Are', 'about');
@@ -236,6 +239,7 @@ var LoginWin = function() {
 		color: 'black',
 		font: {fontFamily: utm.fontFamily, fontSize:'14dp' }
 	});
+
 	tableData[2].addEventListener('click', function(e){
 		var WebView = require('/ui/common/WebView');
 		//var webView = new WebView('Privacy Policy', 'privacy');
@@ -250,6 +254,7 @@ var LoginWin = function() {
 		color: 'black',
 		font: {fontFamily: utm.fontFamily, fontSize:'14dp' }
 	});
+
 	tableData[3].addEventListener('click', function(e){
 		var WebView = require('/ui/common/WebView');
 		//var webView = new WebView('Rules of Use', 'rules');
@@ -259,14 +264,25 @@ var LoginWin = function() {
 	
 	var linkTable = Ti.UI.createTableView({
 		data: tableData,
-		bottom: 0,
+//		bottom: 0,
 		height: Ti.UI.SIZE
 	});
 	
+	var tableHeight = (35*utm.sizeMultiplier*4)+25;
+	
 	if (utm.Android) {
-		view.add(linkTable);  //Can't add table to window because Android keyboard makes window smaller, so add to view for Android
-		linkTable.setTop(40);
+		//Can't add table to window because Android keyboard makes window smaller, so add to view
+		if (Ti.Platform.displayCaps.platformHeight > 640) {
+			//Can't add table to window because Android keyboard makes window smaller, but screen is large enough to push this artifact down to bottom
+//			linkTable.setTop(Ti.Platform.displayCaps.platformHeight - tableHeight);
+			linkTable.setBottom(90);
+			scrollView.add(linkTable);
+		} else {
+			view.add(linkTable);
+		}
+
 	} else {
+		linkTable.bottom = 0;
 		self.add(linkTable);
 		if (majorVersion === 6) {
 			linkTable.setBottom(120);

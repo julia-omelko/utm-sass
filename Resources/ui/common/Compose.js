@@ -22,13 +22,13 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 	
 	var scrollingView = Ti.UI.createScrollView({
 		width: Ti.UI.FILL,
-		height: utm.viewableArea - ((40*utm.sizeMultiplier)+20),
+		height: utm.viewableArea - (utm.Android ? 0 : (40*utm.sizeMultiplier)+20),
 		scrollType: 'vertical',
 		showVerticalScrollIndicator: true,
 //		contentHeight: 'auto',
 		layout: 'vertical',
-		top: utm.viewableTop
-//		contentHeight: Ti.Platform.displayCaps.platformHeight*2
+		top: utm.viewableTop,
+		contentHeight: Ti.Platform.displayCaps.platformHeight*2
 	});
 	self.add(scrollingView);	
 	
@@ -209,24 +209,15 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 	
 
 	var StandardButton = require('/ui/common/baseui/StandardButton');
-	//if (utm.iPhone || utm.iPad) {
-		var previewBtn = new StandardButton({title:'Preview'});
-		self.add(previewBtn);
-	/*} else {
-		var previewBtn = Ti.UI.createButton({
-			title: 'Preview',
-			top: 15,
-			width: (Ti.Platform.displayCaps.platformWidth-50),
-			height: 40 * utm.sizeMultiplier,
-			borderRadius: 20 * utm.sizeMultiplier,
-			font:{fontFamily: utm.fontFamily, fontSize: utm.fontSize},
-			backgroundColor: utm.buttonColor,
-			color: 'white',
-			style: null,
-			zIndex: 1
-		});	
+	var previewBtn = new StandardButton({title:'Preview'});
+	
+	if (utm.Android) {
+	//Can't add button to window because Android keyboard makes window smaller, so add to view
+		previewBtn.top = 10;
 		scrollingView.add(previewBtn);
-	}*/
+	} else {
+		self.add(previewBtn);
+	}
 	
 	previewBtn.addEventListener('click', function() {
 		var message = {

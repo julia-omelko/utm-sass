@@ -118,7 +118,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	
 	
 	var tableView = Ti.UI.createTableView({
-		height: utm.viewableArea - ((37*utm.sizeMultiplier)+((40*2*utm.sizeMultiplier)+30)),
+		height: (utm.Android ? utm.viewableArea - (37*utm.sizeMultiplier) : utm.viewableArea - ((37*utm.sizeMultiplier)+((40*2*utm.sizeMultiplier)+30))),
 		top: utm.viewableTop+(37*utm.sizeMultiplier)
 	});
 	self.add(tableView);
@@ -143,7 +143,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	});
 	
 	var settingsView = Ti.UI.createScrollView ({
-		height: utm.viewableArea - ((37*utm.sizeMultiplier)+((40*2*utm.sizeMultiplier)+30)),
+		height: (utm.Android ? Ti.UI.SIZE : utm.viewableArea - ((37*utm.sizeMultiplier)+((40*2*utm.sizeMultiplier)+30))),
 		top: utm.viewableTop+(37*utm.sizeMultiplier),
 		showVerticalScrollIndicator:true,
 		contentHeight:'auto',
@@ -654,7 +654,16 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	deleteButton.addEventListener('click',function(e){
 		confirmDeleteMyHort();
 	});
-	self.add(deleteButton);
+	
+	
+	if (utm.Android) {
+		//Can't add button to window because Android keyboard makes window smaller, so add to view for Android
+		settingsView.add(deleteButton);
+		deleteButton.top = 10;
+		deleteButton.bottom = 0;  
+	} else {	
+		self.add(deleteButton);
+	}
 	
 	var saveButton = new StandardButton({title:(utm.Android ? 'Add members' : 'Save')});
 	saveButton.addEventListener('click', function() {
@@ -669,7 +678,14 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 			_tabGroup.getActiveTab().open(addToGroupWin);
 		}
 	});	
-	self.add(saveButton);
+	
+	if (utm.Android) {
+		//Can't add button to window because Android keyboard makes window smaller, so add to view for Android
+		settingsView.add(saveButton);
+		saveButton.top = 10;
+	} else {	  
+		self.add(saveButton);
+	}
 	
 
 	function updateMyHortData() {
@@ -780,7 +796,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	}
 	
 		// keyboard resizing
-	if (utm.Android) {
+/*	if (utm.Android) {
 		aHeight = [];
 		self.addEventListener('postlayout',function(e){
 			aHeight.push(self.rect.height);
@@ -790,7 +806,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 				settingsView.setHeight(utm.viewableArea - (37*utm.sizeMultiplier) - ((40*2*utm.sizeMultiplier)+30) - utm.keyboardHeight);
 			}
 		});
-	}
+	} */
 
 	self.addEventListener('close', function(e) {
 		Ti.App.removeEventListener('orientdisplay', updateDisplay);

@@ -13,7 +13,7 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData) {
 	self.setLeftNavButton(backButton);
 		
 	var settingsView = Ti.UI.createScrollView ({
-		height: utm.viewableArea - ((40*2*utm.sizeMultiplier)+30),
+		height: utm.viewableArea - (utm.Android ? 0: ((40*2*utm.sizeMultiplier)+30)),
 		top: utm.viewableTop,
 		showVerticalScrollIndicator:true,
 		contentHeight:'auto',
@@ -115,13 +115,29 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData) {
 	deleteButton.addEventListener('click',function(e){
 		removeFromGroup();
 	});
-	self.add(deleteButton);
+
+	if (utm.Android) {
+		//Can't add button to window because Android keyboard makes window smaller, so add to view for Android
+		settingsView.add(deleteButton);
+		deleteButton.top = 10;
+		deleteButton.bottom = 0;  
+	} else {	
+		self.add(deleteButton);
+	}
 	
 	var saveButton = new StandardButton({title:'Save'});
 	saveButton.addEventListener('click', function() {
 		updateMyHortMemberData();
 	});	
-	self.add(saveButton);
+
+	if (utm.Android) {
+		//Can't add button to window because Android keyboard makes window smaller, so add to view for Android
+		settingsView.add(saveButton);
+		saveButton.top = 10;
+		saveButton.bottom = 0;  
+	} else {	
+		self.add(saveButton);
+	}
 
 	function updateMyHortMemberData() {
 		_memberData.NickName = nicknameField.getValue();
