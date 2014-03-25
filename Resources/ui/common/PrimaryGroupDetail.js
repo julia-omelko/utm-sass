@@ -29,7 +29,7 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 	
 	
 	var settingsView = Ti.UI.createScrollView ({
-		height: utm.viewableArea - (utm.Android ? 0 : (40*utm.sizeMultiplier)-20),
+		height: utm.viewableArea - (utm.Android ? 0 : ((40*utm.sizeMultiplier)+20)),
 		top: utm.viewableTop,
 		showVerticalScrollIndicator:true,
 		contentHeight:'auto',
