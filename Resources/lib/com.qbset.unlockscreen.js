@@ -116,7 +116,7 @@ exports.layout = function(params) {
             fontSize: 25
         },
         textAlign: 'center',
-        touchEnabled: true,
+        touchEnabled: false,
         borderRadius: 4,
         borderWidth: 1,
         borderColor: utm.barColor,
@@ -217,6 +217,7 @@ exports.layout = function(params) {
     
     passwordView.add(passwordHiddenBox);
     passwordView.add(password1);
+    password1.setBorderWidth(3);
     passwordView.add(password2);
     passwordView.add(password3);
     passwordView.add(password4);
@@ -232,29 +233,49 @@ exports.layout = function(params) {
     passwordHiddenBox.addEventListener('change',function(e) {
         if(e.value.length <= 0) {
             password1.value = '';
+            password1.setBorderWidth(3);
             password2.value = '';
+            password2.setBorderWidth(1);
             password3.value = '';
+            password3.setBorderWidth(1);
             password4.value = '';
+            password4.setBorderWidth(1);
         } else if (e.value.length == 1) {
             password1.value = '*';
+            password1.setBorderWidth(1);
             password2.value = '';
+            password2.setBorderWidth(3);
             password3.value = '';
+            password3.setBorderWidth(1);
             password4.value = '';
+            password4.setBorderWidth(1);
         } else if (e.value.length == 2) {
             password1.value = '*';
+            password1.setBorderWidth(1);
             password2.value = '*';
+            password2.setBorderWidth(1);
             password3.value = '';
+            password3.setBorderWidth(3);
             password4.value = '';
+            password4.setBorderWidth(1);
         } else if (e.value.length == 3) {
             password1.value = '*';
+            password1.setBorderWidth(1);
             password2.value = '*';
+            password2.setBorderWidth(1);
             password3.value = '*';
+            password3.setBorderWidth(1);
             password4.value = '';
+            password4.setBorderWidth(3);
         } else if (e.value.length == 4) {
             password1.value = '*';
+            password1.setBorderWidth(1);
             password2.value = '*';
+            password2.setBorderWidth(1);
             password3.value = '*';
+            password3.setBorderWidth(1);
             password4.value = '*';
+            password4.setBorderWidth(1);
 
             if (params.configLockScreen.passCode.length !== 4) {
                 e.value = Ti.Utils.sha256(e.value);
@@ -374,13 +395,33 @@ exports.layout = function(params) {
         passwordHiddenBox.focus();
     });
     password1.addEventListener('click', function() {
-        passwordHiddenBox.focus();
+    	passwordHiddenBox.focus();
     });
     if (Ti.Platform.osname === 'android') {
         win.addEventListener('open', function() {
             passwordHiddenBox.focus();
         });
     }
+    
+    // if keyboard was closed then opend, focus is lost on box and input is gone, so re-set display
+	var setInputBox = function() {
+            password1.value = '';
+            password1.setBorderWidth(3);
+            password2.value = '';
+            password2.setBorderWidth(1);
+            password3.value = '';
+            password3.setBorderWidth(1);
+            password4.value = '';
+            password4.setBorderWidth(1);
+	};
+
+	Ti.App.addEventListener('keyboardframechanged', setInputBox);
+	
+	//clean up Ti.AppEventListener when window closes
+	win.addEventListener('close', function(e) {
+		Ti.App.removeEventListener('keyboardframechanged', setInputBox);
+	});
+
 
     return wrapper;
 };
