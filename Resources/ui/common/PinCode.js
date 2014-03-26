@@ -197,6 +197,7 @@ var SettingsWin = function(_tabGroup) {
 		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
 		backgroundColor: utm.buttonColor,
 		color: 'white',
+		enabled : false,
 		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
 	});	
 	scrollingView.add(saveButton);
@@ -292,7 +293,21 @@ var SettingsWin = function(_tabGroup) {
 		});
 	};
 	
+	// if keyboard was closed then opend, focus is lost on box and input is gone, so re-set display
+	var setInputBox = function() {
+		for (var i=7;i>=0;i--) {
+			password[i].setText('');
+			password[i].setBorderWidth(1*utm.sizeMultiplier);
+		}
+            password[0].setBorderWidth(3*utm.sizeMultiplier);            
+
+	};
+
+	Ti.App.addEventListener('keyboardframechanged', setInputBox);
+	
+	//clean up Ti.AppEventListeners when window closes
 	self.addEventListener('close', function(e) {
+		Ti.App.removeEventListener('keyboardframechanged', setInputBox);
 		Ti.App.removeEventListener('orientdisplay', updateDisplay);
 	});
 
