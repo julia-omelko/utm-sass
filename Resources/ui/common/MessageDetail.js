@@ -57,7 +57,7 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 		});
 		self.add(avatarHolder);
 		var aAvatar = new Array();
-		for (var i=0; i<Math.min(_messageData.ToAvatars.length,3); i++) {
+		for (var i=0; i<Math.min(_messageData.ToAvatars.split(',').length,3); i++) {
 			aAvatar[i] = Ti.UI.createImageView({
 				left: ((i === 1) ? 2 * utm.sizeMultiplier : 0),
 				top: ((i === 2) ? 2 * utm.sizeMultiplier : 0),
