@@ -6,7 +6,7 @@ function ApplicationTabGroup() {
 	});
 	utm.winStack = [];
 	
-	if (utm.Android && (Ti.Platform.displayCaps.density === 'xhigh' || Ti.Platform.displayCaps.density === 'xxhigh')) {
+	if (utm.Android && (Ti.Platform.displayCaps.density === 'high' || Ti.Platform.displayCaps.density === 'xhigh' || Ti.Platform.displayCaps.density === 'xxhigh')) {
 		var aTitle = [null,null,null,null,null];
 	} else {
 		var aTitle = ['Messages','Members','Groups','Settings','Logout'];
