@@ -16,7 +16,6 @@ utm.setEnvModePrefix = function (env){
 };
 
 getPlatformSize();
-
 if (Ti.Platform.model === 'Simulator' || Ti.Platform.model ===  'google_sdk' || Ti.Platform.model ===  'sdk') { 
 	utm.setEnvModePrefix("test");
 	utm.validatesSecureCertificate = false;

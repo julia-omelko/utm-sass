@@ -112,7 +112,8 @@ var MessagesWin = function(_tabGroup) {
 		allowsSelectionDuringEditing: true,
 		height: utm.viewableArea - (37 * utm.sizeMultiplier) - utm.viewableTabHeight,
 		top: utm.viewableTop + (37 * utm.sizeMultiplier),
-		refreshControl: ((utm.iPad || utm.iPhone) ? refreshControl : null)
+		refreshControl: ((utm.iPad || utm.iPhone) ? refreshControl : null),
+		data: []
 	});
 	
 	self.addEventListener('reorientdisplay', function(evt) {

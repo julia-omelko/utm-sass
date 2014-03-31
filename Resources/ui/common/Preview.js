@@ -521,7 +521,7 @@ var PreviewWin = function(_tabGroup,_message) {
 		sendMessageReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");
 		sendMessageReq.setRequestHeader('Authorization-Token', utm.AuthToken);
 		sendMessageReq.timeout = params.attachments != null ? 20000 : utm.netTimeout;
-		
+		Ti.API.info(JSON.stringify(params));
 		sendMessageReq.send(JSON.stringify(params));
 		
 		

@@ -46,18 +46,97 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 		userView.width = Ti.Platform.displayCaps.platformWidth-50;	
 	});	
 	
-	var avatar = Ti.UI.createImageView({
-		top: 25,
-		left: 0,
-		image: '/images/avatar/' + _messageData.FromUsersAvatar + '.png',
-		width: 80*utm.sizeMultiplier,
-		height: 80*utm.sizeMultiplier,
-		backgroundColor: 'white',
-		borderColor: '#D4D4D4',
-		borderWidth: 1,
-		borderRadius: 2
-	});
-	userView.add(avatar);
+	if ('ToAvatars' in _messageData && _messageData.ToAvatars !== '<null>' && _messageData.ToAvatars !== null && _messageData.FromUserId === utm.User.UserProfile.UserId && _messageData.ToAvatars.split(',').length > 1) {
+		// sent message with multiple recipients
+		var avatarHolder = Ti.UI.createView({
+			left: 25,
+			top: 25,
+			width: 60 * utm.sizeMultiplier,
+			height: 60 * utm.sizeMultiplier,
+			layout: 'horizontal'
+		});
+		self.add(avatarHolder);
+		var aAvatar = new Array();
+		for (var i=0; i<Math.min(_messageData.ToAvatars.length,3); i++) {
+			aAvatar[i] = Ti.UI.createImageView({
+				left: ((i === 1) ? 2 * utm.sizeMultiplier : 0),
+				top: ((i === 2) ? 2 * utm.sizeMultiplier : 0),
+				image: '/images/avatar/' + _messageData.ToAvatars.split(',')[i] + '.png',
+				width: 29 * utm.sizeMultiplier,
+				height: 29 * utm.sizeMultiplier,
+				backgroundColor: 'white',
+				borderColor: '#D4D4D4',
+				borderWidth: 1,
+				borderRadius: 2
+			});
+			avatarHolder.add(aAvatar[i]);
+		}
+		if (_messageData.ToAvatars.split(',').length === 4) {
+			aAvatar[3] = Ti.UI.createImageView({
+				left: 2 * utm.sizeMultiplier,
+				top: 2 * utm.sizeMultiplier,
+				image: '/images/avatar/' + _messageData.ToAvatars.split(',')[3] + '.png',
+				width: 29 * utm.sizeMultiplier,
+				height: 29 * utm.sizeMultiplier,
+				backgroundColor: 'white',
+				borderColor: '#D4D4D4',
+				borderWidth: 1,
+				borderRadius: 2
+			});
+			avatarHolder.add(aAvatar[3]);
+		} else if (_messageData.ToAvatars.split(',').length > 4){
+			aAvatar[3] = Ti.UI.createView({
+				left: 2 * utm.sizeMultiplier,
+				top: 2 * utm.sizeMultiplier,
+				width: 29*utm.sizeMultiplier,
+				height: 29*utm.sizeMultiplier,
+				backgroundColor: 'white',
+				borderColor: '#D4D4D4',
+				borderWidth: 1,
+				borderRadius: 2,
+			});
+			var moreLabel = Ti.UI.createLabel({
+				text: '+' + (_messageData.ToAvatars.split(',').length-3),
+				width: Ti.UI.SIZE,
+				height: Ti.UI.SIZE,
+				font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize},
+				color: utm.barColor,
+				textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+				verticalAlign: Ti.UI.TEXT_VERTICAL_ALIGNMENT_CENTER
+			});
+			aAvatar[3].add(moreLabel);
+			avatarHolder.add(aAvatar[3]);
+		}
+		
+	} else if ('ToAvatars' in _messageData && _messageData.ToAvatars !== '<null>' && _messageData.ToAvatars !== null && _messageData.FromUserId === utm.User.UserProfile.UserId && _messageData.ToAvatars.split(',').length === 1) {
+		// sent message with one recipient
+		var avatar = Ti.UI.createImageView({
+			left: 25,
+			top: 25,
+			image: '/images/avatar/' + _messageData.ToAvatars + '.png',
+			width: 60 * utm.sizeMultiplier,
+			height: 60 * utm.sizeMultiplier,
+			backgroundColor: 'white',
+			borderColor: '#D4D4D4',
+			borderWidth: 1,
+			borderRadius: 2
+		});
+		self.add(avatar);
+	} else {
+		//received message		
+		var avatar = Ti.UI.createImageView({
+			left: 25,
+			top: 25,
+			image: '/images/avatar/' + _messageData.FromUsersAvatar + '.png',
+			width: 60 * utm.sizeMultiplier,
+			height: 60 * utm.sizeMultiplier,
+			backgroundColor: 'white',
+			borderColor: '#D4D4D4',
+			borderWidth: 1,
+			borderRadius: 2
+		});
+		self.add(avatar);
+	}
 	
 	var userSubView = Ti.UI.createView({
 		left: (100*utm.sizeMultiplier),
