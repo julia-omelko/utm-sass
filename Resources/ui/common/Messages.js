@@ -86,6 +86,7 @@ var MessagesWin = function(_tabGroup) {
 		sentButton.setBackgroundColor(utm.backgroundColor);
 		sentButton.setColor(utm.secondaryTextColor);
 		getMessages('received');
+		tableView.scrollToTop(0);
 		currentMode = 'received';
 	});
 	sentButton.addEventListener('click', function(e){
@@ -94,6 +95,7 @@ var MessagesWin = function(_tabGroup) {
 		receivedButton.setBackgroundColor(utm.backgroundColor);
 		receivedButton.setColor(utm.secondaryTextColor);
 		getMessages('sent');
+		tableView.scrollToTop(0);
 		currentMode = 'sent';
 	});
 	
@@ -115,6 +117,8 @@ var MessagesWin = function(_tabGroup) {
 		refreshControl: ((utm.iPad || utm.iPhone) ? refreshControl : null),
 		data: []
 	});
+	var rowCount = 0;
+	var rawTableData = [];
 	
 	self.addEventListener('reorientdisplay', function(evt) {
 		tableView.height = utm.viewableArea - (37 * utm.sizeMultiplier) - utm.viewableTabHeight;
@@ -145,13 +149,15 @@ var MessagesWin = function(_tabGroup) {
 			onload: function() {
 				var response = eval('(' + this.responseText + ')');
 				var tableData = [];
+				rawTableData = response;
 				
 				if (this.status === 200) {
-					for (var i=0; i < response.length; i++) {
+					for (var i=0; i < Math.min(20,response.length); i++) {
 						response[i].mode = mode;
 						var row = new MessageTableRow(response[i]);
 						tableData.push(row);
 					}
+					rowCount = Math.min(20,response.length);
 
 					tableView.setData(tableData);
 					self.hideAi();
@@ -280,6 +286,38 @@ var MessagesWin = function(_tabGroup) {
 	self.addEventListener('close', function(e) {
 		Ti.App.removeEventListener('orientdisplay', updateDisplay);
 	});	
+	
+	
+	
+	tableView.addEventListener('scroll',endOfTheTable);
+	function endOfTheTable(e) {
+		if (utm.Android) {
+			//Ti.API.info(e.firstVisibleItem + ' ' + e.visibleItemCount + ' ' + tableView.getData()[0].rows.length + ' ' + rawTableData.length);
+			if ((e.firstVisibleItem + e.visibleItemCount) === tableView.getData()[0].rows.length) {
+				tableView.removeEventListener('scroll',endOfTheTable);
+				lazyLoadMoreData();
+			}	
+		} else if (utm.iPhone || utm.iPad) {
+			if (e.size.height + e.contentOffset.y + 50 > e.contentSize.height) {
+				tableView.removeEventListener('scroll',endOfTheTable);
+				lazyLoadMoreData();
+			}
+		}
+	}
+	
+	function lazyLoadMoreData() {
+		var tableData = [];
+		for (var i=rowCount; i < Math.min(rowCount+20,rawTableData.length); i++) {
+			rawTableData[i].mode = mode;
+			var row = new MessageTableRow(rawTableData[i]);
+			tableData.push(row);
+		}
+		rowCount = Math.min(rowCount+20,rawTableData.length);
+		tableView.appendRow(tableData);
+		tableView.addEventListener('scroll',endOfTheTable);
+	}
+	
+	
 	
 	return self;
 };

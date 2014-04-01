@@ -1,10 +1,5 @@
 function MessageTableRow(rowData){
 	
-	if (rowData.ToAvatars !== null & (rowData.FromUserId === utm.User.UserProfile.UserId)) {
-		Ti.API.info('sent message');
-		Ti.API.info(rowData);
-	}
-	
 	var self = Ti.UI.createTableViewRow({
 		className: 'MessageTableRow',
 		height: 80 * utm.sizeMultiplier,

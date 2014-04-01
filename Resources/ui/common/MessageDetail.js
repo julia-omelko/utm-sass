@@ -57,7 +57,7 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 	if ('ToAvatars' in _messageData && _messageData.ToAvatars !== '<null>' && _messageData.ToAvatars !== null && _messageData.FromUserId === utm.User.UserProfile.UserId && _messageData.ToAvatars.split(',').length > 1) {
 		// sent message with multiple recipients
 		var avatarHolder = Ti.UI.createView({
-			left: 25,
+			left: 0,
 			top: 25,
 			width: 60 * utm.sizeMultiplier,
 			height: 60 * utm.sizeMultiplier,
@@ -119,7 +119,7 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 	} else if ('ToAvatars' in _messageData && _messageData.ToAvatars !== '<null>' && _messageData.ToAvatars !== null && _messageData.FromUserId === utm.User.UserProfile.UserId && _messageData.ToAvatars.split(',').length === 1) {
 		// sent message with one recipient
 		var avatar = Ti.UI.createImageView({
-			left: 25,
+			left: 0,
 			top: 25,
 			image: '/images/avatar/' + _messageData.ToAvatars + '.png',
 			width: 60 * utm.sizeMultiplier,
@@ -133,7 +133,7 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 	} else {
 		//received message		
 		var avatar = Ti.UI.createImageView({
-			left: 25,
+			left: 0,
 			top: 25,
 			image: '/images/avatar/' + _messageData.FromUsersAvatar + '.png',
 			width: 60 * utm.sizeMultiplier,
@@ -147,7 +147,7 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 	}
 	
 	var userSubView = Ti.UI.createView({
-		left: (100*utm.sizeMultiplier),
+		left: (60*utm.sizeMultiplier) + 15,
 		top: 30,
 		width: Ti.UI.FILL,
 		height: Ti.UI.SIZE,
