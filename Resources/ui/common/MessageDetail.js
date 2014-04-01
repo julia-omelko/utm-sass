@@ -32,7 +32,7 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 	self.add(scrollingView);
 
 	self.addEventListener('reorientdisplay', function(evt) {
-		scrollingView.height = (_messageData.mode === 'received' ? utm.viewableArea - 200 : utm.viewableArea - 100);	
+		scrollingView.height = (_messageData.mode === 'received' ? utm.viewableArea - 110 : utm.viewableArea - 60);	
 	});
 	
 	if (utm.Android) {
