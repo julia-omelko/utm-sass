@@ -22,7 +22,7 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 	
 	var scrollingView = Ti.UI.createScrollView({
 		width: Ti.UI.FILL,
-		height: utm.viewableArea - 60,
+		height: (_messageData.mode === 'received' ? utm.viewableArea - 110 : utm.viewableArea - 60),
 		top: utm.viewableTop,
 		scrollType: 'vertical',
 		showVerticalScrollIndicator: true,
@@ -32,8 +32,16 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 	self.add(scrollingView);
 
 	self.addEventListener('reorientdisplay', function(evt) {
-		scrollingView.height = utm.viewableArea - 60;	
+		scrollingView.height = (_messageData.mode === 'received' ? utm.viewableArea - 200 : utm.viewableArea - 100);	
 	});
+	
+	if (utm.Android) {
+		if (Ti.Platform.displayCaps.platformHeight >= 640 && Ti.Platform.displayCaps.platformHeight <= 960) {
+			scrollingView.height = scrollingView.height - (_messageData.mode === 'received' ? 60 : 35);
+		} else if (Ti.Platform.displayCaps.platformHeight > 960) {
+			scrollingView.height = scrollingView.height - (_messageData.mode === 'received' ? 200 : 100);
+		}
+	}
 	
 	var userView = Ti.UI.createView({
 		width: Ti.Platform.displayCaps.platformWidth-50,
@@ -55,7 +63,7 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 			height: 60 * utm.sizeMultiplier,
 			layout: 'horizontal'
 		});
-		self.add(avatarHolder);
+		userView.add(avatarHolder);
 		var aAvatar = new Array();
 		for (var i=0; i<Math.min(_messageData.ToAvatars.split(',').length,3); i++) {
 			aAvatar[i] = Ti.UI.createImageView({
@@ -121,7 +129,7 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 			borderWidth: 1,
 			borderRadius: 2
 		});
-		self.add(avatar);
+		userView.add(avatar);
 	} else {
 		//received message		
 		var avatar = Ti.UI.createImageView({
@@ -135,7 +143,7 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 			borderWidth: 1,
 			borderRadius: 2
 		});
-		self.add(avatar);
+		userView.add(avatar);
 	}
 	
 	var userSubView = Ti.UI.createView({
