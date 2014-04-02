@@ -35,10 +35,10 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 	self.setRightNavButton(composeButton);
 	
 	
-	var scrollingView = Ti.UI.createView({
+	var scrollingView = Ti.UI.createScrollView({
 		top: utm.viewableTop,
 		width: Ti.UI.FILL,
-		height: utm.viewableArea - ((40*2*utm.sizeMultiplier)+30),
+		height: (utm.Android && Ti.Platform.displayCaps.density === 'low' ? Ti.Platform.displayCaps.platformHeight : (utm.viewableArea - ((40*2*utm.sizeMultiplier)+30))),
 		showVerticalScrollIndicator: true,
 		contentHeight: 'auto',
 		layout: 'vertical'
@@ -48,9 +48,11 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 		scrollingView.height = utm.viewableArea - ((40*2*utm.sizeMultiplier)+30);
 	});
 	
-	if (utm.Android) {
+	
+	if (utm.Android &! (Ti.Platform.displayCaps.density === 'low')) {
 		scrollingView.setHeight(utm.viewableArea - ((40*2*utm.sizeMultiplier)+30) - utm.keyboardHeight);
-	}
+	}	
+	
 	self.add(scrollingView);
 	
 	var userView = Ti.UI.createView({
@@ -58,6 +60,7 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 		left: 25,
 		height: Ti.UI.SIZE
 	});
+
 	scrollingView.add(userView);
 	
 	self.addEventListener('reorientdisplay', function(evt) {
@@ -100,7 +103,7 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 		autocorrect: false,
 		keyboardType: Ti.UI.KEYBOARD_DEFAULT,
 		returnKeyType: Ti.UI.RETURNKEY_DEFAULT,
-		top: 50*utm.sizeMultiplier,
+		top: (utm.Android && Ti.Platform.displayCaps.density === 'low' ? 60*utm.sizeMultiplier : 50*utm.sizeMultiplier),
 		borderColor: '#D4D4D4',
 		borderRadius: 2,
 		borderWidth: 1,
@@ -141,7 +144,7 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 	
 	var tableView = Ti.UI.createTableView({
 		width: Ti.UI.FILL,
-		height: utm.viewableArea - 253,
+		height: (utm.Android && Ti.Platform.displayCaps.density === 'low' ? Ti.UI.SIZE : utm.viewableArea - 253),
 		top: 10
 	});
 	scrollingView.add(tableView);
@@ -158,13 +161,17 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 	saveButton.addEventListener('click', function() {
 		saveMemberData();
 	});	
-	self.add(saveButton);
+	if (utm.Android && Ti.Platform.displayCaps.density === 'low') {
+		scrollingView.add(saveButton);
+	} else self.add(saveButton);
 	
 	var deleteButton = new StandardButton({title:'Delete member',bottom:(40*utm.sizeMultiplier)+20,type:'secondary'});
 	deleteButton.addEventListener('click',function(e){
 		confirmDeleteMember();
 	});
-	self.add(deleteButton);
+	if (utm.Android && Ti.Platform.displayCaps.density === 'low') {
+		scrollingView.add(deleteButton);
+	} else self.add(deleteButton);
 	
 	function saveMemberData() {
 		_memberData.NickName = nicknameField.getValue();
@@ -284,7 +291,7 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 	loadMyHorts();
 	
 	// keyboard resizing
-	if (utm.Android) {
+	if (utm.Android &! (Ti.Platform.displayCaps.density === 'low')) {
 		aHeight = [];
 		self.addEventListener('postlayout',function(e){
 			aHeight.push(self.rect.height);
