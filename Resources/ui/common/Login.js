@@ -27,10 +27,17 @@ var LoginWin = function() {
 	self.addEventListener('reorientdisplay', function(evt) {
 		scrollView.height = Ti.Platform.displayCaps.platformHeight-20;
 	});	
-	
-	var view = Ti.UI.createView({
-		layout: 'vertical'
-	});
+
+	if (utm.Android && Ti.Platform.displayCaps.density === 'low') {
+		var view = Ti.UI.createScrollView({
+			layout: 'vertical',
+			height: Ti.UI.SIZE
+		});
+	} else {
+		var view = Ti.UI.createView({
+			layout: 'vertical'
+		});
+	}
 	scrollView.add(view);
 		
 	var utmLogo = Ti.UI.createImageView({
@@ -268,16 +275,16 @@ var LoginWin = function() {
 		height: Ti.UI.SIZE
 	});
 	
-	var tableHeight = (35*utm.sizeMultiplier*4)+25;
-	
 	if (utm.Android) {
 		//Can't add table to window because Android keyboard makes window smaller, so add to view
 		if (Ti.Platform.displayCaps.platformHeight > 640) {
 			//Can't add table to window because Android keyboard makes window smaller, but screen is large enough to push this artifact down to bottom
-//			linkTable.setTop(Ti.Platform.displayCaps.platformHeight - tableHeight);
 			linkTable.setBottom(90);
 			scrollView.add(linkTable);
 		} else {
+			if (utm.Android && Ti.Platform.displayCaps.density === 'low') {
+				linkTable.setHeight((35*utm.sizeMultiplier*4)+50);
+			}
 			view.add(linkTable);
 		}
 
