@@ -152,12 +152,12 @@ var MessagesWin = function(_tabGroup) {
 				rawTableData = response;
 				
 				if (this.status === 200) {
-					for (var i=0; i < Math.min(20,response.length); i++) {
+					for (var i=0; i < response.length; i++) {//Math.min(20,response.length)
 						response[i].mode = mode;
 						var row = new MessageTableRow(response[i]);
 						tableData.push(row);
 					}
-					rowCount = Math.min(20,response.length);
+					//rowCount = Math.min(20,response.length);
 
 					tableView.setData(tableData);
 					self.hideAi();
@@ -289,7 +289,7 @@ var MessagesWin = function(_tabGroup) {
 	
 	
 	
-	tableView.addEventListener('scroll',endOfTheTable);
+	/*tableView.addEventListener('scroll',endOfTheTable);
 	function endOfTheTable(e) {
 		if (utm.Android) {
 			//Ti.API.info(e.firstVisibleItem + ' ' + e.visibleItemCount + ' ' + tableView.getData()[0].rows.length + ' ' + rawTableData.length);
@@ -315,7 +315,7 @@ var MessagesWin = function(_tabGroup) {
 		rowCount = Math.min(rowCount+20,rawTableData.length);
 		tableView.appendRow(tableData);
 		tableView.addEventListener('scroll',endOfTheTable);
-	}
+	}*/
 	
 	
 	

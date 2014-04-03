@@ -1,4 +1,5 @@
 var PreviewWin = function(_tabGroup,_message) {
+	
 	_myHortId = _message.selectedContacts[0].userData.MyHortId;
 	_nickname = '';
 	

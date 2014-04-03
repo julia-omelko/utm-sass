@@ -1,4 +1,7 @@
 var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
+	
+	Ti.API.info(_messageData);
+	
 	if (_mode === 'Reply') {
 		_messageID = _messageData.Id;
 		_messageData.deliveryOptions =  null;
@@ -66,10 +69,14 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 	leftView.add(sendHeader);
 	
 	var sendTo = [];
-	for (var i=0; i<_selectedContacts.length; i++) {
-		sendTo[i] = _selectedContacts[i].userData.NickName;
+	if (_mode === 'Reply') {
+		sendTo = _messageData.FromUserName;
+	} else {
+		for (var i=0; i<_selectedContacts.length; i++) {
+			sendTo[i] = _selectedContacts[i].userData.NickName;
+		}
+		sendTo = sendTo.join(', ');
 	}
-	sendTo = sendTo.join(', ');
 	var sendLabel = Ti.UI.createLabel({
 		text: sendTo,
 		top: 10,
