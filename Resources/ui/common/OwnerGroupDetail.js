@@ -84,10 +84,10 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		settingsButton.setBackgroundColor(utm.backgroundColor);
 		settingsButton.setColor(utm.secondaryTextColor);
 		self.remove(settingsView);
-		self.add(tableView);
 		if (utm.Android) {
-			saveButton.setTitle('Add members');
-		}
+			self.add(membersView);
+			saveButton.setTitle('Add Members');
+		} else self.add(tableView);
 	});
 	settingsButton.addEventListener('click', function(e){
 		mode = 'settings';
@@ -95,7 +95,9 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		settingsButton.setColor(utm.textColor);
 		membersButton.setBackgroundColor(utm.backgroundColor);
 		membersButton.setColor(utm.secondaryTextColor);
-		self.remove(tableView);
+		if (utm.Android) {
+			self.remove(membersView);
+		} else self.remove(tableView);
 		self.add(settingsView);
 		saveButton.setTitle('Save');
 	});
@@ -118,10 +120,22 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	
 	
 	var tableView = Ti.UI.createTableView({
-		height: (utm.Android ? utm.viewableArea - (37*utm.sizeMultiplier) : utm.viewableArea - ((37*utm.sizeMultiplier)+((40*2*utm.sizeMultiplier)+30))),
+		height: (utm.Android ? utm.viewableArea - ((45*utm.sizeMultiplier)*2) : utm.viewableArea - ((37*utm.sizeMultiplier)+((40*2*utm.sizeMultiplier)+30))),
 		top: utm.viewableTop+(37*utm.sizeMultiplier)
 	});
-	self.add(tableView);
+	
+	if (utm.Android) {
+		var membersView = Ti.UI.createScrollView ({
+			height: Ti.UI.SIZE,
+			top: utm.viewableTop+(37*utm.sizeMultiplier),
+			showVerticalScrollIndicator:true,
+			contentHeight:'auto',
+			layout: 'vertical'
+		});
+		self.add(membersView);
+		tableView.top = 0;
+		membersView.add(tableView);
+	} else self.add(tableView);
 	
 	self.addEventListener('reorientdisplay', function(evt) {
 		tableView.height = utm.viewableArea - ((37*utm.sizeMultiplier)+((40*2*utm.sizeMultiplier)+30));
@@ -660,12 +674,12 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		//Can't add button to window because Android keyboard makes window smaller, so add to view for Android
 		settingsView.add(deleteButton);
 		deleteButton.top = 10;
-		deleteButton.bottom = 0;  
+		deleteButton.bottom = 10;  
 	} else {	
 		self.add(deleteButton);
 	}
 	
-	var saveButton = new StandardButton({title:(utm.Android ? 'Add members' : 'Save')});
+	var saveButton = new StandardButton({title:(utm.Android ? 'Add Members' : 'Save')});
 	saveButton.addEventListener('click', function() {
 		if (mode === 'settings' || !utm.Android) {
 			updateMyHortData();
@@ -682,6 +696,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	if (utm.Android) {
 		//Can't add button to window because Android keyboard makes window smaller, so add to view for Android
 		settingsView.add(saveButton);
+		membersView.add(saveButton);
 		saveButton.top = 10;
 	} else {	  
 		self.add(saveButton);
