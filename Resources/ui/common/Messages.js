@@ -130,6 +130,7 @@ var MessagesWin = function(_tabGroup) {
 	self.add(tableView);	
 	
 	tableView.addEventListener('click', function(e) {
+		//alert(e.rowData.messageData);
 		var DetailWin = require('/ui/common/MessageDetail');
 		var detailWin = new DetailWin(_tabGroup,e.rowData.messageData);
 		detailWin.addEventListener('close',function(e){

@@ -235,7 +235,8 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 			messageID: _messageID,
 			deliveryOptions: _messageData.deliveryOptions,
 			attachment: camera.getImage(),
-			thumbnail: camera.getThumbnail()
+			thumbnail: camera.getThumbnail(),
+			FromUserName: _messageData.FromUserName
 			//attachment: ((previewView.getHeight() !== 46*utm.sizeMultiplier) ? camera.getImage() : '')
 		};
 		var PreviewWin = require('/ui/common/Preview');
