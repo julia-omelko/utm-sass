@@ -71,6 +71,7 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 	var sendTo = [];
 	if (_mode === 'Reply') {
 		sendTo = _messageData.FromUserName;
+		_selectedContacts[0].userData.NickName = _messageData.FromUserName;
 	} else {
 		for (var i=0; i<_selectedContacts.length; i++) {
 			sendTo[i] = _selectedContacts[i].userData.NickName;
