@@ -124,7 +124,6 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	});	
 	
 	var settingsView = Ti.UI.createScrollView({
-//		height: (utm.Android ? Ti.Platform.displayCaps.platformHeight : utm.viewableArea - ((37*utm.sizeMultiplier)+((40*2*utm.sizeMultiplier)+30))),
 		height: (utm.Android ? (Ti.Platform.displayCaps.platformHeight > 640 ? Ti.Platform.displayCaps.platformHeight : Ti.UI.SIZE) : utm.viewableArea - ((37*utm.sizeMultiplier)+((40*2*utm.sizeMultiplier)+30))),
 		top: utm.viewableTop + (37*utm.sizeMultiplier),
 		showVerticalScrollIndicator:true,
@@ -473,7 +472,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	loadMyHortDetail();
 	
 	var StandardButton = require('/ui/common/baseui/StandardButton');
-	var newMessageButton = new StandardButton({title:'New Message',bottom: 10 /*(40*utm.sizeMultiplier)+20,type:'secondary'*/});
+	var newMessageButton = new StandardButton({title:'New Message',bottom: 10});
 	newMessageButton.addEventListener('click',function(e){
 		goChooseMembers();
 	});
