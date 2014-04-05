@@ -20,7 +20,22 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	var backButton = new BackButton(self);
 	self.setLeftNavButton(backButton);
 	
-	
+	var composeButton = Ti.UI.createImageView({
+		image: '/images/icons/compose.png',
+		height: 22,
+		width: 22
+	});
+	var goChooseMembers = function() {
+			var MessageGroupMembersWin = require('/ui/common/MessageGroupMembers');
+			var messageGroupMembersWin = new MessageGroupMembersWin(_tabGroup, _groupData);
+			utm.winStack.push(messageGroupMembersWin);
+			_tabGroup.getActiveTab().open(messageGroupMembersWin);
+	};
+	composeButton.addEventListener('click',function(e){
+		goChooseMembers();
+	});
+
+	self.setRightNavButton(composeButton);	
 	
 	var Facebook = require('facebook');
 	var social = require("lib/social");
@@ -84,6 +99,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		settingsButton.setColor(utm.secondaryTextColor);
 		self.remove(settingsView);
 		self.add(tableView);
+		self.add(newMessageButton);
 	});
 	settingsButton.addEventListener('click', function(e){
 		settingsButton.setBackgroundColor('white');
@@ -91,6 +107,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		membersButton.setBackgroundColor(utm.backgroundColor);
 		membersButton.setColor(utm.secondaryTextColor);
 		self.remove(tableView);
+		self.remove(newMessageButton);
 		self.add(settingsView);
 	});
 	
@@ -455,6 +472,17 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	displayMemberData(_groupData.Members);
 	loadMyHortDetail();
 	
+	var StandardButton = require('/ui/common/baseui/StandardButton');
+	var newMessageButton = new StandardButton({title:'New Message',bottom: 10 /*(40*utm.sizeMultiplier)+20,type:'secondary'*/});
+	newMessageButton.addEventListener('click',function(e){
+		goChooseMembers();
+	});
+	
+	if (utm.Android) {
+		//iOS has compose button as right nav button in nav bar, so add a button to the window for Android
+		self.add(newMessageButton);  
+	} 
+
 	var StandardButton = require('/ui/common/baseui/StandardButton');
 	var leaveButton = new StandardButton({title:'Leave group',bottom:(40*utm.sizeMultiplier)+20,type:'secondary'});
 	leaveButton.addEventListener('click',function(e){
