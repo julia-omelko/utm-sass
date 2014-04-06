@@ -87,7 +87,10 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		if (utm.Android) {
 			self.add(membersView);
 			saveButton.setTitle('Add Members');
-		} else self.add(tableView);
+		} else {
+			self.add(tableView);
+			self.add(buttonsView);
+		}
 	});
 	settingsButton.addEventListener('click', function(e){
 		mode = 'settings';
@@ -97,7 +100,10 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		membersButton.setColor(utm.secondaryTextColor);
 		if (utm.Android) {
 			self.remove(membersView);
-		} else self.remove(tableView);
+		} else {
+			self.remove(tableView);
+			self.remove(buttonsView);
+		}
 		self.add(settingsView);
 		saveButton.setTitle('Save');
 	});
@@ -120,7 +126,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	
 	
 	var tableView = Ti.UI.createTableView({
-		height: (utm.Android ? utm.viewableArea - ((45*utm.sizeMultiplier)*2) : utm.viewableArea - ((37*utm.sizeMultiplier)+((40*2*utm.sizeMultiplier)+30))),
+		height: (utm.Android ? utm.viewableArea - ((45*utm.sizeMultiplier)*3) : utm.viewableArea - ((37*utm.sizeMultiplier)+((40*2*utm.sizeMultiplier)+30))),
 		top: utm.viewableTop+(37*utm.sizeMultiplier)
 	});
 	
@@ -664,20 +670,71 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	
 	
 	var StandardButton = require('/ui/common/baseui/StandardButton');
-	var deleteButton = new StandardButton({title:'Delete group',bottom:(40*utm.sizeMultiplier)+20,type:'secondary'});
+
+	var newMessageButton = new StandardButton({
+		title:'New Message',
+		type:'secondary'
+	});
+
+	var deleteButton = new StandardButton({
+		title:'Delete Group',
+		type:'secondary'
+	});
 	deleteButton.addEventListener('click',function(e){
 		confirmDeleteMyHort();
-	});
+	});	
 	
 	
 	if (utm.Android) {
 		//Can't add button to window because Android keyboard makes window smaller, so add to view for Android
+		membersView.add(newMessageButton);
 		settingsView.add(deleteButton);
 		deleteButton.top = 10;
 		deleteButton.bottom = 10;  
-	} else {	
-		self.add(deleteButton);
+	} else {
+			var buttonsView = Ti.UI.createView({
+				layout : 'horizontal',
+				width : Ti.UI.SIZE,
+				height : Ti.UI.SIZE,
+				bottom: 50
+			});
+			self.add(buttonsView);
+			
+			var leftButtonView = Ti.UI.createView({
+					width : Math.round(Ti.Platform.displayCaps.platformWidth * 0.5),
+					height : Ti.UI.SIZE
+			});
+			buttonsView.add(leftButtonView);
+			
+			var rightButtonView = Ti.UI.createView({
+					width : Math.round(Ti.Platform.displayCaps.platformWidth * 0.5),
+					height : Ti.UI.SIZE
+			});
+			buttonsView.add(rightButtonView);				
+			
+			newMessageButton.width = (Ti.Platform.displayCaps.platformWidth *.5)-50;
+			leftButtonView.add(newMessageButton);				
+			
+			deleteButton.width = (Ti.Platform.displayCaps.platformWidth *.5)-50;
+			rightButtonView.add(deleteButton);		
 	}
+	
+	self.addEventListener('reorientdisplay', function(evt) {
+		leftButtonView.width = Math.round(Ti.Platform.displayCaps.platformWidth * 0.5);
+		rightButtonView.width = Math.round(Ti.Platform.displayCaps.platformWidth * 0.5);
+		newMessageButton.width = (Ti.Platform.displayCaps.platformWidth *.5)-50;
+		deleteButton.width = (Ti.Platform.displayCaps.platformWidth *.5)-50;	
+	});
+	
+	var goChooseMembers = function() {
+		var MessageGroupMembersWin = require('/ui/common/MessageGroupMembers');
+		var messageGroupMembersWin = new MessageGroupMembersWin(_tabGroup, _groupData);
+		utm.winStack.push(messageGroupMembersWin);
+		_tabGroup.getActiveTab().open(messageGroupMembersWin);
+	};
+	newMessageButton.addEventListener('click',function(e){
+		goChooseMembers();
+	});
 	
 	var saveButton = new StandardButton({title:(utm.Android ? 'Add Members' : 'Save')});
 	saveButton.addEventListener('click', function() {
@@ -697,7 +754,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		//Can't add button to window because Android keyboard makes window smaller, so add to view for Android
 		settingsView.add(saveButton);
 		membersView.add(saveButton);
-		saveButton.top = 10;
+		saveButton.top = 5;
 	} else {	  
 		self.add(saveButton);
 	}
