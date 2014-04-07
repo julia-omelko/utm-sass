@@ -387,10 +387,10 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		font: {fontFamily: utm.fontFamily, fontSize: '16dp'}
 	});
 	mobileField.addEventListener('focus', function() {
-		nicknameField.add(focused);
+		mobileField.add(focused);
 	});
 	mobileField.addEventListener('blur', function() { 
-		nicknameField.remove(focused);
+		mobileField.remove(focused);
 	});
 	settingsView.add(mobileField);
 
@@ -398,48 +398,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		mobileField.width = (Ti.Platform.displayCaps.platformWidth-50);
 	});	
 	
-	var nicknameLabel = Ti.UI.createLabel({
-		text: 'Nickname',
-		font: {fontFamily: utm.fontFamily, fontSize: '18dp'},
-		color: utm.barColor,
-		wordWrap: false,
-		ellipsize: true,
-		height: Ti.UI.SIZE,
-		width: Ti.UI.SIZE,
-		left: 25,
-		top: 10
-	});
-	settingsView.add(nicknameLabel);
 	
-	var nicknameField = Ti.UI.createTextField({
-		value: '',
-		color: utm.textFieldColor,		
-		width: (Ti.Platform.displayCaps.platformWidth-50),
-		height: (utm.Android ? Ti.UI.SIZE : 30),
-		left: 25,
-		autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
-		autocorrect: false,
-		keyboardType: Ti.UI.KEYBOARD_DEFAULT,
-		returnKeyType: Ti.UI.RETURNKEY_DEFAULT,
-		top: 5,
-		borderColor: '#D4D4D4',
-		borderRadius: 2,
-		borderWidth: 1,
-		backgroundColor: 'white',
-		paddingLeft: 7,
-		font: {fontFamily: utm.fontFamily, fontSize: '16dp'}
-	});
-	nicknameField.addEventListener('focus', function() {
-		nicknameField.add(focused);
-	});
-	nicknameField.addEventListener('blur', function() { 
-		nicknameField.remove(focused);
-	});
-	settingsView.add(nicknameField);
-
-	self.addEventListener('reorientdisplay', function(evt) {
-		nicknameField.width = (Ti.Platform.displayCaps.platformWidth-50);
-	});	
 	
 	var tableDataSettings = [];
 	var tableViewSettings = Ti.UI.createTableView({
