@@ -177,15 +177,12 @@ var PreviewWin = function(_tabGroup,_message) {
 	
 	var sendTo = [];
 	var sendToIds = [];
-	if (_message.mode === 'Reply') {
-		sendTo = _message.FromUserName;
-	} else {
-		for (var i=0; i<_message.selectedContacts.length; i++) {
-			sendTo[i] = _message.selectedContacts[i].userData.NickName;
-			sendToIds[i] = _message.selectedContacts[i].userData.UserId;
-		}
-		sendTo = sendTo.join(', ');
+
+	for (var i=0; i<_message.selectedContacts.length; i++) {
+		sendTo[i] = _message.selectedContacts[i].userData.NickName;
+		sendToIds[i] = _message.selectedContacts[i].userData.UserId;
 	}
+	sendTo = sendTo.join(', ');
 	var sendLabel = Ti.UI.createLabel({
 		text: sendTo,
 		top: 10,
