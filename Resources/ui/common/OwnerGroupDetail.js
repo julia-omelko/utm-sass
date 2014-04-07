@@ -571,7 +571,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 
 	var populateSettings = function(_memberData) {
 		emailField.setValue(_memberData.Email);
-		nicknameField.setValue(_memberData.NickName);
+//		nicknameField.setValue(_memberData.NickName);
 		mobileField.setValue(_memberData.Mobile);
 		if (_memberData.TwitterToken !== '' && _memberData.TwitterToken != null) {
 			twitterSwitch.setValue(true);
