@@ -107,7 +107,8 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData,_myHortData) {
 				utm.handleHttpError(e, this.status, this.responseText);
 				deletePendingReq = null;
 			},
-			timeout : utm.netTimeout
+			timeout : utm.netTimeout,
+			enableKeepAlive : utm.keepAlive
 		});
 		deletePendingReq.open("DELETE", utm.serviceUrl + "MyHort/DeleteInvite/" + _memberData.Id);
 		deletePendingReq.setRequestHeader('Authorization-Token', utm.AuthToken);
@@ -128,7 +129,8 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData,_myHortData) {
 			onerror : function(e) {
 				inviteMyHortReq = null;
 			},
-			timeout:utm.netTimeout
+			timeout:utm.netTimeout,
+			enableKeepAlive : utm.keepAlive
 		});
 		inviteMyHortReq.open("POST", utm.serviceUrl + "MyHort/Invite");
 		inviteMyHortReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");

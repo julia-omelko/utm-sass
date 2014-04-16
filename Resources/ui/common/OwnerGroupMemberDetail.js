@@ -163,7 +163,8 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData) {
 				utm.handleHttpError(e, this.status, this.responseText);
 				updateMemberDetailReq = null;
 			},
-			timeout : utm.netTimeout
+			timeout : utm.netTimeout,
+			enableKeepAlive : utm.keepAlive
 		});	
 		updateMemberDetailReq.open("POST", utm.serviceUrl + "MyHort/UpdateMyHortMember");
 		updateMemberDetailReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");
@@ -192,7 +193,8 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData) {
 						utm.handleHttpError({}, this.status, this.responseText);
 						deleteUserFromMyHortHttp = null;
 					},
-					timeout : utm.netTimeout
+					timeout : utm.netTimeout,
+					enableKeepAlive : utm.keepAlive
 				});
 				deleteUserFromMyHortHttp.open("POST", utm.serviceUrl + "MyHort/DeleteUserFromMyHort?myhortMemberId=" + _memberData.Id);
 				deleteUserFromMyHortHttp.setRequestHeader("Content-Type", "application/json; charset=utf-8");

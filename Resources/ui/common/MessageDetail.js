@@ -286,7 +286,8 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
          	}  
 			getMessageDetailReq = null;       			
 		},
-		timeout:utm.netTimeout
+		timeout:utm.netTimeout,
+		enableKeepAlive : utm.keepAlive
 	});	
 	if (_messageData.mode === 'received') {
 		getMessageDetailReq.open("GET",utm.serviceUrl+"ReceivedMessages/"+_messageData.Id);	
@@ -306,8 +307,9 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 			onerror:function(e) {
 				utm.handleHttpError(e,this.status,this.responseText); 	
 				getMarkMessageAsReadReq = null;		
-			}
-			,timeout:utm.netTimeout
+			},
+			timeout:utm.netTimeout,
+			enableKeepAlive : utm.keepAlive
 		});	
 		getMarkMessageAsReadReq.open("POST",utm.serviceUrl+"Messages/MarkAsRead/"+messageId);	
 		getMarkMessageAsReadReq.setRequestHeader('Authorization-Token', utm.AuthToken);	
@@ -357,8 +359,9 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 		        utm.handleHttpError(e,this.status,this.responseText); 
 		        self.hideAi();
 		        getMembersReq = null;
-		     }
-		     ,timeout:utm.netTimeout
+		     },
+		     timeout:utm.netTimeout,
+		     enableKeepAlive : utm.keepAlive
 		});	
 		getMembersReq.open("GET",utm.serviceUrl+"Members/"+_messageData.MyHortId +'?$filter=UserId eq '+replyingToUserId );
 		getMembersReq.setRequestHeader('Authorization-Token', utm.User.UserProfile.AuthToken);	
@@ -385,7 +388,8 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 				utm.handleHttpError(e,this.status,this.responseText); 		
 				getAttachmentsReq = null;
 			},
-			timeout:utm.netTimeout
+			timeout:utm.netTimeout,
+			enableKeepAlive : utm.keepAlive
 		});	
 								
 		getAttachmentsReq.open("GET",utm.serviceUrl + "Attachment/" + _messageData.Attachments[0].Id);	
@@ -489,7 +493,8 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 			onerror : function(e) {
 				deleteMessagesReq = null;
 			},
-			timeout : utm.netTimeout
+			timeout : utm.netTimeout,
+			enableKeepAlive : utm.keepAlive
 		});
 		deleteMessagesReq.open('delete', utm.serviceUrl + 'Messages/DeleteMessage/' + messageId + '?isSuperDelete=' + isSuperDelete);
 		deleteMessagesReq.setRequestHeader('Authorization-Token', utm.AuthToken);

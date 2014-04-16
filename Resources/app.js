@@ -60,6 +60,7 @@ utm.appPauseTime = new Date();
 utm.activityActive = 0;
 utm.androidTimeout = (5*60*1000); // 5 minutes
 utm.timer = '';
+utm.keepAlive = true;  //only applies to iOS, used on create Titanium.Network.HTTPClient enableKeepAlive property
 
 
 var unpinLockScreen = require('/lib/com.qbset.unlockscreen');
@@ -201,7 +202,8 @@ function callLogoutService(){
 			utm.handleHttpError(e, this.status, this.responseText);
 			logoutReq = null;
 		},
-		timeout:utm.netTimeout
+		timeout:utm.netTimeout,
+		enableKeepAlive : utm.keepAlive
 	});
 
 	logoutReq.open("POST", utm.serviceUrl + "Logout");
@@ -282,6 +284,7 @@ Ti.App.addEventListener('app:getSubscriptionInfo', function (e){
 	var subscriptionInfoReq = Ti.Network.createHTTPClient({
 		validatesSecureCertificate:utm.validatesSecureCertificate, 
 		timeout:utm.netTimeout,
+		enableKeepAlive : utm.keepAlive,
 		onload : function() {
 			var response = eval('('+this.responseText+')');
 			if (this.status == 200) {		

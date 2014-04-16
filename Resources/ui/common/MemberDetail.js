@@ -192,7 +192,8 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 				utm.handleHttpError(e, this.status, this.responseText);
 				updateMemberReq = null;
 			},
-			timeout : utm.netTimeout
+			timeout : utm.netTimeout,
+			enableKeepAlive : utm.keepAlive
 		});
 		
 		updateMemberReq.open("POST", utm.serviceUrl + "MyHort/UpdateMyHortMember");
@@ -234,7 +235,8 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 				utm.handleHttpError(e, this.status, this.responseText);
 				deleteMyHortReq = null;
 			},
-			timeout : utm.netTimeout
+			timeout : utm.netTimeout,
+			enableKeepAlive : utm.keepAlive
 		});
 		
 		deleteMemberReq.open("POST", utm.serviceUrl + "MyHort/DeleteUserFromMyHort?myhortMemberId=" + _memberData.Id);
@@ -282,7 +284,8 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 				utm.handleHttpError(e, this.status, this.responseText);
 				getMyHortsReq = null;
 			},
-			timeout : utm.netTimeout
+			timeout : utm.netTimeout,
+			enableKeepAlive : utm.keepAlive
 		});
 		getMyHortsReq.open("GET", utm.serviceUrl + "MyHort?$orderby=FriendlyName");
 		getMyHortsReq.setRequestHeader('Authorization-Token', utm.AuthToken);
