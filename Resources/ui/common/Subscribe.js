@@ -122,34 +122,11 @@ var SettingsWin = function(_tabGroup) {
 		
 	} else {
 		
-		var androidLabel = Ti.UI.createLabel({ 
-			text: 'In order to obtain more UTM messages or a subscription, you must visit the UTM store at:\n' + utm.webUrl + '/Store',
-			top: 15,
-			left: 25,
-			width: (Ti.Platform.displayCaps.platformWidth-50),
-			height: Ti.UI.SIZE,
-			font: {fontFamily: utm.fontFamily, fontSize:'14dp'},
-			color: utm.textColor,
-			textAlight: Ti.UI.TEXT_ALIGNMENT_Left
-		});
-		scrollingView.add(androidLabel);
+		utm.InAppProducts.getProducts({ SKUs: ["com.youthisme.unlimited"] });
 		
-		var storeButton = Ti.UI.createButton({
-			title: 'Visit UTM store',
-			top: 30,
-			width: Math.min(235*utm.sizeMultiplier,Math.round(Ti.Platform.displayCaps.platformWidth*0.82)),
-			height: 40*utm.sizeMultiplier,
-			borderRadius: 20*utm.sizeMultiplier,
-			font:{fontFamily: utm.fontFamily, fontSize: utm.fontSize},
-			backgroundColor: utm.buttonColor,
-			color: 'white',
-			style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
-		});
-		scrollingView.add(storeButton);
-		scrollingView.addEventListener('click',function(e){
-			Ti.Platform.openURL(utm.webUrl +'/Store');
-		});
-	}
+		
+		
+	} 
 	
 	self.updateMessage = function(){
 		message='';

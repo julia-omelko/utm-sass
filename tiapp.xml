@@ -16,7 +16,7 @@
         <target device="blackberry">false</target>
     </deployment-targets>
     <sdk-version>3.2.2.GA</sdk-version>
-    <id>com.utm</id>
+    <id>com.youthisme.android</id>
     <name>UTM</name>
     <version>2.0.2</version>
     <publisher>youthisme</publisher>
@@ -31,7 +31,7 @@
     <fullscreen>false</fullscreen>
     <navbar-hidden>false</navbar-hidden>
     <analytics>false</analytics>
-    <guid>cb50d5ff-32d1-4bf4-a748-6dbe0f5a06e2</guid>
+    <guid>3d0201a6-e1c8-42c9-8be7-940988d9556d</guid>
     <property name="ti.ui.defaultunit">system</property>
     <iphone>
         <orientations device="iphone">
@@ -58,6 +58,8 @@
             <supports-screens android:anyDensity="true"
                 android:largeScreens="true" android:normalScreens="true" android:smallScreens="true"/>
             <application android:theme="@style/Theme.MyTheme">
+                <activity
+                    android:name="com.logicallabs.inappproducts.PurchaseActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
                 <activity
                     android:configChanges="keyboardHidden|orientation"
                     android:label="UTM" android:name=".UtmActivity"
@@ -116,6 +118,7 @@
         <module platform="android">facebook</module>
         <module platform="iphone">ti.imagefactory</module>
         <module platform="android">ti.imagefactory</module>
+        <module platform="android">com.logicallabs.inappproducts</module>
     </modules>
     <property name="ti.deploytype">test</property>
     <!-- SOASTA TOUCHTEST CODE BLOCK 4 of 4 in this module.  Uncomment the 4 blocks of code in this module and one block in app.js

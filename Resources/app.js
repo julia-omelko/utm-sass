@@ -170,6 +170,8 @@ function getDateTimeFormat(dateSent){
 
 if (utm.iPhone || utm.iPad ) {
 	Ti.include('storekit.js');
+} else {
+	Ti.include('android_purchase.js');
 }
 
 
