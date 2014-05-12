@@ -86,7 +86,8 @@ var MessageGroupMembersWin = function(_tabGroup,_myHortData) {
 				}
 				getMyHortDetailReq = null;
 			},
-			timeout : utm.netTimeout
+			timeout : utm.netTimeout,
+			enableKeepAlive : utm.keepAlive
 		});
 		getMyHortDetailReq.open("GET", utm.serviceUrl + "Members/" + _myHortData.MyHortId + '?$orderby=NickName');
 		getMyHortDetailReq.setRequestHeader('Authorization-Token', utm.AuthToken);

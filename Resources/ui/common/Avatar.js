@@ -83,7 +83,8 @@ var AvatarWin = function(_tabGroup) {
 			onerror : function(e) {
 				utm.handleHttpError(e, this.status, this.responseText);
 			},
-			timeout : utm.netTimeout
+			timeout : utm.netTimeout,
+			enableKeepAlive : utm.keepAlive
 		});
 		updateAvatarReq.open("PUT", utm.serviceUrl + "Avatar/" + selectedAvatar);
 		updateAvatarReq.setRequestHeader('Authorization-Token', utm.AuthToken);

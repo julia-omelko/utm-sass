@@ -55,7 +55,8 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 					utm.handleHttpError(e, this.status, this.responseText);
 				}
 			},
-			timeout : utm.netTimeout
+			timeout : utm.netTimeout,
+			enableKeepAlive : utm.keepAlive
 		});
 		getMyHortDetailReq.open("GET", utm.serviceUrl + "MyHort/GetMyHortDetails?myHortId=" + myHortId);
 		getMyHortDetailReq.setRequestHeader('Authorization-Token', utm.AuthToken);
@@ -181,7 +182,8 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 				utm.handleHttpError(e, this.status, this.responseText);
 				inviteMyHortReq = null;
 			},
-			timeout : utm.netTimeout
+			timeout : utm.netTimeout,
+			enableKeepAlive : utm.keepAlive
 		});
 		inviteMyHortReq.open("POST", utm.serviceUrl + "MyHort/AddUserIdsToMyhort");
 		inviteMyHortReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");

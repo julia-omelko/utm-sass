@@ -99,7 +99,8 @@ var GroupsWin = function(_tabGroup) {
 				utm.handleHttpError(e, this.status, this.responseText);
 				getMyHortsReq = null;
 			},
-			timeout : utm.netTimeout
+			timeout : utm.netTimeout,
+			enableKeepAlive : utm.keepAlive
 		});
 		getMyHortsReq.open("GET", utm.serviceUrl + "MyHort?$orderby=FriendlyName");
 		getMyHortsReq.setRequestHeader('Authorization-Token', utm.AuthToken);
@@ -156,7 +157,8 @@ var GroupsWin = function(_tabGroup) {
 				utm.handleHttpError(e, this.status, this.responseText);
 				leaveMyHortHttp = null;
 			},
-			timeout:utm.netTimeout
+			timeout:utm.netTimeout,
+			enableKeepAlive : utm.keepAlive
 		});
 		
 		leaveMyHortHttp.open("POST", utm.serviceUrl + "MyHort/LeaveMyHort?myHortId=" + _myHortId);
@@ -192,7 +194,8 @@ var GroupsWin = function(_tabGroup) {
 				utm.handleHttpError(e, this.status, this.responseText);
 				deleteMyHortDetailReq = null;
 			},
-			timeout:utm.netTimeout
+			timeout:utm.netTimeout,
+			enableKeepAlive : utm.keepAlive
 		});
 		deleteMyHortDetailReq.open("GET", utm.serviceUrl + "MyHort/DeleteUsersMyHort?myhortId=" + _myHortId);
 		deleteMyHortDetailReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");

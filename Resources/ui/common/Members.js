@@ -137,7 +137,8 @@ var MembersWin = function(_tabGroup) {
 				utm.handleHttpError(e, this.status, this.responseText);
 				deleteMyHortReq = null;
 			},
-			timeout : utm.netTimeout
+			timeout : utm.netTimeout,
+			enableKeepAlive : utm.keepAlive
 		});
 		
 		deleteMemberReq.open("POST", utm.serviceUrl + "MyHort/DeleteUserFromMyHort?myhortMemberId=" + _memberData.Id);
@@ -161,7 +162,8 @@ var MembersWin = function(_tabGroup) {
 				utm.handleHttpError(e, this.status, this.responseText);
 				deletePendingReq = null;
 			},
-			timeout : utm.netTimeout
+			timeout : utm.netTimeout,
+			enableKeepAlive : utm.keepAlive
 		});
 		deletePendingReq.open("DELETE", utm.serviceUrl + "MyHort/DeleteInvite/" + _memberData.Id);
 		deletePendingReq.setRequestHeader('Authorization-Token', utm.AuthToken);
@@ -191,7 +193,8 @@ var MembersWin = function(_tabGroup) {
 				utm.handleHttpError(e, this.status, this.responseText);
 				getMyHortDetailReq = null;
 			},
-			timeout : utm.netTimeout
+			timeout : utm.netTimeout,
+			enableKeepAlive : utm.keepAlive
 		});
 		getMyHortDetailReq.open("GET", utm.serviceUrl + "MyHort/GetMyHortDetails?myHortId=" + myHortId);
 		getMyHortDetailReq.setRequestHeader('Authorization-Token', utm.AuthToken);
@@ -265,7 +268,8 @@ var MembersWin = function(_tabGroup) {
 					utm.handleHttpError(e, this.status, this.responseText);
 				}
 			},
-			timeout : utm.netTimeout
+			timeout : utm.netTimeout,
+			enableKeepAlive : utm.keepAlive
 		});
 		getMyHortPendingReq.open("GET", utm.serviceUrl + "MyHort/Pending?myHortId=" + myHortId);
 		getMyHortPendingReq.setRequestHeader('Authorization-Token', utm.AuthToken);

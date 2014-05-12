@@ -351,7 +351,8 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 				}
 				getMyHortDetailReq = null;
 			},
-			timeout : utm.netTimeout
+			timeout : utm.netTimeout,
+			enableKeepAlive : utm.keepAlive
 		});
 		getMyHortDetailReq.open("GET", utm.serviceUrl + "MyHort/GetMyHortDetails?myHortId=" + utm.User.UserProfile.PrimaryMyHort);
 		getMyHortDetailReq.setRequestHeader('Authorization-Token', utm.AuthToken);
@@ -419,7 +420,8 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 				utm.handleHttpError(e, this.status, this.responseText);
 				updateMyHortDetailReq = null;
 			},
-			timeout : utm.netTimeout
+			timeout : utm.netTimeout,
+			enableKeepAlive : utm.keepAlive
 		});
 		
 		updateMyHortDetailReq.open("POST", utm.serviceUrl + "MyHort/UpdatePrimaryContactInfo");

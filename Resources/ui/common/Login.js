@@ -353,7 +353,8 @@ var LoginWin = function() {
 				}
 				loginReq = null;
 			},
-			timeout:utm.netTimeout
+			timeout:utm.netTimeout,
+			enableKeepAlive: utm.keepAlive
 		});
 		
 		loginReq.open("POST",utm.serviceUrl+"Login");	

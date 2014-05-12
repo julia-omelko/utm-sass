@@ -618,7 +618,8 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 				}
 				getMyHortDetailReq = null;
 			},
-			timeout : utm.netTimeout
+			timeout : utm.netTimeout,
+			enableKeepAlive : utm.keepAlive
 		});
 		getMyHortDetailReq.open("GET", utm.serviceUrl + "MyHort/GetMyHortDetails?myHortId=" + _groupData.MyHortId);
 		getMyHortDetailReq.setRequestHeader('Authorization-Token', utm.AuthToken);
@@ -721,7 +722,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 
 	function updateMyHortData() {
 		var _userSettings = {
-			NickName: nicknameField.getValue(),
+//			NickName: nicknameField.getValue(),
 			Email: emailField.getValue(),
 			Mobile: mobileField.getValue(),
 			AddNicknameToUtms: signSwitch.getValue(),
@@ -775,7 +776,8 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 				utm.handleHttpError(e, this.status, this.responseText);
 				updateMyHortDetailReq = null;
 			},
-			timeout : utm.netTimeout
+			timeout : utm.netTimeout,
+			enableKeepAlive : utm.keepAlive
 		});
 		
 		
@@ -817,7 +819,8 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 				utm.handleHttpError(e, this.status, this.responseText);
 				deleteMyHortReq = null;
 			},
-			timeout : utm.netTimeout
+			timeout : utm.netTimeout,
+			enableKeepAlive : utm.keepAlive
 		});
 		
 		deleteMyHortReq.open("GET", utm.serviceUrl + "MyHort/DeleteUsersMyHort?myhortId=" + _groupData.MyHortId);

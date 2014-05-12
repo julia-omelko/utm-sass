@@ -175,7 +175,8 @@ var MessagesWin = function(_tabGroup) {
 				utm.handleHttpError(e, this.status, this.responseText);
 				getMessagesReq = null;
 			},
-			timeout : utm.netTimeout
+			timeout : utm.netTimeout,
+			enableKeepAlive : utm.keepAlive
 		});
 
 		if (mode === 'received') {
@@ -252,7 +253,8 @@ var MessagesWin = function(_tabGroup) {
 			onerror : function(e) {
 				deleteMessagesReq = null;
 			},
-			timeout : utm.netTimeout
+			timeout : utm.netTimeout,
+			enableKeepAlive : utm.keepAlive
 		});
 		deleteMessagesReq.open('delete', utm.serviceUrl + 'Messages/DeleteMessage/' + messageId + '?isSuperDelete=' + isSuperDelete);
 		deleteMessagesReq.setRequestHeader('Authorization-Token', utm.AuthToken);
