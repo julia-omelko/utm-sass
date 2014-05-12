@@ -10,6 +10,8 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 	
 	var StandardWindow = require('ui/common/StandardWindow');
 	var self = new StandardWindow(winTitle, true);
+	
+	var responseHistory=new Object();
 
 	var updateDisplay = function() {
 		self.fireEvent('reorientdisplay');
@@ -272,6 +274,7 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 					self.hideAi();
 				}
 				originalMessage.setText(response.Message);
+				_messageData.replingToMessageText = response.Message;
 
 			} else {
 				utm.handleHttpError(e, this.status, this.responseText);
