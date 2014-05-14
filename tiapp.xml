@@ -111,14 +111,14 @@
         <theme>default</theme>
     </mobileweb>
     <modules>
-        <module platform="iphone">com.qbset.unlockscreen</module>
-        <module platform="iphone">com.0x82.key.chain</module>
-        <module platform="iphone">ti.storekit</module>
-        <module platform="iphone">facebook</module>
-        <module platform="android">facebook</module>
-        <module platform="iphone">ti.imagefactory</module>
-        <module platform="android">ti.imagefactory</module>
-        <module platform="android">com.logicallabs.inappproducts</module>
+        <module platform="iphone" version="1.0">com.qbset.unlockscreen</module>
+        <module platform="iphone" version="2.1">com.0x82.key.chain</module>
+        <module platform="iphone" version="3.0.0">ti.storekit</module>
+        <module platform="android" version="2.2.1">ti.imagefactory</module>
+        <module platform="iphone" version="3.1.1">facebook</module>
+        <module platform="android" version="3.0.2">facebook</module>
+        <module platform="iphone" version="1.1.1">ti.imagefactory</module>
+        <module platform="android" version="1.0.1">com.logicallabs.inappproducts</module>
     </modules>
     <property name="ti.deploytype">test</property>
     <!-- SOASTA TOUCHTEST CODE BLOCK 4 of 4 in this module.  Uncomment the 4 blocks of code in this module and one block in app.js
