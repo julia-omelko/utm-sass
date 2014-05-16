@@ -215,6 +215,13 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 
 	scrollingView.add(messageField);
 	
+	if (!_messageData.DeleteOnRead || _mode === 'Reply') {
+		
+		var sentDate = moment(_messageData.DateSent);
+		
+		messageField.value =  '\n\n On '+sentDate.format("M/D/YY")+ '  ' + _messageData.FromUserName + '  Wrote:\n  >' + _messageData.replingToMessageText +'';
+		messageField.setSelection(0, 0);
+	}
 
 	var StandardButton = require('/ui/common/baseui/StandardButton');
 	var previewBtn = new StandardButton({title:'Preview'});
@@ -253,4 +260,3 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 	return self;
 };
 module.exports = ComposeWin;
-
