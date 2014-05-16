@@ -2,7 +2,7 @@ var SettingsWin = function(_tabGroup) {
 	utm.screenWillLock = false;
 	
 	var StandardWindow = require('ui/common/StandardWindow');
-	var self = new StandardWindow('Buy Messages', (utm.Android ? false : true));
+	var self = new StandardWindow('Buy Messages', true);
 
 	var updateDisplay = function() {
 		self.fireEvent('reorientdisplay');
@@ -121,12 +121,108 @@ var SettingsWin = function(_tabGroup) {
 		}
 		
 	} else {
+		// Android
+		for (var i=0; i<utm.androidProducts.length; i++) {
+			var productDesc = Ti.UI.createLabel({
+				width: (Ti.Platform.displayCaps.platformWidth-50),
+				height: Ti.UI.SIZE,
+				top: 20,
+				font: {fontFamily: utm.fontFamily, fontSize:'16dp'},
+				textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+				text: utm.androidProducts[i].description,
+				color: 'black'
+			});
+			scrollingView.add(productDesc);
 		
-		utm.InAppProducts.getProducts({ SKUs: ["com.youthisme.unlimited"] });
+			self.addEventListener('reorientdisplay', function(evt) {
+				productDesc.width = (Ti.Platform.displayCaps.platformWidth-50);
+			});	
+			
+			var productButton = Ti.UI.createButton({
+				title: utm.androidProducts[i].title,
+				top: 10,
+				width: (Ti.Platform.displayCaps.platformWidth-50),
+				height: 40*utm.sizeMultiplier,
+				borderRadius: 20*utm.sizeMultiplier,
+				font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize},
+				backgroundColor: utm.buttonColor,
+				color: 'white',
+				style: Ti.UI.iPhone.SystemButtonStyle.PLAIN,
+				_product: i
+			});	
+			productButton.addEventListener('click', function (evt) {
+				Ti.API.info(utm.androidProducts[evt.source._product]);
+				currentProduct = utm.androidProducts[evt.source._product];
+				
+				self.showAi();
+				appPayload = 'AppPayloadRandom#' + Math.round(Math.random() * 1000);	
+				currentProduct.purchase({
+					quantity : 1,
+					applicationPayload: appPayload
+				});
+				
+				
+
+			});
+			scrollingView.add(productButton);
+			
+			self.addEventListener('reorientdisplay', function(evt) {
+				productButton.width = (Ti.Platform.displayCaps.platformWidth-50);
+			});	self.hideAi();
+		}
+
+		Ti.App.addEventListener('App:purchaseStateChange',purchaseStateChange);
+		function purchaseStateChange(e){
+			self.hideAi();
+			alert(e);
+		};
 		
+		/*InAppProducts.addEventListener('purchaseUpdate', function(e) {
+			Ti.API.info('Received purchaseUpdate event');
+			if (e.errorCode) {
+				// This only happens on Android. On iOS, there is no error
+				// condition associated with the purchaseUpdate event, although
+				// the purchase itself may be in PURCHASE_STATE_FAILED state.
+				alert('Purchase attempt failed (code: ' + e.errorCode + ')');
+			} else {
+				Ti.API.info('Product: ' + e.purchase.SKU + ' state: ' + purchaseStateToString(e.purchase.state));
+				switch (e.purchase.state) {
+					case utm.InAppProducts.PURCHASE_STATE_PURCHASED:
+						// This is a possible state on both iOS and Android
+						purchaseComplete(e.purchase);
+						break;
+					case utm.InAppProducts.PURCHASE_STATE_CANCELED:
+						// Android only
+						alert('Purchase canceled.');
+						self.hideAi();
+						break;
+					case utm.InAppProducts.PURCHASE_STATE_REFUNDED:
+						// Android only
+						break;
+					case utm.InAppProducts.PURCHASE_STATE_PURCHASING:
+						// iOS only
+						break;
+					case utm.InAppProducts.PURCHASE_STATE_FAILED:
+						// iOS only
+						alert('Purchase failed.');
+						self.hideAi();
+						break;
+					case utm.InAppProducts.PURCHASE_STATE_RESTORED:
+						// iOS only
+						break;
+				}
+			}
+		});
+		*/
 		
+		function purchaseComplete(_purchase) {
+			self.hideAi();
+			var theUrl = 'https://www.googleapis.com/androidpublisher/v1.1/applications/com.youthisme.android/inapp/com.youthisme.unlimited/purchases/' + e.purchases[0].purchaseToken + '?key=AIzaSyC8B3yy1P90_NNPVrAZc-rLFiv_SlqlfTM';
 		
-	} 
+			Ti.Platform.openURL('http://www.troyweb.com?data=' + JSON.stringify(_purchase));
+		}
+	}
+		
 	
 	self.updateMessage = function(){
 		message='';
@@ -191,6 +287,7 @@ var SettingsWin = function(_tabGroup) {
 	
 	
 	self.addEventListener('close', function(e) {
+		InAppProducts = null;
 		Ti.App.removeEventListener('orientdisplay', updateDisplay);
 	});		
 

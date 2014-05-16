@@ -44,6 +44,9 @@ if (utm.Android) {
 }
 utm.fontSize = '14dp';
 
+utm.androidProducts = [];
+
+
 //Note 2 diff controllers based on platform folders
 var NavigationController = require('NavigationController');
 utm.navController = new NavigationController();
@@ -98,18 +101,34 @@ function handleLoginSuccess(event) {
 	if (utm.User) {
 		utm.User.MyHorts =[];
 	}
+	
 	utm.User = event.userData;
 	utm.AuthToken = event.userData.UserProfile.AuthToken;
 	utm.twitterConsumerKey = event.userData.TwitterInfo.TwitterConsumerKey;
 	utm.twitterConsumerSecret = event.userData.TwitterInfo.TwitterConsumerSecret;
-	utm.products = event.userData.AppleInAppProducts;
+	
+	if (utm.Android) {
+		utm.products = event.userData.AndroidInAppProducts;
+	} else {
+		utm.products = event.userData.AppleInAppProducts;
+	}
+	
 	
 	utm.User.MyHorts = event.userData.MyHorts;
 
 	utm.enableSendMessageButton=true;
 	
 	isSubscriptionValid(utm.User.UserProfile.SubscriptionEnds);
-	Ti.App.fireEvent('App:startTransactionListener');
+	if (utm.iPhone || utm.iPad ) {
+		Ti.App.fireEvent('App:startTransactionListener');
+	} else {
+		if (utm.androidProducts.length) {
+			//alert('existing: ' + utm.androidProducts.length);
+		} else {
+			//Ti.API.info(JSON.stringify(utm.products));
+			Ti.include('android_purchase.js');
+		}
+	}
 	openTabGroup();
 }
 
@@ -171,7 +190,7 @@ function getDateTimeFormat(dateSent){
 if (utm.iPhone || utm.iPad ) {
 	Ti.include('storekit.js');
 } else {
-	Ti.include('android_purchase.js');
+	
 }
 
 
@@ -419,8 +438,4 @@ utm.monitorGuid = function() {
 	}, utm.androidTimeout);
 };
 */
-
-
-
-
 

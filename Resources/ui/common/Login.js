@@ -315,7 +315,8 @@ var LoginWin = function() {
 				UserName: username.value,
 				Password: password.value,
 				RememberMe: true,
-				Version: shortVersionNum								
+				Version: shortVersionNum,
+				Platform: (utm.Android ? 'android' : 'ios')								
 			};
 
 			sendLogin(params);
