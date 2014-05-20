@@ -1,6 +1,6 @@
 var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 	
-	Ti.API.info(_messageData);
+	//Ti.API.info(_messageData);
 	
 	if (_mode === 'Reply') {
 		_messageID = _messageData.Id;
@@ -215,7 +215,8 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 
 	scrollingView.add(messageField);
 	
-	if (!_messageData.DeleteOnRead || _mode === 'Reply') {
+	//Business rule: If replying to a message that was NOT set to "delete on read", include the original message text in the reply
+	if (!_messageData.DeleteOnRead && _mode === 'Reply') {
 		
 		var sentDate = moment(_messageData.DateSent);
 		
