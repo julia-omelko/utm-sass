@@ -160,60 +160,25 @@ var SettingsWin = function(_tabGroup) {
 					quantity : 1,
 					applicationPayload: appPayload
 				});
-				
-				
-
 			});
+			productButton.addEventListener('twofingertap', function (evt) {
+				Ti.App.fireEvent('App:getPurchases');
+			});
+			
 			scrollingView.add(productButton);
 			
 			self.addEventListener('reorientdisplay', function(evt) {
 				productButton.width = (Ti.Platform.displayCaps.platformWidth-50);
-			});	self.hideAi();
+			});	
+			self.hideAi();
 		}
 
 		Ti.App.addEventListener('App:purchaseStateChange',purchaseStateChange);
 		function purchaseStateChange(e){
 			self.hideAi();
-			alert(e);
+			//alert(e);
 		};
 		
-		/*InAppProducts.addEventListener('purchaseUpdate', function(e) {
-			Ti.API.info('Received purchaseUpdate event');
-			if (e.errorCode) {
-				// This only happens on Android. On iOS, there is no error
-				// condition associated with the purchaseUpdate event, although
-				// the purchase itself may be in PURCHASE_STATE_FAILED state.
-				alert('Purchase attempt failed (code: ' + e.errorCode + ')');
-			} else {
-				Ti.API.info('Product: ' + e.purchase.SKU + ' state: ' + purchaseStateToString(e.purchase.state));
-				switch (e.purchase.state) {
-					case utm.InAppProducts.PURCHASE_STATE_PURCHASED:
-						// This is a possible state on both iOS and Android
-						purchaseComplete(e.purchase);
-						break;
-					case utm.InAppProducts.PURCHASE_STATE_CANCELED:
-						// Android only
-						alert('Purchase canceled.');
-						self.hideAi();
-						break;
-					case utm.InAppProducts.PURCHASE_STATE_REFUNDED:
-						// Android only
-						break;
-					case utm.InAppProducts.PURCHASE_STATE_PURCHASING:
-						// iOS only
-						break;
-					case utm.InAppProducts.PURCHASE_STATE_FAILED:
-						// iOS only
-						alert('Purchase failed.');
-						self.hideAi();
-						break;
-					case utm.InAppProducts.PURCHASE_STATE_RESTORED:
-						// iOS only
-						break;
-				}
-			}
-		});
-		*/
 		
 		function purchaseComplete(_purchase) {
 			self.hideAi();

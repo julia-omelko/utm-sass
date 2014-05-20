@@ -59,26 +59,26 @@ InAppProducts.addEventListener('purchaseUpdate', function(e) {
 	} else {
 		Ti.API.info('Product: ' + e.purchase.SKU + ' state: ' + e.purchase.state);
 		switch (e.purchase.state) {
-			case utm.InAppProducts.PURCHASE_STATE_PURCHASED:
+			case InAppProducts.PURCHASE_STATE_PURCHASED:
 				// This is a possible state on both iOS and Android
 				verifyServerSideWithGoogle(e.purchase);
 				Ti.App.fireEvent('App:purchaseStateChange',{state:'purchased'});
 				break;
-			case utm.InAppProducts.PURCHASE_STATE_CANCELED:
+			case InAppProducts.PURCHASE_STATE_CANCELED:
 				// Android only
 				Ti.App.fireEvent('App:purchaseStateChange',{state:'cancelled'});
 				break;
-			case utm.InAppProducts.PURCHASE_STATE_REFUNDED:
+			case InAppProducts.PURCHASE_STATE_REFUNDED:
 				// Android only
 				break;
-			case utm.InAppProducts.PURCHASE_STATE_PURCHASING:
+			case InAppProducts.PURCHASE_STATE_PURCHASING:
 				// iOS only
 				break;
-			case utm.InAppProducts.PURCHASE_STATE_FAILED:
+			case InAppProducts.PURCHASE_STATE_FAILED:
 				// iOS only
 				Ti.App.fireEvent('App:purchaseStateChange',{state:'failed'});
 				break;
-			case utm.InAppProducts.PURCHASE_STATE_RESTORED:
+			case InAppProducts.PURCHASE_STATE_RESTORED:
 				// iOS only
 				break;
 		}
@@ -100,14 +100,17 @@ function verifyServerSideWithGoogle(_purchase){
 			//utm.inSubscriptionMode = true;
 			if (this.status == 200) {		
 				var response = eval('('+this.responseText+')');
-				Ti.API.info(response);
+				//alert(response);
+				Ti.API.info(12345);
+				Ti.API.info(JSON.stringify(response));
+				Ti.API.info(67890);
 				if (response.Status === 'Sucess' || response.Status ==='Success'){
-					utm.User.UserProfile.MessagesRemaining = response.Data.MessagesRemaining;
-					utm.User.UserProfile.SubscriptionEnds = response.Data.SubscriptionEnds; //Issue with dates not the same with SubscriptionInfo vs VerifyAppleReceipt when null
+					utm.User.UserProfile.MessagesRemaining = response.Data.SubscriptionInfo.MessagesRemaining;
+					utm.User.UserProfile.SubscriptionEnds = response.Data.SubscriptionInfo.SubscriptionEnds; //Issue with dates not the same with SubscriptionInfo vs VerifyAppleReceipt when null
 					/*
 					 * These messages will be replaced with custom messages supplied by the UTM server. - TV
 					 */
-					if (response.Data.SubscriptionEnds === null) {
+					if (response.Data.SubscriptionInfo.SubscriptionEnds == null) {
 						alert("Thank you for your purchase, you now have "+ utm.User.UserProfile.MessagesRemaining + " messages remaining.");														
 					} else {
 						alert("Thank you for your purchase.");
@@ -115,7 +118,7 @@ function verifyServerSideWithGoogle(_purchase){
 
 					Ti.App.fireEvent('updateMessageCount',{
 						MessagesRemaining: response.Data.SubscriptionInfo.MessagesRemaining,
-						SubscriptionEnds: ((_productIdentifier === 'com.youthisme.unlimited') ? response.Data.SubscriptionInfo.SubscriptionEnds : null)
+						SubscriptionEnds: ((_purchase.SKU === 'com.youthisme.unlimited') ? response.Data.SubscriptionInfo.SubscriptionEnds : null)
 					});
 				}else{
 					//alert("Your purchase was successful but will not be reflected right away.");
@@ -135,10 +138,10 @@ function verifyServerSideWithGoogle(_purchase){
 	});
 	
 	var theUrl = utm.serviceUrl + "VerifyGooglePlayReceipt";
-	//Ti.API.info(1);
-	//Ti.API.info(theUrl);
-	//Ti.API.info(JSON.stringify(_purchase));
-	//Ti.API.info(2);
+	Ti.API.info(1);
+	Ti.API.info(theUrl);
+	Ti.API.info(JSON.stringify(_purchase));
+	Ti.API.info(2);
 	verifyReceipt.open("POST", theUrl);
 	verifyReceipt.setRequestHeader("Content-Type", "application/json; charset=utf-8");
 	verifyReceipt.setRequestHeader('Authorization-Token', utm.AuthToken);
@@ -151,5 +154,10 @@ InAppProducts.addEventListener('receivedPurchases', function(e) {
 	//Ti.API.info(JSON.stringify(e.purchases));
 	verifyServerSideWithGoogle(e.purchases[0]);
 });
+
+Ti.App.addEventListener('App:getPurchases',function(e){
+	InAppProducts.getPurchases();
+});
+
 
 
