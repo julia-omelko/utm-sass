@@ -53,7 +53,7 @@
     <property name="ti.android.bug2373.title">Restart Required</property>
     <property name="ti.android.bug2373.buttonText">Continue</property>
     <android xmlns:android="http://schemas.android.com/apk/res/android">
-        <manifest android:installLocation="auto" android:versionCode="9" android:versionName="2.0.2">
+        <manifest android:installLocation="auto" android:versionCode="10" android:versionName="2.0.2">
             <uses-permission android:name="com.android.vending.BILLING"/>
             <supports-screens android:anyDensity="true"
                 android:largeScreens="true" android:normalScreens="true" android:smallScreens="true"/>
