@@ -11,6 +11,9 @@ var AttachmentPreviewWin = function(_win,_attachment) {
 		color: 'white'
 	});
 	backButton.addEventListener('click',function(e){
+		if (utm.Android) {
+			resizedImage = null;
+		}
 		_win.fireEvent('closeAttachmentPreview',{});
 		if (utm.Android) {
 			self.close({animated:true});
@@ -31,8 +34,12 @@ var AttachmentPreviewWin = function(_win,_attachment) {
 	});
 	self.add(scrollView);
 	
+	//For Android, need to resize image to a size the device can display
+	if (utm.Android) {
+		var resizedImage = _attachment.imageAsResized(Ti.Platform.displayCaps.platformWidth, (Ti.Platform.displayCaps.platformHeight - utm.viewableTabHeight));
+	}
 	var attachmentPreview = Ti.UI.createImageView({
-		image: _attachment,
+		image: ((utm.Android) ? resizedImage : _attachment),
     	//enableZoomControls: true,
     	width: '100%',
 		autorotate: true
