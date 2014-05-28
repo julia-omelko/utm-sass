@@ -107,10 +107,11 @@ function handleLoginSuccess(event) {
 	utm.twitterConsumerKey = event.userData.TwitterInfo.TwitterConsumerKey;
 	utm.twitterConsumerSecret = event.userData.TwitterInfo.TwitterConsumerSecret;
 	
+	Ti.API.info(JSON.stringify(event.userData));
 	if (utm.Android) {
 		utm.products = event.userData.AndroidInAppProducts;
 	} else {
-		utm.products = event.userData.AppleInAppProducts;
+		utm.products = event.userData.AppleInAppProductsFull;
 	}
 	
 	

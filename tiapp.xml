@@ -16,9 +16,9 @@
         <target device="blackberry">false</target>
     </deployment-targets>
     <sdk-version>3.2.2.GA</sdk-version>
-    <id>com.youthisme.android</id>
+    <id>com.utm</id>
     <name>UTM</name>
-    <version>2.0.2</version>
+    <version>2.1.0</version>
     <publisher>youthisme</publisher>
     <url>http://youthisme.com</url>
     <description>YouThisMe™ (UTM) is an innovative new technology that provides privacy in digital communications and postings on social media. The messages are hidden in plain sight and only the intended recipient(s) can decode them.</description>
@@ -31,7 +31,7 @@
     <fullscreen>false</fullscreen>
     <navbar-hidden>false</navbar-hidden>
     <analytics>false</analytics>
-    <guid>407F002B-1FA8-4963-B8D3-F45CD4A24BB2</guid>
+    <guid>1C4DD2F8-93FF-4980-B0C0-82B7DE0253B2</guid>
     <property name="ti.ui.defaultunit">system</property>
     <iphone>
         <orientations device="iphone">
@@ -53,7 +53,8 @@
     <property name="ti.android.bug2373.title">Restart Required</property>
     <property name="ti.android.bug2373.buttonText">Continue</property>
     <android xmlns:android="http://schemas.android.com/apk/res/android">
-        <manifest android:installLocation="auto" android:versionCode="10" android:versionName="2.0.2">
+        <manifest android:installLocation="auto"
+            android:versionCode="10" android:versionName="2.0.2">
             <uses-permission android:name="com.android.vending.BILLING"/>
             <supports-screens android:anyDensity="true"
                 android:largeScreens="true" android:normalScreens="true" android:smallScreens="true"/>

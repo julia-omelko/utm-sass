@@ -108,7 +108,7 @@ var SettingsWin = function(_tabGroup) {
 		 * @return A Ti.Storekit.Product.
 		 */
 		function requestProduct(identifier) {
-			Storekit.requestProducts([identifier], function (evt) {
+			Storekit.requestProducts([identifier.ProductName], function (evt) {
 				if (!evt.success) {
 					alert('ERROR: We failed to talk to Apple!');
 				} else if (evt.invalid) {
