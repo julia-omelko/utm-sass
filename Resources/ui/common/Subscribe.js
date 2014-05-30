@@ -50,6 +50,8 @@ var SettingsWin = function(_tabGroup) {
 	
 		// once verified, create buttons
 		function productReturned(_product) {
+			Ti.API.info(_product);
+			Ti.API.info(_product.identifier);
 			if (_product.identifier === 'com.youthisme.unlimited') {
 				var theButton = 'Unlimited messages for 99 cents per month';
 				var theDesc = 'Send as many UTM messages as you\'d like for 99 cents per month.  This is an auto-renewing subscription.';
@@ -86,6 +88,7 @@ var SettingsWin = function(_tabGroup) {
 				style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
 			});	
 			productButton.addEventListener('click', function () {
+				Ti.API.info(utm.User.UserProfile.UserId);
 				Storekit.purchase({
 					product: _product,
 					applicationUsername: utm.User.UserProfile.UserId

@@ -39,7 +39,6 @@ var IOS7 = isIOS7Plus();
  * @param product A Ti.Storekit.Product (hint: use Storekit.requestProducts to get one of these!).
  */
 Storekit.addEventListener('transactionState', function (evt) {
-	Ti.API.info(evt.state);
 	switch (evt.state) {
 		case Storekit.TRANSACTION_STATE_FAILED:
 			if (evt.cancelled) {
