@@ -31,7 +31,7 @@
     <fullscreen>false</fullscreen>
     <navbar-hidden>false</navbar-hidden>
     <analytics>false</analytics>
-    <guid>1C4DD2F8-93FF-4980-B0C0-82B7DE0253B2</guid>
+    <guid>1B08E184-F0BB-4F4D-9634-45D3ADB10E51</guid>
     <property name="ti.ui.defaultunit">system</property>
     <iphone>
         <orientations device="iphone">
@@ -54,7 +54,7 @@
     <property name="ti.android.bug2373.buttonText">Continue</property>
     <android xmlns:android="http://schemas.android.com/apk/res/android">
         <manifest android:installLocation="auto"
-            android:versionCode="10" android:versionName="2.0.2">
+            android:versionCode="11" android:versionName="2.1.0">
             <uses-permission android:name="com.android.vending.BILLING"/>
             <supports-screens android:anyDensity="true"
                 android:largeScreens="true" android:normalScreens="true" android:smallScreens="true"/>
@@ -121,7 +121,7 @@
         <module platform="android" version="3.0.2">facebook</module>
         <module platform="android" version="1.0.1">com.logicallabs.inappproducts</module>
     </modules>
-    <property name="ti.deploytype">test</property>
+    <property name="ti.deploytype">prod</property>
     <!-- SOASTA TOUCHTEST CODE BLOCK 4 of 4 in this module.  Uncomment the 4 blocks of code in this module and one block in app.js
     <property name="com-soasta-touchtest-version" type="string">6656.155</property>
         <ios>
