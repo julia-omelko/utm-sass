@@ -220,6 +220,7 @@ var MessageMembersWin = function(_tabGroup) {
 			timeout : utm.netTimeout,
 			enableKeepAlive : utm.keepAlive
 		});
+		Ti.API.info(123);
 		getMyHortsReq.open("GET", utm.serviceUrl + "MyHort?$orderby=FriendlyName");
 		getMyHortsReq.setRequestHeader('Authorization-Token', utm.AuthToken);
 		getMyHortsReq.send();

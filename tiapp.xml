@@ -18,7 +18,7 @@
     <sdk-version>3.2.2.GA</sdk-version>
     <id>com.utm</id>
     <name>UTM</name>
-    <version>2.1.0</version>
+    <version>2.1.1</version>
     <publisher>youthisme</publisher>
     <url>http://youthisme.com</url>
     <description>YouThisMe™ (UTM) is an innovative new technology that provides privacy in digital communications and postings on social media. The messages are hidden in plain sight and only the intended recipient(s) can decode them.</description>
@@ -31,7 +31,7 @@
     <fullscreen>false</fullscreen>
     <navbar-hidden>false</navbar-hidden>
     <analytics>false</analytics>
-    <guid>1B08E184-F0BB-4F4D-9634-45D3ADB10E51</guid>
+    <guid>ee1b5880-f8b7-11e3-a3ac-0800200c9a66</guid>
     <property name="ti.ui.defaultunit">system</property>
     <iphone>
         <orientations device="iphone">

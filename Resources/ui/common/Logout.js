@@ -15,6 +15,19 @@ var LogoutWin = function(_tabGroup) {
 		alert('You have been logged out of YouThisMe');
 		Ti.App.fireEvent('app:logout');
 		_tabGroup.close();
+		//_tabGroup.getTabs()[0] = null;
+		//_tabGroup.getTabs()[1] = null;
+		//_tabGroup.getTabs()[2] = null;
+		//_tabGroup.getTabs()[3] = null;
+		//_tabGroup.getTabs()[4] = null;
+		if (utm.iPhone || utm.iPad) {
+			_tabGroup.removeTab(_tabGroup.getTabs()[0]);
+			_tabGroup.removeTab(_tabGroup.getTabs()[0]);
+			_tabGroup.removeTab(_tabGroup.getTabs()[0]);
+			_tabGroup.removeTab(_tabGroup.getTabs()[0]);
+			_tabGroup.removeTab(_tabGroup.getTabs()[0]);
+		}
+		_tabGroup = null;
 	});
 	
 	return self;
