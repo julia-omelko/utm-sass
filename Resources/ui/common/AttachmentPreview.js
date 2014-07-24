@@ -40,11 +40,11 @@ var AttachmentPreviewWin = function(_win,_attachment) {
 //	}
 
 //The above code resulted in image skewing.  Per Ti documentation, specifying either the width OR the height of createImageView will preserve the
-//  proportion size of teh image without skewing it.
+//  proportion size of the image without skewing it.
 
 	var attachmentPreview = Ti.UI.createImageView({
 		image: _attachment,
-    	//enableZoomControls: true,
+    	enableZoomControls: true,
 		width: Ti.Platform.displayCaps.platformWidth,
 		autorotate: true
 	});
