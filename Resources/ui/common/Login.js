@@ -357,7 +357,9 @@ var LoginWin = function() {
 			timeout:utm.netTimeout,
 			enableKeepAlive: utm.keepAlive
 		});
-		
+		Ti.API.info(utm.validatesSecureCertificate);
+		Ti.API.info(params);
+		Ti.API.info(utm.serviceUrl+"Login");
 		loginReq.open("POST",utm.serviceUrl+"Login");	
 		loginReq.send(params);
 	};

@@ -89,8 +89,8 @@ function CameraView(_previewView) {
 		resizedImage = ImageFactory.compress(resizedImage,0.35);
 		
 		var image = resizedImage;
-        var f = Titanium.Filesystem.getFile(Titanium.Filesystem.applicationDataDirectory,'camera1.png');
-        f.write(image);
+        //var f = Titanium.Filesystem.getFile(Titanium.Filesystem.applicationDataDirectory,'camera1.png');
+        //f.write(image);
 
         //var f = Titanium.Filesystem.getFile(Titanium.Filesystem.applicationDataDirectory,'camera2.png');
         //f.write(e.media);
