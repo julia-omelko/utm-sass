@@ -1,3 +1,4 @@
+
 function CameraView(_previewView) {
 	var resizedImage;
 	var thumbnailImage;
@@ -85,6 +86,8 @@ function CameraView(_previewView) {
 		var resizeRatio = (Math.max(e.media.width,e.media.height) / 800);
 		if (resizeRatio > 1) {
 			resizedImage = e.media.imageAsResized(Math.round(e.media.width/resizeRatio),Math.round(e.media.height/resizeRatio));
+		} else {
+			resizedImage = e.media;
 		}
 		resizedImage = ImageFactory.compress(resizedImage,0.35);
 		

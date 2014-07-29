@@ -1,7 +1,5 @@
 var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 	
-	//Ti.API.info(_messageData);
-	
 	if (_mode === 'Reply') {
 		_messageID = _messageData.Id;
 		_messageData.deliveryOptions =  null;
@@ -251,12 +249,51 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 		var previewWin = new PreviewWin(_tabGroup,message);
 		utm.winStack.push(previewWin);
 		_tabGroup.getActiveTab().open(previewWin);
+		cleanupTitaniumMesses();
 	});
 	
 	self.addEventListener('close', function(e) {
 		Ti.App.removeEventListener('orientdisplay', updateDisplay);
+		cleanupTitaniumMesses();
 	});
 
+	function cleanupTitaniumMesses() {
+	    if (utm.Android && Ti.Filesystem.isExternalStoragePresent) {
+	        try {
+	            //var n = Ti.UI.createNotification({message:'Your App Name is cleaning up tia image files...'});
+	            //n.duration = Ti.UI.NOTIFICATION_DURATION_SHORT;
+	            //n.show();
+	 
+	            var dir = Titanium.Filesystem.getFile(Titanium.Filesystem.externalStorageDirectory); 
+	            var dir2 = dir.getParent().nativePath.toString() + '/dcim/Camera/UTM/';
+	            var dir3 = Titanium.Filesystem.getFile(dir2); 
+	            var fileList = dir3.getDirectoryListing();
+	            var l = fileList.length;
+	 
+	            for(var i=0; i<l; i++) {
+	                var file2 = fileList[i];
+	                var fileName = file2.toString();
+	                fileName2 = fileName.substr(fileName.lastIndexOf("/") + 1);
+	                if (fileName2.substr(0,3) === 'tia') {
+	                    var path = dir3.nativePath;
+	                    var file = Titanium.Filesystem.getFile(path+'/'+file2);
+	                    file.deleteFile();
+	                }
+	            }
+	 
+	            dir3.deleteDirectory();
+	        }
+	 
+	        catch(e) {
+	            //var n = Ti.UI.createNotification({message:'Non-critical error purging stray tixhr files from SD Card root. You will want to periodically delete all files that start with the name tixhr from the root of your SD Card.\n\n' + e.message});
+	            //n.duration = Ti.UI.NOTIFICATION_DURATION_LONG;
+	            //n.show();
+	        }
+	 
+	    } 
+	}
+	
+	
 	
 	return self;
 };
