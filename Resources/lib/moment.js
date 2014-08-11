@@ -109,6 +109,7 @@
             H    : 't.hours()',
             h    : 't.hours()%12||12',
             m    : 't.minutes()',
+            mm   : '((t.minutes() < 10) ? "0"+t.minutes() : t.minutes())',//'t.minutes()',
             s    : 't.seconds()',
             S    : '~~(t.milliseconds()/100)',
             SS   : 'p(~~(t.milliseconds()/10),2)',

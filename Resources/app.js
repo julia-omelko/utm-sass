@@ -178,7 +178,7 @@ function getDateTimeFormat(dateSent){
 	diff = now.diff(sent, 'days'); // 1
 			
 	if (diff > 0) {
-		return sent.format("M/D/YY");
+		return sent.format("M/D/YY  h:mm a");
 	} else {
 		var sToSubtract = 0;
 		if (now.milliseconds() << sent.milliseconds()) {
