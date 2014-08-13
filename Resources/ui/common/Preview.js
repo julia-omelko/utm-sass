@@ -66,34 +66,6 @@ var PreviewWin = function(_tabGroup,_message) {
 					}
 					
 					
-					
-					/*
-					if (myHortData.PrimaryUser !== null) {
-						var sendData = myHortData.PrimaryUser;
-					} else {
-						var sendData = myHortData.MyInformation;
-					}
-					//if (_message.deliveryOptions != null) {
-					if (sendData.FaceBook !== '') {
-						deliveryEnabled.facebook = true;
-					}
-					if (sendData.TwitterSecret !== '') {
-						deliveryEnabled.twitter = true;
-					}
-					if (sendData.Mobile !== '') {
-						deliveryEnabled.sms = true;
-					}
-					if (sendData.Email !== '') {
-						deliveryEnabled.email = true;
-					}
-					//}
-					deliveryOptions.signMessage = sendData.AddNicknameToUtms;
-					if (sendData.deleteOnRead !== null) {
-						deliveryOptions.deleteOnRead = sendData.deleteOnRead;
-					}
-					
-					_nickname = sendData.NickName;
-					*/
 					getUtmMessage();
 					
 				} else {
@@ -110,7 +82,6 @@ var PreviewWin = function(_tabGroup,_message) {
 		});
 
 		getMyHortDetailReq.open("GET", utm.serviceUrl + "Members/" + _myHortId);
-		//getMyHortDetailReq.open("GET", utm.serviceUrl + "MyHort/GetMyHortDetails?myHortId=" + _myHortId);
 		getMyHortDetailReq.setRequestHeader('Authorization-Token', utm.AuthToken);
 		getMyHortDetailReq.send();
 	}
@@ -199,13 +170,59 @@ var PreviewWin = function(_tabGroup,_message) {
 	});		
 	
 	var messageHeader = Ti.UI.createLabel({
+		text: 'UTM Message:',
+		top: 15,
+		left: 25,
+		height: Ti.UI.SIZE,
+		font: {fontFamily: utm.fontFamily, fontSize: '18dp'},
+		color: utm.barColor		
+	});
+	scrollingView.add(messageHeader);
+	
+	var utmMessage = Ti.UI.createLabel({
+		text: '',
+		top: 10,
+		left: 25,
+		height: Ti.UI.SIZE,
+		width: Ti.Platform.displayCaps.platformWidth-50,
+		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize},
+		verticalAlign: Ti.UI.TEXT_VERTICAL_ALIGNMENT_TOP,
+		color: 'black'		
+	});
+	scrollingView.add(utmMessage);
+	
+	self.addEventListener('reorientdisplay', function(evt) {
+		utmMessage.width = Ti.Platform.displayCaps.platformWidth-50;
+	});		
+	
+	var utmRefresh = Ti.UI.createImageView({
+		image: '/images/icons/refresh.png',
+		left: (Ti.Platform.displayCaps.platformWidth-(40*utm.sizeMultiplier))/2,
+		top: 10,
+		height: 40*utm.sizeMultiplier,
+		width: 40*utm.sizeMultiplier,
+		borderRadius: 20*utm.sizeMultiplier,
+		backgroundColor: utm.buttonColor,
+	});
+	utmRefresh.addEventListener('click',function(e){
+		self.showAi();
+		getUtmMessage();
+	});
+	scrollingView.add(utmRefresh);
+	
+	self.addEventListener('reorientdisplay', function(evt) {			
+		utmRefresh.left = (Ti.Platform.displayCaps.platformWidth-(40*utm.sizeMultiplier))/2;
+	});
+	
+	
+	var messageHeader = Ti.UI.createLabel({
 		text: 'Original Message:',
-		top: 25,
+		top: 15,
 		left: 25,
 		font: {fontFamily: utm.fontFamily, fontSize: '18dp'},
 		color: utm.barColor		
 	});
-	leftView.add(messageHeader);
+	scrollingView.add(messageHeader);
 
 	if ("attachment" in _message && _message.attachment != null) {
 		var previewView = Ti.UI.createView({
@@ -259,50 +276,7 @@ var PreviewWin = function(_tabGroup,_message) {
 		messageField.width = Ti.Platform.displayCaps.platformWidth-50;
 	});		
 	
-	var messageHeader = Ti.UI.createLabel({
-		text: 'UTM Message:',
-		top: 25,
-		left: 25,
-		height: Ti.UI.SIZE,
-		font: {fontFamily: utm.fontFamily, fontSize: '18dp'},
-		color: utm.barColor		
-	});
-	scrollingView.add(messageHeader);
-	
-	var utmMessage = Ti.UI.createLabel({
-		text: '',
-		top: 10,
-		left: 25,
-		height: 90*utm.sizeMultiplier,
-		width: Ti.Platform.displayCaps.platformWidth-50,
-		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize},
-		verticalAlign: Ti.UI.TEXT_VERTICAL_ALIGNMENT_TOP,
-		color: 'black'		
-	});
-	scrollingView.add(utmMessage);
-	
-	self.addEventListener('reorientdisplay', function(evt) {
-		utmMessage.width = Ti.Platform.displayCaps.platformWidth-50;
-	});		
-	
-	var utmRefresh = Ti.UI.createImageView({
-		image: '/images/icons/refresh.png',
-		left: (Ti.Platform.displayCaps.platformWidth-(40*utm.sizeMultiplier))/2,
-		top: 0,
-		height: 40*utm.sizeMultiplier,
-		width: 40*utm.sizeMultiplier,
-		borderRadius: 20*utm.sizeMultiplier,
-		backgroundColor: utm.buttonColor,
-	});
-	utmRefresh.addEventListener('click',function(e){
-		self.showAi();
-		getUtmMessage();
-	});
-	scrollingView.add(utmRefresh);
-	
-	self.addEventListener('reorientdisplay', function(evt) {			
-		utmRefresh.left = (Ti.Platform.displayCaps.platformWidth-(40*utm.sizeMultiplier))/2;
-	});			
+
 	
 	
 	var StandardButton = require('/ui/common/baseui/StandardButton');
