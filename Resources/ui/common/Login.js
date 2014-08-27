@@ -155,7 +155,7 @@ var LoginWin = function() {
 	
 	var forgotPassword = Ti.UI.createLabel({
 	  color: utm.secondaryTextColor,		
-	  text: L('login_forgot_password'),
+	  text: 'Forgot Your Password or Username?',
 	  textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
 	  top: 15,
 	  width: Ti.UI.SIZE,
@@ -165,9 +165,9 @@ var LoginWin = function() {
 	
 	forgotPassword.addEventListener('click', function(e) {
 	    //Ti.Platform.openURL(utm.webUrl + '/Account/PasswordReset');
-		var WebView = require('/ui/common/WebView');
-		var webView = new WebView('Password Reset', utm.webUrl + '/Account/PasswordReset');
-		utm.navController.open(webView);
+		var ForgotView = require('/ui/common/Forgot');
+		var forgotView = new ForgotView();
+		utm.navController.open(forgotView);
 	});
 	view.add(forgotPassword);
 	
@@ -233,10 +233,9 @@ var LoginWin = function() {
 	});
 
 	tableData[1].addEventListener('click', function(e){
-		var WebView = require('/ui/common/WebView');
-		//var webView = new WebView('Who We Are', 'about');
-		var webView = new WebView('Who We Are', utm.webUrl + '/Home/WhoWeAre');
-		utm.navController.open(webView);
+		var WhoWeAreWin = require('/ui/common/WhoWeAre');
+		var whoWeAreWin = new WhoWeAreWin();
+		utm.navController.open(whoWeAreWin);
 	});
 	tableData[2] = Ti.UI.createTableViewRow({
 		title: 'Privacy Policy',
