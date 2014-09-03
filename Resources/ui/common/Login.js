@@ -247,10 +247,9 @@ var LoginWin = function() {
 	});
 
 	tableData[2].addEventListener('click', function(e){
-		var WebView = require('/ui/common/WebView');
-		//var webView = new WebView('Privacy Policy', 'privacy');
-		var webView = new WebView('Privacy Policy', utm.webUrl + '/Home/Privacy');
-		utm.navController.open(webView);
+		var PrivacyWin = require('/ui/common/PrivacyPolicy');
+		var privacyWin = new PrivacyWin();
+		utm.navController.open(privacyWin);
 	});
 	tableData[3] = Ti.UI.createTableViewRow({
 		title: 'Rules of Use',
@@ -262,10 +261,9 @@ var LoginWin = function() {
 	});
 
 	tableData[3].addEventListener('click', function(e){
-		var WebView = require('/ui/common/WebView');
-		//var webView = new WebView('Rules of Use', 'rules');
-		var webView = new WebView('Rules of Use', utm.webUrl + '/Home/RulesOfUse');
-		utm.navController.open(webView);
+		var RulesOfUseWin = require('/ui/common/RulesOfUse');
+		var rulesOfUseWin = new RulesOfUseWin();
+		utm.navController.open(rulesOfUseWin);
 	});
 	
 	var linkTable = Ti.UI.createTableView({
