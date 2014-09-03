@@ -789,7 +789,7 @@
             sameElse : 'L'
         },
         relativeTime : {
-            future : "in %s",
+            future : "just now",
             past : "%s ago",
             s : "1 min",//a few seconds
             m : "a minute",

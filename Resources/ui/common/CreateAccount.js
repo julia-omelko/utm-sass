@@ -290,9 +290,12 @@ var CreateAccountWin = function() {
 	rulesView.add(rulesLabel);
 	
 	rulesLabel.addEventListener('click',function(e){
-		var WebView = require('/ui/common/WebView');
-		var webView = new WebView('Privacy Policy', utm.webUrl + '/Home/RulesOfUse');
-		utm.navController.open(webView);
+		//var WebView = require('/ui/common/WebView');
+		//var webView = new WebView('Privacy Policy', utm.webUrl + '/Home/RulesOfUse');
+		//utm.navController.open(webView);
+		var RulesOfUseWin = require('/ui/common/RulesOfUse');
+		var rulesOfUseWin = new RulesOfUseWin();
+		utm.navController.open(rulesOfUseWin);
 	});
 	
 	var createButton = Ti.UI.createButton({
