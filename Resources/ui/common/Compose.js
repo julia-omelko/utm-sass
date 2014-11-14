@@ -252,10 +252,20 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 		cleanupTitaniumMesses();
 	});
 	
+	var keyboardChangeEvent = Ti.App.addEventListener('keyboardframechanged', function(e) {
+	    // Check if the device is running iOS 8 or later
+	    if (Ti.Platform.name == "iPhone OS" && parseInt(Ti.Platform.version.split(".")[0]) >= 8){
+		    // Ti.API.info('Keyboard height: ' + e.keyboardFrame.height);
+		    utm.keyboardHeight = e.keyboardFrame.height;
+			self.fireEvent('reorientdisplay');
+		}
+}); 
+	
 	self.addEventListener('close', function(e) {
 		Ti.App.removeEventListener('orientdisplay', updateDisplay);
+		Ti.App.removeEventListener('keyboardframechanged', keyboardChangeEvent);
 		cleanupTitaniumMesses();
-	});
+}); 
 
 	function cleanupTitaniumMesses() {
 	    if (utm.Android && Ti.Filesystem.isExternalStoragePresent) {
