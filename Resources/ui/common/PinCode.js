@@ -1,11 +1,10 @@
 var SettingsWin = function(_tabGroup) {
 	
-	if(utm.iPhone || utm.iPad ){
-		var keychain = require("com.0x82.key.chain");
-	} else {
-		var keychain = require("/lib/androidkeychain");
-	}	
-	var currentPin = keychain.getPasswordForService('utm', 'lockscreen');
+	var securely = require('bencoding.securely');
+	var SecureProperties = securely.createProperties({
+		secret:utm.securelySecretKey
+	});	
+	var currentPin = SecureProperties.getString("pin");
 	
 	var StandardWindow = require('ui/common/StandardWindow');
 	var self = new StandardWindow('Set Unlock Code', '');
@@ -24,7 +23,7 @@ var SettingsWin = function(_tabGroup) {
 		font: {fontFamily: utm.fontFamily},
 		color: 'white'
 	});
-	if (currentPin != null && currentPin !== '') {
+	if (currentPin != null && currentPin != '') {
 		self.setRightNavButton(clearButton);
 	}
 	
@@ -206,7 +205,7 @@ var SettingsWin = function(_tabGroup) {
 		saveButton.width = (Ti.Platform.displayCaps.platformWidth-50);
 	});	
 	
-	if (utm.Android) {
+	if (utm.Android && currentPin != null) {
 		var clearButton = Ti.UI.createButton({
 			title: 'Clear unlock code',
 			top: 15,
@@ -222,9 +221,10 @@ var SettingsWin = function(_tabGroup) {
 	}
 
 	clearButton.addEventListener('click', function(e) {
-		keychain.deletePasswordForService('utm', 'lockscreen');
-		currentPin = null;
 	
+		SecureProperties.removeProperty('pin');
+		currentPin = null;
+		
 		var alert = Titanium.UI.createAlertDialog({
 	        title : 'Alert',
 	        message : 'Unlock code has been cleared.',
@@ -239,16 +239,18 @@ var SettingsWin = function(_tabGroup) {
 	});
 	
 	saveButton.addEventListener('click', function() {
-		var newPass = getPinNumberValue();
-		newPass = Ti.Utils.sha256(newPass);
+		var newPin = getPinNumberValue();
+		//newPin = Ti.Utils.sha256(newPin);  // Returns a SHA-256 hash of the specified data as a hex-based String.
 		
-		keychain.setPasswordForService(newPass, 'utm', 'lockscreen');
-		//Confirm its set in the KeyChain
-		var pass = keychain.getPasswordForService('utm', 'lockscreen');
-		if (newPass !== pass){
-			alert('PIN failed to save to your KeyChain.');
+		SecureProperties.setString('pin', newPin);
+		
+		//Confirm new pin was saved
+		var storedPin = SecureProperties.getString("pin");
+		if (newPin !== storedPin){
+			alert('PIN failed to save.');
 			return;
-		}	
+		}
+		
 		self.close();
 	});
 	

@@ -65,16 +65,35 @@ utm.androidTimeout = (5*60*1000); // 5 minutes
 utm.timer = '';
 utm.keepAlive = true;  //only applies to iOS, used on create Titanium.Network.HTTPClient enableKeepAlive property
 
+//Property values for securely
+utm.securelySecretKey = "KX89763FF932";
 
 var unpinLockScreen = require('/lib/com.qbset.unlockscreen');
-if(utm.iPhone || utm.iPad ){
-	var keychain = require("com.0x82.key.chain");
-} else {
-	var keychain = require("/lib/androidkeychain");
+
+var securely = require('bencoding.securely');
+var SecureProperties = securely.createProperties({
+	secret:utm.securelySecretKey
+});
+
+//Convert legacy pin, if new one does not exist, to securely pin
+var currentPin = SecureProperties.getString("pin");
+
+// If currentPin is null, see if there was an old version of the pin stored
+if (currentPin == null){
+	if(utm.iPhone || utm.iPad ){
+		var keychain = require("com.0x82.key.chain");
+	} else {
+		var keychain = require("/lib/androidkeychain");
+	}
+	currentPin = keychain.getPasswordForService('utm', 'lockscreen');
+	if (currentPin != null) {
+		// Legacy pin value existed, so delete old value then securely store same pin
+		keychain.deletePasswordForService('utm', 'lockscreen');	
+		SecureProperties.setString('pin', currentPin);
+	}
 }
 
 utm.keyboardHeight = 0;
-
 
 
 (function() {
@@ -258,11 +277,11 @@ Ti.App.addEventListener("resumed", function(e){
 	var pauseMil = utm.appPauseTime.valueOf();
 	var diff = curMil - pauseMil;
 	if (diff > utm.screenLockTime) {
-		var pass = keychain.getPasswordForService('utm', 'lockscreen');
-		if (pass == null) {
+		var currentPin = SecureProperties.getString("pin");
+		if (currentPin == null || currentPin == "") {
 			showLoginScreenLockView();
 		}else{
-			showPinLockScreen(pass);		
+			showPinLockScreen(currentPin);
 		}
 	}		
 });
