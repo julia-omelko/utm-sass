@@ -81,15 +81,23 @@ var currentPin = SecureProperties.getString("pin");
 // If currentPin is null, see if there was an old version of the pin stored
 if (currentPin == null){
 	if(utm.iPhone || utm.iPad ){
-		var keychain = require("com.0x82.key.chain");
+		//var keychain = require("com.0x82.key.chain");
+		var keychain = require('com.obscure.keychain');
+		var keychainItem = keychain.createKeychainItem('utm', 'lockscreen');
+		currentPin= keychainItem.pin;
 	} else {
 		var keychain = require("/lib/androidkeychain");
+		currentPin = keychain.getPasswordForService('utm', 'lockscreen');
 	}
-	currentPin = keychain.getPasswordForService('utm', 'lockscreen');
+	
 	if (currentPin != null) {
 		// Legacy pin value existed, so delete old value then securely store same pin
-		keychain.deletePasswordForService('utm', 'lockscreen');	
-		SecureProperties.setString('pin', currentPin);
+		if(utm.iPhone || utm.iPad ){
+		  keychainItem.pin = null;
+		}else{
+		  keychain.deletePasswordForService('utm', 'lockscreen');	
+		  SecureProperties.setString('pin', currentPin);
+	  }
 	}
 }
 
@@ -190,7 +198,8 @@ function openTabGroup() {
 
 moment = require('lib/moment');
 function getDateTimeFormat(dateSent){
-	var sent = moment(dateSent);
+	var utcDate = moment.utc(dateSent);
+    var sent = utcDate.local(); // Get the local version of that date
 	var hours = sent.fromNow();
 	var now = moment();
 
@@ -208,7 +217,7 @@ function getDateTimeFormat(dateSent){
 }
 
 if (utm.iPhone || utm.iPad ) {
-	Ti.include('storekit.js');
+	//FIXME Ti.include('storekit.js');
 } else {
 	
 }

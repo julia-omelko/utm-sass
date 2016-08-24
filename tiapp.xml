@@ -15,7 +15,7 @@
         <target device="android">true</target>
         <target device="blackberry">false</target>
     </deployment-targets>
-    <sdk-version>3.2.2.GA</sdk-version>
+    <sdk-version>5.2.2.GA</sdk-version>
     <id>com.utm</id>
     <name>UTM</name>
     <version>2.1.3</version>
@@ -31,7 +31,7 @@
     <fullscreen>false</fullscreen>
     <navbar-hidden>false</navbar-hidden>
     <analytics>false</analytics>
-    <guid>2ffd864f-f7ca-4807-95b0-5cb8ecbf1319</guid>
+    <guid>f0c84368-0ee6-4f79-9222-f39ac7d468bc</guid>
     <property name="ti.ui.defaultunit">system</property>
     <iphone>
         <orientations device="iphone">
@@ -70,12 +70,7 @@
                         <category android:name="android.intent.category.LAUNCHER"/>
                     </intent-filter>
                     <!-- SOASTA TOUCHTEST CODE BLOCK 1 of 4 in this module.  Uncomment the 5 blocks of code in this module and one block in app.js
-                    <intent-filter>
-	                    <data android:scheme="touchtest-f4008570-145a-4039-90e5-49c7a5e8c1b8"/>
-	                    <action android:name="android.intent.action.VIEW"/>
-	                    <category android:name="android.intent.category.BROWSABLE"/>
-	                    <category android:name="android.intent.category.DEFAULT"/>
-                	</intent-filter>
+                    <intent-filter><data android:scheme="touchtest-f4008570-145a-4039-90e5-49c7a5e8c1b8"/><action android:name="android.intent.action.VIEW"/><category android:name="android.intent.category.BROWSABLE"/><category android:name="android.intent.category.DEFAULT"/></intent-filter>
 -->
                 </activity>
                 <activity
@@ -112,42 +107,20 @@
         <theme>default</theme>
     </mobileweb>
     <modules>
-        <module platform="iphone" version="1.2.4">bencoding.securely</module>
-        <module platform="android" version="1.2.6">bencoding.securely</module>        
         <module platform="iphone" version="1.0">com.qbset.unlockscreen</module>
-        <module platform="iphone" version="2.1">com.0x82.key.chain</module>
         <module platform="iphone" version="3.0.0">ti.storekit</module>
         <module platform="android" version="2.2.1">ti.imagefactory</module>
         <module platform="iphone" version="1.1.1">ti.imagefactory</module>
-        <module platform="iphone" version="3.1.2">facebook</module>
+        <module platform="iphone" version="3.2.0">facebook</module>
         <module platform="android" version="3.0.2">facebook</module>
         <module platform="android" version="1.0.1">com.logicallabs.inappproducts</module>
+        <module platform="iphone">bencoding.securely</module>
+        <module platform="android">bencoding.securely</module>
+        <module platform="iphone">com.obscure.keychain</module>
     </modules>
     <property name="ti.deploytype">prod</property>
     <!-- SOASTA TOUCHTEST CODE BLOCK 4 of 4 in this module.  Uncomment the 4 blocks of code in this module and one block in app.js
-    <property name="com-soasta-touchtest-version" type="string">6656.155</property>
-        <ios>
-        <plist>
-            <dict>
-                <key>CFBundleURLTypes</key>
-                <array>
-                    <dict>
-                        <key>CFBundleTypeRole</key>
-                        <string>Editor</string>
-                        <key>CFBundleURLName</key>
-                        <string>com.utm</string>
-                        <key>CFBundleURLSchemes</key>
-                        <array>
-                            <string>touchtest-f4008570-145a-4039-90e5-49c7a5e8c1b8</string>
-                        </array>
-                    </dict>
-                </array>
-            </dict>
-        </plist>
-    </ios>
-    <plugins>
-        <plugin>com.soasta.touchtest.android</plugin>
-    </plugins>
-    <property name="com-soasta-touchtest-ios-appId" type="string">313303</property>
+    <property name="com-soasta-touchtest-version" type="string">6656.155</property><ios><plist><dict><key>CFBundleURLTypes</key><array><dict><key>CFBundleTypeRole</key><string>Editor</string><key>CFBundleURLName</key><string>com.utm</string><key>CFBundleURLSchemes</key><array><string>touchtest-f4008570-145a-4039-90e5-49c7a5e8c1b8</string></array></dict></array></dict></plist></ios><plugins><plugin>com.soasta.touchtest.android</plugin></plugins><property name="com-soasta-touchtest-ios-appId" type="string">313303</property>
 -->
+    <property name="appc-app-id" type="string">57bba664b2859df54a4b0ae0</property>
 </ti:app>
