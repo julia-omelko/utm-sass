@@ -198,7 +198,22 @@ function openTabGroup() {
 
 moment = require('lib/moment');
 function getDateTimeFormat(dateSent){
+    var currentUTCTime = moment.utc();
 	var utcDate = moment.utc(dateSent);
+	
+	//Correct by a minute IF the server time is ahead of time 
+    if(currentUTCTime < utcDate ){
+        //Ti.API.info('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
+       // Ti.API.info('currentUTCTime='+currentUTCTime);
+       // Ti.API.info('utcDate='+utcDate);
+        var diffTime = currentUTCTime.diff(utcDate,'minutes');
+       // Ti.API.info('CORRECTED 1  diff = ' + diffTime);
+       // Ti.API.info('CORRECTED 1  diffMin = ' + moment(diffTime.duration().asMinutes()));
+        
+        utcDate=currentUTCTime;
+        utcDate.subtract(1,'minute');
+    }
+	
     var sent = utcDate.local(); // Get the local version of that date
 	var hours = sent.fromNow();
 	var now = moment();
