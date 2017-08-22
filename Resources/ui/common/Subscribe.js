@@ -85,7 +85,7 @@ var SettingsWin = function(_tabGroup) {
 				font: {fontFamily: utm.fontFamily, fontSize:'14dp'},
 				backgroundColor: utm.buttonColor,
 				color: 'white',
-				style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
+				style: Ti.UI.iOS.SystemButtonStyle.PLAIN
 			});	
 			productButton.addEventListener('click', function () {
 				Ti.API.info(utm.User.UserProfile.UserId);
@@ -150,7 +150,7 @@ var SettingsWin = function(_tabGroup) {
 				font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize},
 				backgroundColor: utm.buttonColor,
 				color: 'white',
-				style: Ti.UI.iPhone.SystemButtonStyle.PLAIN,
+				style: Ti.UI.iOS.SystemButtonStyle.PLAIN,
 				_product: i
 			});	
 			productButton.addEventListener('click', function (evt) {

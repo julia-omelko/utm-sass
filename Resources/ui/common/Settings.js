@@ -26,7 +26,7 @@ var SettingsWin = function(_tabGroup) {
 		font:{fontFamily: utm.fontFamily, fontSize: utm.fontSize},
 		backgroundColor: utm.buttonColor,
 		color: 'white',
-		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
+		style: Ti.UI.iOS.SystemButtonStyle.PLAIN
 	});
 	scrollView.add(buyMessagesButton);
 	
@@ -53,7 +53,7 @@ var SettingsWin = function(_tabGroup) {
 		font:{fontFamily: utm.fontFamily, fontSize: utm.fontSize},
 		backgroundColor: utm.barColor,
 		color: 'white',
-		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
+		style: Ti.UI.iOS.SystemButtonStyle.PLAIN
 	});
 	scrollView.add(setPinLockButton);
 	
@@ -76,7 +76,7 @@ var SettingsWin = function(_tabGroup) {
 		font:{fontFamily: utm.fontFamily, fontSize: utm.fontSize},
 		backgroundColor: utm.barColor,
 		color: 'white',
-		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
+		style: Ti.UI.iOS.SystemButtonStyle.PLAIN
 	});
 	scrollView.add(avatarButton);
 
@@ -99,7 +99,7 @@ var SettingsWin = function(_tabGroup) {
 		font:{fontFamily: utm.fontFamily, fontSize: utm.fontSize},
 		backgroundColor: utm.barColor,
 		color: 'white',
-		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
+		style: Ti.UI.iOS.SystemButtonStyle.PLAIN
 	});
 	scrollView.add(accountButton);
 	
@@ -124,7 +124,7 @@ var SettingsWin = function(_tabGroup) {
 		font:{fontFamily: utm.fontFamily, fontSize: utm.fontSize},
 		backgroundColor: utm.barColor,
 		color: 'white',
-		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
+		style: Ti.UI.iOS.SystemButtonStyle.PLAIN
 	});
 	scrollView.add(forgetMeButton);
 	

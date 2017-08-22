@@ -65,41 +65,72 @@ utm.androidTimeout = (5*60*1000); // 5 minutes
 utm.timer = '';
 utm.keepAlive = true;  //only applies to iOS, used on create Titanium.Network.HTTPClient enableKeepAlive property
 
-//Property values for securely
-utm.securelySecretKey = "KX89763FF932";
 
 var unpinLockScreen = require('/lib/com.qbset.unlockscreen');
 
+/*if (Ti.Platform.model === 'Simulator' || Ti.Platform.model ===  'google_sdk' || Ti.Platform.model ===  'sdk') {
+    utm.setEnvModePrefix("dev");
+    utm.validatesSecureCertificate = false;
+} else {
+   // utm.setEnvModePrefix("dev");
+    utm.setEnvModePrefix("prod");
+    utm.validatesSecureCertificate = true;
+}*/
+
+
+
+//Property values for securely
+utm.securelySecretKey = "GRXV9J7237$Y";
+
 var securely = require('bencoding.securely');
 var SecureProperties = securely.createProperties({
-	secret:utm.securelySecretKey
+    secret:utm.securelySecretKey,
+    identifier:"pinCode",
+    accessGroup:"com.utm",
+    securityLevel:securely.PROPERTY_SECURE_LEVEL_MED,
+    encryptFieldNames:false
 });
 
-//Convert legacy pin, if new one does not exist, to securely pin
-var currentPin = SecureProperties.getString("pin");
-
-// If currentPin is null, see if there was an old version of the pin stored
-if (currentPin == null){
-	if(utm.iPhone || utm.iPad ){
-		//var keychain = require("com.0x82.key.chain");
-		var keychain = require('com.obscure.keychain');
-		var keychainItem = keychain.createKeychainItem('utm', 'lockscreen');
-		currentPin= keychainItem.pin;
-	} else {
-		var keychain = require("/lib/androidkeychain");
-		currentPin = keychain.getPasswordForService('utm', 'lockscreen');
-	}
-	
-	if (currentPin != null) {
-		// Legacy pin value existed, so delete old value then securely store same pin
-		if(utm.iPhone || utm.iPad ){
-		  keychainItem.pin = null;
-		}else{
-		  keychain.deletePasswordForService('utm', 'lockscreen');	
-		  SecureProperties.setString('pin', currentPin);
-	  }
-	}
+utm.installId = SecureProperties.getString("installId");
+utm.currentPin = SecureProperties.getString("pin");
+if (Ti.Platform.model === 'Simulator' || Ti.Platform.model ===  'google_sdk' || Ti.Platform.model ===  'sdk') {
+    utm.environment = SecureProperties.getString("environment","test");    //utm.validatesSecureCertificate = false;
+} else {
+    utm.environment = SecureProperties.getString("environment","prod");
 }
+utm.setEnvModePrefix(utm.environment);
+
+
+(function() {
+    var osname = Ti.Platform.osname,
+        version = Ti.Platform.version,
+        height = Ti.Platform.displayCaps.platformHeight,
+        width = Ti.Platform.displayCaps.platformWidth;
+
+
+
+        if (utm.installId == Ti.App.installId && utm.currentPin != null) {
+            utm.pinIsNull = false;
+            var showLoginPinLockScreen = require('/lib/showPinLockScreen');
+            showLoginPinLockScreen(utm.currentPin);
+            var d = new Date();
+            var n = d.getTime();
+            utm.User = Ti.App.Properties.getObject('userData');
+            openTabGroup();
+        } else {
+            utm.pinIsNull = true;
+            var Login = require('ui/common/Login');
+            var loginView = new Login();
+            utm.navController.open(loginView);
+            Ti.UI.iOS.setAppBadge(0);
+        }
+
+})();
+
+
+
+
+
 
 utm.keyboardHeight = 0;
 

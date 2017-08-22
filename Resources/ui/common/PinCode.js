@@ -197,7 +197,7 @@ var SettingsWin = function(_tabGroup) {
 		backgroundColor: utm.buttonColor,
 		color: 'white',
 		enabled : false,
-		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
+		style: Ti.UI.iOS.SystemButtonStyle.PLAIN
 	});	
 	scrollingView.add(saveButton);
 
@@ -215,7 +215,7 @@ var SettingsWin = function(_tabGroup) {
 			font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
 			backgroundColor: utm.barColor,
 			color: 'white',
-			style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
+			style: Ti.UI.iOS.SystemButtonStyle.PLAIN
 		});	
 		scrollingView.add(clearButton);
 	}
