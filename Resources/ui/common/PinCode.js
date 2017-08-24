@@ -2,7 +2,8 @@ var SettingsWin = function(_tabGroup) {
 	
 	var securely = require('bencoding.securely');
 	var SecureProperties = securely.createProperties({
-		secret:utm.securelySecretKey
+		secret:utm.securelySecretKey,
+		securityLevel:securely.PROPERTY_SECURE_LEVEL_MED,
 	});	
 	var currentPin = SecureProperties.getString("pin");
 	
@@ -79,7 +80,7 @@ var SettingsWin = function(_tabGroup) {
 		font: { fontSize: 20 },
 		visible: ((Ti.Platform.osname === 'android') ? true : false),
 		borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
-		keyboardType: Ti.UI.KEYBOARD_NUMBER_PAD,
+		keyboardType: Ti.UI.KEYBOARD_TYPE_NUMBER_PAD,
 		returnKeyType: Ti.UI.RETURNKEY_DEFAULT
 	};
 	

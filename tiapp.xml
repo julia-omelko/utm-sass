@@ -7,6 +7,25 @@
     <property name="acs-oauth-key-development" type="string">D8emSitkv0UekXWKIETz3xQDg85kFk9g</property>
     <property name="acs-api-key-development" type="string">sInlDKJGeaPrtdf5L8c3xsCZh3F6I7BB</property>
     <property name="ti.facebook.appid">494625050591800</property>
+    <ios>
+        <team-id>H4T83T58DX</team-id>
+        <plist>
+            <dict>
+                <key>NSContactsUsageDescription</key>
+                <string>Can the UTM app access your contacts?</string>
+                <key>NSCameraUsageDescription</key>
+                <string>Can the UTM app user your camera?</string>
+                <key>NSPhotoLibraryUsageDescription</key>
+                <string>Can the UTM app save to your library?</string>
+                <key>NSMicrophoneUsageDescription</key>
+                <string>Can the UTM app have access to your microphone?</string>
+                <key>keychain-access-groups</key>
+                <array>
+                    <string>$(AppIdentifierPrefix)com.utm</string>
+                </array>
+            </dict>
+        </plist>
+    </ios>
     <deployment-targets>
         <target device="tizen">false</target>
         <target device="mobileweb">false</target>
@@ -18,7 +37,7 @@
     <sdk-version>6.0.1.GA</sdk-version>
     <id>com.utm</id>
     <name>UTM</name>
-    <version>2.1.3</version>
+    <version>2.1.4</version>
     <publisher>youthisme</publisher>
     <url>http://youthisme.com</url>
     <description>YouThisMe™ (UTM) is an innovative new technology that provides privacy in digital communications and postings on social media. The messages are hidden in plain sight and only the intended recipient(s) can decode them.</description>

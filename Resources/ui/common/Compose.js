@@ -144,7 +144,7 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 		color: utm.textFieldColor,		
 		width: Ti.Platform.displayCaps.platformWidth-50,
 		height: textAreaHeight,
-		keyboardType: Ti.UI.KEYBOARD_DEFAULT,
+		keyboardType: Ti.UI.KEYBOARD_TYPE_DEFAULT,
 		returnKeyType: Ti.UI.RETURNKEY_DEFAULT,
 		suppressReturn: false,
 		top: 15,

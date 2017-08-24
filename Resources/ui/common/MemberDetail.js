@@ -101,7 +101,7 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 		left: nicknameLabel.getLeft(),
 		autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
 		autocorrect: false,
-		keyboardType: Ti.UI.KEYBOARD_DEFAULT,
+		keyboardType: Ti.UI.KEYBOARD_TYPE_DEFAULT,
 		returnKeyType: Ti.UI.RETURNKEY_DEFAULT,
 		top: (utm.Android && Ti.Platform.displayCaps.density === 'low' ? 60*utm.sizeMultiplier : 50*utm.sizeMultiplier),
 		borderColor: '#D4D4D4',

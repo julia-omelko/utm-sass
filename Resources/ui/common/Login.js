@@ -66,7 +66,7 @@ var LoginWin = function() {
 		hintText: L('label_user_name'),
 		autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
 		autocorrect: false,
-		keyboardType: Ti.UI.KEYBOARD_DEFAULT,
+		keyboardType: Ti.UI.KEYBOARD_TYPE_DEFAULT,
 		returnKeyType: Ti.UI.RETURNKEY_DEFAULT,
 		top: 15,
 		borderColor: '#D4D4D4',
@@ -104,7 +104,7 @@ var LoginWin = function() {
 		passwordMask: true,
 		autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
 		autocorrect: false,
-		keyboardType: Ti.UI.KEYBOARD_DEFAULT,
+		keyboardType: Ti.UI.KEYBOARD_TYPE_DEFAULT,
 		returnKeyType: Ti.UI.RETURNKEY_GO,
 		borderColor: '#D4D4D4',
 		borderRadius: 2,
@@ -145,7 +145,7 @@ var LoginWin = function() {
 		font:{fontFamily: utm.fontFamily, fontSize: utm.fontSize},
 		backgroundColor: utm.buttonColor,
 		color: 'white',
-		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
+		style: Ti.UI.iOS.SystemButtonStyle.PLAIN
 	});
 	view.add(loginBtn);
 	

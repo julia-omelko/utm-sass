@@ -50,7 +50,7 @@ var CreateGroupWin = function(_tabGroup) {
 		left: 25,
 		autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
 		autocorrect: false,
-		keyboardType: Ti.UI.KEYBOARD_DEFAULT,
+		keyboardType: Ti.UI.KEYBOARD_TYPE_DEFAULT,
 		returnKeyType: Ti.UI.RETURNKEY_DEFAULT,
 		top: 5,
 		borderColor: '#D4D4D4',

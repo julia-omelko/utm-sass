@@ -120,7 +120,7 @@ exports.layout = function(params) {
         borderRadius: 4,
         borderWidth: 1,
         borderColor: utm.barColor,
-        keyboardType: Ti.UI.KEYBOARD_NUMBER_PAD,
+        keyboardType: Ti.UI.KEYBOARD_TYPE_NUMBER_PAD,
         borderStyle: ((Ti.Platform.osname === 'android') ? null : Ti.UI.INPUT_BORDERSTYLE_ROUNDED)
     };
 
@@ -134,7 +134,7 @@ exports.layout = function(params) {
         font: { fontSize: 20 },
         visible: ((Ti.Platform.osname === 'android') ? true : false),
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
-        keyboardType: Ti.UI.KEYBOARD_NUMBER_PAD,
+        keyboardType: Ti.UI.KEYBOARD_TYPE_NUMBER_PAD,
         returnKeyType: Ti.UI.RETURNKEY_DEFAULT
     };
     

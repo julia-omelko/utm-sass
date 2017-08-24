@@ -41,7 +41,7 @@ var InviteMembersWin = function(_tabGroup,_myHortInfo) {
 		color: utm.textFieldColor,		
 		width: Ti.Platform.displayCaps.platformWidth-50,
 		height: Ti.UI.SIZE,
-		keyboardType: Ti.UI.KEYBOARD_DEFAULT,
+		keyboardType: Ti.UI.KEYBOARD_TYPE_DEFAULT,
 		returnKeyType: Ti.UI.RETURNKEY_DEFAULT,
 		top: 15,
 		borderColor: '#D4D4D4',
@@ -93,7 +93,7 @@ var InviteMembersWin = function(_tabGroup,_myHortInfo) {
 		color: utm.textFieldColor,		
 		width: Ti.Platform.displayCaps.platformWidth-((30*utm.sizeMultiplier)+50),
 		height: (utm.Android ? Ti.UI.SIZE : 30),
-		keyboardType: Ti.UI.KEYBOARD_EMAIL,
+		keyboardType: Ti.UI.KEYBOARD_TYPE_EMAIL,
 		returnKeyType: Ti.UI.RETURNKEY_DEFAULT,
 		borderColor: '#D4D4D4',
 		borderRadius: 2,
@@ -135,7 +135,8 @@ var InviteMembersWin = function(_tabGroup,_myHortInfo) {
 	contactButton.add(contactIcon);
 	emailView.add(contactButton);
 	contactButton.addEventListener('click', function() {
-		Ti.Contacts.requestAuthorization(requestPermission);
+		//Ti.Contacts.requestAuthorization(requestPermission);
+		Ti.Contacts.requestContactsPermissions(requestPermission);
 	});
 
 	/*var invisibleView = Ti.UI.createView({
@@ -237,7 +238,7 @@ var InviteMembersWin = function(_tabGroup,_myHortInfo) {
 		font:{fontFamily: utm.fontFamily, fontSize:'14dp'},
 		backgroundColor: utm.buttonColor,
 		color: 'white',
-		style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
+		style: Ti.UI.iOS.SystemButtonStyle.PLAIN
 	});	
 	sendBtn.addEventListener('click', function() {
 		self.showAi();
