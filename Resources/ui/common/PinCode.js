@@ -3,6 +3,8 @@ var SettingsWin = function(_tabGroup) {
 	var securely = require('bencoding.securely');
 	var SecureProperties = securely.createProperties({
 		secret:utm.securelySecretKey,
+		identifier:"pinCode",
+    	accessGroup:"com.utm",
 		securityLevel:securely.PROPERTY_SECURE_LEVEL_MED,
 	});	
 	var currentPin = SecureProperties.getString("pin");
