@@ -1,4 +1,5 @@
 var SettingsWin = function(_tabGroup) {
+	var Storekit = require('ti.storekit');
 	utm.screenWillLock = false;
 	
 	var StandardWindow = require('ui/common/StandardWindow');
