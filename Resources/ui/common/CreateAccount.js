@@ -88,7 +88,7 @@ var CreateAccountWin = function() {
 		borderWidth: 1,
 		backgroundColor: 'white',
 		clearButtonMode: Ti.UI.INPUT_BUTTONMODE_ALWAYS,
-		paddingLeft: 7,
+		leftButtonPadding:7,
 		isUnique: false,
 		font: {fontFamily: utm.fontFamily, fontSize: '16dp'}
 	});
@@ -121,7 +121,7 @@ var CreateAccountWin = function() {
 		borderWidth: 1,
 		backgroundColor: 'white',
 		clearButtonMode: Ti.UI.INPUT_BUTTONMODE_ALWAYS,
-		paddingLeft: 7,
+		leftButtonPadding:7,
 		font: {fontFamily: utm.fontFamily, fontSize: '16dp'}
 	});
 	nickname.addEventListener('focus', function() {
@@ -148,7 +148,7 @@ var CreateAccountWin = function() {
 		borderWidth: 1,
 		backgroundColor: 'white',
 		clearButtonMode: Ti.UI.INPUT_BUTTONMODE_ALWAYS,
-		paddingLeft: 7,
+		leftButtonPadding:7,
 		passwordMask: true,
 		font: {fontFamily: utm.fontFamily, fontSize: '16dp'}
 	});
@@ -175,7 +175,7 @@ var CreateAccountWin = function() {
 		borderWidth: 1,
 		backgroundColor: 'white',
 		clearButtonMode: Ti.UI.INPUT_BUTTONMODE_ALWAYS,
-		paddingLeft: 7,
+		leftButtonPadding:7,
 		passwordMask: true,
 		font: {fontFamily: utm.fontFamily, fontSize: '16dp'}
 	});
@@ -205,7 +205,7 @@ var CreateAccountWin = function() {
 		borderWidth: 1,
 		backgroundColor: 'white',
 		clearButtonMode: Ti.UI.INPUT_BUTTONMODE_ALWAYS,
-		paddingLeft: 7,
+		leftButtonPadding:7,
 		font: {fontFamily: utm.fontFamily, fontSize: '16dp'}
 	});
 	email.addEventListener('focus', function() {
@@ -231,7 +231,7 @@ var CreateAccountWin = function() {
 		borderWidth: 1,
 		backgroundColor: 'white',
 		clearButtonMode: Ti.UI.INPUT_BUTTONMODE_ALWAYS,
-		paddingLeft: 7,
+		leftButtonPadding:7,
 		font: {fontFamily: utm.fontFamily, fontSize: '16dp'}
 	});
 	phone.addEventListener('focus', function() {
@@ -257,7 +257,7 @@ var CreateAccountWin = function() {
 		borderWidth: 1,
 		backgroundColor: 'white',
 		clearButtonMode: Ti.UI.INPUT_BUTTONMODE_ALWAYS,
-		paddingLeft: 7,
+		leftButtonPadding:7,
 		font: {fontFamily: utm.fontFamily, fontSize: '16dp'}
 	});
 	promoCode.addEventListener('focus', function() {

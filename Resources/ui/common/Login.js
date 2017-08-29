@@ -74,7 +74,7 @@ var LoginWin = function() {
 		borderWidth: 1,
 		backgroundColor: 'white',
 		clearButtonMode: Ti.UI.INPUT_BUTTONMODE_ALWAYS,
-		paddingLeft: 7,
+		leftButtonPadding:7,
 		font: {fontFamily: utm.fontFamily, fontSize: '16dp'}
 	});
 	var usernameFocued = Ti.UI.createView({
@@ -111,7 +111,7 @@ var LoginWin = function() {
 		borderWidth: 1,
 		backgroundColor: 'white',
 		clearButtonMode: Ti.UI.INPUT_BUTTONMODE_ALWAYS,
-		paddingLeft: 7,
+		leftButtonPadding:7,
 		font: {fontFamily: utm.fontFamily, fontSize: '16dp'}
 	});
 	var passwordFocued = Ti.UI.createView({
