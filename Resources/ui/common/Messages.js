@@ -49,7 +49,7 @@ var MessagesWin = function(_tabGroup) {
 	self.add(tabBar);
 	var receivedButton = Ti.UI.createLabel({
 		text: 'received',
-		width: Math.round(Ti.Platform.displayCaps.platformWidth * 0.5),
+		width: Math.round(Ti.Platform.displayCaps.platformWidth * 0.4999),
 		height: Ti.UI.FILL,
 		backgroundColor: 'white',
 		borderColor: '#D4D4D4',
@@ -61,12 +61,12 @@ var MessagesWin = function(_tabGroup) {
 	tabBar.add(receivedButton);
 	
 	self.addEventListener('reorientdisplay', function(evt) {
-		receivedButton.width = Math.round(Ti.Platform.displayCaps.platformWidth * 0.5);
+		receivedButton.width = Math.round(Ti.Platform.displayCaps.platformWidth * 0.50);
 	});
 	
 	var sentButton = Ti.UI.createLabel({
 		text: 'sent',
-		width: Math.round(Ti.Platform.displayCaps.platformWidth * 0.5),
+		width: Math.round(Ti.Platform.displayCaps.platformWidth * 0.50),
 		height: Ti.UI.FILL,
 		backgroundColor: utm.backgroundColor,
 		borderColor: '#D4D4D4',
@@ -77,7 +77,7 @@ var MessagesWin = function(_tabGroup) {
 	});
 	tabBar.add(sentButton);
 	self.addEventListener('reorientdisplay', function(evt) {
-			sentButton.width = Math.round(Ti.Platform.displayCaps.platformWidth * 0.5);
+			sentButton.width = Math.round(Ti.Platform.displayCaps.platformWidth * 0.50);
 	});	
 	var currentMode = 'received';
 	receivedButton.addEventListener('click', function(e){
