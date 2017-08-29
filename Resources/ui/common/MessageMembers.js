@@ -25,7 +25,7 @@ var MessageMembersWin = function(_tabGroup) {
 	self.add(tabBar);
 	var membersButton = Ti.UI.createLabel({
 		text: 'members',
-		width: Math.round(Ti.Platform.displayCaps.platformWidth * 0.5),
+		width: Math.round(Ti.Platform.displayCaps.platformWidth * 0.4999),
 		height: Ti.UI.FILL,
 		backgroundColor: 'white',
 		borderColor: '#D4D4D4',
