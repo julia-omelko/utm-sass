@@ -1,4 +1,3 @@
-
 //utm is the js namespace for this app
 utm = {};
 utm.iPhone = false;
@@ -227,46 +226,92 @@ function openTabGroup() {
 	utm.tabGroup.open();
 }
 
-moment = require('lib/moment');
+
+
 function getDateTimeFormat(dateSent){
-    var currentUTCTime = moment.utc();
-	var utcDate = moment.utc(dateSent);
-	
-	//Correct by a minute IF the server time is ahead of time 
-    if(currentUTCTime < utcDate ){
-        //Ti.API.info('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
-       // Ti.API.info('currentUTCTime='+currentUTCTime);
-       // Ti.API.info('utcDate='+utcDate);
-        var diffTime = currentUTCTime.diff(utcDate,'minutes');
-       // Ti.API.info('CORRECTED 1  diff = ' + diffTime);
-       // Ti.API.info('CORRECTED 1  diffMin = ' + moment(diffTime.duration().asMinutes()));
-        
-        utcDate=currentUTCTime;
-        utcDate.subtract(1,'minute');
+
+    if(utm.correctTime){
+        return formatDateTimeUTC(dateSent);
+        Ti.API.info('formatDateTimeUTC');
+    }else{
+        return formatDateTimeNoUTC(dateSent);
+        Ti.API.info('formatDateTimeNoUTC');
     }
-	
+}
+
+function formatDateTimeNoUTC(dateSent){
+    var sent =  moment(dateSent);
+    var hours = sent.fromNow();
+    var now = moment();
+
+   diff = now.diff(sent, 'days'); // 1
+
+    if(diff > 0){
+        return sent.format("M/D/YY");
+        Ti.API.info('M/D/YY');
+    }else{
+        var sToSubtract = 0;
+         Ti.API.info('subtract 30');
+
+        if(now.milliseconds() << sent.milliseconds())
+        {
+            var sToSubtract = 30;
+            Ti.API.info('XXXX');
+        }
+
+        return  formattedDateSent = sent.subtract(sToSubtract, 'seconds').fromNow();
+    }
+}
+
+var moment = require('lib/moment-timezone-with-data-2010-2020');
+var zoneNY = moment.tz.zone("America/New_York");
+function formatDateTimeUTC(dateSent){
+
+    var currentUTCTime = moment.utc();
+    if(utm.correctTime){
+        var utcDate = moment.utc(dateSent);
+    }else{
+        var utcDate = moment(dateSent);
+    }
+
+
+    //Correct by a minute IF the server time is ahead of time
+    if(currentUTCTime < utcDate ){
+        Ti.API.info('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
+       Ti.API.info('currentUTCTime='+currentUTCTime);
+       Ti.API.info('utcDate='+utcDate);
+      var diffTime = currentUTCTime.diff(utcDate,'minutes');
+       Ti.API.info('CORRECTED 1  diff = ' + diffTime);
+       //Ti.API.info('CORRECTED 1  diffMin = ' + moment(diffTime.duration().asMinutes()));
+
+        utcDate=currentUTCTime;
+        utcDate.add(1,'minute');
+    }
+
     var sent = utcDate.local(); // Get the local version of that date
-	var hours = sent.fromNow();
-	var now = moment();
 
-	diff = now.diff(sent, 'days'); // 1
-			
-	if (diff > 0) {
-		return sent.format("M/D/YY  h:mm a");
-	} else {
-		var sToSubtract = 0;
-		if (now.milliseconds() << sent.milliseconds()) {
-			var sToSubtract = 30;
-		}
-		return  formattedDateSent = sent.subtract('seconds', sToSubtract).fromNow();
-	}
+
+    var hours = sent.fromNow();
+    var now = moment();
+
+    diff = now.diff(sent, 'days'); // 1
+
+    if (diff > 0) {
+        return sent.format("M/D/YY  h:mm a");
+    } else {
+        var sToSubtract = 0;
+        if (now.milliseconds() << sent.milliseconds()) {
+            var sToSubtract = 30;
+        }
+        return  formattedDateSent = sent.subtract(sToSubtract,'seconds').fromNow();
+    }
 }
 
-if (utm.iPhone || utm.iPad ) {
-	//FIXME Ti.include('storekit.js');
-} else {
-	
-}
+
+
+
+
+
 
 
 
