@@ -22,8 +22,8 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	
 	var addButton = Ti.UI.createImageView({
 		image: '/images/icons/add.png',
-		height: 22,
-		width: 22
+		height: 25,
+		width: 25
 	});
 	addButton.addEventListener('click',function(e){
 		var AddToGroupWin = require('/ui/common/AddMembersToGroup');

@@ -1,11 +1,12 @@
 eclipse.preferences.version=1
 iosLaunchConfigurationAttributes/ATTR_MINIFY=true
 iosLaunchConfigurationAttributes/ATTR_PROJECT_NAME=utm
+iosLaunchConfigurationAttributes/ATTR_UPLOAD_DEBUG_SYMBOLS=false
 iosLaunchConfigurationAttributes/appid=com.utm
 iosLaunchConfigurationAttributes/certificate=UThisMe, LLC (H4T83T58DX)
-iosLaunchConfigurationAttributes/keychain=
-iosLaunchConfigurationAttributes/sdk_version=7.1
-iosLaunchConfigurationAttributes/uuid=DB25E908-5BF6-4903-9A1C-FF5E0920EB98
+iosLaunchConfigurationAttributes/keychain=/Library/Keychains/System.keychain
+iosLaunchConfigurationAttributes/sdk_version=11.0
+iosLaunchConfigurationAttributes/uuid=1e0ff70e-7d6c-40e0-9c5d-2cfdc13800aa
 provisioning_profiles/development/008E8F19-84F4-4669-AD6F-D3EDA99F971E/appid=com.troyweb.aware-prepare
 provisioning_profiles/development/008E8F19-84F4-4669-AD6F-D3EDA99F971E/name=iOS Team Provisioning Profile\: com.troyweb.aware-prepare
 provisioning_profiles/development/008E8F19-84F4-4669-AD6F-D3EDA99F971E/uuid=008E8F19-84F4-4669-AD6F-D3EDA99F971E

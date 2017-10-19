@@ -4,7 +4,11 @@ function StandardWindow(_title,_showAi) {
 		var titleControl = Ti.UI.createLabel({
 			text: _title,
 			font: {fontFamily: utm.fontFamily, fontSize: 18},
-			color: 'white'
+			color: 'white',
+			textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+			top: 90,
+			width: 700, 
+			height: 40
 		});
 		var self = Ti.UI.createWindow({			
 			titleControl: titleControl,

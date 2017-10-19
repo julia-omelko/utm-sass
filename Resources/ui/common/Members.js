@@ -36,8 +36,8 @@ var MembersWin = function(_tabGroup) {
 	
 	var newButton = Ti.UI.createImageView({
 		image: '/images/icons/add.png',
-		height: 22,
-		width: 22
+		height: 25,
+		width: 25
 	});
 	newButton.addEventListener('click',function(e){
 		var InviteWin = require('/ui/common/InviteMembers');

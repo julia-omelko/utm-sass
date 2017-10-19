@@ -22,8 +22,8 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	
 	var composeButton = Ti.UI.createImageView({
 		image: '/images/icons/compose.png',
-		height: 22,
-		width: 22
+		height: 25,
+		width: 25
 	});
 	var goChooseMembers = function() {
 			var MessageGroupMembersWin = require('/ui/common/MessageGroupMembers');

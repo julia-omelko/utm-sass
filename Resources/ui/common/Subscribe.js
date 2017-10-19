@@ -56,9 +56,11 @@ var SettingsWin = function(_tabGroup) {
 			if (_product.identifier === 'com.youthisme.unlimited') {
 				var theButton = 'Unlimited messages for 99 cents per month';
 				var theDesc = 'Send as many UTM messages as you\'d like for 99 cents per month.  This is an auto-renewing subscription.';
+				
 			} else if (_product.identifier === 'com.youthisme.20for99') {
 				var theButton = '20 messages for 99 cents';
 				var theDesc = 'Send 20 UTM messages for 99 cents.  These messages never expire.';
+
 			} else {
 				var theButton = _product.title;
 				var theDesc = _product.description;

@@ -11,7 +11,10 @@ var MessagesWin = function(_tabGroup) {
 	var editButton = Ti.UI.createLabel({
 		text: 'Edit',
 		font: {fontFamily: utm.fontFamily},
-		color: 'white'
+		color: 'white',
+		top: 10,
+		width: 40,
+		height: 50
 	});
 	editButton.addEventListener('click', function(e){
 		tableView.setEditing(!tableView.getEditing());
@@ -21,8 +24,8 @@ var MessagesWin = function(_tabGroup) {
 	
 	var composeButton = Ti.UI.createImageView({
 		image: '/images/icons/compose.png',
-		height: 22,
-		width: 22
+		height: 25,
+		width: 25
 	});
 	var composeMessage = function() {
 		var MessageMembersWin = require('/ui/common/MessageMembers');

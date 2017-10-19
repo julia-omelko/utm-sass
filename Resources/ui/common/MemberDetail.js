@@ -14,8 +14,8 @@ var MemberDetailWin = function(_tabGroup,_memberData) {
 	
 	var composeButton = Ti.UI.createImageView({
 		image: '/images/icons/compose.png',
-		height: 22,
-		width: 22
+		height: 25,
+		width: 25
 	});
 	var composeMessage = function() {
 		var selectedContacts = [{userData:_memberData}];

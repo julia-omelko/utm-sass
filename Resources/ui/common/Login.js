@@ -164,10 +164,14 @@ var LoginWin = function() {
 	});
 	
 	forgotPassword.addEventListener('click', function(e) {
-	    //Ti.Platform.openURL(utm.webUrl + '/Account/PasswordReset');
-		var ForgotView = require('/ui/common/Forgot');
-		var forgotView = new ForgotView();
-		utm.navController.open(forgotView);
+	    Ti.Platform.openURL(utm.webUrl + '/Account/PasswordReset');
+		//var ForgotView = require('/ui/common/Forgot');
+		//var forgotView = new ForgotView();
+		//utm.navController.open(forgotView);
+		//var WebView = require('/ui/common/WebView');
+		//var webView = new WebView('Rules of Use', 'rules'); 
+		//var webView = new WebView('Password Reset', utm.webUrl + '/Account/PasswordReset');
+		//_tabGroup.getActiveTab().open(webView);
 	});
 	view.add(forgotPassword);
 	
