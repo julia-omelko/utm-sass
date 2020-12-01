@@ -170,7 +170,7 @@ var MessageDetailWin = function(_tabGroup,_messageData) {
 	userSubView.add(fromLabel);
 	
 	var dateLabel = Ti.UI.createLabel({
-		text: getDateTimeFormat(_messageData.DateSent),
+		text: utm.getDateTimeFormat(_messageData.DateSent),
 		font: {fontFamily: utm.fontFamily, fontSize: utm.fontSize},
 		color: utm.secondaryTextColor,
 		wordWrap: false,

@@ -1,0 +1,23 @@
+
+sudo xcode-select -switch /Applications/Xcode.app/Contents
+
+
+sudo -u “Anthony Debonis Admin” xcode-select -switch /Applications/Xcode.app/Contents
+
+sudo -u Anthony Debonis Admin
+
+
+sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer
+
+
+Distribution:
+The provisioning file  = youThisMe_Dist (GOOD DIST).mobileprovision
+Cert user/Team = H4T83T58DX   Apple Distribution: UThisMe, LLC (H4T83T58DX)
+
+Apple Testing 
+
+Please use the following username and password:
+Username: dsmith
+Password:  Testtest1
+
+When logged in, you will see a member with the username "lauren".  She is one of our developers and will know to ignore any test messages that you send.

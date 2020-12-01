@@ -38,13 +38,65 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	self.setRightNavButton(composeButton);	
 	
 	var Facebook = require('facebook');
-	var social = require("lib/social");
+	
+	/*(var social = require("lib/social");
 	var twitter = social.create({
 		site: 'Twitter', // <-- this example is for Twitter. I'll expand this to other sites in the future.
 		consumerKey: utm.twitterConsumerKey, // <--- you'll want to replace this
 		consumerSecret: utm.twitterConsumerSecret, // <--- and this with your own keys!
 		utmSpace: utm
 	});
+	
+	var accessTokenKey = utm.twitterConsumerKey,
+        accessTokenSecret = utm.twitterConsumerSecret;*/
+//#################### Start  of Twitter Setup   ####################
+   /* var TwitterOAuth = require('twitter').Twitter;
+    
+    var twitterClient = TwitterOAuth({
+      consumerKey: utm.twitterConsumerKey,
+      consumerSecret: utm.twitterConsumerSecret,
+      accessTokenKey: accessTokenKey, 
+      accessTokenSecret: accessTokenSecret
+    });
+    */
+    
+    var win = Ti.UI.createWindow({backgroundColor: 'white'}),
+        tableView = Ti.UI.createTableView();
+  
+    win.add(tableView);
+    win.open();
+    
+    utm.UtmTwitterClient.addEventListener('login', function(e) {
+      if (e.success) {
+        Ti.App.Properties.setString('twitterAccessTokenKey', e.accessTokenKey);
+        Ti.App.Properties.setString('twitterAccessTokenSecret', e.accessTokenSecret);
+        
+        utm.UtmTwitterClient.request("1/statuses/home_timeline.json", {count: 100}, 'GET', function(e) {
+          if (e.success) {
+            var json = JSON.parse(e.result.text), 
+                tweets = json.map(function(tweet) {
+                  return {title: tweet.text};
+                });
+            
+            tableView.setData(tweets);
+          } else  {
+            alert(e.error);
+          }
+        });
+      } else {
+        alert(e.error);
+      }
+    });
+    
+   // utm.UtmTwitterClient.authorize();
+    
+    //#################### End of Twitter Setup   ####################
+    
+    
+	
+	
+	
+	
 	Facebook.appid = utm.facebookAppId;
 	Facebook.permissions = ['publish_stream', 'read_stream'];
 	
@@ -268,8 +320,8 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	
 	twitterSwitch.addEventListener('change', function(e) {
 		if (e.value) {
-			if (!twitter.isAuthorized()) {
-				twitter.authorize();
+			if (!utm.UtmTwitterClient.isAuthorized()) {
+				utm.UtmTwitterClient.authorize();
 			}
 			twitterEnabledForUser = true;
 		}
@@ -570,7 +622,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		};
 
 		if (twitterSwitch.getValue()) {
-			if (!twitter.isAuthorized()) {
+			if (!utm.UtmTwitterClient.isAuthorized()) {
 				_userSettings.TwitterToken = '';
 				_userSettings.TwitterSecret = '';
 			} else {

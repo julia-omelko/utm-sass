@@ -216,7 +216,7 @@ var ComposeWin = function(_tabGroup,_selectedContacts,_mode,_messageData) {
 	//Business rule: If replying to a message that was NOT set to "delete on read", include the original message text in the reply
 	if (!_messageData.DeleteOnRead && _mode === 'Reply') {
 		
-		var sentDate = moment(_messageData.DateSent);
+		var sentDate = utm.moment(_messageData.DateSent);
 		
 		messageField.value =  '\n\n On '+sentDate.format("M/D/YY")+ '  ' + _messageData.FromUserName + '  Wrote:\n  >' + _messageData.replingToMessageText +'';
 		messageField.setSelection(0, 0);

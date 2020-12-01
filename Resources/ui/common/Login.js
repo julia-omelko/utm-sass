@@ -120,6 +120,15 @@ var LoginWin = function() {
 		backgroundColor: utm.barColor,
 		bottom: 0
 	});
+	
+	//ATD Added for faster DEV when running under simulator
+	if (Ti.Platform.model.indexOf('Simulator')> 0){
+		username.value='AD';
+		password.value='Testtest1';		
+	}
+	
+	
+	
 	password.addEventListener('focus', function() {
 		password.add(passwordFocued);
 	});

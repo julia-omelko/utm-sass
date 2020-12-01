@@ -12,16 +12,20 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 	self.setLeftNavButton(backButton);
 	
 	
-	var Facebook = require('facebook');
-	var social = require("lib/social");
+	//var Facebook = require('facebook');
+	/*var social = require("lib/social");
 	var twitter = social.create({
 		site: 'Twitter', // <-- this example is for Twitter. I'll expand this to other sites in the future.
 		consumerKey: utm.twitterConsumerKey, // <--- you'll want to replace this
 		consumerSecret: utm.twitterConsumerSecret, // <--- and this with your own keys!
 		utmSpace: utm
 	});
-	Facebook.appid = utm.facebookAppId;
-	Facebook.permissions = ['publish_stream', 'read_stream'];
+	*/
+	
+	
+	
+	//Facebook.appid = utm.facebookAppId;
+	//Facebook.permissions = ['publish_stream', 'read_stream'];
 	
 	
 	
@@ -207,15 +211,19 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 	
 	twitterSwitch.addEventListener('change', function(e) {
 		if (e.value) {
-			if (!twitter.isAuthorized()) {
-				twitter.authorize();
+			
+			Ti.API.info('TTTTT PGD utm.UtmTwitterClient ='+utm.UtmTwitterClient);
+			Ti.API.info('TTTTT PGD utm.UtmTwitterClient authorized? ='+utm.UtmTwitterClient.authorized);
+			
+			if (!utm.UtmTwitterClient.authorized) {
+				utm.UtmTwitterClient.authorize();
 			}
 			twitterEnabledForUser = true;
 		}
 	});
 	
 	
-	var fbRow = Ti.UI.createTableViewRow({
+	/*var fbRow = Ti.UI.createTableViewRow({
 		height: 40*utm.sizeMultiplier,
 		hasChild: false,
 		backgroundSelectedColor: 'white'
@@ -254,7 +262,7 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 		}
 	});
 	
-	
+	*/
 	
 	
 	
@@ -316,9 +324,9 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 		if (_memberData.TwitterToken !== '' && _memberData.TwitterToken != null) {
 			twitterSwitch.setValue(true);
 		}
-		if (_memberData.FaceBook !== '' && _memberData.FaceBook != null) {
-			fbSwitch.setValue(true);
-		}
+		//if (_memberData.FaceBook !== '' && _memberData.FaceBook != null) {
+		//	fbSwitch.setValue(true);
+		//}
 		if (_memberData.AddNicknameToUtms) {
 			signSwitch.setValue(true);
 		}
@@ -393,7 +401,7 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 		Ti.API.info(_userSettings);
 		
 		if (twitterSwitch.getValue()) {
-			if (!twitter.isAuthorized()) {
+			if (!utm.UtmTwitterClient.authorized) {
 				_userSettings.TwitterToken = utm.TwitterToken;
 				_userSettings.TwitterSecret = utm.TwitterTokenSecret;
 			} else {
@@ -401,9 +409,9 @@ var PrimaryGroupDetailWin = function(_tabGroup) {
 				_userSettings.TwitterSecret = utm.TwitterTokenSecret;
 			}
 		}
-		if (fbSwitch.getValue()) {
-			_userSettings.FaceBook = Facebook.getAccessToken();
-		}
+		//if (fbSwitch.getValue()) {
+		//	_userSettings.FaceBook = Facebook.getAccessToken();
+		//}
 		
 		var updateMyHortDetailReq = Ti.Network.createHTTPClient({
 			validatesSecureCertificate : utm.validatesSecureCertificate,

@@ -111,16 +111,16 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	
 	
 	
-	var Facebook = require('facebook');
-	var social = require("lib/social");
+//	var Facebook = require('facebook');
+	/*var social = require("lib/social");
 	var twitter = social.create({
 		site: 'Twitter', // <-- this example is for Twitter. I'll expand this to other sites in the future.
 		consumerKey: utm.twitterConsumerKey, // <--- you'll want to replace this
 		consumerSecret: utm.twitterConsumerSecret, // <--- and this with your own keys!
 		utmSpace: utm
-	});
-	Facebook.appid = utm.facebookAppId;
-	Facebook.permissions = ['publish_stream', 'read_stream'];
+	});*/
+	//Facebook.appid = utm.facebookAppId;
+	//Facebook.permissions = ['publish_stream', 'read_stream'];
 	
 	
 	
@@ -439,7 +439,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	});
 	
 	
-	var fbRow = Ti.UI.createTableViewRow({
+	/*var fbRow = Ti.UI.createTableViewRow({
 		height: 40*utm.sizeMultiplier,
 		hasChild: false,
 		backgroundSelectedColor: 'white'
@@ -477,7 +477,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 			fbSwitch.setValue(false);
 		}
 	});
-	
+	*/
 	
 	
 	
@@ -576,9 +576,9 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		if (_memberData.TwitterToken !== '' && _memberData.TwitterToken != null) {
 			twitterSwitch.setValue(true);
 		}
-		if (_memberData.FaceBook !== '' && _memberData.FaceBook != null) {
-			fbSwitch.setValue(true);
-		}
+		//if (_memberData.FaceBook !== '' && _memberData.FaceBook != null) {
+		//	fbSwitch.setValue(true);
+		//}
 		if (_memberData.AddNicknameToUtms) {
 			signSwitch.setValue(true);
 		}
@@ -741,9 +741,9 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 				_userSettings.TwitterSecret = utm.TwitterTokenSecret;
 			}
 		}
-		if (fbSwitch.getValue()) {
-			_userSettings.FaceBook = Facebook.getAccessToken();
-		}
+		//if (fbSwitch.getValue()) {
+		//	_userSettings.FaceBook = Facebook.getAccessToken();
+		//}
 		
 		if (_myHortDetails.IsOwner) {
 			_myHortDetails.PrimaryUser = _userSettings;

@@ -44,7 +44,7 @@ var SettingsWin = function(_tabGroup) {
 		//}
 	});	
 
-	var setPinLockButton = Ti.UI.createButton({
+	/*var setPinLockButton = Ti.UI.createButton({
 		title : 'Set unlock code',
 		top: 25*utm.sizeMultiplier,
 		width: (Ti.Platform.displayCaps.platformWidth-50),
@@ -66,6 +66,7 @@ var SettingsWin = function(_tabGroup) {
 		var setPinWindow = new SetPinWindow();	
 		_tabGroup.getActiveTab().open(setPinWindow);	
 	});
+	*/
 
 	var avatarButton = Ti.UI.createButton({
 		title : 'Change avatar',

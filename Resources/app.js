@@ -79,8 +79,7 @@ var unpinLockScreen = require('/lib/com.qbset.unlockscreen');
 
 
 //Property values for securely
-utm.securelySecretKey = "GRXV9J7237$Y";
-
+/*utm.securelySecretKey = "GRXV9J7237$Y";
 var securely = require('bencoding.securely');
 var SecureProperties = securely.createProperties({
     secret:utm.securelySecretKey,
@@ -89,16 +88,20 @@ var SecureProperties = securely.createProperties({
     securityLevel:securely.PROPERTY_SECURE_LEVEL_MED,
     encryptFieldNames:false
 });
+*/
 
-utm.installId = SecureProperties.getString("installId");
-utm.currentPin = SecureProperties.getString("pin");
-if (Ti.Platform.model === 'Simulator' || Ti.Platform.model ===  'google_sdk' || Ti.Platform.model ===  'sdk') {
+
+//utm.installId = SecureProperties.getString("installId");
+//utm.currentPin = SecureProperties.getString("pin");
+
+
+/*if (Ti.Platform.model === 'Simulator' || Ti.Platform.model ===  'google_sdk' || Ti.Platform.model ===  'sdk') {
     utm.environment = SecureProperties.getString("environment","test");    //utm.validatesSecureCertificate = false;
 } else {
     utm.environment = SecureProperties.getString("environment","prod");
 }
 utm.setEnvModePrefix(utm.environment);
-
+*/
 
 (function() {
     var osname = Ti.Platform.osname,
@@ -226,23 +229,10 @@ function openTabGroup() {
 	utm.tabGroup.open();
 }
 
-
-
-function getDateTimeFormat(dateSent){
-
-    if(utm.correctTime){
-        return formatDateTimeUTC(dateSent);
-        Ti.API.info('formatDateTimeUTC');
-    }else{
-        return formatDateTimeNoUTC(dateSent);
-        Ti.API.info('formatDateTimeNoUTC');
-    }
-}
-
 function formatDateTimeNoUTC(dateSent){
-    var sent =  moment(dateSent);
+    var sent =  utm.moment(dateSent);
     var hours = sent.fromNow();
-    var now = moment();
+    var now = utm.moment();
 
    diff = now.diff(sent, 'days'); // 1
 
@@ -263,15 +253,15 @@ function formatDateTimeNoUTC(dateSent){
     }
 }
 
-var moment = require('lib/moment-timezone-with-data-2010-2020');
-var zoneNY = moment.tz.zone("America/New_York");
+utm.moment = require('lib/moment-timezone-with-data-2010-2020');
+var zoneNY = utm.moment.tz.zone("America/New_York");
 function formatDateTimeUTC(dateSent){
 
-    var currentUTCTime = moment.utc();
+    var currentUTCTime = utm.moment.utc();
     if(utm.correctTime){
-        var utcDate = moment.utc(dateSent);
+        var utcDate = utm.moment.utc(dateSent);
     }else{
-        var utcDate = moment(dateSent);
+        var utcDate = utm.moment(dateSent);
     }
 
 
@@ -282,7 +272,7 @@ function formatDateTimeUTC(dateSent){
        Ti.API.info('utcDate='+utcDate);
       var diffTime = currentUTCTime.diff(utcDate,'minutes');
        Ti.API.info('CORRECTED 1  diff = ' + diffTime);
-       //Ti.API.info('CORRECTED 1  diffMin = ' + moment(diffTime.duration().asMinutes()));
+       //Ti.API.info('CORRECTED 1  diffMin = ' + utm.moment(diffTime.duration().asMinutes()));
 
         utcDate=currentUTCTime;
         utcDate.add(1,'minute');
@@ -292,7 +282,7 @@ function formatDateTimeUTC(dateSent){
 
 
     var hours = sent.fromNow();
-    var now = moment();
+    var now = utm.moment();
 
     diff = now.diff(sent, 'days'); // 1
 
@@ -309,11 +299,63 @@ function formatDateTimeUTC(dateSent){
 
 
 
+//var UtmTwitterClient = require('/lib/UtmTwitter');
+//utm.UtmTwitterClient = new UtmTwitterClient();
+
+//var Twitter = require('/lib/UtmTwitter').Twitter;
+    
+var Twitter = require('twitter').Twitter;
+
+utm.UtmTwitterClient = Twitter({
+  consumerKey: '05jZb3GCulM8STHQ5j8S8A',
+  consumerSecret: 'xPFvoYfGSbk2M8HHkKJ66hUqJKxqPBo5cKmPLzBTIQ',
+  accessTokenKey: '22675285-BAC9RcctRLWY50ytSQbJqdPg7EKU7koWPRMvkTc', 
+  accessTokenSecret: 'qulNchLS0VI006S068SCLogoh15yXrlnYvyFfgwVvIo'
+});
 
 
 
 
+utm.UtmTwitterClient.authorize(); // Pops up a modal WebView
+Ti.API.info('OOOOOOO 1');
 
+	
+	
+	
+utm.UtmTwitterClient.addEventListener('login', function(e) {
+Ti.API.info('OOOOOOO 2');
+  if (e.success) {
+    // Your app code goes here... you'll likely want to save the access tokens passed in the event.
+    Ti.API.info('OOOOOOO 3 Success');
+    Ti.API.info('OOOOOOO 3 e.accessTokenKey'+e.accessTokenKey);
+    Ti.API.info('OOOOOOO 3 e.accessTokenSecret'+e.accessTokenSecret);
+    
+    Ti.App.Properties.setString('twitterAccessTokenKey', e.accessTokenKey);
+    Ti.App.Properties.setString('twitterAccessTokenSecret', e.accessTokenSecret);
+    
+    
+    // Here's an example API call:
+   /* client.request("1/statuses/home_timeline.json", {count: 100}, 'GET', function(e) {
+      if (e.success) {
+        var data = JSON.parse(e.result.text);
+      } else {
+      	Ti.API.info('OOOOOOO 4 error'+e.error);
+        alert(e.error);
+      }
+    });
+    */
+    
+    
+  } else {
+  	Ti.API.info('OOOOOOO 5 error'+e.error);
+    alert(e.error);
+  }
+});
+
+
+
+
+	
 
 
 
@@ -376,14 +418,14 @@ Ti.App.addEventListener("resumed", function(e){
 	var curMil = curDate.valueOf() ;
 	var pauseMil = utm.appPauseTime.valueOf();
 	var diff = curMil - pauseMil;
-	if (diff > utm.screenLockTime) {
+	/*if (diff > utm.screenLockTime) {
 		var currentPin = SecureProperties.getString("pin");
 		if (currentPin == null || currentPin == "") {
 			showLoginScreenLockView();
 		}else{
 			showPinLockScreen(currentPin);
 		}
-	}		
+	}	*/	
 });
 
 function showPinLockScreen(_pass) {
@@ -485,6 +527,19 @@ utm.handleHttpError = function (e,status,responseText) {
  	alert(message);
  	
 };
+
+utm.getDateTimeFormat =function (dateSent){
+
+    if(utm.correctTime){
+        return formatDateTimeUTC(dateSent);
+        Ti.API.info('formatDateTimeUTC');
+    }else{
+        return formatDateTimeNoUTC(dateSent);
+        Ti.API.info('formatDateTimeNoUTC');
+    }
+};
+
+
 
 // if on iPad and screen orientation changed, get new layout dimensions, set values and fire orientdisplay event to adjust GUI elements
 // (iphone and Android are locked into portait mode in tiapp.xml)

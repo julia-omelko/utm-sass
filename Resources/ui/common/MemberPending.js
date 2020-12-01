@@ -58,7 +58,7 @@ var MemberGroupMemberDetailWin = function(_tabGroup,_memberData,_myHortData) {
 	scrollingView.add(inviteLabel);
 	
 	var inviteDateText = Ti.UI.createLabel({
-		text: getDateTimeFormat(_memberData.ExpireDate),
+		text: utm.getDateTimeFormat(_memberData.ExpireDate),
 		color: utm.textFieldColor,		
 		width: Ti.UI.SIZE,
 		height: Ti.UI.SIZE,

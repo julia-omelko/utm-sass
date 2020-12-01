@@ -130,7 +130,7 @@ function MessageTableRow(rowData){
 	textHeader.add(fromLabel);
 	
 	
-	var dateText = getDateTimeFormat(rowData.DateSent);
+	var dateText = utm.getDateTimeFormat(rowData.DateSent);
 	dateText = dateText.replace(' minutes','m');
 	dateText = dateText.replace(' hours','h');
 	dateText = dateText.replace('an hour','1h');
