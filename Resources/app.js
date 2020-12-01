@@ -304,7 +304,7 @@ function formatDateTimeUTC(dateSent){
 
 //var Twitter = require('/lib/UtmTwitter').Twitter;
     
-var Twitter = require('twitter').Twitter;
+var Twitter = require('lib/twitter').Twitter;
 
 utm.UtmTwitterClient = Twitter({
   consumerKey: '05jZb3GCulM8STHQ5j8S8A',
