@@ -115,7 +115,10 @@ var SettingsWin = function(_tabGroup) {
 		 */
 		function requestProduct(identifier) {
 			Storekit.requestProducts([identifier.ProductName], function (evt) {
+				
+				 
 				if (!evt.success) {
+					Ti.API.info('NOTE Storekit call to Apple does not work in Simulator');
 					alert('ERROR: We failed to talk to Apple!');
 				} else if (evt.invalid) {
 					alert('ERROR: We requested an invalid product!');

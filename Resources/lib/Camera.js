@@ -81,7 +81,7 @@ function CameraView(_previewView) {
 	};
 	
 	function processImage(e){
-		var ImageFactory = require('ti.imagefactory');
+		//var ImageFactory = require('ti.imagefactory');
 		
 		var resizeRatio = (Math.max(e.media.width,e.media.height) / 800);
 		if (resizeRatio > 1) {
@@ -89,9 +89,9 @@ function CameraView(_previewView) {
 		} else {
 			resizedImage = e.media;
 		}
-		resizedImage = ImageFactory.compress(resizedImage,0.35);
+		//resizedImage = ImageFactory.compress(resizedImage,0.35);
 		
-		var image = resizedImage;
+		//var image = resizedImage;
         //var f = Titanium.Filesystem.getFile(Titanium.Filesystem.applicationDataDirectory,'camera1.png');
         //f.write(image);
 
