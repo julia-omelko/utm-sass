@@ -11,13 +11,23 @@
         <plist>
             <dict>
                 <key>NSContactsUsageDescription</key>
-                <string>Can the UTM app access your contacts?</string>
+                <string>The UTM app can access your contacts?</string>
                 <key>NSCameraUsageDescription</key>
-                <string>Can the UTM app user your camera?</string>
+                <string>The UTM can app user your camera</string>
                 <key>NSPhotoLibraryUsageDescription</key>
-                <string>Can the UTM app save to your library?</string>
+                <string>The UTM app can save to your library?</string>
                 <key>NSMicrophoneUsageDescription</key>
-                <string>Can the UTM app have access to your microphone?</string>
+                <string>The UTM app does not need access to your microphone?</string>
+                <key>NSCalendarsUsageDescription</key>
+                <string>The UTM app does not access your calender</string>
+                <key>NSAppleMusicUsageDescription</key>
+                <string>The UTM app does not access your Apple Music Usage</string>
+                <key>aps-environment</key>
+                <string>The UTM app does not access your App Environment</string>
+                <key>NSLocationAlwaysUsageDescription</key>
+                <string>The UTM app does not access your Location</string>
+                <key>NSLocationWhenInUseUsageDescription</key>
+                <string>The UTM app does not access your Location</string>
                 <key>keychain-access-groups</key>
                 <array>
                     <string>$(AppIdentifierPrefix)com.utm</string>
@@ -33,7 +43,7 @@
     <sdk-version>9.2.2.GA</sdk-version>
     <id>com.utm</id>
     <name>UTM</name>
-    <version>2.2.1</version>
+    <version>2.2.3</version>
     <publisher>youthisme</publisher>
     <url>http://youthisme.com</url>
     <description>YouThisMe™ (UTM) is an innovative new technology that provides privacy in digital communications and postings on social media. The messages are hidden in plain sight and only the intended recipient(s) can decode them.</description>
