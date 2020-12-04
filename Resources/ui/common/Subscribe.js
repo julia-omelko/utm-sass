@@ -71,6 +71,7 @@ var SettingsWin = function(_tabGroup) {
 				top: 35,
 				font: {fontFamily: utm.fontFamily, fontSize:'16dp'},
 				textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+				color: utm.textColor,
 				text: theDesc
 			});
 			scrollingView.add(productDesc);

@@ -11,7 +11,7 @@
         <plist>
             <dict>
                 <key>NSContactsUsageDescription</key>
-                <string>The UTM app can access your contacts?</string>
+                <string>The UTM app can access your contacts</string>
                 <key>NSCameraUsageDescription</key>
                 <string>The UTM can app user your camera</string>
                 <key>NSPhotoLibraryUsageDescription</key>

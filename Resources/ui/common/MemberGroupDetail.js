@@ -37,7 +37,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 
 	self.setRightNavButton(composeButton);	
 	
-	var Facebook = require('facebook');
+	//var Facebook = require('facebook');
 	
 	/*(var social = require("lib/social");
 	var twitter = social.create({
@@ -97,8 +97,8 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 	
 	
 	
-	Facebook.appid = utm.facebookAppId;
-	Facebook.permissions = ['publish_stream', 'read_stream'];
+	//Facebook.appid = utm.facebookAppId;
+	//Facebook.permissions = ['publish_stream', 'read_stream'];
 	
 	
 	
@@ -327,7 +327,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		}
 	});
 	
-	var fbRow = Ti.UI.createTableViewRow({
+	/*var fbRow = Ti.UI.createTableViewRow({
 		height: 40*utm.sizeMultiplier,
 		width: (Ti.Platform.displayCaps.platformWidth-50),
 		hasChild: false,
@@ -370,6 +370,7 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 			fbSwitch.setValue(false);
 		}
 	});
+	*/
 	
 	var additionalSection = Ti.UI.createTableViewSection({ headerTitle: 'Additional' });
 	
@@ -479,9 +480,9 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 		if (_memberData.TwitterToken !== '' && _memberData.TwitterToken != null) {
 			twitterSwitch.setValue(true);
 		}
-		if (_memberData.FaceBook !== '' && _memberData.FaceBook != null) {
-			fbSwitch.setValue(true);
-		}
+		//if (_memberData.FaceBook !== '' && _memberData.FaceBook != null) {
+		//	fbSwitch.setValue(true);
+		//}
 		if (_memberData.AddNicknameToUtms) {
 			signSwitch.setValue(true);
 		}
@@ -630,9 +631,9 @@ var MemberGroupDetailWin = function(_tabGroup,_groupData) {
 				_userSettings.TwitterSecret = utm.TwitterTokenSecret;
 			}
 		}
-		if (fbSwitch.getValue()) {
-			_userSettings.FaceBook = Facebook.getAccessToken();
-		}
+		//if (fbSwitch.getValue()) {
+		//	_userSettings.FaceBook = Facebook.getAccessToken();
+		//}
 		_myHortDetails.MyInformation =  _userSettings;
 		
 		var updateMyHortDetailReq = Ti.Network.createHTTPClient({
