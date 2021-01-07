@@ -40,8 +40,8 @@ function inputField(utm,_label, _labelWidth,  _val, _valWidth, _keyboardType,_re
 		height:Ti.UI.SIZE, 
      	autocapitalization: Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
 		autocorrect: false,
-		keyboardType: _keyboardType ?_keyboardType: Ti.UI.KEYBOARD_DEFAULT,
-		returnKeyType:_returnKeyType ? _returnKeyType:Ti.UI.KEYBOARD_DEFAULT,
+		keyboardType: _keyboardType ?_keyboardType: Ti.UI.KEYBOARD_TYPE_DEFAULT,
+		returnKeyType:_returnKeyType ? _returnKeyType:Ti.UI.KEYBOARD_TYPE_DEFAULT,
 		enableReturnKey: false,
 		borderStyle:Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
 		borderRadius :5,
@@ -116,7 +116,7 @@ function inputField(utm,_label, _labelWidth,  _val, _valWidth, _keyboardType,_re
 		
 	};
 	
-	if(_keyboardType === Ti.UI.KEYBOARD_EMAIL){
+	if(_keyboardType === Ti.UI.KEYBOARD_TYPE_EMAIL){
 		fld.addEventListener('blur', function(e){
 		    var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;   
 		 	

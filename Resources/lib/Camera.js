@@ -1,17 +1,16 @@
-function CameraView(_win,_imagePreview) {
+
+function CameraView(_previewView) {
 	var resizedImage;
-	//var imageForPreview;
+	var thumbnailImage;
 	
-	var CameraView = Titanium.UI.createView({
+	var CameraView = Ti.UI.createView({
         layout: 'horizontal',
         visible:false
 	});
 
-	_imagePreview.addEventListener('click',function(e){
-		askDelete();
-	});
 
 	CameraView.captureImage= function(){
+		utm.screenWillLock = false;
 		resizedImage = null;
 		
 		var photoDialog = Ti.UI.createOptionDialog({
@@ -22,46 +21,54 @@ function CameraView(_win,_imagePreview) {
 			destrutive:2
 		});
 		
-		photoDialog.addEventListener('click', function(e){
-			
+		photoDialog.addEventListener('click', function(e) {			
 			resizedImage = null;
-			
 			if (e.cancel === e.index || e.cancel === true) {
+				_previewView.setHeight(46*utm.sizeMultiplier);
+				_previewView.setWidth(46*utm.sizeMultiplier);
+				_previewView.setImage('/images/icons/camera.png');
+				utm.screenWillLock = true;
 				return;
-			} else if (e.index === 0){
-				Titanium.Media.showCamera({
-					saveToPhotoGallery:false,//NOTE this is important to be set to FALSE
-					mediaTypes:[Ti.Media.MEDIA_TYPE_PHOTO],  //, Ti.Media.MEDIA_TYPE_VIDEO this will need work to get video working
-					success:function(event) {
-						
-						processImage(event);
-						
+			} else if (e.index === 0) {
+				Ti.Media.showCamera({
+					saveToPhotoGallery: false,
+					mediaTypes:[Ti.Media.MEDIA_TYPE_PHOTO],
+					success:function(e) {
+						processImage(e);
+						utm.screenWillLock = true;
 					},
-		        	cancel:function(){
+		        	cancel:function() {
+						_previewView.setHeight(46*utm.sizeMultiplier);
+						_previewView.setWidth(46*utm.sizeMultiplier);
+						_previewView.setImage('/images/icons/camera.png');
+						utm.screenWillLock = true;
 						return;
 		        	},
-		        	error:function(error){
-		            	if (error.code == Titanium.Media.NO_CAMERA){
+		        	error:function(error) {
+						utm.screenWillLock = true;
+		            	if (error.code == Ti.Media.NO_CAMERA) {
 		            		alert('Device does not have camera capabilities');
-		            	}else{
-		                	alert('Unable to access camera! \nPlease use a picture from the gallery.');
-		                	// Ti.API.error(JSON.stringify(error));
+		            	} else {
+		                	alert('Unable to access camera.\nPlease use a picture from the gallery.');
 		            	}
 		            }
 				});
-			} else if (e.index === 1){
+			} else if (e.index === 1) {
 				Ti.Media.openPhotoGallery({
-					
-					success:function(event) {
-						
-						processImage(event);
-						
+					success:function(e) {
+						processImage(e);
+						utm.screenWillLock = true;
 					},
 		        	cancel:function(){
+						_previewView.setHeight(46*utm.sizeMultiplier);
+						_previewView.setWidth(46*utm.sizeMultiplier);
+						_previewView.setImage('/images/icons/camera.png');
+						utm.screenWillLock = true;
 						return;
 		        	},
 		        	error:function(error){
-		            	if (error.code == Titanium.Media.NO_CAMERA){
+						utm.screenWillLock = true;
+		            	if (error.code == Ti.Media.NO_CAMERA){
 		            		alert('Device does not have camera capabilities');
 		            	}else{
 		                	//alert('Unexpected error: ' + error.code);
@@ -70,55 +77,59 @@ function CameraView(_win,_imagePreview) {
 				});
 			}
 		});
-		
 		photoDialog.show();
-		
 	};
 	
-	function processImage(event){
+	function processImage(e){
+		//var ImageFactory = require('ti.imagefactory');
 		
-		if(utm.Android){
-			resizedImage = event.media.imageAsResized(event.media.width/6,event.media.height/6);
-		}else{
-			resizedImage = event.media.imageAsResized(event.media.width/3,event.media.height/3);
-		}	
+		var resizeRatio = (Math.max(e.media.width,e.media.height) / 800);
+		if (resizeRatio > 1) {
+			resizedImage = e.media.imageAsResized(Math.round(e.media.width/resizeRatio),Math.round(e.media.height/resizeRatio));
+		} else {
+			resizedImage = e.media;
+		}
+		//resizedImage = ImageFactory.compress(resizedImage,0.35);
 		
-		_imagePreview.setImage(resizedImage);
-		_imagePreview.visible=true;
+		//var image = resizedImage;
+        //var f = Titanium.Filesystem.getFile(Titanium.Filesystem.applicationDataDirectory,'camera1.png');
+        //f.write(image);
+
+        //var f = Titanium.Filesystem.getFile(Titanium.Filesystem.applicationDataDirectory,'camera2.png');
+        //f.write(e.media);
+		//alert(f.size);
+		//alert(resizedImage.height + ' x ' + resizedImage.width);
+		
+		thumbnailImage = e.media.imageAsResized(80*utm.sizeMultiplier,80*utm.sizeMultiplier);
+		
+		//resizedImage = e.media.imageAsResized(e.media.width/2,e.media.height/2);
+		/*if (utm.Android) {
+			resizedImage = e.media.imageAsResized(e.media.width/6,e.media.height/6);
+		} else {
+			resizedImage = e.media.imageAsResized(e.media.width/3,e.media.height/3);
+		}*/
+		
+		_previewView.setVisible(false);
+		_previewView.setHeight(80*utm.sizeMultiplier);
+		_previewView.setWidth(80*utm.sizeMultiplier);
+		_previewView.setImage(thumbnailImage);
+		_previewView.setVisible(true);
 		
 	}
-	
-	function askDelete(){
-		
-		var deleteDialog = Ti.UI.createOptionDialog({
-			title:'Do you want to remove the attach file?',
-			options:['Yes','Cancel'],
-			cancel:1,
-			selectedIndex:0,
-			destrutive:1
-		});
-		
-		deleteDialog.addEventListener('click', function(e){
-			if (e.cancel === e.index || e.cancel === true) {
-				return;
-			} else if (e.index === 0){
-				_imagePreview.setVisible(false);
-				resizedImage=null;				
-			}		
-		});		
-		deleteDialog.show();
-	}
-	
 	
 	CameraView.getImage = function(){
 		return resizedImage;
 	};
 	
-	CameraView.reset = function(){
-		_imagePreview.setVisible(false);
-		resizedImage = null;	
+	CameraView.getThumbnail = function(){
+		return _previewView.getImage();
 	};
 	
+	CameraView.reset = function(){
+		_previewView.setVisible(false);
+		_previewView.setImage(null);
+		resizedImage = null;	
+	};
 
 	return CameraView;
 };

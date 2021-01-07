@@ -1,74 +1,62 @@
-var NavigationController = function(utm) { 
+var NavigationController = function() { 
     var self = this;
-    var guid = require("/lib/guid");
 
     self.open = function(windowToOpen) {
-        //make "heavyweight" and associate with an Android activity
-    		windowToOpen.navBarHidden = windowToOpen.navBarHidden || false;
-        
-        
-           
-	   	var thisActivityIndicator = Ti.UI.Android.createProgressIndicator({
-		    activityIndicatorStyle : Ti.UI.ActivityIndicatorStyle.DARK,
-		    location : Ti.UI.Android.PROGRESS_INDICATOR_DIALOG,   // display in dialog 
-		    type : Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT // display a spinner
-	 	 });
-        
-	        windowToOpen.add(thisActivityIndicator);
-
-        if(!self.rootWindow) {
-            //windowToOpen.exitOnClose = true;
-            self.rootWindow = windowToOpen;
-        }
+    	var ai = Ti.UI.createView({
+			height: utm.viewableArea,
+			width: '100%',
+			visible: false,
+			zIndex: 1,
+			top: 0,
+			left: 0
+		});
+		var images = [
+			'/images/ai/0.png',
+			'/images/ai/1.png',
+			'/images/ai/2.png',
+			'/images/ai/3.png',
+			'/images/ai/4.png',
+			'/images/ai/5.png',
+			'/images/ai/6.png',
+			'/images/ai/7.png',
+			'/images/ai/8.png',
+			'/images/ai/9.png',
+			'/images/ai/10.png',
+			'/images/ai/11.png'
+		];
+		var imageView = Titanium.UI.createImageView({
+			images: images,
+			duration: 83,
+			repeatCount: 0,
+			top: 150*utm.sizeMultiplier,
+			width: 50*utm.sizeMultiplier,
+			height: 50*utm.sizeMultiplier
+		});
+		ai.add(imageView);
+		windowToOpen.add(ai);
 		
-		function timeoutCompare(_n){
-			var d = new Date();
-			var n = d.getTime();
-
-			if (utm.activityActive === _n) {
-				Ti.App.fireEvent('resumed');
-			} else if (n-utm.activityActive >= utm.androidTimeout/2) {
-				Ti.App.fireEvent('resumed'); 
-			} else {
-				//monitorGuid();
-			}
-		}
-		
-		function monitorGuid() {
-			var d = new Date();
-			var n = d.getTime();
-			utm.activityActive = n;
-			setTimeout(function(n) {
-			    timeoutCompare();
-			}, utm.androidTimeout);
+		var timerId;
+		windowToOpen.showAi = function() {
+			imageView.start();
+			ai.setVisible(true);
+			timerId = setTimeout(function(){
+				windowToOpen.hideAi();
+			}, utm.netTimeout);
 		};
-
-		windowToOpen.addEventListener('open', function(ev) {
-			monitorGuid();
-		});
-		windowToOpen.addEventListener('close', function(ev) {
-			monitorGuid();
-		});
-		windowToOpen.addEventListener('blur', function(ev) {
-			monitorGuid();
-		});
-		windowToOpen.addEventListener('focus', function(ev) {
-			timeoutCompare();
-		});
-	    
+		windowToOpen.hideAi = function() {
+			ai.setVisible(false);
+			imageView.stop();
+			clearTimeout(timerId);
+		};
+	
         windowToOpen.open();
     };
 
     self.close = function(windowToClose) {
-    		utm.log('CLOSE WINDOW  '+ windowToClose);
-    		
-    		if(windowToClose.toString() =='[object Window]'){
-    			windowToClose.close();	
-    		}else{
-    			utm.log('NO CLOSE WINDOW  '+ windowToClose);
-    		}
-        windowToClose=null;
+    	windowToClose.close();	
+        windowToClose = null;
     };
+	
 	
 	
 	

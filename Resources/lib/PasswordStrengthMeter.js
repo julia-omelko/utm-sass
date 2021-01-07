@@ -96,11 +96,6 @@ function passwordMeter() {
 		inValidChars = inValidChars.replace(/\d/g, "");
 		inValidChars = inValidChars.replace(allowableSpecilaChars, "");
 		
-		if(specials ==1)
-		{
-			utm.log('TEST');
-		}
-		
 		//check space
 		if (spaces > 0) {
 			return "No spaces!";

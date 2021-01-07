@@ -1,0 +1,22 @@
+
+sudo xcode-select -switch /Applications/Xcode.app/Contents
+
+
+sudo -u “Anthony Debonis Admin” xcode-select -switch /Applications/Xcode.app/Contents
+
+sudo -u Anthony Debonis Admin
+
+
+sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer
+
+
+
+
+Please use the following username and password:
+Username: dsmith
+Password:  Testtest1
+
+When logged in, you will see a member with the username "lauren".  She is one of our developers and will know to ignore any test messages that you send.
+
+
+518 396 8769 

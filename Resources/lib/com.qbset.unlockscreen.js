@@ -28,7 +28,7 @@
 
 // Private vars & layouts
 var txtColor = '#ffffff',
-    winDefault = { backgroundColor: 'gray' };
+    winDefault = { backgroundColor: utm.backgroundColor };
 
 /**
  * Load the module
@@ -44,6 +44,11 @@ exports.loadWindow = function(params) {
 
     win = Ti.UI.createWindow(params.mainWindow || winDefault);
 
+	var updateDisplay = function() {
+		win.fireEvent('reorientdisplay');
+	};
+	Ti.App.addEventListener('orientdisplay', updateDisplay);	
+
     var layout = new exports.layout(params);
 
     win.add(layout);
@@ -56,7 +61,13 @@ exports.loadWindow = function(params) {
 
     win.addEventListener('androidback',function(e){
         // deactivate Android back button
+		//var activity = Titanium.Android.currentActivity;
+    	//activity.finish();
     });
+
+	win.addEventListener('close', function(e) {
+		Ti.App.removeEventListener('orientdisplay', updateDisplay);
+	});
 
     return win;
 };
@@ -70,59 +81,67 @@ exports.layout = function(params) {
     var timeOutMilliseconds = params.configLockScreen.timeOut;
     var timeOutMultiplier = params.configLockScreen.timeOutMultiplier || 0;
     var attempts = 0;
-    var platformWidth = Ti.Platform.displayCaps.platformWidth;
-    var gapWidth = params.passwordBox.gapWidth || 20;
-
+//    var platformWidth = Ti.Platform.displayCaps.platformWidth;
+    var gapWidth = params.passwordBox.gapWidth || 20; 
+    
     var messageBoxDefault = {
-        text: params.messageBox.text || 'Enter Unlock Code',
-        borderRadius: params.messageBox.borderRadius || 10,
-        borderColor: params.messageBox.borderColor || '#ffffff',
-        borderWidth: params.messageBox.borderWidth || 3,
-        height: params.messageBox.height || Ti.UI.SIZE,
-        width: params.messageBox.width || platformWidth-20,
-        top: params.messageBox.top || '30dp',
-        left: params.messageBox.left || 10,
-        backgroundColor: params.messageBox.backgroundColor || 'gray',
-        color: params.messageBox.color || '#ffffff',
-        font: params.messageBox.font || {
-            fontFamily: 'Helvetica Neue',
+        text: 'Enter unlock code',
+        height: Ti.UI.SIZE,
+        width: Ti.UI.SIZE,
+        top: 30,
+        color: utm.barColor,
+        font: {
+            fontFamily: utm.fontFamily,
             fontWeight: 'bold',
             fontSize: '25dp'
         },
-        textAlign: params.messageBox.textAlign || 'center'
+        textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER
     };
+
+	if(Ti.Platform.displayCaps.platformWidth < Ti.Platform.displayCaps.platformHeight) {
+		var boxSize = Ti.Platform.displayCaps.platformWidth;
+	} else {
+		var boxSize = Ti.Platform.displayCaps.platformHeight;
+	}
 
     var passwordDefault = {
         color: '#000000',
-        top: params.passwordBox.top || ('80dp'),
-        width: Math.round(Ti.Platform.displayCaps.platformWidth/6),
-        height: Math.round(Ti.Platform.displayCaps.platformWidth/6),
+        top: 15,
+        width: Math.round(boxSize/6),
+        height: Math.round(boxSize/6),
         passwordMask: true,
         font: {
-            fontFamily: 'Helvetica Neue',
+            fontFamily: utm.fontFamily,
             fontWeight: 'bold',
             fontSize: 25
         },
         textAlign: 'center',
-        touchEnabled: true,
-        borderRadius: 5,
-        keyboardType: Ti.UI.KEYBOARD_NUMBER_PAD,
+        touchEnabled: false,
+        borderRadius: 4,
+        borderWidth: 1,
+        borderColor: utm.barColor,
+        keyboardType: Ti.UI.KEYBOARD_TYPE_NUMBER_PAD,
         borderStyle: ((Ti.Platform.osname === 'android') ? null : Ti.UI.INPUT_BORDERSTYLE_ROUNDED)
     };
 
     var passwordHiddenBoxDefault = {
         color: 'white',
         height: 20,
-        width: platformWidth,
+        width: Ti.Platform.displayCaps.platformWidth,
         top: ((Ti.Platform.osname === 'android') ? -100 : 0),
         left: 0,
         passwordMask: true,
         font: { fontSize: 20 },
         visible: ((Ti.Platform.osname === 'android') ? true : false),
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
-        keyboardType: Ti.UI.KEYBOARD_NUMBER_PAD,
+        keyboardType: Ti.UI.KEYBOARD_TYPE_NUMBER_PAD,
         returnKeyType: Ti.UI.RETURNKEY_DEFAULT
     };
+    
+	win.addEventListener('reorientdisplay', function(evt) {
+		passwordHiddenBoxDefault.width = Ti.Platform.displayCaps.platformWidth;
+	});
+   
     if (Ti.Platform.osname === 'android') {
         passwordHiddenBoxDefault.softKeyboardOnFocus = Ti.UI.Android.SOFT_KEYBOARD_SHOW_ON_FOCUS;
     }
@@ -130,12 +149,12 @@ exports.layout = function(params) {
     var timeOutBoxDefault = {
         text: timeOutSeconds,
         height: params.timeOutBox.height || 65,
-        width: params.timeOutBox.width || platformWidth-20,
+        width: params.timeOutBox.width || Ti.Platform.displayCaps.platformWidth-20,
         top: params.timeOutBox.top || 185,
         left: params.timeOutBox.left || 10,
         color: params.timeOutBox.color || '#ffffff',
         font: params.timeOutBox.font || {
-            fontFamily: 'Helvetica Neue',
+            fontFamily: utm.fontFamily,
             fontWeight: 'bold',
             fontSize: 25
         },
@@ -143,20 +162,33 @@ exports.layout = function(params) {
         textAlign: params.timeOutBox.textAlign || 'center'
     };
 
+	win.addEventListener('reorientdisplay', function(evt) {
+		timeOutBoxDefault.width = Ti.Platform.displayCaps.platformWidth-20;
+	});
+
     if(utm.Android){
         var wrapper = Ti.UI.createScrollView({
-        scrollType : 'vertical'
+        scrollType: 'vertical',
+        layout: 'vertical'
         });
     }
     if(utm.iPhone || utm.iPad ){
         var wrapper = Ti.UI.createScrollView({
-        showVerticalScrollIndicator : true,
-        showHorizontalScrollIndicator : false
+	        showVerticalScrollIndicator : true,
+	        showHorizontalScrollIndicator : false,
+	        width : Ti.Platform.displayCaps.platformWidth,
+	        layout: 'vertical'
         });
     }
 
-
-    //var wrapper  = Ti.UI.createView(),
+	var utmLogo = Ti.UI.createImageView({
+		image:'/images/ytm_Narrow.png',
+		width:'275dp',
+		height:'71dp',
+		top: 55
+	});
+	
+	
     var messageBox = Ti.UI.createLabel(messageBoxDefault),
         password1 = Ti.UI.createTextField(passwordDefault),
         password2 = Ti.UI.createTextField(passwordDefault),
@@ -165,46 +197,85 @@ exports.layout = function(params) {
         passwordHiddenBox = Ti.UI.createTextField(passwordHiddenBoxDefault),
         timeOutBox = Ti.UI.createLabel(timeOutBoxDefault);
 
-    password1.left = (platformWidth/2)-(gapWidth/2+gapWidth)-2*passwordDefault.width;
-    password2.left = (platformWidth/2)-(gapWidth/2)-passwordDefault.width;
-    password3.left = (platformWidth/2)+(gapWidth/2);
-    password4.left = (platformWidth/2)+(gapWidth/2+gapWidth)+passwordDefault.width;
+    function passwordLeft() {
+	    password1.left = (Ti.Platform.displayCaps.platformWidth/2)-(gapWidth/2+gapWidth)-2*passwordDefault.width;
+	    password2.left = (Ti.Platform.displayCaps.platformWidth/2)-(gapWidth/2)-passwordDefault.width;
+	    password3.left = (Ti.Platform.displayCaps.platformWidth/2)+(gapWidth/2);
+	    password4.left = (Ti.Platform.displayCaps.platformWidth/2)+(gapWidth/2+gapWidth)+passwordDefault.width;
+	};
+	 
+	passwordLeft();
 
+    wrapper.add(utmLogo);
     wrapper.add(messageBox);
-    wrapper.add(passwordHiddenBox);
-    wrapper.add(password1);
-    wrapper.add(password2);
-    wrapper.add(password3);
-    wrapper.add(password4);
-    wrapper.add(timeOutBox);
+    
+    var passwordView = Ti.UI.createView({
+    	height: Ti.UI.SIZE,
+		width: Ti.Platform.displayCaps.platformWidth
+    });
+    wrapper.add(passwordView);
+    
+    passwordView.add(passwordHiddenBox);
+    passwordView.add(password1);
+    password1.setBorderWidth(3);
+    passwordView.add(password2);
+    passwordView.add(password3);
+    passwordView.add(password4);
+    passwordView.add(timeOutBox);
+    
+	win.addEventListener('reorientdisplay', function(evt) {
+		passwordLeft();
+		wrapper.width = Ti.Platform.displayCaps.platformWidth;
+		passwordView.width = Ti.Platform.displayCaps.platformWidth;
+	});    
 
     // get password code from hidden field
     passwordHiddenBox.addEventListener('change',function(e) {
         if(e.value.length <= 0) {
             password1.value = '';
+            password1.setBorderWidth(3);
             password2.value = '';
+            password2.setBorderWidth(1);
             password3.value = '';
+            password3.setBorderWidth(1);
             password4.value = '';
+            password4.setBorderWidth(1);
         } else if (e.value.length == 1) {
             password1.value = '*';
+            password1.setBorderWidth(1);
             password2.value = '';
+            password2.setBorderWidth(3);
             password3.value = '';
+            password3.setBorderWidth(1);
             password4.value = '';
+            password4.setBorderWidth(1);
         } else if (e.value.length == 2) {
             password1.value = '*';
+            password1.setBorderWidth(1);
             password2.value = '*';
+            password2.setBorderWidth(1);
             password3.value = '';
+            password3.setBorderWidth(3);
             password4.value = '';
+            password4.setBorderWidth(1);
         } else if (e.value.length == 3) {
             password1.value = '*';
+            password1.setBorderWidth(1);
             password2.value = '*';
+            password2.setBorderWidth(1);
             password3.value = '*';
+            password3.setBorderWidth(1);
             password4.value = '';
+            password4.setBorderWidth(3);
         } else if (e.value.length == 4) {
             password1.value = '*';
+            password1.setBorderWidth(1);
             password2.value = '*';
+            password2.setBorderWidth(1);
             password3.value = '*';
+            password3.setBorderWidth(1);
             password4.value = '*';
+            password4.setBorderWidth(1);
 
             if (params.configLockScreen.passCode.length !== 4) {
                 e.value = Ti.Utils.sha256(e.value);
@@ -238,7 +309,7 @@ exports.layout = function(params) {
                     params.incorrect();
                 }
 
-                messageBox.color = params.messageBox.textColorIncorrect || '#000000';
+                messageBox.color = utm.color_org;
                 messageBox.text = params.messageBox.textIncorrect || 'Wrong Unlock Code';
 
                 // vibrate on incorrect password
@@ -324,13 +395,33 @@ exports.layout = function(params) {
         passwordHiddenBox.focus();
     });
     password1.addEventListener('click', function() {
-        passwordHiddenBox.focus();
+    	passwordHiddenBox.focus();
     });
     if (Ti.Platform.osname === 'android') {
         win.addEventListener('open', function() {
             passwordHiddenBox.focus();
         });
     }
+    
+    // if keyboard was closed then opend, focus is lost on box and input is gone, so re-set display
+	var setInputBox = function() {
+            password1.value = '';
+            password1.setBorderWidth(3);
+            password2.value = '';
+            password2.setBorderWidth(1);
+            password3.value = '';
+            password3.setBorderWidth(1);
+            password4.value = '';
+            password4.setBorderWidth(1);
+	};
+
+	Ti.App.addEventListener('keyboardframechanged', setInputBox);
+	
+	//clean up Ti.AppEventListener when window closes
+	win.addEventListener('close', function(e) {
+		Ti.App.removeEventListener('keyboardframechanged', setInputBox);
+	});
+
 
     return wrapper;
 };

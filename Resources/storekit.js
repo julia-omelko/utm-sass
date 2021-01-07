@@ -59,13 +59,13 @@ Storekit.addEventListener('transactionState', function (evt) {
 					Storekit.verifyReceipt(evt, function (e) {
 						if (e.success) {
 							if (e.valid) {
-								//alert('Thanks! Receipt Verified');
+								Ti.API.info('Thanks! Receipt Verified');
 								verifyServerSideWithApple(evt.receipt,evt.productIdentifier);
 							} else {
-								//alert('Sorry. Receipt is invalid');
+								Ti.API.info('Sorry. Receipt is invalid');
 							}
 						} else {
-							//alert(e.message);
+							Ti.API.info(e.message);
 						}
 					});
 				}
@@ -153,14 +153,12 @@ function verifyServerSideWithApple(_receipt,_productIdentifier){
 		validatesSecureCertificate:utm.validatesSecureCertificate, 
 		timeout:utm.netTimeout,
 		onload : function(e) {
-			utm.inSubscriptionMode = true;
+			//utm.inSubscriptionMode = true;
 			if (this.status == 200) {		
 				var response = eval('('+this.responseText+')');
 				if(response.Status ==='Sucess'){
-					utm.User.UserProfile.MessagesRemaining = response.Data.SubscriptionInfo.MessagesRemaining;
-					utm.User.UserProfile.SubscriptionEnds = response.Data.SubscriptionInfo.SubscriptionEnds; //Issue with dates not the same with SubscriptionInfo vs VerifyAppleReceipt when null
-					utm.User.UserProfile.HasSubscription = response.Data.SubscriptionInfo.HasSubscription;
-					
+					utm.User.UserProfile.MessagesRemaining = response.Data.MessagesRemaining;
+					utm.User.UserProfile.SubscriptionEnds = response.Data.SubscriptionEnds; //Issue with dates not the same with SubscriptionInfo vs VerifyAppleReceipt when null
 					/*
 					 * These messages will be replaced with custom messages supplied by the UTM server. - TV
 					 */
@@ -172,19 +170,23 @@ function verifyServerSideWithApple(_receipt,_productIdentifier){
 
 					Ti.App.fireEvent('updateMessageCount',{
 						MessagesRemaining: response.Data.SubscriptionInfo.MessagesRemaining,
-						SubscriptionEnds:  response.Data.SubscriptionInfo.SubscriptionEnds 
+						SubscriptionEnds: ((_productIdentifier === 'com.youthisme.UnlimitedMessagesFor99') ? response.Data.SubscriptionInfo.SubscriptionEnds : null)
 					});
+				}else{
+					//alert("Your purchase was successful but will not be reflected right away.");
 				}
 			} else {
-				utm.handleError(e, this.status, this.responseText);
+				utm.handleHttpError({}, this.status, this.responseText);
 			}
+			verifyReceipt = null;
 		},
 		onerror : function(e) {		
-			utm.handleError(e, this.status, this.responseText);
+			utm.handleHttpError(e, this.status, this.responseText);
 			resultMessage = "There was an error processing your request!";
-			utm.inSubscriptionMode = false;
-		}
-		,timeout:utm.netTimeout
+			//utm.inSubscriptionMode = false;
+			verifyReceipt = null;
+		},
+		timeout:utm.netTimeout
 	});
 	var theUrl = utm.serviceUrl + "VerifyAppleReceipt";
 	verifyReceipt.open("POST", theUrl);
@@ -193,7 +195,7 @@ function verifyServerSideWithApple(_receipt,_productIdentifier){
 	verifyReceipt.send(_receipt);
 }
 
-// Called upon login.  This ultimatly triggers the restoredCompletedTransactions storekit events - TV
+// Called upon login.
 Ti.App.addEventListener('App:startTransactionListener',function(e){
 	Storekit.addTransactionObserver();
 	//Storekit.restoreCompletedTransactions();
